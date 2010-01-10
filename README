@@ -1,0 +1,25 @@
+Decoda - BBCode Parser
+**********************
+
+Requirements
+============
+
+	* PHP 5.2.x
+	* GeSHI 1.0.8.4 Library (Comes packaged in the Vendors)
+
+Features
+========
+
+    * Parses custom code to valid (X)HTML markup
+    * Setting to make links and emails auto-clickable
+    * Setting to use shorthand links and emails
+    * Implements GeSHi for code highlighting
+    * Implements the ability to censor words
+    * Support for adding additional user code
+    * Supports additional attributes for select tags
+    * Supports the following: bold, italics, underline, alignment, color, font, sup, sub, font size, h1-h6, code (pre), urls, emails, images, divs, lists and quotes
+
+Documentation
+=============
+
+	* http://www.milesj.me/resources/script/decoda

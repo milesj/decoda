@@ -1,21 +1,19 @@
 <?php
 /**
- * decoda.php
+ * Decoda - Lightweight Markup Language
  *
  * CakePHP Helper - Processes and translates custom markup (BB code style), Functionality for word censoring, GeSHi code highlighting.
  * 
  * @author 		Miles Johnson - www.milesj.me
  * @copyright	Copyright 2006-2009, Miles Johnson, Inc.
  * @license 	http://www.opensource.org/licenses/mit-license.php - Licensed under The MIT License
- * @package     Decoda - Lightweight Markup Language
- * @version     2.6
  * @link		www.milesj.me/resources/script/decoda
  */
 
 class Decoda {
 
 	/**
-	 * Current version: www.milesj.me/files/logs/decoda
+	 * Current version: www.milesj.me/resources/logs/decoda
 	 *
 	 * @access private
 	 * @var string

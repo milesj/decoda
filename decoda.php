@@ -18,7 +18,7 @@ class Decoda {
 	 * @access private
 	 * @var string
 	 */
-	public $version = '2.6';
+	public $version = '2.6.1';
 	
 	/**
 	 * List of tags allowed to parse.
@@ -291,7 +291,7 @@ class Decoda {
 			
 			// Build quotes and lists
 			if ($this->allowed('quote')) {
-				$string = $this->__processQuotes($string);
+				$string = preg_replace_callback('/\[quote(?:=\"(.*?)\")?(?:\sdate=\"(.*?)\")?\](.*?)\[\/quote\]/is', array($this, '__processQuotes'), $string);
 			}
 			
 			if ($this->allowed('list')) {
@@ -784,32 +784,24 @@ class Decoda {
 	 * Processes and replaces nested quote tags.
 	 *
 	 * @access private
-	 * @param string $string
+	 * @param array $matches
 	 * @return string
 	 */
-	private function __processQuotes($string) {
-		$openQuote  = '<blockquote class="decoda_quote"><div class="decoda_quoteBody">';  
-		$authorQuote= '<blockquote class="decoda_quote"><div class="decoda_quoteAuthor">Quote by $1</div><div class="decoda_quoteBody">';
-		$closeQuote = '</div></blockquote>';
-		
-		preg_match_all('/\[quote(?:=\".*?\")?\]/i', $string, $matches);
-		$openTags = count($matches[0]);
-		
-		preg_match_all('/\[\/quote\]/i', $string, $matches);
-		$closeTags = count($matches[0]);
-		
-		$unclosed = $openTags - $closeTags;
-		if ($unclosed > 0) {
-			for ($i = 0; $i < $unclosed; $i++) {
-				$string .= '[/quote]';
-			}
+	private function __processQuotes($matches) {
+		$quote = '<blockquote class="decoda_quote">';
+
+		if (!empty($matches[2])) {
+			$time = (is_numeric($matches[2]) ? $matches[2] : strtotime($matches[2]));
+			$date = sprintf('<span class="decoda_quoteDate">%s</span>', date('m/d/y h:i', $time));
+		} else {
+			$date = '';
 		}
-		
-		$string = str_replace('[quote]', $openQuote, $string);
-		$string = str_replace('[/quote]', $closeQuote, $string);
-		$string = preg_replace('/\[quote=\"(.*?)\"\]/i', $authorQuote, $string);
-		
-		return $string;
+
+		$quote .= sprintf('<div class="decoda_quoteAuthor">%sQuote by %s</div>', $date, $matches[1]);
+		$quote .= sprintf('<div class="decoda_quoteBody">%s</div>', $matches[3]);
+		$quote .= '</blockquote>';
+
+		return $quote;
 	}
 	
 	/**

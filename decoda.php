@@ -18,7 +18,7 @@ class Decoda {
 	 * @access private
 	 * @var string
 	 */
-	public $version = '2.6.1';
+	public $version = '2.7';
 	
 	/**
 	 * List of tags allowed to parse.
@@ -35,6 +35,16 @@ class Decoda {
 	 * @var array
 	 */
 	private $__censored = array('fuck');
+
+    /**
+     * Counters used for looping.
+     *
+     * @access private
+     * @var array
+     */
+    private $__counters = array(
+        'spoiler' => 0
+    );
 	
 	/**
 	 * Should the text be parsed.
@@ -84,18 +94,33 @@ class Decoda {
 	 * @var array
 	 */
 	private $__markupCode = array(
-		'b'		=> '/\[b\](.*?)\[\/b\]/is',
-		'i'		=> '/\[i\](.*?)\[\/i\]/is',
-		'u'		=> '/\[u\](.*?)\[\/u\]/is',
-		'align'	=> '/\[align=(left|center|right)\](.*?)\[\/align\]/is',
-		'float'	=> '/\[float=(left|right)\](.*?)\[\/float\]/is',
-		'color'	=> '/\[color=(#[0-9a-fA-F]{6}|[a-z]+)\](.*?)\[\/color\]/is',
-		'font'	=> '/\[font=\"(.*?)\"\](.*?)\[\/font\]/is',
-		'h16'	=> '/\[h([1-6]{1})\](.*?)\[\/h([1-6]{1})\]/is', 
-		'size'	=> '/\[size=((?:[1-2]{1})?[0-9]{1})\](.*?)\[\/size\]/is',
-		'sub'	=> '/\[sub\](.*?)\[\/sub\]/is',
-		'sup'	=> '/\[sup\](.*?)\[\/sup\]/is',
-		'hide'	=> '/\[hide\](.*?)\[\/hide\]/is'
+        'code'      => '/\[code(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*?)\[\/code\]/is',
+		'b'         => '/\[b\](.*?)\[\/b\]/is',
+		'i'         => '/\[i\](.*?)\[\/i\]/is',
+		'u'         => '/\[u\](.*?)\[\/u\]/is',
+		'align'     => '/\[align=(left|center|right)\](.*?)\[\/align\]/is',
+		'float'     => '/\[float=(left|right)\](.*?)\[\/float\]/is',
+		'color'     => '/\[color=(#[0-9a-fA-F]{6}|[a-z]+)\](.*?)\[\/color\]/is',
+		'font'      => '/\[font=\"(.*?)\"\](.*?)\[\/font\]/is',
+		'h16'       => '/\[h([1-6]{1})\](.*?)\[\/h([1-6]{1})\]/is',
+		'size'      => '/\[size=((?:[1-2]{1})?[0-9]{1})\](.*?)\[\/size\]/is',
+		'sub'       => '/\[sub\](.*?)\[\/sub\]/is',
+		'sup'       => '/\[sup\](.*?)\[\/sup\]/is',
+		'hide'      => '/\[hide\](.*?)\[\/hide\]/is',
+        'img'       => '/\[img(?:\swidth=([0-9%]{1,4}+))?(?:\sheight=([0-9%]{1,4}+))?\]((?:ftp|http)s?:\/\/.*?)\[\/img\]/is',
+        'div'       => '/\[div(?:\sid=\"([a-zA-Z0-9]+)\")?(?:\sclass=\"([a-zA-Z0-9\s]+)\")?\](.*?)\[\/div\]/is',
+        'url'       => array(
+            '/\[url\]((?:http|ftp|irc)s?:\/\/.*?)\[\/url\]/is',
+            '/\[url=((?:http|ftp|irc)s?:\/\/.*?)\](.*?)\[\/url\]/is'
+        ),
+        'email'     => array(
+            '/\[e?mail\](.*?)\[\/e?mail\]/is',
+            '/\[e?mail=(.*?)\](.*?)\[\/e?mail\]/is'
+        ),
+        'quote'     => '/\[quote(?:=\"(.*?)\")?(?:\sdate=\"(.*?)\")?\]/is',
+        'list'      => '/\[list\](.*?)\[\/list\]/is',
+        'spoiler'   => '/\[spoiler\](.*?)\[\/spoiler\]/is',
+        'newcode'   => '/\[newcode(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*)\[\/newcode\]/is'
 	);
 	
 	/**
@@ -105,18 +130,27 @@ class Decoda {
 	 * @var array
 	 */
 	private $__markupResult = array(
-		'b'		=> '<b>$1</b>',
-		'i'		=> '<i>$1</i>',
-		'u'		=> '<u>$1</u>',
-		'align'	=> '<div style="text-align: $1">$2</div>',
-		'float'	=> '<div class="decoda_float_$1">$2</div>',
-		'color'	=> '<span style="color: $1">$2</span>',
-		'font'	=> '<span style="font-family: \'$1\', sans-serif;">$2</span>',
-		'h16'	=> '<h$1>$2</h$3>', 
-		'size'	=> '<span style="font-size: $1px">$2</span>',
-		'sub'	=> '<sub>$1</sub>',
-		'sup'	=> '<sup>$1</sup>',
-		'hide'	=> '<span style="display: none">$1</span>'
+        'code'      => array('__callbackCode'),
+		'b'         => '<b>$1</b>',
+		'i'         => '<i>$1</i>',
+		'u'         => '<u>$1</u>',
+		'align'     => '<div style="text-align: $1">$2</div>',
+		'float'     => '<div class="decoda-float_$1">$2</div>',
+		'color'     => '<span style="color: $1">$2</span>',
+		'font'      => '<span style="font-family: \'$1\', sans-serif;">$2</span>',
+		'h16'       => '<h$1>$2</h$3>',
+		'size'      => '<span style="font-size: $1px">$2</span>',
+		'sub'       => '<sub>$1</sub>',
+		'sup'       => '<sup>$1</sup>',
+		'hide'      => '<span style="display: none">$1</span>',
+        'img'       => array('__processImgs'),
+        'div'       => array('__processDivs'),
+        'url'       => array('__processUrls'),
+        'email'     => array('__processEmails'),
+        'quote'     => array('__processQuotes'),
+        'list'      => array('__processLists'),
+        'spoiler'   => array('__processSpoiler'),
+        'newcode'   => array('__processCode')
 	);
 
 	/**
@@ -162,6 +196,7 @@ class Decoda {
 		
 		// Include geshi
 		$geshiPath = dirname(__FILE__). DIRECTORY_SEPARATOR .'geshi'. DIRECTORY_SEPARATOR .'geshi.php';
+        
 		if (file_exists($geshiPath)) {
 			require_once $geshiPath;
 		} else {
@@ -250,66 +285,46 @@ class Decoda {
 		if ($this->__doParse === false) {
 			$string = nl2br($this->__textToParse);
 		} else {
+            
 			// Replace standard markup
 			$string = ' '. $this->__textToParse;
 			$string = nl2br($string);
-			
-			// Convert code
-			if ($this->allowed('code')) {
-				$string = preg_replace_callback('/\[code(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*?)\[\/code\]/is', array($this, '__callbackCode'), $string);
-			}
-			
-			// Determine which tags can be parsed from the defaults
-			$string = $this->__parseDefaults($string);
-			
-			// Replace images and apply width/height attributes
-			if ($this->allowed('img')) {
-				$string = preg_replace_callback('/\[img(?:\swidth=([0-9%]{1,4}+))?(?:\sheight=([0-9%]{1,4}+))?\]((?:ftp|http)s?:\/\/.*?)\[\/img\]/is', array($this, '__processImgs'), $string);	
-			}
-			
-			// Replace divs and apply ids/classes
-			if ($this->allowed('div')) {
-				$string = preg_replace_callback('/\[div(?:\sid=\"([a-zA-Z0-9]+)\")?(?:\sclass=\"([a-zA-Z0-9\s]+)\")?\](.*?)\[\/div\]/is', array($this, '__processDivs'), $string);
-			}
-			
-			// Replace and encode urls; allows http(s), ftp(s), irc
-			if ($this->allowed('url')) {
-				$string = preg_replace_callback('/\[url\]((?:http|ftp|irc)s?:\/\/.*?)\[\/url\]/is', array($this, '__processUrls'), $string);
-				$string = preg_replace_callback('/\[url=((?:http|ftp|irc)s?:\/\/.*?)\](.*?)\[\/url\]/is', array($this, '__processUrls'), $string);
-			}
-			
-			// Replace and obfuscate emails
-			if ($this->allowed('email')) {
-				$string = preg_replace_callback('/\[e?mail\](.*?)\[\/e?mail\]/is', array($this, '__processEmails'), $string);
-				$string = preg_replace_callback('/\[e?mail=(.*?)\](.*?)\[\/e?mail\]/is', array($this, '__processEmails'), $string);
-			}
+
+            foreach ($this->__markupCode as $tag => $pattern) {
+                if ($this->allowed($tag)) {
+                    $result = $this->__markupResult[$tag];
+
+                    if (!is_array($pattern)) {
+                        $pattern = array($pattern);
+                    }
+
+                    foreach ($pattern as $pat) {
+                        if (is_array($result)) {
+                            $string = preg_replace_callback($pat, array($this, $result[0]), $string);
+                        } else {
+                            $string = preg_replace($pat, $result, $string);
+                        }
+                    }
+
+                    // Call certain methods for specific tags
+                    if ($tag == 'quote') {
+                        $string = $this->__closeQuotes($string);
+                    }
+                }
+            }
 			
 			// Make urls/emails clickable
 			if ($this->__makeClickable === true) {
 				$string = $this->__clickable($string);
 			}
 			
-			// Build quotes and lists
-			if ($this->allowed('quote')) {
-				$string = preg_replace_callback('/\[quote(?:=\"(.*?)\")?(?:\sdate=\"(.*?)\")?\](.*?)\[\/quote\]/is', array($this, '__processQuotes'), $string);
-			}
-			
-			if ($this->allowed('list')) {
-				$string = $this->__processLists($string);
-			}
-			
-			// Clean linebreaks and fix codeblocks
-			if ($this->allowed('code')) {
-				$string = preg_replace_callback('/\[newcode(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*?)\[\/newcode\]/is', array($this, '__processCode'), $string);
-			}
-			
-			// Clean linebreaks
-			$string = $this->__cleanLineBreaks($string);
-			
 			// Censor
 			if (!empty($this->__censored)) {
-				$string = $this->__parseCensored($string);
+				$string = $this->__processCensored($string);
 			}
+
+			// Clean linebreaks
+			$string = $this->__cleanLineBreaks($string);
 		}
 
 		if ($return === false) {
@@ -332,6 +347,7 @@ class Decoda {
 		if (empty($tag)) {			
 			return false;
 		}
+        
 	    return preg_replace_callback('/\['. $tag .'\](.*?)\[\/'. $tag .'\]/is', create_function(
 			'$matches', 'return $matches[1];'
 		), $string);
@@ -348,6 +364,7 @@ class Decoda {
 		if (is_array($options)) {
 			$this->__geshiOptions = array_merge($this->__geshiOptions, $options);
 		}
+        
 		return false;
 	}
 	
@@ -362,6 +379,7 @@ class Decoda {
 		if (!is_bool($option)) {
 			return false;
 		}
+        
 		$this->__geshi = $option;
 	}
 	
@@ -376,6 +394,7 @@ class Decoda {
 		if (!is_bool($option)) {
 			return false;
 		}
+        
 		$this->__useShorthand = $option;
 	}	
 
@@ -471,10 +490,10 @@ class Decoda {
 	 * @return string
 	 */
 	private function __cleanLinebreaks($string) {
-		/*$string = preg_replace('/<pre>(.*?)<\/pre>/ise', "'<pre class=\"decoda_code\">'. strip_tags(preg_replace('/(<br \/?>)/is', '', '\\1')) . '</pre>'", $string);*/
 		$string = str_replace('</li><br />', '</li>', $string);
-		$string = str_replace('<ul><br />', '<ul class="decoda_list">', $string);
-		
+		$string = str_replace('<ul class="decoda-list"><br />', '<ul class="decoda-list">', $string);
+		$string = str_replace('<br /><br />', '<br />', $string);
+        
 		return $string;
 	}
 	
@@ -501,6 +520,32 @@ class Decoda {
 		
 		return $string;
 	}
+    
+    /**
+     * Close all quotes.
+     *
+     * @access private
+     * @param string $string
+     * @return string
+     */
+    private function __closeQuotes($string) {
+        $tag = '</div></blockquote>';
+
+        preg_match_all('/\[quote(?:(.*?))?\]/is', $string, $matches);
+		$openTags = count($matches[0]);
+
+		preg_match_all('/\[\/quote\]/is', $string, $matches);
+		$closeTags = count($matches[0]);
+
+		$unclosed = $openTags - $closeTags;
+		for ($i = 0; $i < $unclosed; $i++) {
+			$string .= $tag;
+		}
+
+		$string = str_replace('[/quote]', $tag, $string);
+
+		return $string;
+    }
 	
 	/**
 	 * Parses the text and censors words.
@@ -509,37 +554,11 @@ class Decoda {
 	 * @param string $string
 	 * @return string
 	 */
-	private function __parseCensored($string) {
+	private function __processCensored($string) {
 		foreach ($this->__censored as $word) {
 			$string = preg_replace_callback('/'. $word .'/i', array($this, '__callbackCensored'), $string);
 		}
 		
-		return $string;
-	}
-	
-	/**
-	 * Parse the default markup depending on the allowed.
-	 *
-	 * @access private
-	 * @param string $string
-	 * @return string
-	 */
-	private function __parseDefaults($string) {
-		if (empty($this->__allowed)) {
-			$code = $this->__markupCode;
-			$result = $this->__markupResult;
-		} else {
-			$code = array();
-			$result = array();
-			foreach ($this->__markupCode as $tag => $regex) {
-				if (in_array($tag, $this->__allowed)) {
-					$code[$tag] = $this->__markupCode[$tag];
-					$result[$tag] = $this->__markupResult[$tag];
-				}
-			}
-		}
-		
-		$string = preg_replace($code, $result, $string);
 		return $string;
 	}
 	
@@ -556,7 +575,7 @@ class Decoda {
 		$code = preg_replace('/(<br \/?>)/is', '', base64_decode($matches[3]));
 		
 		if (empty($language) || $this->__geshi === false) {
-			$codeBlock = '<pre class="decoda_code">'. $code .'</pre>';
+			$codeBlock = '<pre class="decoda-code">'. $code .'</pre>';
 		} else {
 			$this->Geshi = new GeSHi($code, $language);
 			$this->__processGeshi($highlight);
@@ -642,7 +661,7 @@ class Decoda {
 		if (isset($this->Geshi)) {
 			$this->Geshi->set_overall_style(null, false);
 			$this->Geshi->set_encoding('UTF-8');
-			$this->Geshi->set_overall_class('decoda_code');
+			$this->Geshi->set_overall_class('decoda-code');
 			
 			// Container
 			switch ($options['container']) {
@@ -756,28 +775,21 @@ class Decoda {
 	 * Processes unordered lists.
 	 *
 	 * @access private
-	 * @param string $string
+	 * @param string $matches
 	 * @return string
 	 */
-	private function __processLists($string) {
-		preg_match_all('/\[list\]/i', $string, $matches);
-		$openTags = count($matches[0]);
-		
-		preg_match_all('/\[\/list\]/i', $string, $matches);
-		$closeTags = count($matches[0]);
-		
-		$unclosed = $openTags - $closeTags;
-		if ($unclosed > 0) {
-			for ($i = 0; $i < $unclosed; $i++) {
-				$string .= '[/list]';
-			}
-		}
-		
-		$string = str_replace('[list]', '<ul>', $string);
-		$string = str_replace('[/list]', '</ul>', $string);
-		$string = preg_replace('/\[li\](.*?)\[\/li\]/is', '<li>$1</li>', $string);
-		
-		return $string;
+	private function __processLists($matches) {
+        $list = '<ul class="decoda-list">';
+
+        if (!empty($matches[1])) {
+            $string = $matches[1];
+            $string = preg_replace('/\[li\](.*?)\[\/li\]/is', '<li>$1</li>', $string);
+            $list .= $string;
+        }
+
+        $list .= '</ul>';
+
+        return $list;
 	}
 	
 	/**
@@ -788,21 +800,48 @@ class Decoda {
 	 * @return string
 	 */
 	private function __processQuotes($matches) {
-		$quote = '<blockquote class="decoda_quote">';
+        $quote = '<blockquote class="decoda-quote">';
 
-		if (!empty($matches[2])) {
-			$time = (is_numeric($matches[2]) ? $matches[2] : strtotime($matches[2]));
-			$date = sprintf('<span class="decoda_quoteDate">%s</span>', date('m/d/y h:i', $time));
-		} else {
-			$date = '';
-		}
+        // Neither
+        if (isset($matches[1]) || isset($matches[2])) {
+            $quote .= '<div class="decoda-quoteAuthor">';
 
-		$quote .= sprintf('<div class="decoda_quoteAuthor">%sQuote by %s</div>', $date, $matches[1]);
-		$quote .= sprintf('<div class="decoda_quoteBody">%s</div>', $matches[3]);
-		$quote .= '</blockquote>';
+            if (!empty($matches[2])) {
+                $quote .= sprintf('<span class="decoda-quoteDate">%s</span>', date('m/d/Y H:i', strtotime($matches[2])));
+            }
+
+            if (!empty($matches[1])) {
+                $quote .= 'Quote by '. $matches[1];
+            }
+
+            $quote .= '</div>';
+        }
+
+		$quote .= '<div class="decoda-quoteBody">';
 
 		return $quote;
 	}
+
+    /**
+     * Show spoilers.
+     *
+     * @access private
+     * @param array $matches
+     * @return string
+     */
+    private function __processSpoiler($matches) {
+        $id = $this->__counters['spoiler'];
+        $click = "document.getElementById('spoilerContent_". $id ."').style.display = (document.getElementById('spoilerContent_". $id ."').style.display == 'block' ? 'none' : 'block');";
+        
+        $html  = '<div class="decoda-spoiler" id="spoiler_'. $id .'">';
+        $html .= '<button class="decoda-spoilerButton" type="button" onclick="'. $click .'">Spoiler: Show / Hide</button>';
+        $html .= '<div class="decoda-spoilerBody" id="spoilerContent_'. $id .'" style="display: none">'. $matches[1] .'</div>';
+        $html .= '</div>';
+
+        $this->__counters['spoiler']++;
+
+        return $html;
+    }
 	
 	/**
 	 * Processes and replaces URLs.

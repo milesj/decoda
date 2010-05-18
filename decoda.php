@@ -10,6 +10,10 @@
  * @link		www.milesj.me/resources/script/decoda
  */
 
+define('DECODA', dirname(__FILE__));
+define('DECODA_GESHI', DECODA . DIRECTORY_SEPARATOR .'geshi'. DIRECTORY_SEPARATOR);
+define('DECODA_EMOTICONS', DECODA . DIRECTORY_SEPARATOR .'emoticons'. DIRECTORY_SEPARATOR);
+
 class Decoda {
 
 	/**
@@ -18,7 +22,7 @@ class Decoda {
 	 * @access private
 	 * @var string
 	 */
-	public $version = '2.7';
+	public $version = '2.8';
 	
 	/**
 	 * List of tags allowed to parse.
@@ -37,6 +41,21 @@ class Decoda {
 	private $__censored = array('fuck');
 
     /**
+     * Decoda configuration.
+     *
+     * @access private
+     * @var array
+     */
+    private $__config = array(
+        'geshi'     => true,
+        'parse'     => true,
+        'emoticons' => true,
+        'clickable' => true,
+        'shorthand' => false,
+        'xhtml'     => false
+    );
+
+    /**
      * Counters used for looping.
      *
      * @access private
@@ -45,22 +64,31 @@ class Decoda {
     private $__counters = array(
         'spoiler' => 0
     );
-	
-	/**
-	 * Should the text be parsed.
-	 *
-	 * @access private
-	 * @var boolean
-	 */
-	private $__doParse = true;
-	
-	/**
-	 * Should we parse codeblocks with geshi?
-	 *
-	 * @access private
-	 * @var boolean
-	 */
-	private $__geshi = true;
+
+    /**
+     * List of emoticons.
+     * http://www.adiumxtras.com/index.php?a=xtras&xtra_id=6920
+     *
+     * @access private
+     * @var array
+     */
+    private $__emoticons = array(
+        'angry'     => array('>(', '>:(', '>[', '>:['),
+        'cool'      => array('8)', '8]'),
+        'ecstatic'  => array(':D', '8D'),
+        'furious'   => array('>:D', '><'),
+        'gah'       => array('D:', ':O'),
+        'happy'     => array(':)', ':]'),
+        'heart'     => array('<3'),
+        'hm'        => array(':/'),
+        'kiss'      => array(':3'),
+        'meh'       => array(':|', '-.-', '<_<', '>_>'),
+        'mmf'       => array('x'),
+        'sad'       => array(':(', ':[', ';(', ';[', ":'(", ":'["),
+        'tongue'    => array(':P'),
+        'what'      => array(':o', ':?'),
+        'wink'      => array(';)', ';]')
+    );
 	
 	/**
 	 * List of options to apply to geshi output.
@@ -69,7 +97,7 @@ class Decoda {
 	 * @see setGeshi()
 	 * @var array
 	 */
-	private $__geshiOptions = array(
+	private $__geshiConfig = array(
 		'container' 	=> 'pre',
 		'line_numbers'	=> false,
 		'start_number' 	=> 1,
@@ -78,14 +106,6 @@ class Decoda {
 		'tab_width'		=> false,
 		'strict_mode'	=> false
 	);
-	
-	/**
-	 * Should non [url] [email] links be clickable?
-	 *
-	 * @access private
-	 * @var boolean
-	 */
-	private $__makeClickable = true;
 	
 	/**
 	 * Default markup code.
@@ -160,22 +180,6 @@ class Decoda {
 	 * @var string
 	 */
 	private $__textToParse;
-
-	/**
-	 * Uses shorthand email and url's?
-	 *
-	 * @access private
-	 * @var boolean
-	 */
-	private $__useShorthand = false;
-	
-	/**
-	 * Should the output be xhtml or html?
-	 *
-	 * @access private
-	 * @var boolean
-	 */
-	private $__xhtml = false;
 	
 	/**
 	 * Loads the string into the system, if no custom code it doesnt parse.
@@ -187,7 +191,7 @@ class Decoda {
 	 */
 	public function __construct($string, $allowed = array()) {
 		if ((strpos($string, '[') === false) && (strpos($string, ']') === false)) {
-			$this->__doParse = false;
+			$this->__config['parse'] = false;
 		} else {
 			if (!empty($allowed) && is_array($allowed)) {
 				$this->__allowed = array_unique($allowed);
@@ -195,15 +199,14 @@ class Decoda {
 		}
 		
 		// Include geshi
-		$geshiPath = dirname(__FILE__). DIRECTORY_SEPARATOR .'geshi'. DIRECTORY_SEPARATOR .'geshi.php';
-        
-		if (file_exists($geshiPath)) {
-			require_once $geshiPath;
+		if (file_exists(DECODA_GESHI .'geshi.php')) {
+			require_once DECODA_GESHI .'geshi.php';
 		} else {
-			$this->__geshi = false;
+			$this->__config['geshi'] = false;
 		}
 		
 		$this->__textToParse = $string;
+        
 		return false;
 	}
 	
@@ -219,19 +222,39 @@ class Decoda {
 			$this->__censored = array_merge($this->__censored, $censored);
 		}
 	}
+
+    /**
+     * Add a custom emoticon.
+     *
+     * @access public
+     * @param string $emoticon
+     * @param array $smilies
+     * @return void
+     */
+    public function addEmoticon($emoticon, $smilies = array()) {
+        if (!is_array($smilies)) {
+            $smilies = array($smilies);
+        }
+
+        if (isset($this->__emoticons[$emoticon])) {
+            $this->__emoticons[$emoticon] = array_merge($this->__emoticons[$emoticon], $smilies);
+        } else {
+            $this->__emoticons[$emoticon] = $smilies;
+        }
+    }
 	
 	/**
-	 * Adds custom markup code to the default array.
+	 * Add custom code patterns to the mark up array.
 	 *
 	 * @access public
 	 * @param string $tag
-	 * @param string $matchRegex
-	 * @param string $replaceString
+	 * @param string $pattern
+	 * @param string $replace
 	 * @return void
 	 */
-	public function addMarkup($tag, $matchRegex, $replaceString) {
-		$this->__markupCode[$tag] = $matchRegex;
-		$this->__markupResult[$tag] = $replaceString;
+	public function addMarkup($tag, $pattern, $replace) {
+		$this->__markupCode[$tag] = $pattern;
+		$this->__markupResult[$tag] = $replace;
 	}
 	
 	/**
@@ -243,6 +266,7 @@ class Decoda {
 	 */
 	public function allowed($tag) {
 		$allowed = array();
+        
 		if (!empty($this->__allowed) && is_array($this->__allowed)) {
 			$allowed = $this->__allowed;
 		}
@@ -257,18 +281,52 @@ class Decoda {
 	}
 	
 	/**
-	 * Enables or disbles clickable non [url][mail] links.
+	 * Apply configuration.
 	 *
 	 * @access public
-	 * @param bool $option
+     * @param string $options
+	 * @param bool $value
 	 * @return void
 	 */
-	public function makeClickable($option = true) {
-		if (!is_bool($option)) {
-			return false;
-		}
-		$this->__makeClickable = $option;
+	public function configure($options, $value = true) {
+        if (is_array($options)) {
+            foreach ($options as $option => $value) {
+                $this->configure($option, $value);
+            }
+        } else {
+            if (!is_bool($value)) {
+                return false;
+            }
+
+            if (isset($this->__config[$options])) {
+                $this->__config[$options] = $value;
+            }
+        }
 	}
+
+	/**
+	 * Apply the geshi options.
+	 *
+	 * @access public
+     * @param string $options
+	 * @param bool $value
+	 * @return false
+	 */
+	public function configureGeshi($options, $value = true) {
+        if (is_array($options)) {
+            foreach ($options as $option => $value) {
+                $this->configureGeshi($option, $value);
+            }
+        } else {
+            if (!is_bool($value)) {
+                return false;
+            }
+
+            if (isset($this->__geshiConfig[$options])) {
+                $this->__geshiConfig[$options] = $value;
+            }
+        }
+	}	
 	
 	/**
 	 * Processes the string and translate all the markup code.
@@ -278,17 +336,17 @@ class Decoda {
 	 * @return string
 	 */
 	public function parse($return = false) {
-		if ($this->__geshi === false) {
+		if ($this->__config['geshi'] === false) {
 			$this->__textToParse = htmlentities($this->__textToParse, ENT_NOQUOTES, 'UTF-8');
 		}
 		
-		if ($this->__doParse === false) {
-			$string = nl2br($this->__textToParse);
+		if ($this->__config['parse'] === false) {
+			//$string = nl2br($this->__textToParse);
 		} else {
             
 			// Replace standard markup
 			$string = ' '. $this->__textToParse;
-			$string = nl2br($string);
+			//$string = nl2br($string);
 
             foreach ($this->__markupCode as $tag => $pattern) {
                 if ($this->allowed($tag)) {
@@ -314,8 +372,13 @@ class Decoda {
             }
 			
 			// Make urls/emails clickable
-			if ($this->__makeClickable === true) {
+			if ($this->__config['clickable']) {
 				$string = $this->__clickable($string);
+			}
+
+            // Convert smilies
+			if ($this->__config['emoticons']) {
+				$string = $this->__processEmoticons($string);
 			}
 			
 			// Censor
@@ -338,65 +401,35 @@ class Decoda {
 	 * Removes all decoda markup from a string.
 	 *
 	 * @access public
-	 * @param string $string
 	 * @param string $tag
+	 * @param string $string
 	 * @return string
 	 * @static
 	 */
-	public static function removeCode($string, $tag = 'p') {
-		if (empty($tag)) {			
-			return false;
+	public static function removeCode($tag = 'p', $string = null) {
+		if (empty($string)) {
+			$string = $this->__textToParse;
 		}
         
 	    return preg_replace_callback('/\['. $tag .'\](.*?)\[\/'. $tag .'\]/is', create_function(
 			'$matches', 'return $matches[1];'
 		), $string);
 	}
-	
-	/**
-	 * Apply the geshi options.
-	 *
-	 * @access public
-	 * @param array $options
-	 * @return false
-	 */
-	public function setupGeshi($options) {
-		if (is_array($options)) {
-			$this->__geshiOptions = array_merge($this->__geshiOptions, $options);
+
+    /**
+     * Reset the parser to a new string.
+     *
+     * @access public
+     * @param string $string
+     * @return void
+     */
+    public function reset($string) {
+        if ((strpos($string, '[') === false) && (strpos($string, ']') === false)) {
+			$this->__config['parse'] = false;
 		}
-        
-		return false;
-	}
-	
-	/**
-	 * Enables or disbles GeSHi code highlighting.
-	 *
-	 * @access public
-	 * @param bool $option
-	 * @return void
-	 */
-	public function useGeshi($option = true) {
-		if (!is_bool($option)) {
-			return false;
-		}
-        
-		$this->__geshi = $option;
-	}
-	
-	/**
-	 * Enables or disbles shorthand urls/emails.
-	 *
-	 * @access public
-	 * @param bool $option
-	 * @return void
-	 */
-	public function useShorthand($option = true) {
-		if (!is_bool($option)) {
-			return false;
-		}
-        
-		$this->__useShorthand = $option;
-	}	
+
+        $this->__textToParse = $string;
+    }
 
 	/**
 	 * Parses the attributes into a string.
@@ -408,7 +441,7 @@ class Decoda {
 	private function __attributes($attributes) {
 		$clean = array();
 		
-		if (!empty($attributes)) {
+		if (!empty($attributes) && is_array($attributes)) {
 			foreach ($attributes as $att => $value) {
 				$clean[] = $att .'="'. $value .'"';
 			}
@@ -492,7 +525,6 @@ class Decoda {
 	private function __cleanLinebreaks($string) {
 		$string = str_replace('</li><br />', '</li>', $string);
 		$string = str_replace('<ul class="decoda-list"><br />', '<ul class="decoda-list">', $string);
-		$string = str_replace('<br /><br />', '<br />', $string);
         
 		return $string;
 	}
@@ -574,8 +606,9 @@ class Decoda {
 		$highlight 	= (!empty($matches[2])) ? explode(',', $matches[2]) : '';
 		$code = preg_replace('/(<br \/?>)/is', '', base64_decode($matches[3]));
 		
-		if (empty($language) || $this->__geshi === false) {
+		if (empty($language) || $this->__config['geshi'] === false) {
 			$codeBlock = '<pre class="decoda-code">'. $code .'</pre>';
+            
 		} else {
 			$this->Geshi = new GeSHi($code, $language);
 			$this->__processGeshi($highlight);
@@ -637,9 +670,11 @@ class Decoda {
 		for ($i = 0; $i < mb_strlen($email); ++$i) {
 			$letter = mb_substr($email, $i, 1);
 			$encrypted .= '&#' . ord($letter) . ';';
+            
+            unset($letter, $encrypted);
 		}
 		
-		if ($this->__useShorthand === true) {
+		if ($this->__config['shorthand'] === true) {
 			$emailStr = $padding .'[<a href="mailto:'. $encrypted .'" title="">mail</a>]';
 		} else {
 			$emailStr = $padding .'<a href="mailto:'. $encrypted .'" title="">'. (!empty($emailText) ? trim($emailText) : $encrypted) .'</a>';
@@ -647,6 +682,32 @@ class Decoda {
 		
 		return $emailStr;
 	}
+
+    /**
+     * Convert smilies into images.
+     *
+     * @access private
+     * @param string $string
+     * @return string
+     */
+    private function __processEmoticons($string) {
+        if (!empty($this->__emoticons)) {
+            $path = str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', DECODA_EMOTICONS);
+            $path = str_replace(array('\\', '/'), '/', $path);
+
+            foreach ($this->__emoticons as $emoticon => $smilies) {
+                foreach ($smilies as $smile) {
+                    $image  = '$1<img src="'. $path . $emoticon .'.png" alt="$0" title="$0"';
+                    $image .= ($this->__config['xhtml']) ? ' />$2' : '>$2';
+                    
+                    $string = preg_replace('/(\s)'. preg_quote($smile, '/') .'(\s)?/is', $image, $string);
+                    unset($image);
+                }
+            }
+        }
+
+        return $string;
+    }
 	
 	/**
 	 * Apply the custom settings to the geshi output.
@@ -656,7 +717,7 @@ class Decoda {
 	 * @return void
 	 */
 	private function __processGeshi($highlight) {
-		$options = $this->__geshiOptions;
+		$options = $this->__geshiConfig;
 		
 		if (isset($this->Geshi)) {
 			$this->Geshi->set_overall_style(null, false);
@@ -763,7 +824,7 @@ class Decoda {
 			}
 			
 			$imgStr  = '<img'. $this->__attributes($attributes);
-			$imgStr .= ($this->__xhtml === true) ? ' />' : '>';
+			$imgStr .= ($this->__config['xhtml'] === true) ? ' />' : '>';
 		} else {
 			$imgStr = $imgPath;
 		}
@@ -783,6 +844,7 @@ class Decoda {
 
         if (!empty($matches[1])) {
             $string = $matches[1];
+            $string = str_replace("\n", '', $string);
             $string = preg_replace('/\[li\](.*?)\[\/li\]/is', '<li>$1</li>', $string);
             $list .= $string;
         }
@@ -831,11 +893,11 @@ class Decoda {
      */
     private function __processSpoiler($matches) {
         $id = $this->__counters['spoiler'];
-        $click = "document.getElementById('spoilerContent_". $id ."').style.display = (document.getElementById('spoilerContent_". $id ."').style.display == 'block' ? 'none' : 'block');";
+        $click = "document.getElementById('spoilerContent-". $id ."').style.display = (document.getElementById('spoilerContent-". $id ."').style.display == 'block' ? 'none' : 'block');";
         
-        $html  = '<div class="decoda-spoiler" id="spoiler_'. $id .'">';
+        $html  = '<div class="decoda-spoiler" id="spoiler-'. $id .'">';
         $html .= '<button class="decoda-spoilerButton" type="button" onclick="'. $click .'">Spoiler: Show / Hide</button>';
-        $html .= '<div class="decoda-spoilerBody" id="spoilerContent_'. $id .'" style="display: none">'. $matches[1] .'</div>';
+        $html .= '<div class="decoda-spoilerBody" id="spoilerContent-'. $id .'" style="display: none">'. $matches[1] .'</div>';
         $html .= '</div>';
 
         $this->__counters['spoiler']++;
@@ -864,7 +926,7 @@ class Decoda {
 		$urlText = (!empty($urlText)) ? $urlText : $url;
 		$urlFull = (mb_substr($url, 0, 3) == 'www') ? 'http://'. $url : $url;
 		
-		if ($this->__useShorthand === true) {
+		if ($this->__config['shorthand'] === true) {
 			$urlStr = $padding .'[<a href="'. $urlFull .'" title="">link</a>]';
 		} else {
 			$urlStr = $padding .'<a href="'. $urlFull .'" title="">'. $urlText .'</a>';

@@ -15,6 +15,8 @@ $string = '[div id="first"][b]Lorem ipsum dolor sit amet[/b], consectetuer adipi
 
 [quote="Miles" date="02/26/1988 12:34:21"][url=http://www.milesj.me]Lorem ipsum dolor sit amet[/url], consectetuer adipiscing elit. Aliquam laoreet pulvinar sem. Aenean at odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec elit. Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante. Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu, eleifend condimentum sem est quis dolor.[/quote][/quote]
 
+:) :[ :P :D
+
 [list]
 [li]Item[/li]
 [li]Item[/li]
@@ -60,8 +62,8 @@ protected function parseDefaults($string) {
 
 <?php // Decode and parse
 $code = new Decoda($string);
-$code->useShorthand(false);
-$code->makeClickable(true);
+$code->configure('shorthand', false);
+$code->configure('clickable', true);
 $code->parse(); ?>
 
 </body>

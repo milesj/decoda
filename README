@@ -1,4 +1,4 @@
-Decoda v2.7 - BBCode Parser
+Decoda v2.8 - BBCode Parser
 ***************************
 
 Requirements
@@ -6,6 +6,12 @@ Requirements
 
 	* PHP 5.2.x
 	* GeSHI 1.0.8.4 Library (Comes packaged in the Vendors)
+
+Contributors
+============
+
+    * "Marten-Plain" Emoticons by Mårten Lundin - http://adiumxtras.com/index.php?a=xtras&xtra_id=6920
+    * "GeSHi" Script - http://qbnz.com/highlighter/
 
 Features
 ========

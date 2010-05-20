@@ -1,4 +1,4 @@
-Decoda v2.8 - BBCode Parser
+Decoda v2.9 - BBCode Parser
 ***************************
 
 Requirements
@@ -29,3 +29,13 @@ Documentation
 =============
 
 	* http://www.milesj.me/resources/script/decoda
+
+Installation
+============
+
+    * Download the script into a directory called "decoda"
+    * Include the script: include '/decoda/decoda.php';
+    * Parse the string:
+
+    $code = new Decoda($string);
+    $code->parse();

@@ -120,5 +120,12 @@ $code->parse(); ?>
 $code = new Decoda($string);
 $code->parse(); ?>
 
+<h2>Images</h2>
+
+<?php $string = '[img]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]
+    [img width=175 height=50]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]';
+$code = new Decoda($string);
+$code->parse(); ?>
+
 </body>
 </html>

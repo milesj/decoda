@@ -1,0 +1,16 @@
+angry       = >( >:( >[ >:[ :angry:
+aw          = :aw:
+cool        = 8) 8] :cool:
+ecstatic    = :D 8D :ecstatic:
+furious     = >:D >< :furious:
+gah         = D: :O :gah:
+happy       = :) :] :happy:
+heart       = <3 :heart:
+hm          = :/ :hm:
+kiss        = :3 :kiss:
+meh         = :| -.- <_< >_> :meh:
+mmf         = :x :mmf:
+sad         = :( :[ ;( ;[ :sad:
+tongue      = :P :tongue:
+what        = :o :? :what:
+wink        = ;) ;] :wink:

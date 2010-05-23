@@ -4,8 +4,8 @@ Decoda v2.9 - BBCode Parser
 Requirements
 ============
 
-	* PHP 5.2.x
-	* GeSHI 1.0.8.4 Library (Comes packaged in the Vendors)
+    * PHP 5.2.x
+    * GeSHI 1.0.8.4 Library (Comes packaged in the Vendors)
 
 Contributors
 ============
@@ -28,7 +28,7 @@ Features
 Documentation
 =============
 
-	* http://www.milesj.me/resources/script/decoda
+    * http://www.milesj.me/resources/script/decoda
 
 Installation
 ============

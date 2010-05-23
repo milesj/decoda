@@ -822,9 +822,10 @@ class Decoda {
      *
      * @access private
      * @param array $matches
+     * @param boolean $parseChild
      * @return string
      */
-    private function __processQuotes($matches) {
+    private function __processQuotes($matches, $parseChild = true) {
         $quote = '<blockquote class="decoda-quote">';
 
         if (isset($matches[1]) || isset($matches[2])) {
@@ -843,14 +844,25 @@ class Decoda {
 
         $quote .= '<div class="decoda-quoteBody">';
 
-        if ($this->__config['childQuotes']) {
-            $quote .= preg_replace_callback($this->__markupCode['quote'], array($this, $this->__markupResult['quote'][0]), $matches[3]);
+        if ($this->__config['childQuotes'] && $parseChild) {
+            $quote .= preg_replace_callback($this->__markupCode['quote'], array($this, '__processInnerQuotes'), $matches[3]);
         } else {
             $quote .= preg_replace($this->__markupCode['quote'], '', $matches[3]);
         }
 
         $quote .= '</div></blockquote>';
         return $quote;
+    }
+
+    /**
+     * Processes and replaces nested quote tags within quotes.
+     *
+     * @access private
+     * @param array $matches
+     * @return string
+     */
+    private function __processInnerQuotes($matches) {
+        return $this->__processQuotes($matches, false);
     }
 
     /**

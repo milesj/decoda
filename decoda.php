@@ -446,8 +446,8 @@ class Decoda {
      * @return string
      */
     private function __callbackCensored($matches) {
-        $length = mb_strlen($matches[0]);
-        $censored = '';
+        $length = mb_strlen(trim($matches[0]));
+        $censored = ' ';
 
         for ($i = 1; $i <= $length; ++$i) {
             $censored .= '*';
@@ -512,7 +512,8 @@ class Decoda {
     private function __censor($string) {
         if (!empty($this->__censored) && is_array($this->__censored)) {
             foreach ($this->__censored as $word) {
-                $string = preg_replace_callback('/'. $word .'/i', array($this, '__callbackCensored'), $string);
+                $word = trim(str_replace(array("\n", "\r"), '', $word));
+                $string = preg_replace_callback('/\s'. preg_quote($word, '\\') .'/is', array($this, '__callbackCensored'), $string);
             }
         }
 

@@ -660,8 +660,8 @@ class Decoda {
         for ($i = 0; $i < mb_strlen($email); ++$i) {
             $letter = mb_substr($email, $i, 1);
             $encrypted .= '&#' . ord($letter) . ';';
-
-            unset($letter, $encrypted);
+            
+            unset($letter);
         }
 
         if ($this->__config['shorthand']) {
@@ -690,10 +690,10 @@ class Decoda {
 
             // Container
             switch ($options['container']) {
-                case 'pre':		$container = GESHI_HEADER_PRE; break;
-                case 'div':		$container = GESHI_HEADER_DIV; break;
-                case 'table':	$container = GESHI_HEADER_PRE_TABLE; break;
-                default:		$container = GESHI_HEADER_NONE; break;
+                case 'pre':     $container = GESHI_HEADER_PRE; break;
+                case 'div':     $container = GESHI_HEADER_DIV; break;
+                case 'table':   $container = GESHI_HEADER_PRE_TABLE; break;
+                default:        $container = GESHI_HEADER_NONE; break;
             }
 
             $this->Geshi->set_header_type($container);
@@ -720,9 +720,9 @@ class Decoda {
 
             // Auto-Casing
             switch ($options['auto_casing']) {
-                case 'upper': $casing = GESHI_CAPS_UPPER; break;
-                case 'lower': $casing = GESHI_CAPS_LOWER; break;
-                default: 	  $casing = GESHI_CAPS_NO_CHANGE; break;
+                case 'upper':   $casing = GESHI_CAPS_UPPER; break;
+                case 'lower':   $casing = GESHI_CAPS_LOWER; break;
+                default:        $casing = GESHI_CAPS_NO_CHANGE; break;
             }
 
             $this->Geshi->set_case_keywords($casing);

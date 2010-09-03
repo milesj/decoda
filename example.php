@@ -11,6 +11,7 @@ include('decoda.php'); ?>
 <title>Decoda Examples</title>
 <style type="text/css">
     body { padding: 15px; font: normal 12px Arial, Tahoma, sans-serif; color: #000; }
+	h1, h2, h3, h4, h5, h6, div, img, form { margin: 0; padding: 0; }
     h2 { margin-top: 50px; }
     .decoda-quote { background: #FFFFCC; padding: 10px; }
     .decoda-quoteAuthor { font-weight: bold; margin-bottom: 5px; }
@@ -24,6 +25,33 @@ include('decoda.php'); ?>
 <h1>Decoda Examples</h1>
 
 <?php $string = 'Copyright 2009-'. date('Y') .' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]';
+$code = new Decoda($string);
+$code->parse(); ?>
+
+<h2>Basic Styles</h2>
+
+<?php $string = '[b]Bold[/b]
+[i]Italics[/i]
+[u]Underline[/u]
+[color=#f00]Red Text (Hex code)[/color]
+[color=purple]Purple Text (Name)[/color]
+[h3]Header 3[/h3]
+[h6]Header 6[/h6]
+[size=12]Font size 12[/size]
+[size=24]Font size 24[/size]
+Sub[sub]Script[/sub]
+Super[sup]Script[/sup]
+[email]email@test.com[/email]
+[email=email@test.com]Linked email[/email]
+[url]http://milesj.me[/url]
+[url=http://milesj.me]Linked URL[/url]
+[url]https://securesite.com[/url]
+[url]ftp://ftpsite.com[/url]
+[url]irc://ircsite.com[/url]
+[url]mwj://unsupportedprotocol.com[/url]
+[url]www.milesj.me[/url] (Should not link)
+http://milesj.me (Auto clickable)
+email@test.com (Auto clickable)';
 $code = new Decoda($string);
 $code->parse(); ?>
 

@@ -4,10 +4,10 @@
  *
  * Processes and translates custom markup (BB code style), functionality for word censoring, emoticons and GeSHi code highlighting.
  *
- * @author 		Miles Johnson - www.milesj.me
- * @copyright	Copyright 2006-2009, Miles Johnson, Inc.
- * @license 	http://www.opensource.org/licenses/mit-license.php - Licensed under The MIT License
- * @link		www.milesj.me/resources/script/decoda
+ * @author		Miles Johnson - www.milesj.me
+ * @copyright	Copyright 2006-2010, Miles Johnson, Inc.
+ * @license		http://www.opensource.org/licenses/mit-license.php - Licensed under The MIT License
+ * @link		http://milesj.me/resources/script/decoda
  */
 
 // Constants
@@ -27,7 +27,7 @@ class Decoda {
      * @access private
      * @var string
      */
-    public $version = '2.9';
+    public $version = '2.9.1';
 
     /**
      * List of tags allowed to parse.
@@ -109,7 +109,7 @@ class Decoda {
         'u'         => '/\[u\](.*?)\[\/u\]/is',
         'align'     => '/\[align=(left|center|right)\](.*?)\[\/align\]/is',
         'float'     => '/\[float=(left|right)\](.*?)\[\/float\]/is',
-        'color'     => '/\[color=(#[0-9a-fA-F]{6}|[a-z]+)\](.*?)\[\/color\]/is',
+        'color'     => '/\[color=(#[0-9a-fA-F]{3,6}|[a-z]+)\](.*?)\[\/color\]/is',
         'font'      => '/\[font=\"(.*?)\"\](.*?)\[\/font\]/is',
         'h16'       => '/\[h([1-6]{1})\](.*?)\[\/h([1-6]{1})\]/is',
         'size'      => '/\[size=((?:[1-2]{1})?[0-9]{1})\](.*?)\[\/size\]/is',
@@ -518,8 +518,7 @@ class Decoda {
 
         // Matches a link that begins with http(s)://, ftp(s)://, irc://, www.
         if ($this->allowed('url')) {
-            $string = preg_replace_callback("#(^|[\n ])(?:http|ftp|irc)s?:\/\/(?:[-A-Za-z0-9]+\.)+[A-Za-z]{2,4}(?:[-a-zA-Z0-9._\/&=+%?;\#]+)#is", array($this, '__urlCallback'), $string);
-            $string = preg_replace_callback("#(^|[\n ])www\.(?:[-a-zA-Z0-9._\/&=+;%?\#]+)#is", array($this, '__urlCallback'), $string);
+            $string = preg_replace_callback("#(^|[\n ])(?:http|ftp|irc)s?:\/\/(?:[-A-Za-z0-9]+)+[A-Za-z\.]{2,5}(.*?)#is", array($this, '__urlCallback'), $string);
         }
 
         // Matches an email@domain.tld
@@ -547,7 +546,7 @@ class Decoda {
 
         } else {
             $this->Geshi = new GeSHi($code, $language);
-            $this->__Geshi($highlight);
+            $this->__geshi($highlight);
             $codeBlock = $this->Geshi->parse_code();
 
             if ($error = $this->Geshi->error()) {
@@ -566,17 +565,17 @@ class Decoda {
      * @return string
      */
     private function __div($matches) {
-        $textBlock 	= trim($matches[3]);
-        $divId	  	= trim($matches[1]);
-        $divClass 	= trim($matches[2]);
+        $textBlock = trim($matches[3]);
+        $id = trim($matches[1]);
+        $class = trim($matches[2]);
         $attributes = array();
 
-        if (!empty($divId)) {
-            $attributes['id'] = $divId;
+        if (!empty($id)) {
+            $attributes['id'] = $id;
         }
 
-        if (!empty($divClass)) {
-            $attributes['class'] = $divClass;
+        if (!empty($class)) {
+            $attributes['class'] = $class;
         }
 
         $div = '<div'. $this->_attributes($attributes) .'>'. $textBlock .'</div>';
@@ -593,7 +592,7 @@ class Decoda {
      */
     private function __email($matches, $isCallback = false) {
         if ($isCallback) {
-            $email = trim($matches[2]) .'@'. trim($matches[3]);
+            $email = trim($matches[0]);
             $padding = $matches[1];
         } else {
             $email = trim($matches[1]);
@@ -603,17 +602,22 @@ class Decoda {
 
         // Obfuscates the email using ASCII alternatives
         $encrypted = '';
-        for ($i = 0; $i < mb_strlen($email); ++$i) {
+		$length = mb_strlen($email);
+        for ($i = 0; $i < $length; ++$i) {
             $letter = mb_substr($email, $i, 1);
             $encrypted .= '&#' . ord($letter) . ';';
             
             unset($letter);
         }
+		
+		if (empty($emailText)) {
+			$emailText = $encrypted;
+		}
 
         if ($this->__config['shorthand']) {
             $emailStr = $padding .'[<a href="mailto:'. $encrypted .'" title="">mail</a>]';
         } else {
-            $emailStr = $padding .'<a href="mailto:'. $encrypted .'" title="">'. (!empty($emailText) ? trim($emailText) : $encrypted) .'</a>';
+            $emailStr = $padding .'<a href="mailto:'. $encrypted .'" title="">'. $emailText .'</a>';
         }
 
         return $emailStr;
@@ -888,13 +892,18 @@ class Decoda {
             $padding = '';
         }
 
-        $urlText = !empty($urlText) ? $urlText : $url;
-        $urlFull = (mb_substr($url, 0, 3) == 'www') ? 'http://'. $url : $url;
+		if (empty($urlText)) {
+			$urlText = $url;
+		}
+		
+        if (mb_substr($url, 0, 3) == 'www') {
+			$url = 'http://'. $url;
+		}
 
         if ($this->__config['shorthand']) {
-            $urlStr = $padding .'[<a href="'. $urlFull .'" title="">link</a>]';
+            $urlStr = $padding .'[<a href="'. $url .'" title="">link</a>]';
         } else {
-            $urlStr = $padding .'<a href="'. $urlFull .'" title="">'. $urlText .'</a>';
+            $urlStr = $padding .'<a href="'. $url .'" title="">'. $urlText .'</a>';
         }
 
         return $urlStr;

@@ -10,14 +10,14 @@ include('decoda.php'); ?>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Decoda Examples</title>
 <style type="text/css">
-    body { padding: 15px; font: normal 12px Arial, Tahoma, sans-serif; color: #000; }
-	h1, h2, h3, h4, h5, h6, div, img, form { margin: 0; padding: 0; }
-    h2 { margin-top: 50px; }
-    .decoda-quote { background: #FFFFCC; padding: 10px; }
-    .decoda-quoteAuthor { font-weight: bold; margin-bottom: 5px; }
-    .decoda-quoteDate { float: right; }
-    .decoda-spoilerBody { background: #FFFFCC; padding: 10px; margin-top: 10px; }
-    .decoda-code { background: #f4f4f4; padding: 10px; }
+	body { padding: 15px; font: normal 12px Arial, Tahoma, sans-serif; color: #000; }
+	h1, h2, h3, h4, h5, h6, div, img, form, blockquote { margin: 0; padding: 0; }
+	h2 { margin-top: 50px; }
+	.decoda-quote { background: #FFFFCC; padding: 10px; margin: 0 0 15px 15px; }
+	.decoda-quoteAuthor { font-weight: bold; margin-bottom: 5px; }
+	.decoda-quoteDate { float: right; }
+	.decoda-spoilerBody { background: #FFFFCC; padding: 10px; margin-top: 10px; }
+	.decoda-code { background: #f4f4f4; padding: 10px; }
 </style>
 </head>
 <body>
@@ -40,18 +40,25 @@ $code->parse(); ?>
 [size=12]Font size 12[/size]
 [size=24]Font size 24[/size]
 Sub[sub]Script[/sub]
-Super[sup]Script[/sup]
-[email]email@test.com[/email]
-[email=email@test.com]Linked email[/email]
-[url]http://milesj.me[/url]
-[url=http://milesj.me]Linked URL[/url]
+Super[sup]Script[/sup]';
+$code = new Decoda($string);
+$code->parse(); ?>
+
+<h2>URLs and Emails</h2>
+<?php $string = '[email]email@domain.com[/email]
+[email=email@domain.com]Linked email[/email]
+email@domain.com
+email+hash@sub.domain.com
+[url]http://domain.com[/url]
+[url=http://domain.com]Linked URL[/url]
 [url]https://securesite.com[/url]
 [url]ftp://ftpsite.com[/url]
 [url]irc://ircsite.com[/url]
-[url]mwj://unsupportedprotocol.com[/url]
-[url]www.milesj.me[/url] (Should not link)
-http://milesj.me (Auto clickable)
-email@test.com (Auto clickable)';
+[url]mwj://unsupportedprotocol.com[/url] (Should not link)
+[url]www.domain.com[/url] (Should not link)
+http://domain.com
+http://sub.domain.com/?with=param
+http://user:pass@domain.com:80/?with=param';
 $code = new Decoda($string);
 $code->parse(); ?>
 
@@ -109,7 +116,9 @@ $code->parse(); ?>
 
 <h2>Code Block</h2>
 
-<?php $string = '[code lang="php" hl="15"]/**
+<?php $string = '[code]This is a [b]basic[/b] code block! 
+Decoda mark-up is not converted inside code tags, excluding the code tag itself.[/code]
+[code lang="php" hl="15"]/**
  * Apply configuration.
  *
  * @access public
@@ -151,7 +160,7 @@ $code->parse(); ?>
 <h2>Images</h2>
 
 <?php $string = '[img]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]
-    [img width=175 height=50]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]';
+[img width=175 height=50]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]';
 $code = new Decoda($string);
 $code->parse(); ?>
 

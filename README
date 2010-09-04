@@ -25,10 +25,16 @@ Features
     * Supports additional attributes for select tags
     * Supports the following: bold, italics, underline, alignment, color, font, sup, sub, font size, h1-h6, code (pre), urls, emails, images, divs, lists and quotes
 
+Unsupported
+===========
+
+	* Placing [code] tags within [code] tags
+	* URLs that begin with www and not http:// will not be converted (intentional)
+	
 Documentation
 =============
 
-    * http://www.milesj.me/resources/script/decoda
+    * http://milesj.me/resources/script/decoda
 
 Installation
 ============

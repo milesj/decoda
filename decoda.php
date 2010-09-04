@@ -129,7 +129,7 @@ class Decoda {
         'quote'     => '/\[quote(?:=\"(.*?)\")?(?:\sdate=\"(.*?)\")?\](.*)\[\/quote\]/is',
         'list'      => '/\[list\](.*?)\[\/list\]/is',
         'spoiler'   => '/\[spoiler\](.*?)\[\/spoiler\]/is',
-        'decode'    => '/\[decode(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*)\[\/decode\]/is'
+        'decode'    => '/\[decode(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*?)\[\/decode\]/is'
     );
 
     /**
@@ -432,6 +432,17 @@ class Decoda {
 
         return;
     }
+	
+	/**
+	 * Debug a variable.
+	 *
+	 * @access protected
+	 * @param mixed $var
+	 * @return mixed
+	 */
+	protected function _debug($var) {
+		echo '<pre>'. print_r($var, true) .'</pre>';
+	}
 
     /**
      * Parses the text and censors words.
@@ -444,7 +455,7 @@ class Decoda {
         if (!empty($this->__censored) && is_array($this->__censored)) {
             foreach ($this->__censored as $word) {
                 $word = trim(str_replace(array("\n", "\r"), '', $word));
-                $string = preg_replace_callback('/\s'. preg_quote($word, '\\') .'/is', array($this, '__censorCallback'), $string);
+                $string = preg_replace_callback('/\s'. preg_quote($word, '/') .'/is', array($this, '__censorCallback'), $string);
             }
         }
 
@@ -522,6 +533,7 @@ class Decoda {
         if (!empty($matches[1])) {
             $attributes['lang'] = $matches[1];
         } else {
+			// Escape because of GeShi
             $matches[3] = preg_replace('/(&lt;br \/?&gt;)/is', '', htmlentities($matches[3], ENT_NOQUOTES, 'UTF-8'));
         }
 
@@ -529,8 +541,7 @@ class Decoda {
             $attributes['hl'] = $matches[2];
         }
 
-        $return = '[decode'. $this->_attributes($attributes) .']'. base64_encode($matches[3]) .'[/decode]';
-        return $return;
+        return '[decode'. $this->_attributes($attributes) .']'. base64_encode($matches[3]) .'[/decode]';
     }
 
     /**
@@ -543,7 +554,7 @@ class Decoda {
     private function __decode($matches) {
         $language 	= !empty($matches[1]) ? mb_strtolower($matches[1]) : '';
         $highlight 	= !empty($matches[2]) ? explode(',', $matches[2]) : '';
-        $code = preg_replace('/(<br \/?>)/is', '', base64_decode($matches[3]));
+		$code = preg_replace('/(<br \/?>)/is', '', base64_decode($matches[3]));
 
         if (empty($language) || !$this->__config['geshi']) {
             $codeBlock = '<pre class="decoda-code">'. $code .'</pre>';
@@ -554,7 +565,7 @@ class Decoda {
             $codeBlock = $this->Geshi->parse_code();
 
             if ($error = $this->Geshi->error()) {
-                trigger_error('Decoda::__code(): '. $error, E_USER_WARNING);
+                trigger_error('Decoda::__decode(): '. $error, E_USER_WARNING);
             }
         }
 
@@ -898,10 +909,6 @@ class Decoda {
 
 		if (empty($urlText)) {
 			$urlText = $url;
-		}
-		
-        if (mb_substr($url, 0, 3) == 'www') {
-			$url = 'http://'. $url;
 		}
 
         if ($this->__config['shorthand']) {

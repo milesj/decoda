@@ -45,6 +45,7 @@ $code = new Decoda($string);
 $code->parse(); ?>
 
 <h2>URLs and Emails</h2>
+
 <?php $string = '[email]email@domain.com[/email]
 [email=email@domain.com]Linked email[/email]
 email@domain.com
@@ -85,6 +86,15 @@ $code->parse(); ?>
 <?php $string = '[align=center]Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam laoreet pulvinar sem. Aenean at odio.
     Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec elit. Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante.
     Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu, eleifend condimentum sem est quis dolor. Curabitur sed tellus. Donec id dolor.[/align]';
+$code = new Decoda($string);
+$code->parse(); ?>
+
+<h2>Div Blocks</h2>
+
+<?php $string = '[div]No attributes.[/div] 
+[div id="divBlock"]With an ID.[/div]
+[div class="div"]With a class.[/div]
+[div id="customId" class="div secondary" data-attr="html5"]Uses multiple random attributes.[/div]';
 $code = new Decoda($string);
 $code->parse(); ?>
 

@@ -27,7 +27,7 @@ class Decoda {
      * @access private
      * @var string
      */
-    public $version = '2.9.2';
+    public $version = '2.9.3';
 
     /**
      * List of tags allowed to parse.
@@ -117,7 +117,7 @@ class Decoda {
         'sup'       => '/\[sup\](.*?)\[\/sup\]/is',
         'hide'      => '/\[hide\](.*?)\[\/hide\]/is',
         'img'       => '/\[img(?:\swidth=([0-9%]{1,4}+))?(?:\sheight=([0-9%]{1,4}+))?\]((?:ftp|http)s?:\/\/.*?)\[\/img\]/is',
-        'div'       => '/\[div(?:\sid=\"([a-zA-Z0-9]+)\")?(?:\sclass=\"([a-zA-Z0-9\s]+)\")?\](.*?)\[\/div\]/is',
+        'div'       => '/\[div(.*?)\](.*?)\[\/div\]/is',
         'url'       => array(
             '/\[url\]((?:http|ftp|irc|file|telnet)s?:\/\/.*?)\[\/url\]/is',
             '/\[url=((?:http|ftp|irc|file|telnet)s?:\/\/.*?)\](.*?)\[\/url\]/is'
@@ -128,6 +128,7 @@ class Decoda {
         ),
         'quote'     => '/\[quote(?:=\"(.*?)\")?(?:\sdate=\"(.*?)\")?\](.*)\[\/quote\]/is',
         'list'      => '/\[list\](.*?)\[\/list\]/is',
+		'li'		=> '/\[li\](.*?)\[\/li\]/is',
         'spoiler'   => '/\[spoiler\](.*?)\[\/spoiler\]/is',
         'decode'    => '/\[decode(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*?)\[\/decode\]/is'
     );
@@ -158,6 +159,7 @@ class Decoda {
         'email'     => array('__email'),
         'quote'     => array('__quote'),
         'list'      => array('__list'),
+		'li'		=> '<li>$1</li>',
         'spoiler'   => array('__spoiler'),
         'decode'    => array('__decode')
     );
@@ -480,7 +482,7 @@ class Decoda {
     }
 	
     /**
-     * Remove <br />s within [code] and [list].
+     * Remove <br />s where they shouldn't be.
      *
      * @access private
      * @param string $string
@@ -533,7 +535,7 @@ class Decoda {
         if (!empty($matches[1])) {
             $attributes['lang'] = $matches[1];
         } else {
-			// Escape because of GeShi
+			// Escape because of GeSHi
             $matches[3] = preg_replace('/(&lt;br \/?&gt;)/is', '', htmlentities($matches[3], ENT_NOQUOTES, 'UTF-8'));
         }
 
@@ -573,28 +575,33 @@ class Decoda {
     }
 
     /**
-     * Processes div tags and allows optional attributes for id/class.
+     * Processes div tags and allows optional attributes.
      *
      * @access private
      * @param array $matches
      * @return string
      */
     private function __div($matches) {
-        $textBlock = trim($matches[3]);
-        $id = trim($matches[1]);
-        $class = trim($matches[2]);
-        $attributes = array();
+        $textBlock = trim($matches[2]);
+        $attributes = trim($matches[1]);
+		$clean = array();
+		
+		if (!empty($attributes)) {
+		
+			// Urlencode so we don't explode on spaces within attributes
+			$attributes = preg_replace_callback('/"(.*?)"/is', create_function(
+				'$matches', 'return \'"\'. urlencode($matches[1]) .\'"\';'
+			), $attributes);
+			
+			$attributes = explode(' ', $attributes);
+		
+			foreach ($attributes as $attr) {
+				$parts = explode('=', $attr);
+				$clean[$parts[0]] = htmlentities(urldecode(trim($parts[1], '"')), ENT_COMPAT, 'UTF-8');
+			}
+		}
 
-        if (!empty($id)) {
-            $attributes['id'] = $id;
-        }
-
-        if (!empty($class)) {
-            $attributes['class'] = $class;
-        }
-
-        $div = '<div'. $this->_attributes($attributes) .'>'. $textBlock .'</div>';
-        return $div;
+        return '<div'. $this->_attributes($clean) .'>'. $textBlock .'</div>';
     }
 
     /**
@@ -630,9 +637,9 @@ class Decoda {
 		}
 
         if ($this->__config['shorthand']) {
-            $emailStr = $padding .'[<a href="mailto:'. $encrypted .'" title="">mail</a>]';
+            $emailStr = $padding .'[<a href="mailto:'. $encrypted .'">mail</a>]';
         } else {
-            $emailStr = $padding .'<a href="mailto:'. $encrypted .'" title="">'. $emailText .'</a>';
+            $emailStr = $padding .'<a href="mailto:'. $encrypted .'">'. $emailText .'</a>';
         }
 
         return $emailStr;
@@ -806,18 +813,7 @@ class Decoda {
      * @return string
      */
     private function __list($matches) {
-        $list = '<ul class="decoda-list">';
-
-        if (!empty($matches[1])) {
-            $string = $matches[1];
-            $string = str_replace("\n", '', $string);
-            $string = preg_replace('/\[li\](.*?)\[\/li\]/is', '<li>$1</li>', $string);
-            $list .= $string;
-        }
-
-        $list .= '</ul>';
-
-        return $list;
+        return '<ul class="decoda-list">'. str_replace("\n", '', $matches[1]) .'</ul>';
     }
 
     /**

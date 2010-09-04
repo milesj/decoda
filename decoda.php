@@ -27,7 +27,7 @@ class Decoda {
      * @access private
      * @var string
      */
-    public $version = '2.9.3';
+    public $version = '2.9.4';
 
     /**
      * List of tags allowed to parse.
@@ -126,10 +126,11 @@ class Decoda {
             '/\[e?mail\](.*?)\[\/e?mail\]/is',
             '/\[e?mail=(.*?)\](.*?)\[\/e?mail\]/is'
         ),
-        'quote'     => '/\[quote(?:=\"(.*?)\")?(?:\sdate=\"(.*?)\")?\](.*)\[\/quote\]/is',
+        'quote'     => '/\[quote(?:=\"(.*?)\")?(?:\sdate=\"(.*?)\")?\](.*?)\[\/quote\]/is',
         'list'      => '/\[list\](.*?)\[\/list\]/is',
 		'li'		=> '/\[li\](.*?)\[\/li\]/is',
         'spoiler'   => '/\[spoiler\](.*?)\[\/spoiler\]/is',
+        'video'     => '/\[video(?:=\"(.*?)\")?(?:\ssize=\"(.*?)\")?\](.*?)\[\/video\]/is',
         'decode'    => '/\[decode(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*?)\[\/decode\]/is'
     );
 
@@ -161,6 +162,7 @@ class Decoda {
         'list'      => array('__list'),
 		'li'		=> '<li>$1</li>',
         'spoiler'   => array('__spoiler'),
+		'video'		=> array('__video'),
         'decode'    => array('__decode')
     );
 
@@ -171,6 +173,14 @@ class Decoda {
      * @var string
      */
     private $__content;
+	
+	/**
+	 * Video sizes and data.
+	 * 
+	 * @access private
+	 * @var array
+	 */
+	private $__videoData = array();
 
     /**
      * Loads the string into the system, if no custom code it doesnt parse.
@@ -199,6 +209,7 @@ class Decoda {
         // Load emoticons and censored
         $this->__emoticons	= DecodaConfig::emoticons();
         $this->__censored	= DecodaConfig::censored();
+        $this->__videoData	= DecodaConfig::videoData();
         $this->__content = $string;
 
         return false;
@@ -926,5 +937,32 @@ class Decoda {
     private function __urlCallback($matches) {
         return $this->__url($matches, true);
     }
+	
+	/**
+	 * Return an embedded video if the video data exists.
+	 *
+	 * @access private
+	 * @param array $matches
+	 * @return string
+	 */
+	private function __video($matches) {
+		$site = !empty($matches[1]) ? $matches[1] : '';
+		$size = !empty($matches[2]) ? $matches[2] : 'medium';
+		$id = $matches[3];
+		
+		if (isset($this->__videoData[$site])) {
+			$video = $this->__videoData[$site];
+			$path = str_replace(':id', $id, $video['path']);
+			$size = isset($video[$size]) ? $video[$size] : $video['medium'];
+			
+			if ($video['player'] == 'embed') {
+				return '<embed src="'. $path .'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="'. $size[0] .'" height="'. $size[1] .'"></embed>';
+			} else {
+				return '<iframe src="'. $path .'" width="'. $size[0] .'" height="'. $size[1] .'" frameborder="0"></iframe>';
+			}
+		}
+		
+		return;
+	}
 
 }

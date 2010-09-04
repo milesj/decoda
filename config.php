@@ -29,6 +29,58 @@ class DecodaConfig {
      * @static
      */
     private static $__emoticons = array();
+	
+	/**
+	 * Video sizes and data.
+	 * 
+	 * @access private
+	 * @var array
+	 * @static
+	 */
+	private static $__videoData = array(
+		'youtube' => array(
+			'small' => array(560, 340),
+			'medium' => array(640, 385),
+			'large' => array(853, 505),
+			'player' => 'embed',
+			'path' => 'http://youtube.com/v/:id'
+		),
+		'vimeo' => array(
+			'small' => array(400, 225),
+			'medium' => array(550, 375),
+			'large' => array(700, 525),
+			'player' => 'iframe',
+			'path' => 'http://player.vimeo.com/video/:id'
+		),
+		'liveleak' => array(
+			'small' => array(450, 370),
+			'medium' => array(600, 520),
+			'large' => array(750, 670),
+			'player' => 'embed',
+			'path' => 'http://liveleak.com/e/:id'
+		),
+		'veoh' => array(
+			'small' => array(410, 341),
+			'medium' => array(610, 541),
+			'large' => array(810, 741),
+			'player' => 'embed',
+			'path' => 'http://veoh.com/static/swf/webplayer/WebPlayer.swf?version=AFrontend.5.5.3.1004&permalinkId=:id&player=videodetailsembedded&videoAutoPlay=0&id=anonymous'
+		),
+		'dailymotion' => array(
+			'small' => array(320, 256),
+			'medium' => array(480, 384),
+			'large' => array(560, 448),
+			'player' => 'embed',
+			'path' => 'http://dailymotion.com/swf/video/:id&additionalInfos=0&autoPlay=0'
+		),
+		'myspace' => array(
+			'small' => array(325, 260),
+			'medium' => array(425, 360),
+			'large' => array(525, 460),
+			'player' => 'embed',
+			'path' => 'http://mediaservices.myspace.com/services/media/embed.aspx/m=:id,t=1,mt=video'
+		)
+	);
 
     /**
      * Load the censored words from the text file.
@@ -72,5 +124,15 @@ class DecodaConfig {
 
         return self::$__emoticons;
     }
+	
+	/**
+	 * Return the video data.
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public static function videoData() {
+		return self::$__videoData;
+	}
     
 }

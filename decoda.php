@@ -351,25 +351,25 @@ class Decoda {
                     }
                 }
             }
+		}
+		
+		// Make urls/emails clickable
+		if ($this->__config['clickable']) {
+			$string = $this->__clickable($string);
+		}
 
-            // Make urls/emails clickable
-            if ($this->__config['clickable']) {
-                $string = $this->__clickable($string);
-            }
+		// Convert smilies
+		if ($this->__config['emoticons']) {
+			$string = $this->__emoticons($string);
+		}
 
-            // Convert smilies
-            if ($this->__config['emoticons']) {
-                $string = $this->__emoticons($string);
-            }
+		// Censor words
+		if ($this->__config['censor']) {
+			$string = $this->__censor($string);
+		}
 
-            // Censor words
-            if ($this->__config['censor']) {
-                $string = $this->__censor($string);
-            }
-
-            // Clean linebreaks
-            $string = $this->__cleanup($string);
-        }
+		// Clean linebreaks
+		$string = $this->__cleanup($string);
 
         if ($return === false) {
             echo $string;

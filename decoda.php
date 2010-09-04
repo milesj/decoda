@@ -27,7 +27,7 @@ class Decoda {
      * @access private
      * @var string
      */
-    public $version = '2.9.1';
+    public $version = '2.9.2';
 
     /**
      * List of tags allowed to parse.
@@ -119,8 +119,8 @@ class Decoda {
         'img'       => '/\[img(?:\swidth=([0-9%]{1,4}+))?(?:\sheight=([0-9%]{1,4}+))?\]((?:ftp|http)s?:\/\/.*?)\[\/img\]/is',
         'div'       => '/\[div(?:\sid=\"([a-zA-Z0-9]+)\")?(?:\sclass=\"([a-zA-Z0-9\s]+)\")?\](.*?)\[\/div\]/is',
         'url'       => array(
-            '/\[url\]((?:http|ftp|irc)s?:\/\/.*?)\[\/url\]/is',
-            '/\[url=((?:http|ftp|irc)s?:\/\/.*?)\](.*?)\[\/url\]/is'
+            '/\[url\]((?:http|ftp|irc|file|telnet)s?:\/\/.*?)\[\/url\]/is',
+            '/\[url=((?:http|ftp|irc|file|telnet)s?:\/\/.*?)\](.*?)\[\/url\]/is'
         ),
         'email'     => array(
             '/\[e?mail\](.*?)\[\/e?mail\]/is',
@@ -467,30 +467,6 @@ class Decoda {
 
         return $censored;
     }
-
-    /**
-     * Preformat code so that it doesn't get converted.
-     *
-     * @access private
-     * @param array $matches
-     * @return string
-     */
-    private function __code($matches) {
-        $attributes = array();
-
-        if (!empty($matches[1])) {
-            $attributes['lang'] = $matches[1];
-        } else {
-            $matches[3] = preg_replace('/(&lt;br \/?&gt;)/is', '', htmlentities($matches[3], ENT_NOQUOTES, 'UTF-8'));
-        }
-
-        if (!empty($matches[2])) {
-            $attributes['hl'] = $matches[2];
-        }
-
-        $return = '[decode'. $this->_attributes($attributes) .']'. base64_encode($matches[3]) .'[/decode]';
-        return $return;
-    }
 	
     /**
      * Remove <br />s within [code] and [list].
@@ -514,19 +490,47 @@ class Decoda {
      * @return string
      */
     private function __clickable($string) {
-        $string = preg_replace('#(script|about|applet|activex|chrome):#is', "\\1&#058;", $string);
-
-        // Matches a link that begins with http(s)://, ftp(s)://, irc://, www.
+        // Matches a link that begins with http(s)://, ftp(s)://, irc://
         if ($this->allowed('url')) {
-            $string = preg_replace_callback("#(^|[\n ])(?:http|ftp|irc)s?:\/\/(?:[-A-Za-z0-9]+)+[A-Za-z\.]{2,5}(.*?)#is", array($this, '__urlCallback'), $string);
+			$protocol = '(http|ftp|irc|file|telnet)s?:\/?\/?';
+			$login = '([-a-zA-Z0-9\.\+]+:[-a-zA-Z0-9\.\+]+@)?';
+			$domain = '([-a-zA-Z0-9\.]{5,255}+)';
+			$port = '(:[0-9]{0,6}+)?';
+			$query = '([a-zA-Z0-9'. preg_quote('-_=;:&?/[]', '/') .']+)?';
+            $string = preg_replace_callback('/(^|\n|\s)'. $protocol . $login . $domain . $port . $query .'/is', array($this, '__urlCallback'), $string);
         }
-
+		
         // Matches an email@domain.tld
+		// Based on schema http://en.wikipedia.org/wiki/Email_address
         if ($this->allowed('email')) {
-            $string = preg_replace_callback("#(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)#i", array($this, '__emailCallback'), $string);
+            $string = preg_replace_callback('/(^|\n|\s)([-a-zA-Z0-9\.\+!]{1,64}+)@([-a-zA-Z0-9\.]{5,255}+)/is', array($this, '__emailCallback'), $string);
         }
 
         return $string;
+    }
+
+    /**
+     * Preformat code so that it doesn't get converted.
+     *
+     * @access private
+     * @param array $matches
+     * @return string
+     */
+    private function __code($matches) {
+        $attributes = array();
+
+        if (!empty($matches[1])) {
+            $attributes['lang'] = $matches[1];
+        } else {
+            $matches[3] = preg_replace('/(&lt;br \/?&gt;)/is', '', htmlentities($matches[3], ENT_NOQUOTES, 'UTF-8'));
+        }
+
+        if (!empty($matches[2])) {
+            $attributes['hl'] = $matches[2];
+        }
+
+        $return = '[decode'. $this->_attributes($attributes) .']'. base64_encode($matches[3]) .'[/decode]';
+        return $return;
     }
 
     /**
@@ -901,9 +905,9 @@ class Decoda {
 		}
 
         if ($this->__config['shorthand']) {
-            $urlStr = $padding .'[<a href="'. $url .'" title="">link</a>]';
+            $urlStr = $padding .'[<a href="'. $url .'">link</a>]';
         } else {
-            $urlStr = $padding .'<a href="'. $url .'" title="">'. $urlText .'</a>';
+            $urlStr = $padding .'<a href="'. $url .'">'. $urlText .'</a>';
         }
 
         return $urlStr;

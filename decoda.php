@@ -17,7 +17,7 @@ define('DECODA_EMOTICONS', DECODA .'emoticons'. DIRECTORY_SEPARATOR);
 define('DECODA_CONFIG', DECODA .'config'. DIRECTORY_SEPARATOR);
 
 // Includes
-include DECODA .'config.php';
+include_once DECODA .'config.php';
 
 class Decoda {
 
@@ -27,7 +27,7 @@ class Decoda {
      * @access private
      * @var string
      */
-    public $version = '2.9.4';
+    public $version = '2.9.5';
 
     /**
      * List of tags allowed to parse.
@@ -239,7 +239,7 @@ class Decoda {
     public function allowed($tag) {
         $allowed = array();
 
-        if (!empty($this->__allowed) && is_array($this->__allowed)) {
+        if (!empty($this->__allowed)) {
             $allowed = $this->__allowed;
         }
 
@@ -399,7 +399,7 @@ class Decoda {
      * @param array $attributes
      * @return string
      */
-    protected function _attributes($attributes) {
+    protected function _attributes(array $attributes) {
         $clean = array();
 
         if (!empty($attributes) && is_array($attributes)) {

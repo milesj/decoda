@@ -174,5 +174,10 @@ $code->parse(); ?>
 $code = new Decoda($string);
 $code->parse(); ?>
 
+<h2>Videos</h2>
+
+<?php $code = new Decoda('[video="youtube"]snZLmaVmd2o[/video]');
+$code->parse(); ?>
+
 </body>
 </html>

@@ -23,13 +23,14 @@ Features
     * Implements the ability to censor words
     * Support for adding additional user code
     * Supports additional attributes for select tags
-    * Supports the following: bold, italics, underline, alignment, color, font, sup, sub, font size, h1-h6, code (pre), urls, emails, images, divs, lists and quotes
+    * Supports the following: bold, italics, underline, alignment, color, font, sup, sub, font size, h1-h6, code (pre), urls, emails, images, divs, lists, quotes, videos
 
 Unsupported
 ===========
 
 	* Placing [code] tags within [code] tags
 	* URLs that begin with www and not http:// will not be converted (intentional)
+	* Certain videos are not supported as their embed code does not match the URL
 	
 Documentation
 =============

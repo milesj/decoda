@@ -27,7 +27,7 @@ class Decoda {
      * @access private
      * @var string
      */
-    public $version = '2.9.5';
+    public $version = '2.9.6';
 
     /**
      * List of tags allowed to parse.
@@ -36,14 +36,6 @@ class Decoda {
      * @var array
      */
     private $__allowed = array();
-
-    /**
-     * Array of words to censor.
-     *
-     * @access private
-     * @var array
-     */
-    private $__censored = array();
 
     /**
      * Decoda configuration.
@@ -73,14 +65,6 @@ class Decoda {
     );
 
     /**
-     * Array of emoticons and smilies.
-     *
-     * @access private
-     * @var array
-     */
-    private $__emoticons = array();
-
-    /**
      * List of options to apply to geshi output.
      *
      * @access private
@@ -97,76 +81,6 @@ class Decoda {
     );
 
     /**
-     * Default markup code.
-     *
-     * @access private
-     * @var array
-     */
-    private $__markupCode = array(
-        'code'      => '/\[code(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*?)\[\/code\]/is',
-        'b'         => '/\[b\](.*?)\[\/b\]/is',
-        'i'         => '/\[i\](.*?)\[\/i\]/is',
-        'u'         => '/\[u\](.*?)\[\/u\]/is',
-        'align'     => '/\[align=(left|center|right)\](.*?)\[\/align\]/is',
-        'float'     => '/\[float=(left|right)\](.*?)\[\/float\]/is',
-        'color'     => '/\[color=(#[0-9a-fA-F]{3,6}|[a-z]+)\](.*?)\[\/color\]/is',
-        'font'      => '/\[font=\"(.*?)\"\](.*?)\[\/font\]/is',
-        'h16'       => '/\[h([1-6]{1})\](.*?)\[\/h([1-6]{1})\]/is',
-        'size'      => '/\[size=((?:[1-2]{1})?[0-9]{1})\](.*?)\[\/size\]/is',
-        'sub'       => '/\[sub\](.*?)\[\/sub\]/is',
-        'sup'       => '/\[sup\](.*?)\[\/sup\]/is',
-        'hide'      => '/\[hide\](.*?)\[\/hide\]/is',
-        'img'       => '/\[img(?:\swidth=([0-9%]{1,4}+))?(?:\sheight=([0-9%]{1,4}+))?\]((?:ftp|http)s?:\/\/.*?)\[\/img\]/is',
-        'div'       => '/\[div(.*?)\](.*?)\[\/div\]/is',
-        'url'       => array(
-            '/\[url\]((?:http|ftp|irc|file|telnet)s?:\/\/.*?)\[\/url\]/is',
-            '/\[url=((?:http|ftp|irc|file|telnet)s?:\/\/.*?)\](.*?)\[\/url\]/is'
-        ),
-        'email'     => array(
-            '/\[e?mail\](.*?)\[\/e?mail\]/is',
-            '/\[e?mail=(.*?)\](.*?)\[\/e?mail\]/is'
-        ),
-        'quote'     => '/\[quote(?:=\"(.*?)\")?(?:\sdate=\"(.*?)\")?\](.*?)\[\/quote\]/is',
-        'list'      => '/\[list\](.*?)\[\/list\]/is',
-		'li'		=> '/\[li\](.*?)\[\/li\]/is',
-        'spoiler'   => '/\[spoiler\](.*?)\[\/spoiler\]/is',
-        'video'     => '/\[video(?:=\"(.*?)\")?(?:\ssize=\"(.*?)\")?\](.*?)\[\/video\]/is',
-        'decode'    => '/\[decode(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*?)\[\/decode\]/is'
-    );
-
-    /**
-     * Default markup result.
-     *
-     * @access private
-     * @var array
-     */
-    private $__markupResult = array(
-        'code'      => array('__code'),
-        'b'         => '<b>$1</b>',
-        'i'         => '<i>$1</i>',
-        'u'         => '<u>$1</u>',
-        'align'     => '<div style="text-align: $1">$2</div>',
-        'float'     => '<div class="decoda-float-$1">$2</div>',
-        'color'     => '<span style="color: $1">$2</span>',
-        'font'      => '<span style="font-family: \'$1\', sans-serif;">$2</span>',
-        'h16'       => '<h$1>$2</h$3>',
-        'size'      => '<span style="font-size: $1px">$2</span>',
-        'sub'       => '<sub>$1</sub>',
-        'sup'       => '<sup>$1</sup>',
-        'hide'      => '<span style="display: none">$1</span>',
-        'img'       => array('__img'),
-        'div'       => array('__div'),
-        'url'       => array('__url'),
-        'email'     => array('__email'),
-        'quote'     => array('__quote'),
-        'list'      => array('__list'),
-		'li'		=> '<li>$1</li>',
-        'spoiler'   => array('__spoiler'),
-		'video'		=> array('__video'),
-        'decode'    => array('__decode')
-    );
-
-    /**
      * Holds the block of text to be parsed.
      *
      * @access private
@@ -174,14 +88,6 @@ class Decoda {
      */
     private $__content;
 	
-	/**
-	 * Video sizes and data.
-	 * 
-	 * @access private
-	 * @var array
-	 */
-	private $__videoData = array();
-
     /**
      * Loads the string into the system, if no custom code it doesnt parse.
      *
@@ -201,32 +107,14 @@ class Decoda {
 
         // Include geshi
         if (file_exists(DECODA_GESHI .'geshi.php')) {
-            require_once DECODA_GESHI .'geshi.php';
+            include_once DECODA_GESHI .'geshi.php';
         } else {
 			$this->configure('geshi', false);
         }
 
-        // Load emoticons and censored
-        $this->__emoticons	= DecodaConfig::emoticons();
-        $this->__censored	= DecodaConfig::censored();
-        $this->__videoData	= DecodaConfig::videoData();
+        // Set the content
         $this->__content = $string;
-
         return false;
-    }
-
-    /**
-     * Add custom code patterns to the mark up array. Does not support callbacks.
-     *
-     * @access public
-     * @param string $tag
-     * @param string $pattern
-     * @param string $replace
-     * @return void
-     */
-    public function addMarkup($tag, $pattern, $replace) {
-        $this->__markupCode[$tag] = $pattern;
-        $this->__markupResult[$tag] = $replace;
     }
 
     /**
@@ -237,17 +125,11 @@ class Decoda {
      * @return boolean
      */
     public function allowed($tag) {
-        $allowed = array();
-
-        if (!empty($this->__allowed)) {
-            $allowed = $this->__allowed;
-        }
-
-        if (!empty($allowed) && !in_array($tag, $allowed)) {
-            return false;
-        }
-
-        return true;
+		if (empty($this->__allowed)) {
+			return true;
+		}
+		
+        return in_array($tag, $this->__allowed);
     }
 
     /**
@@ -313,10 +195,13 @@ class Decoda {
             // Replace standard markup
             $string = ' '. $this->__content .' ';
             $string = nl2br($string);
+			
+			$markup = DecodaConfig::markup();
+			$markupResult = DecodaConfig::markup(true);
 
-            foreach ($this->__markupCode as $tag => $pattern) {
+            foreach ($markup as $tag => $pattern) {
                 if ($this->allowed($tag)) {
-                    $result = $this->__markupResult[$tag];
+                    $result = $markupResult[$tag];
 
                     if (!is_array($pattern)) {
                         $pattern = array($pattern);
@@ -432,8 +317,10 @@ class Decoda {
      * @return string
      */
     private function __censor($string) {
-        if (!empty($this->__censored) && is_array($this->__censored)) {
-            foreach ($this->__censored as $word) {
+		$censored = DecodaConfig::censored();
+		
+        if (!empty($censored) && is_array($censored)) {
+            foreach ($censored as $word) {
                 $word = trim(str_replace(array("\n", "\r"), '', $word));
                 $string = preg_replace_callback('/\s'. preg_quote($word, '/') .'/is', array($this, '__censorCallback'), $string);
             }
@@ -642,11 +529,13 @@ class Decoda {
      * @return string
      */
     private function __emoticons($string) {
-        if (!empty($this->__emoticons)) {
+		$emoticons = DecodaConfig::emoticons();
+		
+        if (!empty($emoticons)) {
             $path = str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', DECODA_EMOTICONS);
             $path = str_replace(array('\\', '/'), '/', $path);
 
-            foreach ($this->__emoticons as $emoticon => $smilies) {
+            foreach ($emoticons as $emoticon => $smilies) {
                 foreach ($smilies as $smile) {
                     $image  = '$1<img src="'. $path . $emoticon .'.png" alt="" title=""';
                     $image .= ($this->__config['xhtml']) ? ' />$2' : '>$2';
@@ -748,7 +637,7 @@ class Decoda {
         $attributes = array();
 
         // If the image extension is allowed
-        if (in_array($imgExt, array('gif', 'jpg', 'jpeg', 'png', 'bmp'))) {
+        if (in_array($imgExt, array('gif', 'jpg', 'jpeg', 'png'))) {
             $attributes['src'] = $imgPath;
             $attributes['alt'] = '';
 
@@ -803,7 +692,8 @@ class Decoda {
      * @return string
      */
     private function __quote($matches, $parseChild = true) {
-        $quote = '<blockquote class="decoda-quote">';
+        $markup = DecodaConfig::markup();
+		$quote = '<blockquote class="decoda-quote">';
 
         if (isset($matches[1]) || isset($matches[2])) {
             $quote .= '<div class="decoda-quoteAuthor">';
@@ -822,9 +712,9 @@ class Decoda {
         $quote .= '<div class="decoda-quoteBody">';
 
         if ($this->__config['childQuotes'] && $parseChild) {
-            $quote .= preg_replace_callback($this->__markupCode['quote'], array($this, '__quoteInner'), $matches[3]);
+            $quote .= preg_replace_callback($markup['quote'], array($this, '__quoteInner'), $matches[3]);
         } else {
-            $quote .= preg_replace($this->__markupCode['quote'], '', $matches[3]);
+            $quote .= preg_replace($markup['quote'], '', $matches[3]);
         }
 
         $quote .= '</div></blockquote>';
@@ -913,12 +803,13 @@ class Decoda {
 	 * @return string
 	 */
 	private function __video($matches) {
+		$videos = DecodaConfig::videos();
 		$site = !empty($matches[1]) ? $matches[1] : '';
 		$size = !empty($matches[2]) ? $matches[2] : 'medium';
 		$id = $matches[3];
 		
-		if (isset($this->__videoData[$site])) {
-			$video = $this->__videoData[$site];
+		if (isset($videos[$site])) {
+			$video = $videos[$site];
 			$path = str_replace(':id', $id, $video['path']);
 			$size = isset($video[$size]) ? $video[$size] : $video['medium'];
 			

@@ -2,12 +2,12 @@
 /**
  * Decoda - Configuration
  *
- * A configuration class to globally load emoticons and censored words.
+ * A configuration class to globally load emoticons, censored words and anything else.
  *
- * @author 		Miles Johnson - www.milesj.me
- * @copyright	Copyright 2006-2009, Miles Johnson, Inc.
- * @license 	http://www.opensource.org/licenses/mit-license.php - Licensed under The MIT License
- * @link		www.milesj.me/resources/script/decoda
+ * @author		Miles Johnson - www.milesj.me
+ * @copyright	Copyright 2006-2010, Miles Johnson, Inc.
+ * @license		http://www.opensource.org/licenses/mit-license.php - Licensed under The MIT License
+ * @link		http://milesj.me/resources/script/decoda
  */
 
 class DecodaConfig {
@@ -29,6 +29,78 @@ class DecodaConfig {
      * @static
      */
     private static $__emoticons = array();
+
+    /**
+     * Default markup code.
+     *
+     * @access private
+     * @var array
+	 * @static
+     */
+    private static $__markupCode = array(
+        'code'      => '/\[code(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*?)\[\/code\]/is',
+        'b'         => '/\[b\](.*?)\[\/b\]/is',
+        'i'         => '/\[i\](.*?)\[\/i\]/is',
+        'u'         => '/\[u\](.*?)\[\/u\]/is',
+        'align'     => '/\[align=(left|center|right)\](.*?)\[\/align\]/is',
+        'float'     => '/\[float=(left|right)\](.*?)\[\/float\]/is',
+        'color'     => '/\[color=(#[0-9a-fA-F]{3,6}|[a-z]+)\](.*?)\[\/color\]/is',
+        'font'      => '/\[font=\"(.*?)\"\](.*?)\[\/font\]/is',
+        'h16'       => '/\[h([1-6]{1})\](.*?)\[\/h([1-6]{1})\]/is',
+        'size'      => '/\[size=((?:[1-2]{1})?[0-9]{1})\](.*?)\[\/size\]/is',
+        'sub'       => '/\[sub\](.*?)\[\/sub\]/is',
+        'sup'       => '/\[sup\](.*?)\[\/sup\]/is',
+        'hide'      => '/\[hide\](.*?)\[\/hide\]/is',
+        'img'       => '/\[img(?:\swidth=([0-9%]{1,4}+))?(?:\sheight=([0-9%]{1,4}+))?\]((?:ftp|http)s?:\/\/.*?)\[\/img\]/is',
+        'div'       => '/\[div(.*?)\](.*?)\[\/div\]/is',
+        'url'       => array(
+            '/\[url\]((?:http|ftp|irc|file|telnet)s?:\/\/.*?)\[\/url\]/is',
+            '/\[url=((?:http|ftp|irc|file|telnet)s?:\/\/.*?)\](.*?)\[\/url\]/is'
+        ),
+        'email'     => array(
+            '/\[e?mail\](.*?)\[\/e?mail\]/is',
+            '/\[e?mail=(.*?)\](.*?)\[\/e?mail\]/is'
+        ),
+        'quote'     => '/\[quote(?:=\"(.*?)\")?(?:\sdate=\"(.*?)\")?\](.*?)\[\/quote\]/is',
+        'list'      => '/\[list\](.*?)\[\/list\]/is',
+		'li'		=> '/\[li\](.*?)\[\/li\]/is',
+        'spoiler'   => '/\[spoiler\](.*?)\[\/spoiler\]/is',
+        'video'     => '/\[video(?:=\"(.*?)\")?(?:\ssize=\"(.*?)\")?\](.*?)\[\/video\]/is',
+        'decode'    => '/\[decode(?:\slang=\"([-_\sa-zA-Z0-9]+)\")?(?:\shl=\"([0-9,]+)\")?\](.*?)\[\/decode\]/is'
+    );
+
+    /**
+     * Default markup result.
+     *
+     * @access private
+     * @var array
+	 * @static
+     */
+    private static $__markupResult = array(
+        'code'      => array('__code'),
+        'b'         => '<b>$1</b>',
+        'i'         => '<i>$1</i>',
+        'u'         => '<u>$1</u>',
+        'align'     => '<div style="text-align: $1">$2</div>',
+        'float'     => '<div class="decoda-float-$1">$2</div>',
+        'color'     => '<span style="color: $1">$2</span>',
+        'font'      => '<span style="font-family: \'$1\', sans-serif;">$2</span>',
+        'h16'       => '<h$1>$2</h$3>',
+        'size'      => '<span style="font-size: $1px">$2</span>',
+        'sub'       => '<sub>$1</sub>',
+        'sup'       => '<sup>$1</sup>',
+        'hide'      => '<span style="display: none">$1</span>',
+        'img'       => array('__img'),
+        'div'       => array('__div'),
+        'url'       => array('__url'),
+        'email'     => array('__email'),
+        'quote'     => array('__quote'),
+        'list'      => array('__list'),
+		'li'		=> '<li>$1</li>',
+        'spoiler'   => array('__spoiler'),
+		'video'		=> array('__video'),
+        'decode'    => array('__decode')
+    );
 	
 	/**
 	 * Video sizes and data.
@@ -37,7 +109,7 @@ class DecodaConfig {
 	 * @var array
 	 * @static
 	 */
-	private static $__videoData = array(
+	private static $__videos = array(
 		'youtube' => array(
 			'small' => array(560, 340),
 			'medium' => array(640, 385),
@@ -90,7 +162,7 @@ class DecodaConfig {
      * @return void
 	 * @static
      */
-    public static function addCensored(array $censored) {
+    public static function addCensor(array $censored) {
         if (!empty($censored)) {
             self::$__censored = $censored + self::$__censored;
         }
@@ -106,11 +178,26 @@ class DecodaConfig {
 	 * @static
      */
     public static function addEmoticon($emoticon, array $smilies) {
-        if (isset($this->__emoticons[$emoticon])) {
+        if (isset(self::$__emoticons[$emoticon])) {
             self::$__emoticons[$emoticon] = $smilies + self::$__emoticons[$emoticon];
         } else {
             self::$__emoticons[$emoticon] = $smilies;
         }
+    }
+
+    /**
+     * Add custom code patterns to the mark up array. Does not support callbacks.
+     *
+     * @access public
+     * @param string $tag
+     * @param string $pattern
+     * @param string $replace
+     * @return void
+	 * @static
+     */
+    public static function addMarkup($tag, $pattern, $replace) {
+        self::$__markupCode[$tag] = $pattern;
+        self::$__markupResult[$tag] = $replace;
     }
 	
 	/**
@@ -178,13 +265,29 @@ class DecodaConfig {
     }
 	
 	/**
-	 * Return the video data.
+	 * Return the markup regex patterns.
+	 *
+	 * @access public
+	 * @param boolean $replacements
+	 * @return array
+	 * @static
+	 */
+	public static function markup($replacements = false) {
+		if ($replacements) {
+			return self::$__markupResult;
+		} else {
+			return self::$__markupCode;
+		}
+	}
+	
+	/**
+	 * Return the video format data.
 	 *
 	 * @access public
 	 * @return array
 	 */
-	public static function videoData() {
-		return self::$__videoData;
+	public static function videos() {
+		return self::$__videos;
 	}
     
 }

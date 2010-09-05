@@ -51,7 +51,8 @@ class Decoda {
         'clickable'     => true,
         'shorthand'     => false,
         'xhtml'         => false,
-        'childQuotes'   => false
+        'childQuotes'   => false,
+		'jquery'		=> false
     );
 
     /**
@@ -502,7 +503,7 @@ class Decoda {
 		}
 
         if ($this->__config['shorthand']) {
-            $emailStr = $padding .'[<a href="mailto:'. $encrypted .'">mail</a>]';
+            $emailStr = $padding .'[<a href="mailto:'. $encrypted .'">'. DecodaConfig::message('mail') .'</a>]';
         } else {
             $emailStr = $padding .'<a href="mailto:'. $encrypted .'">'. $emailText .'</a>';
         }
@@ -537,7 +538,7 @@ class Decoda {
 
             foreach ($emoticons as $emoticon => $smilies) {
                 foreach ($smilies as $smile) {
-                    $image  = '$1<img src="'. $path . $emoticon .'.png" alt="" title=""';
+                    $image  = '$1<img src="'. $path . $emoticon .'.png" alt=""';
                     $image .= ($this->__config['xhtml']) ? ' />$2' : '>$2';
 
                     $string = preg_replace('/(\s)'. preg_quote($smile, '/') .'(\s)?/is', $image, $string);
@@ -741,10 +742,19 @@ class Decoda {
      */
     private function __spoiler($matches) {
         $id = $this->__counters['spoiler'];
-        $click = "document.getElementById('spoilerContent-". $id ."').style.display = (document.getElementById('spoilerContent-". $id ."').style.display == 'block' ? 'none' : 'block');";
-
+		
+		$showText = DecodaConfig::message('spoiler') .' ('. DecodaConfig::message('show') .')';
+		$hideText = DecodaConfig::message('spoiler') .' ('. DecodaConfig::message('hide') .')';
+		
+		if ($this->__config['jquery']) {
+			$click = "$('#spoilerContent-". $id ."').toggle(); $(this).html(($('#spoilerContent-". $id ."').is(':visible') ? '". $hideText ."' : '". $showText ."'));";
+		} else {
+			$click  = "document.getElementById('spoilerContent-". $id ."').style.display = (document.getElementById('spoilerContent-". $id ."').style.display == 'block' ? 'none' : 'block');";
+			$click .= "this.innerHTML = (document.getElementById('spoilerContent-". $id ."').style.display == 'block' ? '". $hideText ."' : '". $showText ."');";
+		}
+		
         $html  = '<div class="decoda-spoiler" id="spoiler-'. $id .'">';
-        $html .= '<button class="decoda-spoilerButton" type="button" onclick="'. $click .'">Spoiler: Show / Hide</button>';
+        $html .= '<button class="decoda-spoilerButton" type="button" onclick="'. $click .'">'. $showText .'</button>';
         $html .= '<div class="decoda-spoilerBody" id="spoilerContent-'. $id .'" style="display: none">'. $matches[1] .'</div>';
         $html .= '</div>';
 
@@ -776,7 +786,7 @@ class Decoda {
 		}
 
         if ($this->__config['shorthand']) {
-            $urlStr = $padding .'[<a href="'. $url .'">link</a>]';
+            $urlStr = $padding .'[<a href="'. $url .'">'. DecodaConfig::message('link') .'</a>]';
         } else {
             $urlStr = $padding .'<a href="'. $url .'">'. $urlText .'</a>';
         }
@@ -810,7 +820,7 @@ class Decoda {
 		
 		if (isset($videos[$site])) {
 			$video = $videos[$site];
-			$path = str_replace(':id', $id, $video['path']);
+			$path = str_replace('{id}', $id, $video['path']);
 			$size = isset($video[$size]) ? $video[$size] : $video['medium'];
 			
 			if ($video['player'] == 'embed') {

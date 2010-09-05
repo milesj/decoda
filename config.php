@@ -103,6 +103,22 @@ class DecodaConfig {
     );
 	
 	/**
+	 * Message strings for localization purposes.
+	 *
+	 * @access private
+	 * @var array
+	 * @static
+	 */
+	private static $__messages = array(
+		'spoiler'	=> 'Spoiler',
+		'hide'		=> 'Hide',
+		'show'		=> 'Show',
+		'link'		=> 'link',
+		'mail'		=> 'mail',
+		'quoteBy'	=> 'Quote by {author}'
+	);
+	
+	/**
 	 * Video sizes and data.
 	 * 
 	 * @access private
@@ -115,42 +131,42 @@ class DecodaConfig {
 			'medium' => array(640, 385),
 			'large' => array(853, 505),
 			'player' => 'embed',
-			'path' => 'http://youtube.com/v/:id'
+			'path' => 'http://youtube.com/v/{id}'
 		),
 		'vimeo' => array(
 			'small' => array(400, 225),
 			'medium' => array(550, 375),
 			'large' => array(700, 525),
 			'player' => 'iframe',
-			'path' => 'http://player.vimeo.com/video/:id'
+			'path' => 'http://player.vimeo.com/video/{id}'
 		),
 		'liveleak' => array(
 			'small' => array(450, 370),
 			'medium' => array(600, 520),
 			'large' => array(750, 670),
 			'player' => 'embed',
-			'path' => 'http://liveleak.com/e/:id'
+			'path' => 'http://liveleak.com/e/{id}'
 		),
 		'veoh' => array(
 			'small' => array(410, 341),
 			'medium' => array(610, 541),
 			'large' => array(810, 741),
 			'player' => 'embed',
-			'path' => 'http://veoh.com/static/swf/webplayer/WebPlayer.swf?version=AFrontend.5.5.3.1004&permalinkId=:id&player=videodetailsembedded&videoAutoPlay=0&id=anonymous'
+			'path' => 'http://veoh.com/static/swf/webplayer/WebPlayer.swf?version=AFrontend.5.5.3.1004&permalinkId={id}&player=videodetailsembedded&videoAutoPlay=0&id=anonymous'
 		),
 		'dailymotion' => array(
 			'small' => array(320, 256),
 			'medium' => array(480, 384),
 			'large' => array(560, 448),
 			'player' => 'embed',
-			'path' => 'http://dailymotion.com/swf/video/:id&additionalInfos=0&autoPlay=0'
+			'path' => 'http://dailymotion.com/swf/video/{id}&additionalInfos=0&autoPlay=0'
 		),
 		'myspace' => array(
 			'small' => array(325, 260),
 			'medium' => array(425, 360),
 			'large' => array(525, 460),
 			'player' => 'embed',
-			'path' => 'http://mediaservices.myspace.com/services/media/embed.aspx/m=:id,t=1,mt=video'
+			'path' => 'http://mediaservices.myspace.com/services/media/embed.aspx/m={id},t=1,mt=video'
 		)
 	);
 	
@@ -217,7 +233,7 @@ class DecodaConfig {
 				'large' => array(853, 505)
 			);
 			
-			self::$__videoData[$site] = $data;
+			self::$__videos[$site] = $data;
 		}
 	}
 
@@ -277,6 +293,37 @@ class DecodaConfig {
 			return self::$__markupResult;
 		} else {
 			return self::$__markupCode;
+		}
+	}
+	
+	/**
+	 * Return a message string if it exists.
+	 *
+	 * @access public
+	 * @param string $key
+	 * @return string
+	 * @static
+	 */
+	public static function message($key) {
+		return self::$__messages[$key] ? self::$__messages[$key] : '';
+	}
+	
+	/**
+	 * Update the locale message strings.
+	 *
+	 * @access public
+	 * @param string|array $key
+	 * @param string $message
+	 * @return void
+	 * @static
+	 */
+	public static function updateMessages($key, $message = '') {
+		if (is_array($key)) {
+			foreach ($key as $index => $message) {
+				self::updateMessages($index, $message);
+			}
+		} else {
+			self::$__messages[$key] = $message;
 		}
 	}
 	

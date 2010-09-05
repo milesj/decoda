@@ -190,11 +190,11 @@ class Decoda {
      * @param array $allowed
      * @return void
      */
-    public function __construct($string, $allowed = array()) {
+    public function __construct($string, array $allowed = array()) {
         if ((strpos($string, '[') === false) && (strpos($string, ']') === false)) {
             $this->configure('parse', false);
         } else {
-            if (!empty($allowed) && is_array($allowed)) {
+            if (!empty($allowed)) {
                 $this->__allowed = array_unique($allowed);
             }
         }
@@ -213,39 +213,6 @@ class Decoda {
         $this->__content = $string;
 
         return false;
-    }
-
-    /**
-     * Add censored words to the blacklist.
-     *
-     * @access public
-     * @param array $censored
-     * @return void
-     */
-    public function addCensored($censored = array()) {
-        if (!empty($censored) && is_array($censored)) {
-            $this->__censored = $censored + $this->__censored;
-        }
-    }
-
-    /**
-     * Add a custom emoticon.
-     *
-     * @access public
-     * @param string $emoticon
-     * @param array $smilies
-     * @return void
-     */
-    public function addEmoticon($emoticon, $smilies = array()) {
-        if (!is_array($smilies)) {
-            $smilies = array($smilies);
-        }
-
-        if (isset($this->__emoticons[$emoticon])) {
-            $this->__emoticons[$emoticon] = $smilies + $this->__emoticons[$emoticon];
-        } else {
-            $this->__emoticons[$emoticon] = $smilies;
-        }
     }
 
     /**

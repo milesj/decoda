@@ -81,6 +81,58 @@ class DecodaConfig {
 			'path' => 'http://mediaservices.myspace.com/services/media/embed.aspx/m=:id,t=1,mt=video'
 		)
 	);
+	
+    /**
+     * Add censored words to the blacklist.
+     *
+     * @access public
+     * @param array $censored
+     * @return void
+	 * @static
+     */
+    public static function addCensored(array $censored) {
+        if (!empty($censored)) {
+            self::$__censored = $censored + self::$__censored;
+        }
+    }
+
+    /**
+     * Add a custom emoticon.
+     *
+     * @access public
+     * @param string $emoticon
+     * @param array $smilies
+     * @return void
+	 * @static
+     */
+    public static function addEmoticon($emoticon, array $smilies) {
+        if (isset($this->__emoticons[$emoticon])) {
+            self::$__emoticons[$emoticon] = $smilies + self::$__emoticons[$emoticon];
+        } else {
+            self::$__emoticons[$emoticon] = $smilies;
+        }
+    }
+	
+	/**
+	 * Add a custom video handler.
+	 *
+	 * @access public
+	 * @param string $site
+	 * @param array $data
+	 * @return void
+	 */
+	public static function addVideo($site, array $data) {
+		if (!empty($data['path'])) {
+			$data = $data + array(
+				'player' => 'embed',
+				'small' => array(560, 340),
+				'medium' => array(640, 385),
+				'large' => array(853, 505)
+			);
+			
+			self::$__videoData[$site] = $data;
+		}
+	}
 
     /**
      * Load the censored words from the text file.
@@ -94,7 +146,7 @@ class DecodaConfig {
             $path = DECODA_CONFIG .'censored.txt';
 
             if (file_exists($path)) {
-                self::$__censored = file($path);
+                self::$__censored = file($path) + self::$__censored;
             }
         }
         

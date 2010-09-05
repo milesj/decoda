@@ -18,6 +18,8 @@ include('decoda.php'); ?>
 	.decoda-quoteDate { float: right; }
 	.decoda-spoilerBody { background: #FFFFCC; padding: 10px; margin-top: 10px; }
 	.decoda-code { background: #f4f4f4; padding: 10px; }
+	.decoda-alert { background: red; padding: 10px; }
+	.decoda-note { background: blue; padding: 10px; }
 </style>
 </head>
 <body>
@@ -33,6 +35,7 @@ $code->parse(); ?>
 <?php $string = '[b]Bold[/b]
 [i]Italics[/i]
 [u]Underline[/u]
+[s]Strike through[/s]
 [color=#f00]Red Text (Hex code)[/color]
 [color=purple]Purple Text (Name)[/color]
 [h3]Header 3[/h3]
@@ -81,6 +84,13 @@ $code->parse(); ?>
 $code = new Decoda($string);
 $code->parse(); ?>
 
+<h2>Removing Styles</h2>
+
+<?php $string = 'This string has [b]specific styles[/b] that [s]will be[/s] removed [u]completely[/u].';
+$code = new Decoda($string);
+$code->removeCode('b')->removeCode('s');
+$code->parse(); ?>
+
 <h2>Alignment</h2>
 
 <?php $string = '[align=center]Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam laoreet pulvinar sem. Aenean at odio.
@@ -94,7 +104,9 @@ $code->parse(); ?>
 <?php $string = '[div]No attributes.[/div] 
 [div id="divBlock"]With an ID.[/div]
 [div class="div"]With a class.[/div]
-[div id="customId" class="div secondary" data-attr="html5"]Uses multiple random attributes.[/div]';
+[div id="customId" class="div secondary" data-attr="html5"]Uses multiple random attributes.[/div] 
+[note]This is a note![/note]
+[alert]This is an alert![/alert]';
 $code = new Decoda($string);
 $code->parse(); ?>
 
@@ -163,7 +175,15 @@ $code->parse(); ?>
 [li]Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante.[/li]
 [li]Curabitur tincidunt, lacus eget iaculis tincidunt.[/li]
 [li]Curabitur sed tellus. Donec id dolor.[/li]
-[/list]';
+[/list]
+[olist]
+[li]Lorem ipsum dolor sit amet, consectetuer adipiscing elit.[/li]
+[li]Aliquam laoreet pulvinar sem. Aenean at odio.[/li]
+[li]Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec elit.[/li]
+[li]Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante.[/li]
+[li]Curabitur tincidunt, lacus eget iaculis tincidunt.[/li]
+[li]Curabitur sed tellus. Donec id dolor.[/li]
+[/olist]';
 $code = new Decoda($string);
 $code->parse(); ?>
 

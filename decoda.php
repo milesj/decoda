@@ -27,7 +27,7 @@ class Decoda {
      * @access private
      * @var string
      */
-    public $version = '2.9.6';
+    public $version = '2.9.8';
 
     /**
      * List of tags allowed to parse.
@@ -56,6 +56,22 @@ class Decoda {
     );
 
     /**
+     * Holds the processed text block.
+     *
+     * @access private
+     * @var string
+     */
+    private $__content;
+	
+	/**
+	 * Holds the unprocessed text block (code form).
+	 *
+	 * @access private
+	 * @var string
+	 */
+	private $__contentRaw;
+
+    /**
      * Counters used for looping.
      *
      * @access private
@@ -80,14 +96,14 @@ class Decoda {
         'tab_width'		=> false,
         'strict_mode'	=> false
     );
-
-    /**
-     * Holds the block of text to be parsed.
-     *
-     * @access private
-     * @var string
-     */
-    private $__content;
+	
+	/**
+	 * The last removed tag.
+	 *
+	 * @access private
+	 * @var string
+	 */
+	private $__lastRemove;
 	
     /**
      * Loads the string into the system, if no custom code it doesnt parse.
@@ -98,13 +114,11 @@ class Decoda {
      * @return void
      */
     public function __construct($string, array $allowed = array()) {
-        if ((strpos($string, '[') === false) && (strpos($string, ']') === false)) {
-            $this->configure('parse', false);
-        } else {
-            if (!empty($allowed)) {
-                $this->__allowed = array_unique($allowed);
-            }
-        }
+        $this->reset($string);
+		
+		if (!empty($allowed)) {
+			$this->__allowed = array_unique($allowed);
+		}
 
         // Include geshi
         if (file_exists(DECODA_GESHI .'geshi.php')) {
@@ -112,10 +126,6 @@ class Decoda {
         } else {
 			$this->configure('geshi', false);
         }
-
-        // Set the content
-        $this->__content = $string;
-        return false;
     }
 
     /**
@@ -138,8 +148,8 @@ class Decoda {
      *
      * @access public
      * @param string $options
-     * @param bool $value
-     * @return void
+     * @param boolean $value
+     * @return object
      */
     public function configure($options, $value = true) {
         if (is_array($options)) {
@@ -155,6 +165,8 @@ class Decoda {
                 $this->__config[$options] = $value;
             }
         }
+		
+		return $this;
     }
 
     /**
@@ -162,7 +174,7 @@ class Decoda {
      *
      * @access public
      * @param string $options
-     * @param bool $value
+     * @param boolean $value
      * @return false
      */
     public function configureGeshi($options, $value = true) {
@@ -175,6 +187,8 @@ class Decoda {
                 $this->__geshiConfig[$options] = $value;
             }
         }
+		
+		return $this;
     }
 
     /**
@@ -190,12 +204,11 @@ class Decoda {
         }
 
         if (!$this->__config['parse']) {
-            $string = nl2br($this->__content);
+            $this->__content = nl2br($this->__content);
 
         } else {
             // Replace standard markup
-            $string = ' '. $this->__content .' ';
-            $string = nl2br($string);
+            $this->__content = nl2br(' '. $this->__content .' ');
 			
 			$markup = DecodaConfig::markup();
 			$markupResult = DecodaConfig::markup(true);
@@ -210,9 +223,9 @@ class Decoda {
 
                     foreach ($pattern as $pat) {
                         if (is_array($result)) {
-                            $string = preg_replace_callback($pat, array($this, $result[0]), $string);
+                            $this->__content = preg_replace_callback($pat, array($this, $result[0]), $this->__content);
                         } else {
-                            $string = preg_replace($pat, $result, $string);
+                            $this->__content = preg_replace($pat, $result, $this->__content);
                         }
                     }
                 }
@@ -221,26 +234,26 @@ class Decoda {
 		
 		// Make urls/emails clickable
 		if ($this->__config['clickable']) {
-			$string = $this->__clickable($string);
+			$this->__clickable();
 		}
 
 		// Convert smilies
 		if ($this->__config['emoticons']) {
-			$string = $this->__emoticons($string);
+			$this->__emoticons();
 		}
 
 		// Censor words
 		if ($this->__config['censor']) {
-			$string = $this->__censor($string);
+			$this->__censor();
 		}
 
 		// Clean linebreaks
-		$string = $this->__cleanup($string);
+		$this->__cleanup();
 
-        if ($return === false) {
-            echo $string;
+        if (!$return) {
+            echo $this->__content;
         } else {
-            return $string;
+            return $this->__content;
         }
     }
 
@@ -249,18 +262,23 @@ class Decoda {
      *
      * @access public
      * @param string $tag
-     * @param string $string
-     * @return string
-     * @static
+     * @return object
      */
-    public static function removeCode($tag = 'p', $string = null) {
-        if (empty($string)) {
-            $string = $this->__content;
-        }
-
-        return preg_replace_callback('/\['. $tag .'\](.*?)\[\/'. $tag .'\]/is', create_function(
-            '$matches', 'return $matches[1];'
-        ), $string);
+    public function removeCode($tag = 'p') {
+		$markup = DecodaConfig::markup();
+        
+		if (isset($markup[$tag])) {
+			if (!is_array($markup[$tag])) {
+				$markup[$tag] = array($markup[$tag]);
+			}
+			
+			foreach ($markup[$tag] as $pattern) {
+				$this->__lastRemove = $tag;
+				$this->__content = preg_replace_callback($pattern, array($this, '__remove'), $this->__content);
+			}
+		}
+		
+		return $this;
     }
 
     /**
@@ -268,14 +286,16 @@ class Decoda {
      *
      * @access public
      * @param string $string
-     * @return void
+     * @return object
      */
     public function reset($string) {
         if ((strpos($string, '[') === false) && (strpos($string, ']') === false)) {
 			$this->configure('parse', false);
         }
-
-        $this->__content = $string;
+		
+        $this->__content = $this->__contentRaw = $string;
+		
+		return $this;
     }
 
     /**
@@ -304,35 +324,56 @@ class Decoda {
 	 *
 	 * @access protected
 	 * @param mixed $var
-	 * @return mixed
+	 * @return object
 	 */
 	protected function _debug($var) {
 		echo '<pre>'. print_r($var, true) .'</pre>';
+		
+		return $this;
+	}
+	
+	/**
+	 * Encrypt a string using an ASCII equivalent.
+	 *
+	 * @access protected
+	 * @param string $string
+	 * @return string
+	 */
+	protected function _encrypt($string) {
+		$length = mb_strlen($string);
+		$encrypted = '';
+		
+        for ($i = 0; $i < $length; ++$i) {
+            $letter = mb_substr($string, $i, 1);
+            $encrypted .= '&#' . ord($letter) . ';';
+            
+            unset($letter);
+        }
+		
+		return $encrypted;
 	}
 
     /**
      * Parses the text and censors words.
      *
      * @access private
-     * @param string $string
-     * @return string
+     * @return void
      */
-    private function __censor($string) {
+    private function __censor() {
 		$censored = DecodaConfig::censored();
 		
         if (!empty($censored) && is_array($censored)) {
             foreach ($censored as $word) {
                 $word = trim(str_replace(array("\n", "\r"), '', $word));
-                $string = preg_replace_callback('/\s'. preg_quote($word, '/') .'/is', array($this, '__censorCallback'), $string);
+                $this->__content = preg_replace_callback('/\s'. preg_quote($word, '/') .'/is', array($this, '__censorCallback'), $this->__content);
             }
         }
-
-        return $string;
     }
 
     /**
      * Censors a blacklisted word and replaces with *.
      *
+	 * @access private
      * @param array $matches
      * @return string
      */
@@ -351,24 +392,24 @@ class Decoda {
      * Remove <br />s where they shouldn't be.
      *
      * @access private
-     * @param string $string
      * @return string
      */
-    private function __cleanup($string) {
+    private function __cleanup() {
+		$string = $this->__content;
         $string = str_replace('</li><br />', '</li>', $string);
         $string = str_replace('<ul class="decoda-list"><br />', '<ul class="decoda-list">', $string);
+        $string = str_replace('<ol class="decoda-olist"><br />', '<ol class="decoda-olist">', $string);
 
-        return trim($string);
+        $this->__content = trim($string);
     }
 
     /**
      * Makes links and emails clickable that dont have the [url] or [mail] tags.
      *
      * @access private
-     * @param string $string
-     * @return string
+     * @return void
      */
-    private function __clickable($string) {
+    private function __clickable() {
         // Matches a link that begins with http(s)://, ftp(s)://, irc://
         if ($this->allowed('url')) {
 			$protocol = '(http|ftp|irc|file|telnet)s?:\/?\/?';
@@ -376,16 +417,14 @@ class Decoda {
 			$domain = '([-a-zA-Z0-9\.]{5,255}+)';
 			$port = '(:[0-9]{0,6}+)?';
 			$query = '([a-zA-Z0-9'. preg_quote('-_=;:&?/[]', '/') .']+)?';
-            $string = preg_replace_callback('/(^|\n|\s)'. $protocol . $login . $domain . $port . $query .'/is', array($this, '__urlCallback'), $string);
+            $this->__content = preg_replace_callback('/(^|\n|\s)'. $protocol . $login . $domain . $port . $query .'/is', array($this, '__urlCallback'), $this->__content);
         }
 		
         // Matches an email@domain.tld
 		// Based on schema http://en.wikipedia.org/wiki/Email_address
         if ($this->allowed('email')) {
-            $string = preg_replace_callback('/(^|\n|\s)([-a-zA-Z0-9\.\+!]{1,64}+)@([-a-zA-Z0-9\.]{5,255}+)/is', array($this, '__emailCallback'), $string);
+            $this->__content = preg_replace_callback('/(^|\n|\s)([-a-zA-Z0-9\.\+!]{1,64}+)@([-a-zA-Z0-9\.]{5,255}+)/is', array($this, '__emailCallback'), $this->__content);
         }
-
-        return $string;
     }
 
     /**
@@ -488,27 +527,17 @@ class Decoda {
             $padding = '';
         }
 
-        // Obfuscates the email using ASCII alternatives
-        $encrypted = '';
-		$length = mb_strlen($email);
-        for ($i = 0; $i < $length; ++$i) {
-            $letter = mb_substr($email, $i, 1);
-            $encrypted .= '&#' . ord($letter) . ';';
-            
-            unset($letter);
-        }
+        $encrypted = $this->_encrypt($email);
 		
 		if (empty($emailText)) {
 			$emailText = $encrypted;
 		}
 
         if ($this->__config['shorthand']) {
-            $emailStr = $padding .'[<a href="mailto:'. $encrypted .'">'. DecodaConfig::message('mail') .'</a>]';
+            return $padding .'[<a href="mailto:'. $encrypted .'">'. DecodaConfig::message('mail') .'</a>]';
         } else {
-            $emailStr = $padding .'<a href="mailto:'. $encrypted .'">'. $emailText .'</a>';
+			return $padding .'<a href="mailto:'. $encrypted .'">'. $emailText .'</a>';
         }
-
-        return $emailStr;
     }
 
     /**
@@ -526,10 +555,9 @@ class Decoda {
      * Convert smilies into images.
      *
      * @access private
-     * @param string $string
-     * @return string
+     * @return void
      */
-    private function __emoticons($string) {
+    private function __emoticons() {
 		$emoticons = DecodaConfig::emoticons();
 		
         if (!empty($emoticons)) {
@@ -541,13 +569,11 @@ class Decoda {
                     $image  = '$1<img src="'. $path . $emoticon .'.png" alt=""';
                     $image .= ($this->__config['xhtml']) ? ' />$2' : '>$2';
 
-                    $string = preg_replace('/(\s)'. preg_quote($smile, '/') .'(\s)?/is', $image, $string);
+                    $this->__content = preg_replace('/(\s)'. preg_quote($smile, '/') .'(\s)?/is', $image, $this->__content);
                     unset($image);
                 }
             }
         }
-
-        return $string;
     }
 	
     /**
@@ -681,7 +707,15 @@ class Decoda {
      * @return string
      */
     private function __list($matches) {
-        return '<ul class="decoda-list">'. str_replace("\n", '', $matches[1]) .'</ul>';
+		if (strpos($matches[0], 'olist') !== false) {
+			$tag = 'ol';
+			$class = 'decoda-olist';
+		} else {
+			$tag = 'ul';
+			$class = 'decoda-list';
+		}
+		
+        return '<'. $tag .' class="'. $class .'">'. str_replace("\n", '', $matches[1]) .'</'. $tag .'>';
     }
 
     /**
@@ -732,6 +766,33 @@ class Decoda {
     private function __quoteInner($matches) {
         return $this->__quote($matches, false);
     }
+	
+	/**
+	 * Remove specific code and format specific tags.
+	 * 
+	 * @access private
+	 * @param array $matches
+	 * @return string
+	 */
+	private function __remove($matches) {
+		if ($this->__lastRemove == 'video') {
+			$content = $matches[1] .':'. $matches[3];
+			
+		} else if ($this->__lastRemove == 'email') {
+			$content = $this->_encrypt($matches[1]);
+		
+		} else if (in_array($this->__lastRemove, array('code', 'decode', 'img', 'quote'))) {
+			$content = $matches[3];
+			
+		} else if (in_array($this->__lastRemove, array('align', 'float', 'color', 'font', 'h16', 'size', 'div'))) {
+			$content = $matches[2];
+			
+		} else {
+			$content = $matches[1];
+		}
+		
+		return $content;
+	}
 
     /**
      * Show spoilers.
@@ -786,12 +847,10 @@ class Decoda {
 		}
 
         if ($this->__config['shorthand']) {
-            $urlStr = $padding .'[<a href="'. $url .'">'. DecodaConfig::message('link') .'</a>]';
+            return $padding .'[<a href="'. $url .'">'. DecodaConfig::message('link') .'</a>]';
         } else {
-            $urlStr = $padding .'<a href="'. $url .'">'. $urlText .'</a>';
+            return $padding .'<a href="'. $url .'">'. $urlText .'</a>';
         }
-
-        return $urlStr;
     }
 
     /**
@@ -829,8 +888,6 @@ class Decoda {
 				return '<iframe src="'. $path .'" width="'. $size[0] .'" height="'. $size[1] .'" frameborder="0"></iframe>';
 			}
 		}
-		
-		return;
 	}
 
 }

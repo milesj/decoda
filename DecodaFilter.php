@@ -13,48 +13,39 @@ abstract class DecodaFilter {
 	}
 
 	public function parse($tag, $content) {
-		$parsed  = $this->openTag($tag['tag'], $tag['attributes']);
-		$parsed .= $content;
-		$parsed .= $this->closeTag($tag['tag']);
-		
-		return $parsed;
-	}
-	
-	public function openTag($tag, array $attributes = array()) {
-		if (empty($this->_tags[$tag])) {
+		if (empty($this->_tags[$tag['tag']])) {
 			return;
 		}
 		
-		$setup = $this->_tags[$tag];
+		$attributes = $tag['attributes'];
+		$setup = $this->_tags[$tag['tag']];
 		$attr = '';
 		
-		if (!empty($attributes)) {
-			if (isset($setup['format'])) {
-				$attr = ' '. $setup['format'];
+		if (isset($setup['format'])) {
+			$attr = ' '. $setup['format'];
 
-				foreach ($attributes as $key => $value) {
-					$attr = str_replace('{'. $key .'}', $value, $attr);
+			foreach ($attributes as $key => $value) {
+				$attr = str_replace('{'. $key .'}', $value, $attr);
+			}
+		} else {
+			foreach ($attributes as $key => $value) {
+				if (isset($setup['map'][$key])) {
+					$key = $setup['map'][$key];
 				}
-			} else {
-				foreach ($attributes as $key => $value) {
-					if (isset($setup['map'][$key])) {
-						$key = $setup['map'][$key];
-					}
-					
-					$attr .= ' '. $key .'="'. $value .'"';
-				}
+
+				$attr .= ' '. $key .'="'. $value .'"';
 			}
 		}
 		
-		return '<'. $setup['tag'] . $attr .'>';
-	}
-	
-	public function closeTag($tag) {
-		if (empty($this->_tags[$tag])) {
-			return;
+		$parsed = '<'. $setup['tag'] . $attr;
+		
+		if (empty($setup['selfClose'])) {
+			$parsed .= '>'. $content .'</'. $setup['tag'] .'>';
+		} else {
+			$parsed .= '/>';
 		}
 		
-		return '</'. $this->_tags[$tag]['tag'] .'>';
+		return $parsed;
 	}
 	
 }

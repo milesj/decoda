@@ -231,6 +231,8 @@ class Decoda {
 			$this->add(new ImageFilter());
 			$this->add(new UrlFilter());
 			$this->add(new TextFilter());
+			$this->add(new BlockFilter());
+			$this->add(new VideoFilter());
 		}
 		
         $this->_parseChunks();

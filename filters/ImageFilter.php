@@ -7,6 +7,7 @@ class ImageFilter extends DecodaFilter {
 			'tag' => 'img',
 			'type' => 'inline',
 			'allowed' => 'none',
+			'selfClose' => true,
 			'attributes' => array(
 				'width' => '([0-9%]{1,4}+)',
 				'height' => '([0-9%]{1,4}+)'
@@ -16,6 +17,7 @@ class ImageFilter extends DecodaFilter {
 			'tag' => 'img',
 			'type' => 'inline',
 			'allowed' => 'none',
+			'selfClose' => true,
 			'attributes' => array(
 				'width' => '([0-9%]{1,4}+)',
 				'height' => '([0-9%]{1,4}+)'
@@ -24,10 +26,10 @@ class ImageFilter extends DecodaFilter {
 	);
 	
 	public function parse($tag, $content) {
-		$attributes = $tag['attributes'];
-		$attributes['src'] = $content;
-
-		return $this->openTag($tag['tag'], $attributes);
+		$tag['attributes']['src'] = $content;
+		$tag['attributes']['alt'] = '';
+		
+		return parent::parse($tag, $content);
 	}
 	
 }

@@ -9,15 +9,17 @@ class BlockFilter extends DecodaFilter {
 			'allowed' => 'all',
 			'attributes' => array(
 				'default' => '(left|center|right|justify)'
-			)
+			),
+			'format' => 'class="align-{default}"'
 		),
 		'float' => array(
 			'tag' => 'div',
 			'type' => 'block',
 			'allowed' => 'all',
 			'attributes' => array(
-				'default' => '(left|right)'
-			)
+				'default' => '(left|right|none)'
+			),
+			'format' => 'class="float-{default}"'
 		),
 		'hide' => array(
 			'tag' => 'span',
@@ -28,12 +30,14 @@ class BlockFilter extends DecodaFilter {
 		'alert' => array(
 			'tag' => 'div',
 			'type' => 'block',
-			'allowed' => 'all'
+			'allowed' => 'all',
+			'format' => 'class="decoda-alert"'
 		),
 		'note' => array(
 			'tag' => 'div',
 			'type' => 'block',
-			'allowed' => 'all'
+			'allowed' => 'all',
+			'format' => 'class="decoda-note"'
 		),
 		'div' => array(
 			'tag' => array('div'),

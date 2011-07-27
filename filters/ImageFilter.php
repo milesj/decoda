@@ -23,4 +23,11 @@ class ImageFilter extends DecodaFilter {
 		)
 	);
 	
+	public function parse($tag, $content) {
+		$attributes = $tag['attributes'];
+		$attributes['src'] = $content;
+
+		return $this->openTag($tag['tag'], $attributes);
+	}
+	
 }

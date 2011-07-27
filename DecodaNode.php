@@ -125,40 +125,21 @@ class DecodaNode {
 		}
 
 		// No child nodes, return text
-		if (empty($this->_nodes) || empty($this->_tag)) {
-			$this->_parsed .= $this->_string;
+		if (empty($this->_nodes)) {
+			$this->_parsed = $this->_string;
 
 		// Child nodes, validate and build tags
 		} else {
-			$filter = $this->__parser->filter($this->_tag['tag']);
-			
-			$this->_parsed .= $filter->openTag($this->_tag['tag'], $this->_tag['attributes']);
-			
 			foreach ($this->_nodes as $node) {
 				$this->_parsed .= $node->parse();
 			}
-
-			$this->_parsed .= $filter->closeTag($this->_tag['tag']);
+			
+			if (!empty($this->_tag)) {
+				$filter = $this->__parser->filter($this->_tag['tag']);
+				$this->_parsed = $filter->parse($this->_tag, $this->_parsed);
+			}
 		}
 
-		return $this->_parsed;
-	}
-	
-	/**
-	 * Begin the parsing process for the root node.
-	 * 
-	 * @access public
-	 * @return string
-	 */
-	public function prepare() {
-		if (!empty($this->_parsed)) {
-			return $this->_parsed;
-		}
-		
-		foreach ($this->_nodes as $node) {
-			$this->_parsed .= $node->parse();
-		}
-		
 		return $this->_parsed;
 	}
 	

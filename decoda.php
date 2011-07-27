@@ -227,11 +227,14 @@ class Decoda {
 		// If no filters added, setup defaults
 		if (empty($this->_filters)) {
 			$this->add(new DefaultFilter());
+			$this->add(new EmailFilter());
+			$this->add(new ImageFilter());
+			$this->add(new UrlFilter());
 			$this->add(new TextFilter());
 		}
 		
         $this->_parseChunks();
-		$this->_parsed = $this->_node->prepare();
+		$this->_parsed = $this->_node->parse();
 		
 		return $this->_parsed;
     }

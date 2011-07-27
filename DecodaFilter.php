@@ -3,7 +3,7 @@
 abstract class DecodaFilter {
 
 	protected $_tags = array();
-	
+
 	public function tag($tag) {
 		return isset($this->_tags[$tag]) ? $this->_tags[$tag] : null;
 	}
@@ -12,8 +12,12 @@ abstract class DecodaFilter {
 		return $this->_tags;
 	}
 
-	public function parse($text) {
-		return $text;
+	public function parse($tag, $content) {
+		$parsed  = $this->openTag($tag['tag'], $tag['attributes']);
+		$parsed .= $content;
+		$parsed .= $this->closeTag($tag['tag']);
+		
+		return $parsed;
 	}
 	
 	public function openTag($tag, array $attributes = array()) {
@@ -33,7 +37,11 @@ abstract class DecodaFilter {
 				}
 			} else {
 				foreach ($attributes as $key => $value) {
-					$attr .= ' '. $key .'="'. htmlentities($value, ENT_QUOTES, 'UTF-8') .'"';
+					if (isset($setup['map'][$key])) {
+						$key = $setup['map'][$key];
+					}
+					
+					$attr .= ' '. $key .'="'. $value .'"';
 				}
 			}
 		}

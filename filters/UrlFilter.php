@@ -9,6 +9,9 @@ class UrlFilter extends DecodaFilter {
 			'allowed' => 'inline',
 			'attributes' => array(
 				'default' => '((?:http|ftp|irc|file|telnet)s?:\/\/.*?)'
+			),
+			'map' => array(
+				'default' => 'href'
 			)
 		),
 		'link' => array(
@@ -17,6 +20,9 @@ class UrlFilter extends DecodaFilter {
 			'allowed' => 'inline',
 			'attributes' => array(
 				'default' => '((?:http|ftp|irc|file|telnet)s?:\/\/.*?)'
+			),
+			'map' => array(
+				'default' => 'href'
 			)
 		)
 	);

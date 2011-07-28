@@ -135,8 +135,7 @@ class DecodaNode {
 			}
 			
 			if (!empty($this->_tag)) {
-				$filter = $this->__parser->filter($this->_tag['tag']);
-				$this->_parsed = $filter->parse($this->_tag, $this->_parsed);
+				$this->_parsed = $this->__parser->filter($this->_tag['tag'])->parse($this->_tag, $this->_parsed);
 			}
 		}
 
@@ -157,8 +156,7 @@ class DecodaNode {
 		$root = true;
 		
 		if (!empty($this->_tag['tag'])) {
-			$filter = $this->__parser->filter($this->_tag['tag']);
-			$parent = $filter->tag($this->_tag['tag']);
+			$parent = $this->__parser->filter($this->_tag['tag'])->tag($this->_tag['tag']);
 			$root = false;
 		}
 		

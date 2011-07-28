@@ -18,13 +18,10 @@ define('DECODA_FILTERS', DECODA .'filters/');
 define('DECODA_EMOTICONS', DECODA .'emoticons/');
 
 // Includes
-include_once 'DecodaNode.php';
-include_once 'DecodaConfig.php';
-include_once 'DecodaFilter.php';
-
-foreach (array('Block', 'Code', 'Default', 'Email', 'Image', 'List', 'Quote', 'Text', 'Url', 'Video') as $filter) {
-	include_once DECODA_FILTERS . $filter .'Filter.php';
-}
+spl_autoload_register();
+set_include_path(implode(PATH_SEPARATOR, array(
+	DECODA, DECODA_GESHI, DECODA_CONFIG, DECODA_FILTERS
+)));
 
 class Decoda {
 	

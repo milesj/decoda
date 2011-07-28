@@ -14,6 +14,7 @@
 define('DECODA', dirname(__FILE__) .'/');
 define('DECODA_GESHI', DECODA .'geshi/');
 define('DECODA_CONFIG', DECODA .'config/');
+define('DECODA_HOOKS', DECODA .'hooks/');
 define('DECODA_FILTERS', DECODA .'filters/');
 define('DECODA_EMOTICONS', DECODA .'emoticons/');
 
@@ -21,7 +22,7 @@ define('DECODA_EMOTICONS', DECODA .'emoticons/');
 spl_autoload_register();
 set_include_path(implode(PATH_SEPARATOR, array(
 	get_include_path(),
-	DECODA, DECODA_GESHI, DECODA_CONFIG, DECODA_FILTERS
+	DECODA, DECODA_GESHI, DECODA_HOOKS, DECODA_CONFIG, DECODA_FILTERS
 )));
 
 class Decoda {
@@ -42,11 +43,7 @@ class Decoda {
 	protected $_config = array(
 		'open' => '[',
 		'close' => ']',
-		'geshi' => true,
 		'parse' => true,
-		'censor' => true,
-		'emoticons' => true,
-		'clickable' => true,
 		'shorthand' => false,
 		'xhtml' => false,
 		'quoteDepth' => 2,
@@ -77,6 +74,24 @@ class Decoda {
 	 * @var array
 	 */
 	protected $_filterMap = array();
+	
+	/**
+	 * Message strings for localization purposes.
+	 *
+	 * @access protected
+	 * @var array
+	 * @static
+	 */
+	protected static $_messages = array(
+		'en-us' => array(
+			'spoiler'	=> 'Spoiler',
+			'hide'		=> 'Hide',
+			'show'		=> 'Show',
+			'link'		=> 'link',
+			'mail'		=> 'mail',
+			'quoteBy'	=> 'Quote by {author}'
+		)
+	);
 
 	/**
 	 * The root node object.
@@ -131,7 +146,7 @@ class Decoda {
 	 * @return this
 	 * @chainable
 	 */
-	public function add(DecodaFilter $filter) {
+	public function addFilter(DecodaFilter $filter) {
 		$class = get_class($filter);
 		$tags = $filter->tags();
 		
@@ -143,6 +158,10 @@ class Decoda {
 		}
 		
 		return $this;
+	}
+	
+	public function addHook(DecodaHook $hook) {
+		
 	}
 	
 	/**
@@ -208,6 +227,18 @@ class Decoda {
 	}
 	
 	/**
+	 * Return a message string if it exists.
+	 *
+	 * @access public
+	 * @param string $key
+	 * @return string
+	 * @static
+	 */
+	public static function message($key, $locale = 'en-us') {
+		return isset(self::$_messages[$locale][$key]) ? self::$_messages[$locale][$key] : '';
+	}
+	
+	/**
 	 * Parse the node list by looping through each one, validating, applying filters, building and finally concatenating the string.
 	 * 
 	 * @access public
@@ -224,13 +255,13 @@ class Decoda {
 		
 		// If no filters added, setup defaults
 		if (empty($this->_filters)) {
-			$this->add(new DefaultFilter());
-			$this->add(new EmailFilter());
-			$this->add(new ImageFilter());
-			$this->add(new UrlFilter());
-			$this->add(new TextFilter());
-			$this->add(new BlockFilter());
-			$this->add(new VideoFilter());
+			$this->addFilter(new DefaultFilter());
+			$this->addFilter(new EmailFilter());
+			$this->addFilter(new ImageFilter());
+			$this->addFilter(new UrlFilter());
+			$this->addFilter(new TextFilter());
+			$this->addFilter(new BlockFilter());
+			$this->addFilter(new VideoFilter());
 		}
 		
         $this->_parseChunks();
@@ -276,6 +307,30 @@ class Decoda {
 	 */
 	public function tags() {
 		return $this->_tags;
+	}
+	
+	/**
+	 * Update the locale message strings.
+	 *
+	 * @access public
+	 * @param string $locale
+	 * @param string|array $key
+	 * @param string $message
+	 * @return void
+	 * @static
+	 */
+	public static function translate($locale, $key, $message = '') {
+		if (is_array($key)) {
+			foreach ($key as $index => $message) {
+				self::translate($index, $message, $locale);
+			}
+		} else {
+			if (empty(self::$_messages[$locale])) {
+				self::$_messages[$locale] = self::$_messages['en-us'];
+			}
+			
+			self::$_messages[$locale][$key] = $message;
+		}
 	}
 	
 	/**

@@ -20,6 +20,7 @@ define('DECODA_EMOTICONS', DECODA .'emoticons/');
 // Includes
 spl_autoload_register();
 set_include_path(implode(PATH_SEPARATOR, array(
+	get_include_path(),
 	DECODA, DECODA_GESHI, DECODA_CONFIG, DECODA_FILTERS
 )));
 

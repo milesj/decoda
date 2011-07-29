@@ -40,10 +40,10 @@ abstract class DecodaFilter {
 	/**
 	 * Parent Decoda object.
 	 * 
-	 * @access private
+	 * @access protected
 	 * @var Decoda
 	 */
-	private $__parser;
+	protected $_parser;
 
 	/**
 	 * Return a tag if it exists, and merge with defaults.
@@ -86,7 +86,7 @@ abstract class DecodaFilter {
 		}
 		
 		$attributes = $tag['attributes'];
-		$xhtml = $this->__parser->config('xhtml');
+		$xhtml = $this->_parser->config('xhtml');
 		$attr = '';
 		$tag = $setup['tag'];
 		
@@ -129,7 +129,7 @@ abstract class DecodaFilter {
 	 * @return void
 	 */
 	public function setParser(Decoda $parser) {
-		$this->__parser = $parser;
+		$this->_parser = $parser;
 	}
 	
 }

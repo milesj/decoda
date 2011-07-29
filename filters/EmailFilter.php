@@ -54,6 +54,10 @@ class EmailFilter extends DecodaFilter {
 
 		$tag['attributes']['default'] = 'mailto:'. $encrypted;
 		
+		if ($this->_parser->config('shorthand')) {
+			return '['. parent::parse($tag, Decoda::message('mail')) .']';
+		}
+		
 		return parent::parse($tag, $content);
 	}
 	

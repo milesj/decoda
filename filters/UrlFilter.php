@@ -33,4 +33,20 @@ class UrlFilter extends DecodaFilter {
 		)
 	);
 	
+	/**
+	 * Using shorthand variation if enabled.
+	 * 
+	 * @access public
+	 * @param array $tag
+	 * @param string $content
+	 * @return string
+	 */
+	public function parse(array $tag, $content) {
+		if ($this->_parser->config('shorthand')) {
+			return '['. parent::parse($tag, Decoda::message('link')) .']';
+		}
+		
+		return parent::parse($tag, $content);
+	}
+	
 }

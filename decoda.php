@@ -266,27 +266,21 @@ class Decoda {
 	 * @return string
 	 */
 	public function parse() {
-		if (!$this->config('parse')) {
-			$this->_parsed = $this->_string;
-		}
-		
 		if (!empty($this->_parsed)) {
 			return $this->_parsed;
 		}
 		
-		// If no filters added, setup defaults
-		if (empty($this->_filters)) {
-			$this->addFilter(new DefaultFilter());
-			$this->addFilter(new EmailFilter());
-			$this->addFilter(new ImageFilter());
-			$this->addFilter(new UrlFilter());
-			$this->addFilter(new TextFilter());
-			$this->addFilter(new BlockFilter());
-			$this->addFilter(new VideoFilter());
-		}
+		$this->_defaults();
+		$this->_trigger('beforeParse');
 		
-        $this->_parseChunks();
-		$this->_parsed = $this->_node->parse();
+		if ($this->config('parse')) {
+			$this->_parseChunks();
+			$this->_parsed = $this->_node->parse();
+		} else {
+			$this->_parsed = $this->_string;
+		}
+			
+		$this->_trigger('afterParse');
 		
 		return $this->_parsed;
     }
@@ -330,6 +324,91 @@ class Decoda {
 			}
 			
 			self::$_messages[$locale][$key] = $message;
+		}
+	}
+	
+	/**
+	 * Determine if the string is an open or closing tag. If so, parse out the attributes.
+	 * 
+	 * @access protected
+	 * @param string $string
+	 * @return array 
+	 */
+	protected function _buildTag($string) {
+        $tag = array(
+			'text' => $string, 
+			'attributes' => array()
+		);
+
+		// Closing tag
+        if (substr($string, 1, 1) == '/') {
+            $tag['tag'] = strtolower(substr($string, 2, strlen($string) - 3));
+			$tag['type'] = self::TAG_CLOSE;
+			
+            if (!isset($this->_tags[$tag['tag']])) {
+				return false;
+			}
+		
+		// Opening tag
+        } else {
+            if (strpos($string, ' ') && (strpos($string, '=') === false)) {
+                return false;
+            }
+			
+			// Find tag
+			$oe = preg_quote($this->config('open'));
+            $ce = preg_quote($this->config('close'));
+			
+			if (preg_match('/'. $oe .'([a-z0-9]+)(.*?)'. $ce .'/i', $string, $matches)) {
+				$tag['type'] = self::TAG_OPEN;
+				$tag['tag'] = $matches[1];
+			}
+			
+			if (!isset($this->_tags[$tag['tag']])) {
+				return false;
+			}
+			
+			// Find attributes
+			preg_match_all('/([a-z]+)=(.*)/i', $string, $matches, PREG_SET_ORDER);
+
+			if (!empty($matches)) {
+				$source = $this->_tags[$tag['tag']];
+				
+				foreach ($matches as $match) {
+					$key = strtolower($match[1]);
+					$value = trim(trim($match[2], $this->config('close')), '"');
+					
+					if ($key == $tag['tag']) {
+						$key = 'default';
+					}
+					
+					if (isset($source['attributes'][$key])) {
+						if (preg_match($source['attributes'][$key], $value)) {
+							$tag['attributes'][$key] = $value;
+						}
+					}
+				}
+			}
+        }
+		
+		return $tag;
+    }
+	
+	/**
+	 * Apply default filters if none are set.
+	 * 
+	 * @access protected
+	 * @return void
+	 */
+	protected function _defaults() {
+		if (empty($this->_filters)) {
+			$this->addFilter(new DefaultFilter());
+			$this->addFilter(new EmailFilter());
+			$this->addFilter(new ImageFilter());
+			$this->addFilter(new UrlFilter());
+			$this->addFilter(new TextFilter());
+			$this->addFilter(new BlockFilter());
+			$this->addFilter(new VideoFilter());
 		}
 	}
 	
@@ -419,70 +498,20 @@ class Decoda {
     }
 	
 	/**
-	 * Determine if the string is an open or closing tag. If so, parse out the attributes.
+	 * Trigger all hooks at an event specified by the method name.
 	 * 
 	 * @access protected
-	 * @param string $string
-	 * @return array 
+	 * @param string $method 
+	 * @return void
 	 */
-	protected function _buildTag($string) {
-        $tag = array(
-			'text' => $string, 
-			'attributes' => array()
-		);
-
-		// Closing tag
-        if (substr($string, 1, 1) == '/') {
-            $tag['tag'] = strtolower(substr($string, 2, strlen($string) - 3));
-			$tag['type'] = self::TAG_CLOSE;
-			
-            if (!isset($this->_tags[$tag['tag']])) {
-				return false;
-			}
-		
-		// Opening tag
-        } else {
-            if (strpos($string, ' ') && (strpos($string, '=') === false)) {
-                return false;
-            }
-			
-			// Find tag
-			$oe = preg_quote($this->config('open'));
-            $ce = preg_quote($this->config('close'));
-			
-			if (preg_match('/'. $oe .'([a-z0-9]+)(.*?)'. $ce .'/i', $string, $matches)) {
-				$tag['type'] = self::TAG_OPEN;
-				$tag['tag'] = $matches[1];
-			}
-			
-			if (!isset($this->_tags[$tag['tag']])) {
-				return false;
-			}
-			
-			// Find attributes
-			preg_match_all('/([a-z]+)=(.*)/i', $string, $matches, PREG_SET_ORDER);
-
-			if (!empty($matches)) {
-				$source = $this->_tags[$tag['tag']];
-				
-				foreach ($matches as $match) {
-					$key = strtolower($match[1]);
-					$value = trim(trim($match[2], $this->config('close')), '"');
-					
-					if ($key == $tag['tag']) {
-						$key = 'default';
-					}
-					
-					if (isset($source['attributes'][$key])) {
-						if (preg_match($source['attributes'][$key], $value)) {
-							$tag['attributes'][$key] = $value;
-						}
-					}
+	protected function _trigger($method) {
+		if (!empty($this->_hooks)) {
+			foreach ($this->_hooks as $hook) {
+				if (method_exists($method, $hook)) {
+					$this->_parsed = $hook->{$method}($this->_parsed, $this);
 				}
 			}
-        }
-		
-		return $tag;
-    }
+		}
+	}
 	
 }

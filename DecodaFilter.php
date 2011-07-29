@@ -110,6 +110,10 @@ abstract class DecodaFilter {
 			}
 		}
 		
+		if ($setup['lineBreaks']) {
+			$content = nl2br($content, $xhtml);
+		}
+		
 		$parsed = '<'. $tag . $attr;
 		
 		if ($setup['selfClose']) {

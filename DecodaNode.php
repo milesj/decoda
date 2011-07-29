@@ -35,20 +35,20 @@ class DecodaNode {
 	protected $_parsed = '';
 	
 	/**
+	 * Parent Decoda object.
+	 * 
+	 * @access protected
+	 * @var Decoda
+	 */
+	protected $_parser;
+	
+	/**
 	 * The raw string before parsing.
 	 * 
 	 * @access protected
 	 * @var string
 	 */
 	protected $_string = '';
-	
-	/**
-	 * Parent Decoda object.
-	 * 
-	 * @access private
-	 * @var Decoda
-	 */
-	private $__parser;
 	
 	/**
 	 * Convert the extracted chunks into nodes. 
@@ -67,9 +67,12 @@ class DecodaNode {
 		
 		$this->setParser($parser);
 		
+		$first = $chunks[0];
+		$last = $chunks[count($chunks) - 1];
+		
 		// Validate the data
-		if ($chunks[0]['type'] == Decoda::TAG_OPEN) {
-			$this->_parent = $chunks[0];
+		if ($first['type'] == Decoda::TAG_OPEN && $last['type'] == DECODA::TAG_CLOSE && $first['tag'] == $last['tag']) {
+			$this->_parent = $first;
 		}
 		
 		$chunks = $this->_cleanChunks($chunks);
@@ -84,9 +87,9 @@ class DecodaNode {
 				
 		foreach ($chunks as $i => $chunk) {
 			if ($chunk['type'] == Decoda::TAG_NONE && empty($tag)) {
-				$this->_nodes[] = new DecodaNode($chunk['text'], $this->__parser);
+				$this->_nodes[] = new DecodaNode($chunk['text'], $this->_parser);
 				
-			} else if ($chunk['type'] == Decoda::TAG_OPEN && $i != 0) {
+			} else if ($chunk['type'] == Decoda::TAG_OPEN) {
 				$openCount++;
 
 				if (empty($tag)) {
@@ -102,7 +105,7 @@ class DecodaNode {
 					$tag = array();
 
 					// Slice a section of the array if the correct closing tag is found
-					$this->_nodes[] = new DecodaNode(array_slice($chunks, $openIndex, ($closeIndex - $openIndex) + 1), $this->__parser);
+					$this->_nodes[] = new DecodaNode(array_slice($chunks, $openIndex, ($closeIndex - $openIndex) + 1), $this->_parser);
 				}
 			}
 			
@@ -126,7 +129,12 @@ class DecodaNode {
 
 		// No child nodes, return text
 		if (empty($this->_nodes)) {
-			$this->_parsed = $this->_string;
+			// Only nl2br nodes that are purely linebreaks/whitespace
+			if (trim($this->_string) === "") {
+				$this->_parsed = nl2br($this->_string);
+			} else {
+				$this->_parsed = $this->_string;
+			}
 
 		// Child nodes, validate and build tags
 		} else {
@@ -135,7 +143,7 @@ class DecodaNode {
 			}
 			
 			if (!empty($this->_parent)) {
-				$this->_parsed = $this->__parser->getFilterByTag($this->_parent['tag'])->parse($this->_parent, $this->_parsed);
+				$this->_parsed = $this->_parser->getFilterByTag($this->_parent['tag'])->parse($this->_parent, $this->_parsed);
 			}
 		}
 
@@ -150,7 +158,7 @@ class DecodaNode {
 	 * @return void
 	 */
 	public function setParser(Decoda $parser) {
-		$this->__parser = $parser;
+		$this->_parser = $parser;
 	}
 	
 	/**
@@ -161,14 +169,13 @@ class DecodaNode {
 	 * @return array 
 	 */
 	protected function _cleanChunks($chunks) {
-		$tag = $this->_parent['tag'];
 		$clean = array();
 		$openTags = array();
 		$prevTag = array();
 		$root = true;
 		
-		if ($tag) {
-			$parent = $this->__parser->getFilterByTag($tag)->tag($tag);
+		if ($this->_parent) {
+			$parent = $this->_parser->getFilterByTag($this->_parent['tag'])->tag($this->_parent['tag']);
 			$root = false;
 		}
 		
@@ -242,7 +249,7 @@ class DecodaNode {
 	 * @return boolean 
 	 */
 	protected function _isAllowed($parent, $tag) {
-		$filter = $this->__parser->getFilterByTag($tag);
+		$filter = $this->_parser->getFilterByTag($tag);
 
 		if (!$filter) {
 			return false;

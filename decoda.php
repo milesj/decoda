@@ -47,8 +47,7 @@ class Decoda {
 		'shorthand' => false,
 		'xhtml' => false,
 		'quoteDepth' => 2,
-		'childQuotes' => false,
-		'jquery' => false
+		'childQuotes' => false
 	);
 	
 	/**

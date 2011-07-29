@@ -10,12 +10,12 @@ class DefaultFilter extends DecodaFilter {
 	 */
 	protected $_tags = array(  
 		'b' => array(
-			'tag' => 'b',
+			'tag' => array('b', 'strong'),
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_INLINE
 		),
 		'i' => array(
-			'tag' => 'i',
+			'tag' => array('i', 'em'),
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_INLINE
 		),

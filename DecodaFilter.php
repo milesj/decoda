@@ -36,6 +36,14 @@ abstract class DecodaFilter {
 		'map' => array(),
 		'format' => ''
 	);
+	
+	/**
+	 * Parent Decoda object.
+	 * 
+	 * @access private
+	 * @var Decoda
+	 */
+	private $__parser;
 
 	/**
 	 * Return a tag if it exists, and merge with defaults.
@@ -71,13 +79,20 @@ abstract class DecodaFilter {
 	 * @return string 
 	 */
 	public function parse(array $tag, $content) {
-		if (empty($this->_tags[$tag['tag']])) {
+		$setup = $this->tag($tag['tag']);
+		
+		if (empty($setup)) {
 			return;
 		}
 		
 		$attributes = $tag['attributes'];
-		$setup = $this->tag($tag['tag']);
+		$xhtml = $this->__parser->config('xhtml');
 		$attr = '';
+		$tag = $setup['tag'];
+		
+		if (is_array($tag)) {
+			$tag = $tag[$xhtml];
+		}
 		
 		if (!empty($setup['format'])) {
 			$attr = ' '. $setup['format'];
@@ -95,15 +110,26 @@ abstract class DecodaFilter {
 			}
 		}
 		
-		$parsed = '<'. $setup['tag'] . $attr;
+		$parsed = '<'. $tag . $attr;
 		
 		if ($setup['selfClose']) {
-			$parsed .= '/>';
+			$parsed .= $xhtml ? '/>' : '>';
 		} else {
-			$parsed .= '>'. $content .'</'. $setup['tag'] .'>';
+			$parsed .= '>'. $content .'</'. $tag .'>';
 		}
 		
 		return $parsed;
+	}
+	
+	/**
+	 * Set the Decoda parser.
+	 * 
+	 * @access public
+	 * @param Decoda $parser 
+	 * @return void
+	 */
+	public function setParser(Decoda $parser) {
+		$this->__parser = $parser;
 	}
 	
 }

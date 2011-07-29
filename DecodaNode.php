@@ -60,12 +60,12 @@ class DecodaNode {
 	 * @return void
 	 */
 	public function __construct($chunks, Decoda $parser) {
-		$this->__parser = $parser;
-		
 		if (is_string($chunks)) {
 			$this->_string = $chunks;
 			return;
 		}
+		
+		$this->setParser($parser);
 		
 		// Validate the data
 		if ($chunks[0]['type'] == Decoda::TAG_OPEN) {
@@ -140,6 +140,17 @@ class DecodaNode {
 		}
 
 		return $this->_parsed;
+	}
+	
+	/**
+	 * Set the Decoda parser.
+	 * 
+	 * @access public
+	 * @param Decoda $parser 
+	 * @return void
+	 */
+	public function setParser(Decoda $parser) {
+		$this->__parser = $parser;
 	}
 	
 	/**

@@ -155,6 +155,7 @@ class Decoda {
 	 * @chainable
 	 */
 	public function addFilter(DecodaFilter $filter) {
+		$filter->setParser($this);
 		$class = get_class($filter);
 		$tags = $filter->tags();
 		
@@ -177,6 +178,8 @@ class Decoda {
 	 * @chainable
 	 */
 	public function addHook(DecodaHook $hook) {
+		$this->_hooks[] = $hook;
+		
 		return $this;
 	}
 	

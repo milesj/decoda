@@ -2,10 +2,17 @@
 
 class VideoFilter extends DecodaFilter {
 
+	/**
+	 * Supported tags.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
 	protected $_tags = array(  
 		'video' => array(
-			'type' => 'block',
-			'allowed' => 'none',
+			'template' => 'video',
+			'type' => self::TYPE_BLOCK,
+			'allowed' => self::TYPE_NONE,
 			'attributes' => array(
 				'default' => '([a-zA-Z0-9]+)',
 				'size' => '(small|medium|large)'
@@ -64,7 +71,15 @@ class VideoFilter extends DecodaFilter {
 		)
 	);
 	
-	public function parse($tag, $content) {
+	/**
+	 * Custom build the HTML for videos.
+	 * 
+	 * @access public
+	 * @param array $tag
+	 * @param string $content
+	 * @return string
+	 */
+	public function parse(array $tag, $content) {
 		$provider = $tag['attributes']['default'];
 		$size = isset($tag['attributes']['size']) ? $tag['attributes']['size'] : 'medium';
 		

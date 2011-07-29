@@ -76,6 +76,14 @@ class Decoda {
 	protected $_filterMap = array();
 	
 	/**
+	 * List of all instantiated hook objects.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
+	protected $_hooks = array();
+	
+	/**
 	 * Message strings for localization purposes.
 	 *
 	 * @access protected
@@ -143,7 +151,7 @@ class Decoda {
 	 * 
 	 * @access public
 	 * @param DecodaFilter $filter 
-	 * @return this
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function addFilter(DecodaFilter $filter) {
@@ -160,8 +168,16 @@ class Decoda {
 		return $this;
 	}
 	
+	/**
+	 * Add hooks that are triggered at specific events.
+	 * 
+	 * @access public
+	 * @param DecodaHook $hook
+	 * @return Decoda 
+	 * @chainable
+	 */
 	public function addHook(DecodaHook $hook) {
-		
+		return $this;
 	}
 	
 	/**
@@ -181,7 +197,7 @@ class Decoda {
 	 * @access public
 	 * @param string $options
 	 * @param mixed $value
-	 * @return this
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function configure($options, $value = true) {
@@ -203,17 +219,21 @@ class Decoda {
 	 * 
 	 * @access public
 	 * @param string $filter
-	 * @return array|null
+	 * @return DecodaFilter
 	 */
-	public function filter($filter) {
-		if (isset($this->_filters[$filter])) {
-			return $this->_filters[$filter];
-
-		} else if (isset($this->_filterMap[$filter])) {
-			return $this->_filters[$this->_filterMap[$filter]];
-		}
-		
-		return null;
+	public function getFilter($filter) {
+		return isset($this->_filters[$filter]) ? $this->_filters[$filter] : null;
+	}
+	
+	/**
+	 * Return a filter based on its supported tag.
+	 * 
+	 * @access public
+	 * @param string $tag
+	 * @return DecodaFilter
+	 */
+	public function getFilterByTag($tag) {
+		return isset($this->_filterMap[$tag]) ? $this->_filters[$this->_filterMap[$tag]] : null;
 	}
 	
 	/**
@@ -222,7 +242,7 @@ class Decoda {
 	 * @access public
 	 * @return array
 	 */
-	public function filters() {
+	public function getFilters() {
 		return $this->_filters;
 	}
 	
@@ -231,6 +251,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $key
+	 * @param string $locale
 	 * @return string
 	 * @static
 	 */
@@ -275,7 +296,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $string
-	 * @return this
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function reset($string) {
@@ -287,28 +308,7 @@ class Decoda {
 		
 		return $this;
 	}
-	
-	/**
-	 * Return a single tag.
-	 * 
-	 * @access public
-	 * @param string $tag
-	 * @return array|null
-	 */
-	public function tag($tag) {
-		return isset($this->_tags[$tag]) ? $this->_tags[$tag] : null;
-	}
-	
-	/**
-	 * Return all tags.
-	 * 
-	 * @access public
-	 * @return array
-	 */
-	public function tags() {
-		return $this->_tags;
-	}
-	
+
 	/**
 	 * Update the locale message strings.
 	 *
@@ -414,7 +414,7 @@ class Decoda {
             $strPos = $newPos;
         }
 		
-		// Convert the discovered tags into concatenated nodes
+		// Convert the discovered tags into nodes
 		$this->_node = new DecodaNode($this->_chunks, $this);
     }
 	

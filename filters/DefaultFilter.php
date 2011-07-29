@@ -2,36 +2,42 @@
 
 class DefaultFilter extends DecodaFilter {
 
+	/**
+	 * Supported tags.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
 	protected $_tags = array(  
 		'b' => array(
 			'tag' => 'b',
-			'type' => 'inline',
-			'allowed' => 'inline'
+			'type' => self::TYPE_INLINE,
+			'allowed' => self::TYPE_INLINE
 		),
 		'i' => array(
 			'tag' => 'i',
-			'type' => 'inline',
-			'allowed' => 'inline'
+			'type' => self::TYPE_INLINE,
+			'allowed' => self::TYPE_INLINE
 		),
 		'u' => array(
 			'tag' => 'u',
-			'type' => 'inline',
-			'allowed' => 'inline'
+			'type' => self::TYPE_INLINE,
+			'allowed' => self::TYPE_INLINE
 		),
 		's' => array(
 			'tag' => 'del',
-			'type' => 'inline',
-			'allowed' => 'inline'
+			'type' => self::TYPE_INLINE,
+			'allowed' => self::TYPE_INLINE
 		),
 		'sub' => array(
 			'tag' => 'sub',
-			'type' => 'inline',
-			'allowed' => 'inline'
+			'type' => self::TYPE_INLINE,
+			'allowed' => self::TYPE_INLINE
 		),
 		'sup' => array(
 			'tag' => 'sup',
-			'type' => 'inline',
-			'allowed' => 'inline'
+			'type' => self::TYPE_INLINE,
+			'allowed' => self::TYPE_INLINE
 		)
 	);
 	

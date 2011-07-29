@@ -2,21 +2,29 @@
 
 class ListFilter extends DecodaFilter {
 
+	/**
+	 * Supported tags.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
 	protected $_tags = array(  
 		'olist' => array(
 			'tag' => 'ol',
-			'type' => 'block',
+			'type' => self::TYPE_BLOCK,
+			'lineBreaks' => false,
 			'allowed' => array('li')
 		),
 		'list' => array(
 			'tag' => 'ul',
-			'type' => 'block',
+			'type' => self::TYPE_BLOCK,
+			'lineBreaks' => false,
 			'allowed' => array('li')
 		),
 		'li' => array(
 			'tag' => 'li',
-			'type' => 'block',
-			'allowed' => 'all',
+			'type' => self::TYPE_BLOCK,
+			'allowed' => self::TYPE_BOTH,
 			'parent' => array('olist', 'list')
 		)
 	);

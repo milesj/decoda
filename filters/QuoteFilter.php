@@ -2,11 +2,17 @@
 
 class QuoteFilter extends DecodaFilter {
 
+	/**
+	 * Supported tags.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
 	protected $_tags = array(  
 		'quote' => array(
-			'tag' => array('quote'),
-			'type' => 'block',
-			'allowed' => 'all',
+			'template' => 'quote',
+			'type' => self::TYPE_BLOCK,
+			'allowed' => self::TYPE_BOTH,
 			'attributes' => array(
 				'default' => '(.*?)',
 				'date' => '(.*?)'

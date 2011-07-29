@@ -2,11 +2,17 @@
 
 class EmailFilter extends DecodaFilter {
 
+	/**
+	 * Supported tags.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
 	protected $_tags = array(  
 		'email' => array(
 			'tag' => 'a',
-			'type' => 'inline',
-			'allowed' => 'inline',
+			'type' => self::TYPE_INLINE,
+			'allowed' => self::TYPE_INLINE,
 			'attributes' => array(
 				'default' => '(.*?)'
 			),
@@ -16,8 +22,8 @@ class EmailFilter extends DecodaFilter {
 		),
 		'mail' => array(
 			'tag' => 'a',
-			'type' => 'inline',
-			'allowed' => 'inline',
+			'type' => self::TYPE_INLINE,
+			'allowed' => self::TYPE_INLINE,
 			'attributes' => array(
 				'default' => '(.*?)'
 			),
@@ -27,7 +33,15 @@ class EmailFilter extends DecodaFilter {
 		)
 	);
 	
-	public function parse($tag, $content) {
+	/**
+	 * Encrypt the email before parsing it within tags.
+	 * 
+	 * @access public
+	 * @param array $tag
+	 * @param string $content
+	 * @return string
+	 */
+	public function parse(array $tag, $content) {
 		$email = $tag['attributes']['default'];
 		$length = strlen($email);
 		$encrypted = '';

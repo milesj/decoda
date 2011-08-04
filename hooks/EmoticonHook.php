@@ -24,4 +24,36 @@ class EmoticonHook extends DecodaHook {
 		}
     }
 	
+	/**
+	 * Parse out the emoticons and replace with images.
+	 * 
+	 * @access public
+	 * @param string $content
+	 * @return string
+	 */
+	public function parse($content) {
+		$imageFilter = $this->_parser->getFilter('Image');
+		
+		if (!$imageFilter) {
+			return $content;
+		}
+		
+		$path = str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', DECODA_EMOTICONS);
+		$path = str_replace(array('\\', '/'), '/', $path);
+
+		foreach ($this->_emoticons as $emoticon => $smilies) {
+			foreach ($smilies as $smile) {
+				$image = $imageFilter->parse(array(
+					'tag' => 'img',
+					'attributes' => array()
+				), $path . $emoticon .'.png');
+
+				$content = preg_replace('/(\s)?'. preg_quote($smile, '/') .'(\s)?/is', '$1'. $image .'$2', $content);
+				unset($image);
+			}
+		}
+		
+		return $content;
+	}
+	
 }

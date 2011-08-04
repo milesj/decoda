@@ -41,7 +41,10 @@ class ImageFilter extends DecodaFilter {
 	 */
 	public function parse(array $tag, $content) {
 		$tag['attributes']['src'] = $content;
-		$tag['attributes']['alt'] = '';
+		
+		if (!isset($tag['attributes']['alt'])) {
+			$tag['attributes']['alt'] = '';
+		}
 		
 		return parent::parse($tag, $content);
 	}

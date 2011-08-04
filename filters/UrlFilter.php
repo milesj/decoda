@@ -1,6 +1,8 @@
 <?php
 
 class UrlFilter extends DecodaFilter {
+	
+	const URL_PATTERN = '/^((?:http|ftp|irc|file|telnet)s?:\/\/)(.*?)$/';
 
 	/**
 	 * Supported tags.
@@ -13,8 +15,9 @@ class UrlFilter extends DecodaFilter {
 			'tag' => 'a',
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_INLINE,
+			'pattern' => self::URL_PATTERN,
 			'attributes' => array(
-				'default' => '((?:http|ftp|irc|file|telnet)s?:\/\/.*?)'
+				'default' => self::URL_PATTERN
 			),
 			'map' => array(
 				'default' => 'href'
@@ -24,8 +27,9 @@ class UrlFilter extends DecodaFilter {
 			'tag' => 'a',
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_INLINE,
+			'pattern' => self::URL_PATTERN,
 			'attributes' => array(
-				'default' => '((?:http|ftp|irc|file|telnet)s?:\/\/.*?)'
+				'default' => self::URL_PATTERN
 			),
 			'map' => array(
 				'default' => 'href'

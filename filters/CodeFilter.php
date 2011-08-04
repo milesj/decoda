@@ -36,4 +36,16 @@ class CodeFilter extends DecodaFilter {
 		)
 	);
 	
+	/**
+	 * Use the content as the image source.
+	 * 
+	 * @access public
+	 * @param array $tag
+	 * @param string $content
+	 * @return string
+	 */
+	public function parse(array $tag, $content) {
+		return parent::parse($tag, htmlentities($content, ENT_NOQUOTES, 'UTF-8'));
+	}
+	
 }

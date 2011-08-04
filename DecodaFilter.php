@@ -1,6 +1,6 @@
 <?php
 
-abstract class DecodaFilter {
+abstract class DecodaFilter extends DecodaAbstract {
 	
 	/**
 	 * Type constants.
@@ -34,16 +34,9 @@ abstract class DecodaFilter {
 		'parent' => array(),
 		'attributes' => array(),
 		'map' => array(),
-		'format' => ''
+		'format' => '',
+		'pattern' => ''
 	);
-	
-	/**
-	 * Parent Decoda object.
-	 * 
-	 * @access protected
-	 * @var Decoda
-	 */
-	protected $_parser;
 
 	/**
 	 * Return a tag if it exists, and merge with defaults.
@@ -94,6 +87,20 @@ abstract class DecodaFilter {
 			$tag = $tag[$xhtml];
 		}
 		
+		if ($setup['lineBreaks']) {
+			$content = nl2br($content, $xhtml);
+		}
+
+		// If content doesn't match the pattern, don't wrap in a tag
+		if (empty($attributes['default']) && !empty($setup['pattern'])) {
+			if (!preg_match($setup['pattern'], $content)) {
+				return $content;
+			}
+			
+			$attributes['default'] = $content;
+		}
+		
+		// Format attributes
 		if (!empty($setup['format'])) {
 			$attr = ' '. $setup['format'];
 
@@ -110,10 +117,6 @@ abstract class DecodaFilter {
 			}
 		}
 		
-		if ($setup['lineBreaks']) {
-			$content = nl2br($content, $xhtml);
-		}
-		
 		$parsed = '<'. $tag . $attr;
 		
 		if ($setup['selfClose']) {
@@ -123,17 +126,6 @@ abstract class DecodaFilter {
 		}
 		
 		return $parsed;
-	}
-	
-	/**
-	 * Set the Decoda parser.
-	 * 
-	 * @access public
-	 * @param Decoda $parser 
-	 * @return void
-	 */
-	public function setParser(Decoda $parser) {
-		$this->_parser = $parser;
 	}
 	
 }

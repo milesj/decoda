@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 
 // Include Decoda
-include('decoda.php'); ?>
+include '../Decoda.php'; ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -13,6 +13,10 @@ include('decoda.php'); ?>
 	body { padding: 15px; font: normal 12px Arial, Tahoma, sans-serif; color: #000; }
 	h1, h2, h3, h4, h5, h6, div, img, form, blockquote { margin: 0; padding: 0; }
 	h2 { margin-top: 50px; }
+	.align-left { text-align: left; }
+	.align-right { text-align: right; }
+	.align-center { text-align: center; }
+	.align-justify { text-align: justify; }
 	.decoda-quote { background: #FFFFCC; padding: 10px; margin: 0 0 15px 15px; }
 	.decoda-quoteAuthor { font-weight: bold; margin-bottom: 5px; }
 	.decoda-quoteDate { float: right; }
@@ -28,7 +32,7 @@ include('decoda.php'); ?>
 
 <?php $string = 'Copyright 2009-'. date('Y') .' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Basic Styles</h2>
 
@@ -45,7 +49,7 @@ $code->parse(); ?>
 Sub[sub]Script[/sub]
 Super[sup]Script[/sup]';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>URLs and Emails</h2>
 
@@ -64,32 +68,31 @@ http://domain.com
 http://sub.domain.com/?with=param
 http://user:pass@domain.com:80/?with=param';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Emoticons</h2>
 
 <?php $string = ':) ;[ :D :O <3 :/ :aw: :angry:';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Text Styles</h2>
 
 <?php $string = '[b]Lorem ipsum dolor sit amet[/b], consectetuer adipiscing elit. Aliquam laoreet pulvinar sem. Aenean at odio. [i]Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;[/i] Donec elit. Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante. [u]Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu[/u], eleifend condimentum sem est quis dolor. Curabitur sed tellus. Donec id dolor.';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Font Styles</h2>
 
 <?php $string = '[font="Verdana"]Lorem ipsum dolor sit amet, consectetuer adipiscing elit. [color=red]Aliquam laoreet pulvinar sem. Aenean at odio.[/color] Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec elit. Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante. Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu, eleifend condimentum sem est quis dolor. Curabitur sed tellus. Donec id dolor.[/font]';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Removing Styles</h2>
 
 <?php $string = 'This string has [b]specific styles[/b] that [s]will be[/s] removed [u]completely[/u].';
 $code = new Decoda($string);
-$code->removeCode('b')->removeCode('s');
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Alignment</h2>
 
@@ -97,7 +100,7 @@ $code->parse(); ?>
     Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec elit. Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante.
     Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu, eleifend condimentum sem est quis dolor. Curabitur sed tellus. Donec id dolor.[/align]';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Div Blocks</h2>
 
@@ -108,7 +111,7 @@ $code->parse(); ?>
 [note]This is a note![/note]
 [alert]This is an alert![/alert]';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Quotes</h2>
 
@@ -116,7 +119,7 @@ $code->parse(); ?>
     Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec elit. Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante.
     Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu, eleifend condimentum sem est quis dolor. Curabitur sed tellus. Donec id dolor.[/quote]';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Nested Quotes</h2>
 
@@ -128,13 +131,13 @@ $code->parse(); ?>
     Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu, eleifend condimentum sem est quis dolor. Curabitur sed tellus. Donec id dolor.[/quote][/quote]';
 $code = new Decoda($string);
 $code->configure('childQuotes', true);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Spoilers</h2>
 
 <?php $string = '[spoiler]Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam laoreet pulvinar sem. Aenean at odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec elit. Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante. Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu, eleifend condimentum sem est quis dolor. Curabitur sed tellus. Donec id dolor.[/spoiler]';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Code Block</h2>
 
@@ -164,7 +167,7 @@ public function configure($options, $value = true) {
     }
 }[/code]';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Lists</h2>
 
@@ -185,19 +188,19 @@ $code->parse(); ?>
 [li]Curabitur sed tellus. Donec id dolor.[/li]
 [/olist]';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Images</h2>
 
 <?php $string = '[img]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]
 [img width=175 height=50]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]';
 $code = new Decoda($string);
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 <h2>Videos</h2>
 
 <?php $code = new Decoda('[video="youtube"]snZLmaVmd2o[/video]');
-$code->parse(); ?>
+echo $code->parse(); ?>
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 <?php
 
-class DecodaNode {
+class DecodaNode extends DecodaAbstract {
 	
 	/**
 	 * Extracted chunks of text and tags.
@@ -33,14 +33,6 @@ class DecodaNode {
 	 * @var string
 	 */
 	protected $_parsed = '';
-	
-	/**
-	 * Parent Decoda object.
-	 * 
-	 * @access protected
-	 * @var Decoda
-	 */
-	protected $_parser;
 	
 	/**
 	 * The raw string before parsing.
@@ -130,11 +122,11 @@ class DecodaNode {
 		// No child nodes, return text
 		if (empty($this->_nodes)) {
 			// Only nl2br nodes that are purely linebreaks/whitespace
-			if (trim($this->_string) === "") {
+			//if (trim($this->_string) === "") {
 				$this->_parsed = nl2br($this->_string);
-			} else {
-				$this->_parsed = $this->_string;
-			}
+			//} else {
+			//	$this->_parsed = $this->_string;
+			//}
 
 		// Child nodes, validate and build tags
 		} else {
@@ -148,17 +140,6 @@ class DecodaNode {
 		}
 
 		return $this->_parsed;
-	}
-	
-	/**
-	 * Set the Decoda parser.
-	 * 
-	 * @access public
-	 * @param Decoda $parser 
-	 * @return void
-	 */
-	public function setParser(Decoda $parser) {
-		$this->_parser = $parser;
 	}
 	
 	/**

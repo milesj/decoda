@@ -155,7 +155,7 @@ class Decoda {
 	 */
 	public function addFilter(DecodaFilter $filter) {
 		$filter->setParser($this);
-		$class = get_class($filter);
+		$class = str_replace('Filter', '', get_class($filter));
 		$tags = $filter->tags();
 		
 		$this->_filters[$class] = $filter;
@@ -177,6 +177,8 @@ class Decoda {
 	 * @chainable
 	 */
 	public function addHook(DecodaHook $hook) {
+		$hook->setParser($this);
+		
 		$this->_hooks[] = $hook;
 		
 		return $this;
@@ -273,7 +275,6 @@ class Decoda {
 		}
 		
 		$this->_defaults();
-		$this->_trigger('beforeParse');
 		
 		if ($this->config('parse')) {
 			$this->_parseChunks();
@@ -282,7 +283,7 @@ class Decoda {
 			$this->_parsed = $this->_string;
 		}
 			
-		$this->_trigger('afterParse');
+		$this->_trigger('parse');
 		
 		return $this->_parsed;
     }
@@ -338,6 +339,7 @@ class Decoda {
 	 */
 	protected function _buildTag($string) {
         $tag = array(
+			'tag' => '',
 			'text' => $string, 
 			'attributes' => array()
 		);
@@ -411,6 +413,7 @@ class Decoda {
 			$this->addFilter(new TextFilter());
 			$this->addFilter(new BlockFilter());
 			$this->addFilter(new VideoFilter());
+			$this->addFilter(new CodeFilter());
 		}
 	}
 	
@@ -509,8 +512,8 @@ class Decoda {
 	protected function _trigger($method) {
 		if (!empty($this->_hooks)) {
 			foreach ($this->_hooks as $hook) {
-				if (method_exists($method, $hook)) {
-					$this->_parsed = $hook->{$method}($this->_parsed, $this);
+				if (method_exists($hook, $method)) {
+					$this->_parsed = $hook->{$method}($this->_parsed);
 				}
 			}
 		}

@@ -1,12 +1,15 @@
 <?php
 
-abstract class DecodaHook {
-	
-	public function beforeParse(Decoda $decoda) {
-		
-	}
-	
-	public function afterParse($content, Decoda $decoda) {
+abstract class DecodaHook extends DecodaAbstract {
+
+	/**
+	 * Parse the given content.
+	 * 
+	 * @access public
+	 * @param string $content
+	 * @return string
+	 */
+	public function parse($content) {
 		return $content;
 	}
 	

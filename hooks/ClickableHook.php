@@ -3,7 +3,7 @@
 class ClickableHook extends DecodaHook {
 	
 	/**
-	 * Matches a link that begins with http(s)://, ftp(s)://, irc:// or an email@domain.tld.
+	 * Matches a link or an email, and converts it to an anchor tag.
 	 * 
 	 * @access public
 	 * @param string $content
@@ -19,11 +19,11 @@ class ClickableHook extends DecodaHook {
 			$content = preg_replace_callback('/(^|\n|\s)'. $protocol . $login . $domain . $port . $query .'/is', array($this, '_urlCallback'), $content);
 		}
 
-		// Based on schema http://en.wikipedia.org/wiki/Email_address
+		// Based on schema: http://en.wikipedia.org/wiki/Email_address
 		if ($this->_parser->getFilter('Email')) {
 			$content = preg_replace_callback(EmailFilter::EMAIL_PATTERN, array($this, '_emailCallback'), $content);
 		}
-		
+
 		return $content;
 	}
 

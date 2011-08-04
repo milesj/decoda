@@ -33,11 +33,11 @@ class EmoticonHook extends DecodaHook {
 	 */
 	public function parse($content) {
 		$imageFilter = $this->_parser->getFilter('Image');
-		
+
 		if (!$imageFilter) {
 			return $content;
 		}
-		
+
 		$path = str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', DECODA_EMOTICONS);
 		$path = str_replace(array('\\', '/'), '/', $path);
 
@@ -52,7 +52,7 @@ class EmoticonHook extends DecodaHook {
 				unset($image);
 			}
 		}
-		
+
 		return $content;
 	}
 	

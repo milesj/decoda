@@ -48,7 +48,11 @@ class BlockFilter extends DecodaFilter {
 		'div' => array(
 			'template' => 'div',
 			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_BOTH
+			'allowed' => self::TYPE_BOTH,
+			'attributes' => array(
+				'id' => '([-_a-zA-Z0-9]+)',
+				'class' => '([-_a-zA-Z0-9\s]+)' 
+			)
 		),
 		'spoiler' => array(
 			'template' => 'spoiler',

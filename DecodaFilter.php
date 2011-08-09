@@ -17,26 +17,6 @@ abstract class DecodaFilter extends DecodaAbstract {
 	 * @var array
 	 */
 	protected $_tags = array();
-	
-	/**
-	 * Default tag configurations.
-	 * 
-	 * @access private
-	 * @var array
-	 */
-	private $__defaults = array(
-		'tag' => '',
-		'template' => '',
-		'type' => self::TYPE_BLOCK,
-		'allowed' => self::TYPE_BOTH,
-		'lineBreaks' => true,
-		'selfClose' => false,
-		'parent' => array(),
-		'attributes' => array(),
-		'map' => array(),
-		'format' => '',
-		'pattern' => ''
-	);
 
 	/**
 	 * Return a tag if it exists, and merge with defaults.
@@ -47,7 +27,19 @@ abstract class DecodaFilter extends DecodaAbstract {
 	 */
 	public function tag($tag) {
 		if (isset($this->_tags[$tag])) {
-			return $this->_tags[$tag] + $this->__defaults;
+			return $this->_tags[$tag] + array(
+				'tag' => '',
+				'template' => '',
+				'type' => self::TYPE_BLOCK,
+				'allowed' => self::TYPE_BOTH,
+				'lineBreaks' => true,
+				'selfClose' => false,
+				'parent' => array(),
+				'attributes' => array(),
+				'map' => array(),
+				'format' => '',
+				'pattern' => ''
+			);
 		}
 		
 		return null;
@@ -76,10 +68,12 @@ abstract class DecodaFilter extends DecodaAbstract {
 		
 		if (empty($setup)) {
 			return;
-		}
+		} else if (!empty($setup['template'])) {
+			return $this->_render($tag, $content);
+		}		
 		
 		$attributes = $tag['attributes'];
-		$xhtml = $this->_parser->config('xhtml');
+		$xhtml = $this->getParser()->config('xhtml');
 		$attr = '';
 		$tag = $setup['tag'];
 		
@@ -126,6 +120,28 @@ abstract class DecodaFilter extends DecodaAbstract {
 		}
 		
 		return $parsed;
+	}
+	
+	/**
+	 * Render the tag using a template.
+	 * 
+	 * @access public
+	 * @param array $tag
+	 * @param string $content
+	 * @return string 
+	 */
+	protected function _render(array $tag, $content) {
+		$setup = $this->tag($tag['tag']);
+
+		if (!empty($tag['attributes'])) {
+			extract($tag['attributes'], EXTR_SKIP);	
+		}
+
+		ob_start();
+
+		include DECODA_TEMPLATES . $setup['template'] .'.php';
+
+		return ob_get_clean();
 	}
 	
 }

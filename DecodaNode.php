@@ -1,6 +1,13 @@
 <?php
 
 class DecodaNode extends DecodaAbstract {
+		
+	/**
+	 * Tag type constants.
+	 */
+	const TAG_OPEN = 1;
+	const TAG_CLOSE = 2;
+	const TAG_NONE = 0;
 	
 	/**
 	 * Extracted chunks of text and tags.
@@ -19,7 +26,7 @@ class DecodaNode extends DecodaAbstract {
 	protected $_nodes = array();
 
 	/**
-	 * The parent tag if the node isn't purely text.
+	 * The parent node.
 	 * 
 	 * @access protected
 	 * @var array
@@ -43,6 +50,14 @@ class DecodaNode extends DecodaAbstract {
 	protected $_string = '';
 	
 	/**
+	 * The wrapping tag if present.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
+	protected $_wrapper = array();
+	
+	/**
 	 * Convert the extracted chunks into nodes. 
 	 * Nodes will be created in a parent child hierarchy depending on the amount of nested tags.
 	 * 
@@ -63,8 +78,8 @@ class DecodaNode extends DecodaAbstract {
 		$last = $chunks[count($chunks) - 1];
 		
 		// Validate the data
-		if ($first['type'] == Decoda::TAG_OPEN && $last['type'] == DECODA::TAG_CLOSE && $first['tag'] == $last['tag']) {
-			$this->_parent = $first;
+		if ($first['type'] == self::TAG_OPEN && $last['type'] == self::TAG_CLOSE && $first['tag'] == $last['tag']) {
+			$this->_wrapper = $first;
 		}
 		
 		$chunks = $this->_cleanChunks($chunks);
@@ -78,10 +93,10 @@ class DecodaNode extends DecodaAbstract {
 		$closeCount = -1;
 				
 		foreach ($chunks as $i => $chunk) {
-			if ($chunk['type'] == Decoda::TAG_NONE && empty($tag)) {
-				$this->_nodes[] = new DecodaNode($chunk['text'], $this->_parser);
+			if ($chunk['type'] == self::TAG_NONE && empty($tag)) {
+				$this->addChild( new DecodaNode($chunk['text'], $this->getParser()) );
 				
-			} else if ($chunk['type'] == Decoda::TAG_OPEN) {
+			} else if ($chunk['type'] == self::TAG_OPEN) {
 				$openCount++;
 
 				if (empty($tag)) {
@@ -89,7 +104,7 @@ class DecodaNode extends DecodaAbstract {
 					$tag = $chunk;
 				}
 				
-			} else if ($chunk['type'] == Decoda::TAG_CLOSE) {
+			} else if ($chunk['type'] == self::TAG_CLOSE) {
 				$closeCount++;
 
 				if ($openCount == $closeCount && $chunk['tag'] == $tag['tag']) {
@@ -97,7 +112,7 @@ class DecodaNode extends DecodaAbstract {
 					$tag = array();
 
 					// Slice a section of the array if the correct closing tag is found
-					$this->_nodes[] = new DecodaNode(array_slice($chunks, $openIndex, ($closeIndex - $openIndex) + 1), $this->_parser);
+					$this->addChild( new DecodaNode(array_slice($chunks, $openIndex, ($closeIndex - $openIndex) + 1), $this->getParser()) );
 				}
 			}
 			
@@ -106,6 +121,99 @@ class DecodaNode extends DecodaAbstract {
 		
 		$this->_chunks = $chunks;
 		$this->_string = $text;
+	}
+	
+	/**
+	 * Add a child node.
+	 * 
+	 * @access public
+	 * @param DecodaNode $node 
+	 * @return void
+	 */
+	public function addChild(DecodaNode $node) {
+		$node->setParent($this);
+
+		$this->_nodes[] = $node;
+	}
+	
+	/**
+	 * Return the children nodes.
+	 * 
+	 * @access public
+	 * @return array
+	 */
+	public function getChildren() {
+		return $this->_nodes;
+	}
+	
+	/**
+	 * Return the parent node.
+	 * 
+	 * @access public
+	 * @return DecodaNode
+	 */
+	public function getParent() {
+		return $this->_parent;
+	}
+	
+	/**
+	 * Returns true if the node has children.
+	 * 
+	 * @access public
+	 * @return boolean
+	 */
+	public function hasChildren() {
+		return !empty($this->_nodes);
+	}
+	
+	/**
+	 * Returns true if the node has a parent.
+	 * 
+	 * @access public
+	 * @return boolean
+	 */
+	public function hasParent() {
+		return !empty($this->_parent);
+	}
+	
+	/**
+	 * Validate that the following child can be nested within the parent.
+	 * 
+	 * @access public
+	 * @param array $parent
+	 * @param string $tag
+	 * @return boolean 
+	 */
+	public function isAllowed($parent, $tag) {
+		$filter = $this->getParser()->getFilterByTag($tag);
+
+		if (!$filter) {
+			return false;
+		}
+		
+		$child = $filter->tag($tag);
+		
+		if (is_array($parent['allowed']) && in_array($child['tag'], $parent['allowed'])) {
+			return true;
+		
+		} else if ($parent['allowed'] == DecodaFilter::TYPE_BOTH) {
+			return true;
+			
+		} else if (($parent['allowed'] == DecodaFilter::TYPE_INLINE || $parent['allowed'] == DecodaFilter::TYPE_BLOCK) && $child['type'] == DecodaFilter::TYPE_INLINE) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Is the node wrapped in a tag?
+	 * 
+	 * @access public
+	 * @return boolean
+	 */
+	public function isWrapped() {
+		return !empty($this->_wrapper);
 	}
 
 	/**
@@ -118,28 +226,39 @@ class DecodaNode extends DecodaAbstract {
 		if (!empty($this->_parsed)) {
 			return $this->_parsed;
 		}
-
+		
+		// Child nodes, validate and build tags
+		if ($this->hasChildren()) {
+			foreach ($this->getChildren() as $node) {
+				$this->_parsed .= $node->parse();
+			}
+			
+			if ($this->isWrapped()) {
+				$this->_parsed = $this->getParser()->getFilterByTag($this->_wrapper['tag'])->parse($this->_wrapper, $this->_parsed);
+			}
+			
 		// No child nodes, return text
-		if (empty($this->_nodes)) {
+		} else {
 			// Only nl2br nodes that are purely linebreaks/whitespace
 			//if (trim($this->_string) === "") {
 				$this->_parsed = nl2br($this->_string);
 			//} else {
 			//	$this->_parsed = $this->_string;
 			//}
-
-		// Child nodes, validate and build tags
-		} else {
-			foreach ($this->_nodes as $node) {
-				$this->_parsed .= $node->parse();
-			}
-			
-			if (!empty($this->_parent)) {
-				$this->_parsed = $this->_parser->getFilterByTag($this->_parent['tag'])->parse($this->_parent, $this->_parsed);
-			}
 		}
 
 		return $this->_parsed;
+	}
+	
+	/**
+	 * Set the parent node.
+	 * 
+	 * @access public
+	 * @param DecodaNode $node 
+	 * @return void
+	 */
+	public function setParent(DecodaNode $node) {
+		$this->_parent = $node;
 	}
 	
 	/**
@@ -155,8 +274,8 @@ class DecodaNode extends DecodaAbstract {
 		$prevTag = array();
 		$root = true;
 		
-		if ($this->_parent) {
-			$parent = $this->_parser->getFilterByTag($this->_parent['tag'])->tag($this->_parent['tag']);
+		if ($this->isWrapped()) {
+			$parent = $this->getParser()->getFilterByTag($this->_wrapper['tag'])->tag($this->_wrapper['tag']);
 			$root = false;
 		}
 		
@@ -164,8 +283,8 @@ class DecodaNode extends DecodaAbstract {
 			$prevTag = end($clean);
 			
 			switch ($chunk['type']) {
-				case Decoda::TAG_NONE:
-					if ($prevTag['type'] === Decoda::TAG_NONE) {
+				case self::TAG_NONE:
+					if ($prevTag['type'] === self::TAG_NONE) {
 						$chunk['text'] = $prevTag['text'] . $chunk['text'];
 						array_pop($clean);
 					}
@@ -173,17 +292,17 @@ class DecodaNode extends DecodaAbstract {
 					$clean[] = $chunk;
 				break;
 
-				case Decoda::TAG_OPEN:
+				case self::TAG_OPEN:
 					if ($root) {
 						$clean[] = $chunk;
 						$openTags[] = array('tag' => $chunk['tag'], 'index' => $i);
 						
-					} else if ($i != 0 && $this->_isAllowed($parent, $chunk['tag'])) {
+					} else if ($i != 0 && $this->isAllowed($parent, $chunk['tag'])) {
 						$clean[] = $chunk;
 					}
 				break;
 				
-				case Decoda::TAG_CLOSE:
+				case self::TAG_CLOSE:
 					if ($root) {
 						if (empty($openTags)) {
 							continue;
@@ -205,7 +324,7 @@ class DecodaNode extends DecodaAbstract {
 						
 						$clean[] = $chunk;
 						
-					} else if ($i != (count($chunks) - 1) && $this->_isAllowed($parent, $chunk['tag'])) {
+					} else if ($i != (count($chunks) - 1) && $this->isAllowed($parent, $chunk['tag'])) {
 						$clean[] = $chunk;
 					}
 				break;
@@ -219,36 +338,6 @@ class DecodaNode extends DecodaAbstract {
 		}
 		
 		return array_values($clean);
-	}
-	
-	/**
-	 * Validate that the following child can be nested within the parent.
-	 * 
-	 * @access protected
-	 * @param array $parent
-	 * @param string $tag
-	 * @return boolean 
-	 */
-	protected function _isAllowed($parent, $tag) {
-		$filter = $this->_parser->getFilterByTag($tag);
-
-		if (!$filter) {
-			return false;
-		}
-		
-		$child = $filter->tag($tag);
-		
-		if (is_array($parent['allowed']) && in_array($child['tag'], $parent['allowed'])) {
-			return true;
-		
-		} else if ($parent['allowed'] == DecodaFilter::TYPE_BOTH) {
-			return true;
-			
-		} else if (($parent['allowed'] == DecodaFilter::TYPE_INLINE || $parent['allowed'] == DecodaFilter::TYPE_BLOCK) && $child['type'] == DecodaFilter::TYPE_INLINE) {
-			return true;
-		}
-		
-		return false;
 	}
 	
 }

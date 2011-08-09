@@ -68,12 +68,14 @@ http://domain.com
 http://sub.domain.com/?with=param
 http://user:pass@domain.com:80/?with=param';
 $code = new Decoda($string);
+$code->addHook(new ClickableHook());
 echo $code->parse(); ?>
 
 <h2>Emoticons</h2>
 
-<?php $string = ':) ;[ :D :O <3 :/ :aw: :angry:';
-$code = new Decoda($string);
+<?php 
+$code = new Decoda(':) ;[ :D :O <3 :/ :aw: :angry:');
+$code->addHook(new EmoticonHook());
 echo $code->parse(); ?>
 
 <h2>Text Styles</h2>
@@ -85,12 +87,6 @@ echo $code->parse(); ?>
 <h2>Font Styles</h2>
 
 <?php $string = '[font="Verdana"]Lorem ipsum dolor sit amet, consectetuer adipiscing elit. [color=red]Aliquam laoreet pulvinar sem. Aenean at odio.[/color] Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec elit. Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante. Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu, eleifend condimentum sem est quis dolor. Curabitur sed tellus. Donec id dolor.[/font]';
-$code = new Decoda($string);
-echo $code->parse(); ?>
-
-<h2>Removing Styles</h2>
-
-<?php $string = 'This string has [b]specific styles[/b] that [s]will be[/s] removed [u]completely[/u].';
 $code = new Decoda($string);
 echo $code->parse(); ?>
 

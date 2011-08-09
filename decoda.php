@@ -12,10 +12,10 @@
 
 // Constants
 define('DECODA', dirname(__FILE__) .'/');
-define('DECODA_GESHI', DECODA .'geshi/');
-define('DECODA_CONFIG', DECODA .'config/');
 define('DECODA_HOOKS', DECODA .'hooks/');
+define('DECODA_CONFIG', DECODA .'config/');
 define('DECODA_FILTERS', DECODA .'filters/');
+define('DECODA_TEMPLATES', DECODA .'templates/');
 define('DECODA_EMOTICONS', DECODA .'emoticons/');
 
 // Includes
@@ -25,14 +25,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
 	DECODA, DECODA_GESHI, DECODA_HOOKS, DECODA_CONFIG, DECODA_FILTERS
 )));
 
-class Decoda {
-	
-	/**
-	 * Tag type constants.
-	 */
-	const TAG_OPEN = 1;
-	const TAG_CLOSE = 2;
-	const TAG_NONE = 0;
+class Decoda extends DecodaNode {
 	
 	/**
 	 * Configuration.
@@ -49,14 +42,6 @@ class Decoda {
 		'quoteDepth' => 2,
 		'childQuotes' => false
 	);
-	
-	/**
-	 * Extracted chunks of text and tags.
-	 * 
-	 * @access protected
-	 * @var array
-	 */
-	protected $_chunks = array();
 	
 	/**
 	 * List of all instantiated filter objects.
@@ -109,23 +94,7 @@ class Decoda {
 	protected $_node;
 
 	/**
-	 * The parsed string.
-	 * 
-	 * @access protected
-	 * @var string
-	 */
-	protected $_parsed = '';
-
-	/**
-	 * The raw string before parsing.
-	 * 
-	 * @access protected
-	 * @var string
-	 */
-	protected $_string = '';
-
-	/**
-	 * List of all tags from all filters.
+	 * List of tags from filters.
 	 * 
 	 * @access protected
 	 * @var array
@@ -373,14 +342,14 @@ class Decoda {
 			}
 			
 			// Find attributes
-			preg_match_all('/([a-z]+)=(.*)/i', $string, $matches, PREG_SET_ORDER);
+			preg_match_all('/([a-z]+)=\"(.*?)\"/i', $string, $matches, PREG_SET_ORDER);
 
 			if (!empty($matches)) {
 				$source = $this->_tags[$tag['tag']];
 				
 				foreach ($matches as $match) {
 					$key = strtolower($match[1]);
-					$value = trim(trim($match[2], $this->config('close')), '"');
+					$value = trim($match[2], $this->config('close'));
 					
 					if ($key == $tag['tag']) {
 						$key = 'default';

@@ -220,16 +220,25 @@ class Decoda extends DecodaNode {
 	 *
 	 * @access public
 	 * @param string $key
+	 * @param array $vars
 	 * @return string
 	 */
-	public function message($key) {
+	public function message($key, array $vars = array()) {
 		$locale = $this->config('locale');
 		
 		if (empty($this->_messages[$locale])) {
 			throw new Exception(sprintf('Localized strings for %s do not exist.', $locale));
 		}
 		
-		return isset($this->_messages[$locale][$key]) ? $this->_messages[$locale][$key] : '';
+		$string = isset($this->_messages[$locale][$key]) ? $this->_messages[$locale][$key] : '';
+		
+		if (!empty($vars)) {
+			foreach ($vars as $key => $value) {
+				$string = str_replace('{'. $key .'}', $value, $string);
+			}
+		}
+		
+		return $string;
 	}
 	
 	/**
@@ -244,6 +253,7 @@ class Decoda extends DecodaNode {
 		}
 		
 		$this->_defaults();
+		$this->_trigger('beforeParse');
 		
 		if ($this->config('parse')) {
 			$this->_parseChunks();
@@ -252,7 +262,7 @@ class Decoda extends DecodaNode {
 			$this->_parsed = $this->_string;
 		}
 			
-		$this->_trigger('parse');
+		$this->_trigger('afterParse');
 		
 		return $this->_parsed;
     }

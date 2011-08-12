@@ -40,12 +40,12 @@ echo $code->parse(); ?>
 [i]Italics[/i]
 [u]Underline[/u]
 [s]Strike through[/s]
-[color=#f00]Red Text (Hex code)[/color]
-[color=purple]Purple Text (Name)[/color]
+[color="#f00"]Red Text (Hex code)[/color]
+[color="purple"]Purple Text (Name)[/color]
 [h3]Header 3[/h3]
 [h6]Header 6[/h6]
-[size=12]Font size 12[/size]
-[size=24]Font size 24[/size]
+[size="12"]Font size 12[/size]
+[size="24"]Font size 24[/size]
 Sub[sub]Script[/sub]
 Super[sup]Script[/sup]';
 $code = new Decoda($string);
@@ -54,11 +54,11 @@ echo $code->parse(); ?>
 <h2>URLs and Emails</h2>
 
 <?php $string = '[email]email@domain.com[/email]
-[email=email@domain.com]Linked email[/email]
+[email="email@domain.com"]Linked email[/email]
 email@domain.com
 email+hash@sub.domain.com
 [url]http://domain.com[/url]
-[url=http://domain.com]Linked URL[/url]
+[url="http://domain.com"]Linked URL[/url]
 [url]https://securesite.com[/url]
 [url]ftp://ftpsite.com[/url]
 [url]irc://ircsite.com[/url]
@@ -139,6 +139,7 @@ echo $code->parse(); ?>
 
 <?php $string = '[code]This is a [b]basic[/b] code block! 
 Decoda mark-up is not converted inside code tags, excluding the code tag itself.[/code]
+
 [code lang="php" hl="15"]/**
  * Apply configuration.
  *

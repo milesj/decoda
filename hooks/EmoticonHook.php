@@ -31,7 +31,7 @@ class EmoticonHook extends DecodaHook {
 	 * @param string $content
 	 * @return string
 	 */
-	public function parse($content) {
+	public function afterParse($content) {
 		$imageFilter = $this->getParser()->getFilter('Image');
 
 		if (!$imageFilter) {

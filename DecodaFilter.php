@@ -5,6 +5,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 	/**
 	 * Type constants.
 	 */
+	const TYPE_NONE_PRESERVE = -1;
 	const TYPE_NONE = 0;
 	const TYPE_INLINE = 1;
 	const TYPE_BLOCK = 2;
@@ -50,10 +51,11 @@ abstract class DecodaFilter extends DecodaAbstract {
 	 * 
 	 * @access public
 	 * @param string $key
+	 * @param array $vars
 	 * @return string
 	 */
-	public function message($key) {
-		return $this->getParser()->message($key);
+	public function message($key, array $vars = array()) {
+		return $this->getParser()->message($key, $vars);
 	}
 	
 	/**
@@ -148,11 +150,18 @@ abstract class DecodaFilter extends DecodaAbstract {
 		if (!file_exists($path)) {
 			throw new Exception(sprintf('Template file %s does not exist.', $setup['template']));
 		}
+		
+		$vars = array();
+		
+		foreach ($tag['attributes'] as $key => $value) {
+			if (isset($setup['map'][$key])) {
+				$key = $setup['map'][$key];
+			}
 
-		if (!empty($tag['attributes'])) {
-			extract($tag['attributes'], EXTR_SKIP);	
+			$vars[$key] = $value;
 		}
-
+		
+		extract($vars, EXTR_SKIP);
 		ob_start();
 
 		include $path;

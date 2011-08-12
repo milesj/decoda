@@ -240,11 +240,12 @@ class DecodaNode extends DecodaAbstract {
 		// No child nodes, return text
 		} else {
 			// Only nl2br nodes that are purely linebreaks/whitespace
-			//if (trim($this->_string) === "") {
+			if (trim($this->_string) === "" || !$this->getParent()->isWrapped()) {
 				$this->_parsed = nl2br($this->_string);
-			//} else {
-			//	$this->_parsed = $this->_string;
-			//}
+
+			} else {
+				$this->_parsed = $this->_string;
+			}
 		}
 
 		return $this->_parsed;

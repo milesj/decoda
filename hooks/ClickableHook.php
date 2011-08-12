@@ -9,7 +9,7 @@ class ClickableHook extends DecodaHook {
 	 * @param string $content
 	 * @return string
 	 */
-	public function parse($content) {
+	public function afterParse($content) {
 		if ($this->getParser()->getFilter('Url')) {
 			$protocol = '(http|ftp|irc|file|telnet)s?:\/?\/?';
 			$login = '([-a-zA-Z0-9\.\+]+:[-a-zA-Z0-9\.\+]+@)?';

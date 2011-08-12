@@ -31,7 +31,7 @@ class CensorHook extends DecodaHook {
 	 * @param string $content
 	 * @return string
 	 */
-	public function parse($content) {
+	public function afterParse($content) {
 		if (!empty($this->_censored)) {
 			foreach ($this->_censored as $word) {
 				$content = preg_replace_callback('/(\s)?'. preg_quote(trim($word), '/') .'(\s)?/is', array($this, '_callback'), $content);

@@ -16,6 +16,9 @@ class QuoteFilter extends DecodaFilter {
 			'attributes' => array(
 				'default' => '(.*?)',
 				'date' => '(.*?)'
+			),
+			'map' => array(
+				'default' => 'author'
 			)
 		)
 	);

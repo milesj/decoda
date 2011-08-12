@@ -1,6 +1,6 @@
 
 <div
-	<?php if (isset($id)) { ?>id="<?php echo $id; ?>"<?php } ?>
-	<?php if (isset($class)) { ?>class="<?php echo $class; ?>"<?php } ?>>
+	<?php if (!empty($id)) { ?>id="<?php echo $id; ?>"<?php } ?>
+	<?php if (!empty($class)) { ?>class="<?php echo $class; ?>"<?php } ?>>
 	<?php echo $content; ?>	
 </div>

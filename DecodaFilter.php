@@ -46,6 +46,17 @@ abstract class DecodaFilter extends DecodaAbstract {
 	}
 	
 	/**
+	 * Return a message string from the parser.
+	 * 
+	 * @access public
+	 * @param string $key
+	 * @return string
+	 */
+	public function message($key) {
+		return $this->getParser()->message($key);
+	}
+	
+	/**
 	 * Return all tags.
 	 * 
 	 * @access public
@@ -132,6 +143,11 @@ abstract class DecodaFilter extends DecodaAbstract {
 	 */
 	protected function _render(array $tag, $content) {
 		$setup = $this->tag($tag['tag']);
+		$path = DECODA_TEMPLATES . $setup['template'] .'.php';
+		
+		if (!file_exists($path)) {
+			throw new Exception(sprintf('Template file %s does not exist.', $setup['template']));
+		}
 
 		if (!empty($tag['attributes'])) {
 			extract($tag['attributes'], EXTR_SKIP);	
@@ -139,7 +155,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 		ob_start();
 
-		include DECODA_TEMPLATES . $setup['template'] .'.php';
+		include $path;
 
 		return ob_get_clean();
 	}

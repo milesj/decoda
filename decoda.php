@@ -22,7 +22,9 @@ define('DECODA_EMOTICONS', DECODA .'emoticons/');
 spl_autoload_register();
 set_include_path(implode(PATH_SEPARATOR, array(
 	get_include_path(),
-	DECODA, DECODA_GESHI, DECODA_HOOKS, DECODA_CONFIG, DECODA_FILTERS
+	DECODA, DECODA_HOOKS, 
+	DECODA_CONFIG, DECODA_FILTERS,
+	DECODA_TEMPLATES, DECODA_EMOTICONS
 )));
 
 class Decoda extends DecodaNode {
@@ -40,7 +42,8 @@ class Decoda extends DecodaNode {
 		'shorthand' => false,
 		'xhtml' => false,
 		'quoteDepth' => 2,
-		'childQuotes' => false
+		'childQuotes' => false,
+		'locale' => 'en-us'
 	);
 	
 	/**
@@ -72,18 +75,8 @@ class Decoda extends DecodaNode {
 	 *
 	 * @access protected
 	 * @var array
-	 * @static
 	 */
-	protected static $_messages = array(
-		'en-us' => array(
-			'spoiler'	=> 'Spoiler',
-			'hide'		=> 'Hide',
-			'show'		=> 'Show',
-			'link'		=> 'link',
-			'mail'		=> 'mail',
-			'quoteBy'	=> 'Quote by {author}'
-		)
-	);
+	protected $_messages = array();
 
 	/**
 	 * The root node object.
@@ -124,6 +117,7 @@ class Decoda extends DecodaNode {
 	 */
 	public function addFilter(DecodaFilter $filter) {
 		$filter->setParser($this);
+		
 		$class = str_replace('Filter', '', get_class($filter));
 		$tags = $filter->tags();
 		
@@ -181,6 +175,8 @@ class Decoda extends DecodaNode {
 		} else {
 			if (isset($this->_config[$options])) {
 				$this->_config[$options] = $value;
+			} else {
+				throw new Exception(sprintf('Configuration %s does not exist.', $options));
 			}
 		}
 
@@ -224,12 +220,16 @@ class Decoda extends DecodaNode {
 	 *
 	 * @access public
 	 * @param string $key
-	 * @param string $locale
 	 * @return string
-	 * @static
 	 */
-	public static function message($key, $locale = 'en-us') {
-		return isset(self::$_messages[$locale][$key]) ? self::$_messages[$locale][$key] : '';
+	public function message($key) {
+		$locale = $this->config('locale');
+		
+		if (empty($this->_messages[$locale])) {
+			throw new Exception(sprintf('Localized strings for %s do not exist.', $locale));
+		}
+		
+		return isset($this->_messages[$locale][$key]) ? $this->_messages[$locale][$key] : '';
 	}
 	
 	/**
@@ -268,37 +268,15 @@ class Decoda extends DecodaNode {
 	public function reset($string) {
 		if ((strpos($string, $this->config('open')) === false) && (strpos($string, $this->config('close')) === false)) {
 			$this->configure('parse', false);
-        }
+        } else {
+			$this->_messages = json_decode(file_get_contents(DECODA_CONFIG .'messages.json'), true);
+		}
 		
 		$this->_string = $string;
 		
 		return $this;
 	}
 
-	/**
-	 * Update the locale message strings.
-	 *
-	 * @access public
-	 * @param string $locale
-	 * @param string|array $key
-	 * @param string $message
-	 * @return void
-	 * @static
-	 */
-	public static function translate($locale, $key, $message = '') {
-		if (is_array($key)) {
-			foreach ($key as $index => $message) {
-				self::translate($index, $message, $locale);
-			}
-		} else {
-			if (empty(self::$_messages[$locale])) {
-				self::$_messages[$locale] = self::$_messages['en-us'];
-			}
-			
-			self::$_messages[$locale][$key] = $message;
-		}
-	}
-	
 	/**
 	 * Determine if the string is an open or closing tag. If so, parse out the attributes.
 	 * 

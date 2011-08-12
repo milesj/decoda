@@ -10,7 +10,7 @@ class ClickableHook extends DecodaHook {
 	 * @return string
 	 */
 	public function parse($content) {
-		if ($this->_parser->getFilter('Url')) {
+		if ($this->getParser()->getFilter('Url')) {
 			$protocol = '(http|ftp|irc|file|telnet)s?:\/?\/?';
 			$login = '([-a-zA-Z0-9\.\+]+:[-a-zA-Z0-9\.\+]+@)?';
 			$domain = '([-a-zA-Z0-9\.]{5,255}+)';
@@ -20,7 +20,7 @@ class ClickableHook extends DecodaHook {
 		}
 
 		// Based on schema: http://en.wikipedia.org/wiki/Email_address
-		if ($this->_parser->getFilter('Email')) {
+		if ($this->getParser()->getFilter('Email')) {
 			$content = preg_replace_callback(EmailFilter::EMAIL_PATTERN, array($this, '_emailCallback'), $content);
 		}
 
@@ -35,7 +35,7 @@ class ClickableHook extends DecodaHook {
      * @return string
      */
     protected function _emailCallback($matches) {
-		return $this->_parser->getFilter('Email')->parse(array(
+		return $this->getParser()->getFilter('Email')->parse(array(
 			'tag' => 'email',
 			'attributes' => array()
 		), trim($matches[0]));
@@ -49,7 +49,7 @@ class ClickableHook extends DecodaHook {
      * @return string
      */
     protected function _urlCallback($matches) {
-		return $this->_parser->getFilter('Url')->parse(array(
+		return $this->getParser()->getFilter('Url')->parse(array(
 			'tag' => 'url',
 			'attributes' => array()
 		), trim($matches[0]));

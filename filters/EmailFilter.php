@@ -2,6 +2,9 @@
 
 class EmailFilter extends DecodaFilter {
 	
+	/**
+	 * Regex pattern.
+	 */
 	const EMAIL_PATTERN = '/(^|\n|\s)([-a-zA-Z0-9\.\+!]{1,64}+)@([-a-zA-Z0-9\.]{5,255}+)/';
 
 	/**
@@ -63,9 +66,9 @@ class EmailFilter extends DecodaFilter {
 		}
 
 		$tag['attributes']['default'] = 'mailto:'. $encrypted;
-		
-		if ($this->_parser->config('shorthand')) {
-			return '['. parent::parse($tag, Decoda::message('mail')) .']';
+
+		if ($this->getParser()->config('shorthand')) {
+			return '['. parent::parse($tag, $this->message('mail')) .']';
 		}
 		
 		if (!$default) {

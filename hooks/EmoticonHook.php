@@ -32,7 +32,7 @@ class EmoticonHook extends DecodaHook {
 	 * @return string
 	 */
 	public function parse($content) {
-		$imageFilter = $this->_parser->getFilter('Image');
+		$imageFilter = $this->getParser()->getFilter('Image');
 
 		if (!$imageFilter) {
 			return $content;
@@ -49,7 +49,6 @@ class EmoticonHook extends DecodaHook {
 				), $path . $emoticon .'.png');
 
 				$content = preg_replace('/(\s)?'. preg_quote($smile, '/') .'(\s)?/is', '$1'. $image .'$2', $content);
-				unset($image);
 			}
 		}
 

@@ -2,6 +2,9 @@
 
 class UrlFilter extends DecodaFilter {
 	
+	/**
+	 * Regex pattern.
+	 */
 	const URL_PATTERN = '/^((?:http|ftp|irc|file|telnet)s?:\/\/)(.*?)$/';
 
 	/**
@@ -46,8 +49,8 @@ class UrlFilter extends DecodaFilter {
 	 * @return string
 	 */
 	public function parse(array $tag, $content) {
-		if ($this->_parser->config('shorthand')) {
-			return '['. parent::parse($tag, Decoda::message('link')) .']';
+		if ($this->getParser()->config('shorthand')) {
+			return '['. parent::parse($tag, $this->message('link')) .']';
 		}
 		
 		return parent::parse($tag, $content);

@@ -262,7 +262,12 @@ class Decoda {
 		
 		$child = $filter->tag($tag);
 		
-		if (is_array($parent['allowed']) && in_array($child['tag'], $parent['allowed'])) {
+		/*if (!empty($child['parent']) && !in_array($parent['key'], $child['parent'])) {
+			debug($parent['key']);
+			debug($child['parent']);
+			return false;
+		
+		} else */if (is_array($parent['allowed']) && in_array($child['key'], $parent['allowed'])) {
 			return true;
 		
 		} else if ($parent['allowed'] == DecodaFilter::TYPE_BOTH) {
@@ -427,14 +432,20 @@ class Decoda {
 		$clean = array();
 		$openTags = array();
 		$prevTag = array();
-		$root = true;
+		$lastFail = array();
+		$count = count($chunks);
+		$i = 0;
 		
 		if (!empty($wrapper)) {
 			$parent = $this->getFilterByTag($wrapper['tag'])->tag($wrapper['tag']);
 			$root = false;
+		} else {
+			$parent = $this->getFilter('Empty')->tag('root');
+			$root = true;
 		}
 
-		foreach ($chunks as $i => $chunk) {
+		while ($i < $count) {
+			$chunk = $chunks[$i];
 			$prevTag = end($clean);
 			
 			switch ($chunk['type']) {
@@ -444,46 +455,59 @@ class Decoda {
 						array_pop($clean);
 					}
 					
-					$clean[] = $chunk;
+					if (!empty($lastFail) && $i == $lastFail['index']) {
+						if ($lastFail['type'] == self::TAG_CLOSE) {
+							$clean[] = $chunk;
+						}
+					} else {
+						$clean[] = $chunk;
+					}
 				break;
 
 				case self::TAG_OPEN:
-					if ($root) {
-						$clean[] = $chunk;
-						$openTags[] = array('tag' => $chunk['tag'], 'index' => $i);
+					if ($this->isAllowed($parent, $chunk['tag'])) {
+						if ($root) {
+							$openTags[] = array('tag' => $chunk['tag'], 'index' => $i);
+						} 
 						
-					} else if ($this->isAllowed($parent, $chunk['tag'])) {
 						$clean[] = $chunk;
+						
+					} else {
+						$lastFail = array('type' => $chunk['type'], 'index' => $i + 1);
 					}
 				break;
 				
 				case self::TAG_CLOSE:
-					if ($root) {
-						if (empty($openTags)) {
-							continue;
-						}
-						
-						$last = end($openTags);
-						
-						if ($last['tag'] == $chunk['tag']) {
-							array_pop($openTags);
-						} else {
-							while (!empty($openTags)) {
-								$last = array_pop($openTags);
-								
-								if ($last['tag'] != $chunk['tag']) {
-									unset($clean[$last['index']]);
+					if ($this->isAllowed($parent, $chunk['tag'])) {
+						if ($root) {
+							if (empty($openTags)) {
+								continue;
+							}
+
+							$last = end($openTags);
+
+							if ($last['tag'] == $chunk['tag']) {
+								array_pop($openTags);
+							} else {
+								while (!empty($openTags)) {
+									$last = array_pop($openTags);
+
+									if ($last['tag'] != $chunk['tag']) {
+										unset($clean[$last['index']]);
+									}
 								}
 							}
 						}
 						
 						$clean[] = $chunk;
 						
-					} else if ($this->isAllowed($parent, $chunk['tag'])) {
-						$clean[] = $chunk;
+					} else {
+						$lastFail = array('type' => $chunk['type'], 'index' => $i + 1);
 					}
 				break;
 			}
+			
+			$i++;
 		}
 
 		// Remove any unclosed tags
@@ -502,7 +526,7 @@ class Decoda {
 	 * @access protected
 	 * @return void
 	 */
-	protected function _defaults() {
+	protected function _defaults() {			
 		if (empty($this->_filters)) {
 			$this->addFilter(new DefaultFilter());
 			$this->addFilter(new EmailFilter());
@@ -513,6 +537,7 @@ class Decoda {
 			$this->addFilter(new VideoFilter());
 			$this->addFilter(new CodeFilter());
 			$this->addFilter(new QuoteFilter());
+			$this->addFilter(new ListFilter());
 		}
 		
 		if (empty($this->_hooks)) {
@@ -520,6 +545,8 @@ class Decoda {
 			//$this->addHook(new ClickableHook());
 			//$this->addHook(new EmoticonHook());
 		}
+		
+		$this->addFilter(new EmptyFilter());
 	}
 	
 	/**
@@ -617,13 +644,16 @@ class Decoda {
 		$chunks = $this->_cleanChunks($chunks, $wrapper);
 		$nodes = array();
 		$tag = array();
-		$count = count($chunks) - 1;
 		$openIndex = -1;
 		$openCount = -1;
 		$closeIndex = -1;
 		$closeCount = -1;
+		$count = count($chunks);
+		$i = 0;
 
-		foreach ($chunks as $i => $chunk) {
+		while ($i < $count) {
+			$chunk = $chunks[$i];
+			
 			if ($chunk['type'] == self::TAG_NONE && empty($tag)) {
 				$nodes[] = $chunk['text'];
 				
@@ -650,10 +680,11 @@ class Decoda {
 					// Slice a section of the array if the correct closing tag is found
 					$node = $chunks[$openIndex];
 					$node['children'] = $this->_extractNodes(array_slice($chunks, ($openIndex + 1), $index), $chunks[$openIndex]);
-					
 					$nodes[] = $node;
 				}
 			}
+			
+			$i++;
 		}
 		
 		return $nodes;
@@ -664,9 +695,10 @@ class Decoda {
 	 * 
 	 * @access protected
 	 * @param array $nodes
+	 * @param array $wrapper
 	 * @return string 
 	 */
-	protected function _parse(array $nodes) {
+	protected function _parse(array $nodes, array $wrapper = array()) {
 		$parsed = '';
 		
 		if (empty($nodes)) {
@@ -675,9 +707,13 @@ class Decoda {
 		
 		foreach ($nodes as $node) {
 			if (is_string($node)) {
-				$parsed .= nl2br($node);
+				if (empty($wrapper)) {
+					$parsed .= nl2br($node);
+				} else {
+					$parsed .= $node;
+				}
 			} else {
-				$parsed .= $this->getFilterByTag($node['tag'])->parse($node, $this->_parse($node['children']));
+				$parsed .= $this->getFilterByTag($node['tag'])->parse($node, $this->_parse($node['children'], $node));
 			}
 		}
 		

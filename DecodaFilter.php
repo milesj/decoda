@@ -27,23 +27,26 @@ abstract class DecodaFilter extends DecodaAbstract {
 	 * @return array
 	 */
 	public function tag($tag) {
+		$defaults = array(
+			'key' => $tag,
+			'tag' => '',
+			'template' => '',
+			'type' => self::TYPE_BLOCK,
+			'allowed' => self::TYPE_BOTH,
+			'lineBreaks' => true,
+			'selfClose' => false,
+			'parent' => array(),
+			'attributes' => array(),
+			'map' => array(),
+			'format' => '',
+			'pattern' => ''
+		);
+		
 		if (isset($this->_tags[$tag])) {
-			return $this->_tags[$tag] + array(
-				'tag' => '',
-				'template' => '',
-				'type' => self::TYPE_BLOCK,
-				'allowed' => self::TYPE_BOTH,
-				'lineBreaks' => true,
-				'selfClose' => false,
-				'parent' => array(),
-				'attributes' => array(),
-				'map' => array(),
-				'format' => '',
-				'pattern' => ''
-			);
+			return $this->_tags[$tag] + $defaults;
 		}
 		
-		return null;
+		return $defaults;
 	}
 	
 	/**

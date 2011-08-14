@@ -1,23 +1,26 @@
-# Decoda v3.0 #
+# Decoda v3.0 ALPHA #
 
 A stand alone lightweight, BBcode style parser class.
+
+Todo:
+* Child depth limitation
+* Not converting linebreaks from rendered templates
+* Parent allowed tags alongside child
+* Not rendering tag within code blocks
 
 ## Requirements ##
 
 * PHP 5.2.x
-* GeSHI 1.0.8.4 Library (Comes packaged in the Vendors)
 
 ## Contributors ##
 
 * "Marten-Plain" emoticons by Mårten Lundin - http://adiumxtras.com/index.php?a=xtras&xtra_id=6920
-* GeSHi - http://qbnz.com/highlighter/
 
 ## Features ##
 
 * Parses custom code to valid (X)HTML markup
 * Setting to make links and emails auto-clickable
 * Setting to use shorthand links and emails
-* Implements GeSHi for code highlighting
 * Implements the ability to censor words
 * Support for adding additional user code
 * Supports additional attributes for select tags

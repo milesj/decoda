@@ -12,14 +12,16 @@ class ListFilter extends DecodaFilter {
 		'olist' => array(
 			'tag' => 'ol',
 			'type' => self::TYPE_BLOCK,
+			'allowed' => self::TYPE_BOTH,
 			'lineBreaks' => false,
-			'allowed' => array('li')
+			'format' => 'class="decoda-olist"'
 		),
 		'list' => array(
 			'tag' => 'ul',
 			'type' => self::TYPE_BLOCK,
+			'allowed' => self::TYPE_BOTH,
 			'lineBreaks' => false,
-			'allowed' => array('li')
+			'format' => 'class="decoda-list"'
 		),
 		'li' => array(
 			'tag' => 'li',

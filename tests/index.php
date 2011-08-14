@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 
 // Include Decoda
-include '../Decoda.php'; ?>
+include '../Decoda2.php'; ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -19,7 +19,7 @@ include '../Decoda.php'; ?>
 	.align-justify { text-align: justify; }
 	.decoda-quote { background: #FFFFCC; padding: 10px; margin: 0 0 15px 15px; }
 	.decoda-quoteAuthor { font-weight: bold; margin-bottom: 5px; }
-	.decoda-quoteDate { float: right; }
+	.decoda-quoteAuthor .decoda-quoteDate { float: right; }
 	.decoda-spoilerBody { background: #FFFFCC; padding: 10px; margin-top: 10px; }
 	.decoda-code { background: #f4f4f4; padding: 10px; }
 	.decoda-alert { background: red; padding: 10px; }
@@ -92,9 +92,9 @@ echo $code->parse(); ?>
 
 <h2>Alignment</h2>
 
-<?php $string = '[align=center]Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam laoreet pulvinar sem. Aenean at odio.
-    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec elit. Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante.
-    Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu, eleifend condimentum sem est quis dolor. Curabitur sed tellus. Donec id dolor.[/align]';
+<?php $string = '[align="center"]Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam laoreet pulvinar sem. Aenean at odio.[/align]
+[align="justify"]Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec elit. Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante.[/align]
+[align="right"]Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu, eleifend condimentum sem est quis dolor. Curabitur sed tellus. Donec id dolor.[/align]';
 $code = new Decoda($string);
 echo $code->parse(); ?>
 
@@ -126,7 +126,6 @@ echo $code->parse(); ?>
     Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec elit. Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante.
     Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu, eleifend condimentum sem est quis dolor. Curabitur sed tellus. Donec id dolor.[/quote][/quote]';
 $code = new Decoda($string);
-$code->configure('childQuotes', true);
 echo $code->parse(); ?>
 
 <h2>Spoilers</h2>
@@ -190,7 +189,7 @@ echo $code->parse(); ?>
 <h2>Images</h2>
 
 <?php $string = '[img]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]
-[img width=175 height=50]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]';
+[img width="175" height="50"]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]';
 $code = new Decoda($string);
 echo $code->parse(); ?>
 

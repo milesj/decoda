@@ -14,6 +14,7 @@ class ListFilter extends DecodaFilter {
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'lineBreaks' => false,
+			'children' => array('li'),
 			'format' => 'class="decoda-olist"'
 		),
 		'list' => array(
@@ -21,6 +22,7 @@ class ListFilter extends DecodaFilter {
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'lineBreaks' => false,
+			'children' => array('li'),
 			'format' => 'class="decoda-list"'
 		),
 		'li' => array(

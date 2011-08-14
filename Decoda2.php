@@ -262,17 +262,19 @@ class Decoda {
 		
 		$child = $filter->tag($tag);
 		
-		/*if (!empty($child['parent']) && !in_array($parent['key'], $child['parent'])) {
-			debug($parent['key']);
-			debug($child['parent']);
+		// Children that can only be within a certain parent
+		if (!empty($child['parent']) && !in_array($parent['key'], $child['parent'])) {
 			return false;
 		
-		} else */if (is_array($parent['allowed']) && in_array($child['key'], $parent['allowed'])) {
-			return true;
-		
+		// Parents that can only have direct descendant children
+		} else if (!empty($parent['children']) && !in_array($child['key'], $parent['children'])) {
+			return false;
+
+		// Block element that accepts both types
 		} else if ($parent['allowed'] == DecodaFilter::TYPE_BOTH) {
 			return true;
 			
+		// Inline elements can go within everything
 		} else if (($parent['allowed'] == DecodaFilter::TYPE_INLINE || $parent['allowed'] == DecodaFilter::TYPE_BLOCK) && $child['type'] == DecodaFilter::TYPE_INLINE) {
 			return true;
 		}
@@ -432,7 +434,8 @@ class Decoda {
 		$clean = array();
 		$openTags = array();
 		$prevTag = array();
-		$lastFail = array();
+		$disallowed = array();
+		$parents = array();
 		$count = count($chunks);
 		$i = 0;
 		
@@ -450,35 +453,51 @@ class Decoda {
 			
 			switch ($chunk['type']) {
 				case self::TAG_NONE:
-					if ($prevTag['type'] === self::TAG_NONE) {
-						$chunk['text'] = $prevTag['text'] . $chunk['text'];
-						array_pop($clean);
-					}
-					
-					if (!empty($lastFail) && $i == $lastFail['index']) {
-						if ($lastFail['type'] == self::TAG_CLOSE) {
-							$clean[] = $chunk;
+					if (empty($disallowed)) {
+						if ($prevTag['type'] === self::TAG_NONE) {
+							$chunk['text'] = $prevTag['text'] . $chunk['text'];
+							array_pop($clean);
 						}
-					} else {
+						
 						$clean[] = $chunk;
 					}
 				break;
 
 				case self::TAG_OPEN:
 					if ($this->isAllowed($parent, $chunk['tag'])) {
+						$clean[] = $chunk;						
+						$parents[] = $parent;
+						$parent = $this->getFilterByTag($chunk['tag'])->tag($chunk['tag']);
+						
 						if ($root) {
 							$openTags[] = array('tag' => $chunk['tag'], 'index' => $i);
-						} 
-						
-						$clean[] = $chunk;
+						}
 						
 					} else {
-						$lastFail = array('type' => $chunk['type'], 'index' => $i + 1);
+						$disallowed[] = array('tag' => $chunk['tag'], 'index' => $i);
 					}
 				break;
 				
 				case self::TAG_CLOSE:
+					// If something is not allowed, skip the close tag
+					if (!empty($disallowed)) {
+						$last = end($disallowed);
+
+						if ($last['tag'] == $chunk['tag']) {
+							array_pop($disallowed);
+							continue;
+						}
+					}
+					
+					// Return to previous parent before allowing
+					if (!empty($parents)) {
+						$parent = array_pop($parents);
+					}
+					
+					// Now check for open tags if the tag is allowed
 					if ($this->isAllowed($parent, $chunk['tag'])) {
+						$clean[] = $chunk;
+						
 						if ($root) {
 							if (empty($openTags)) {
 								continue;
@@ -498,11 +517,6 @@ class Decoda {
 								}
 							}
 						}
-						
-						$clean[] = $chunk;
-						
-					} else {
-						$lastFail = array('type' => $chunk['type'], 'index' => $i + 1);
 					}
 				break;
 			}

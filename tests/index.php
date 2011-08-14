@@ -1,6 +1,10 @@
 <?php // Turn on error reporting
 error_reporting(E_ALL);
 
+function debug($var) {
+	echo '<pre>'. print_r($var, true) .'</pre>';
+}
+
 // Include Decoda
 include '../Decoda2.php'; ?>
 

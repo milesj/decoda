@@ -36,6 +36,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'lineBreaks' => true,
 			'selfClose' => false,
 			'parent' => array(),
+			'children' => array(),
 			'attributes' => array(),
 			'map' => array(),
 			'format' => '',

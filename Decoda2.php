@@ -320,7 +320,7 @@ class Decoda {
 		}
 		
 		$this->_defaults();
-		$this->_trigger('beforeParse');
+		$this->_string = $this->_trigger('beforeParse', $this->_string);
 		
 		if ($this->config('parse')) {
 			$this->_extractChunks();
@@ -329,7 +329,7 @@ class Decoda {
 			$this->_parsed = $this->_string;
 		}
 			
-		$this->_trigger('afterParse');
+		$this->_parsed = $this->_trigger('afterParse', $this->_parsed);
 		
 		return $this->_parsed;
     }
@@ -450,7 +450,7 @@ class Decoda {
 		while ($i < $count) {
 			$chunk = $chunks[$i];
 			$prevTag = end($clean);
-			
+
 			switch ($chunk['type']) {
 				case self::TAG_NONE:
 					if (empty($disallowed)) {
@@ -465,6 +465,10 @@ class Decoda {
 
 				case self::TAG_OPEN:
 					if ($this->isAllowed($parent, $chunk['tag'])) {
+						if ($parent['preserve']) {
+							$chunk['type'] = self::TAG_NONE;
+						}
+						
 						$clean[] = $chunk;						
 						$parents[] = $parent;
 						$parent = $this->getFilterByTag($chunk['tag'])->tag($chunk['tag']);
@@ -496,6 +500,10 @@ class Decoda {
 					
 					// Now check for open tags if the tag is allowed
 					if ($this->isAllowed($parent, $chunk['tag'])) {
+						if ($parent['preserve']) {
+							$chunk['type'] = self::TAG_NONE;
+						}
+						
 						$clean[] = $chunk;
 						
 						if ($root) {
@@ -739,16 +747,19 @@ class Decoda {
 	 * 
 	 * @access protected
 	 * @param string $method 
-	 * @return void
+	 * @param string $content
+	 * @return string
 	 */
-	protected function _trigger($method) {
+	protected function _trigger($method, $content) {
 		if (!empty($this->_hooks)) {
 			foreach ($this->_hooks as $hook) {
 				if (method_exists($hook, $method)) {
-					$this->_parsed = $hook->{$method}($this->_parsed);
+					$content = $hook->{$method}($content);
 				}
 			}
 		}
+		
+		return $content;
 	}
 	
 }

@@ -14,6 +14,7 @@ class CodeFilter extends DecodaFilter {
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'lineBreaks' => false,
+			'preserve' => true,
 			'attributes' => array(
 				'lang' => '([-_\sa-zA-Z0-9]+)',
 				'hl' => '([0-9,]+)'
@@ -27,7 +28,7 @@ class CodeFilter extends DecodaFilter {
 	);
 
 	/**
-	 * Use the content as the image source.
+	 * Escape HTML entities.
 	 * 
 	 * @access public
 	 * @param array $tag

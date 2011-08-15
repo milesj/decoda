@@ -5,8 +5,6 @@ A stand alone lightweight, BBcode style parser class.
 Todo:
 * Child depth limitation
 * Not converting linebreaks from rendered templates
-* Parent allowed tags alongside child
-* Not rendering tag within code blocks
 
 ## Requirements ##
 
@@ -28,6 +26,5 @@ Todo:
 
 ## Unsupported ##
 
-* Placing [code] tags within [code] tags
 * URLs that begin with www and not http:// will not be converted (intentional)
 * Certain videos are not supported as their embed code does not match the URL

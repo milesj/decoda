@@ -5,7 +5,6 @@ abstract class DecodaFilter extends DecodaAbstract {
 	/**
 	 * Type constants.
 	 */
-	const TYPE_NONE_PRESERVE = -1;
 	const TYPE_NONE = 0;
 	const TYPE_INLINE = 1;
 	const TYPE_BLOCK = 2;
@@ -35,6 +34,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'allowed' => self::TYPE_BOTH,
 			'lineBreaks' => true,
 			'selfClose' => false,
+			'preserve' => false,
 			'parent' => array(),
 			'children' => array(),
 			'attributes' => array(),

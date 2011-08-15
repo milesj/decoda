@@ -262,11 +262,11 @@ class Decoda {
 		$child = $filter->tag($tag);
 
 		// Remove children after a certain nested depth
-		if (isset($parent['currentDepth']) && $parent['currentDepth'] > $parent['depth']) {
-			return false;
+		//if (isset($parent['currentDepth']) && $parent['currentDepth'] > $parent['depth']) {
+			//return false;
 
 		// Children that can only be within a certain parent
-		} else if (!empty($child['parent']) && !in_array($parent['key'], $child['parent'])) {
+		/*} else*/ if (!empty($child['parent']) && !in_array($parent['key'], $child['parent'])) {
 			return false;
 
 		// Parents that can only have direct descendant children

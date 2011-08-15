@@ -9,6 +9,22 @@ class EmoticonHook extends DecodaHook {
 	 * @var array
 	 */
 	protected $_emoticons = array();
+	
+	/**
+	 * Map of smilies to emoticons.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
+	protected $_map = array();
+	
+	/**
+	 * Relative path to the emoticons folder.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
+	protected $_path = array();
 
 	/**
 	 * Load the emoticons from the JSON file.
@@ -21,6 +37,14 @@ class EmoticonHook extends DecodaHook {
 
 		if (file_exists($path)) {
 			$this->_emoticons = json_decode(file_get_contents($path), true);
+
+			foreach ($this->_emoticons as $emoticon => $smilies) {
+				foreach ($smilies as $smile) {
+					$this->_map[$smile] = $emoticon;
+				}
+			}
+
+			$this->_path = str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']), '\\', '/'), array('', '/', '/'), DECODA_EMOTICONS);
 		}
 	}
 
@@ -31,28 +55,43 @@ class EmoticonHook extends DecodaHook {
 	 * @param string $content
 	 * @return string
 	 */
-	public function afterParse($content) {
-		$imageFilter = $this->getParser()->getFilter('Image');
-
-		if (!$imageFilter) {
+	public function beforeParse($content) {
+		if (!$this->getParser()->getFilter('Image')) {
 			return $content;
 		}
 
-		$path = str_replace(realpath($_SERVER['DOCUMENT_ROOT']), '', DECODA_EMOTICONS);
-		$path = str_replace(array('\\', '/'), '/', $path);
-
 		foreach ($this->_emoticons as $emoticon => $smilies) {
 			foreach ($smilies as $smile) {
-				$image = $imageFilter->parse(array(
-					'tag' => 'img',
-					'attributes' => array()
-				), $path . $emoticon .'.png');
-
-				$content = preg_replace('/\s'. preg_quote($smile, '/') .'(\s)?/is', '$1'. $image .'$2', $content);
+				$content = preg_replace_callback('/(\s)?'. preg_quote($smile, '/') .'(\s)?/is', array($this, '_emoticonCallback'), $content);
 			}
 		}
 
 		return $content;
 	}
 
+	/**
+	 * Callback for smiley processing.
+	 * 
+	 * @access protected
+	 * @param array $matches
+	 * @return string 
+	 */
+	protected function _emoticonCallback($matches) {
+		$smiley = trim($matches[0]);
+
+		if (count($matches) == 1 || !isset($this->_map[$smiley])) {
+			return $matches[0];
+		}
+
+		$l = isset($matches[1]) ? $matches[1] : '';
+		$r = isset($matches[2]) ? $matches[2] : '';
+
+		$image = $this->getParser()->getFilter('Image')->parse(array(
+			'tag' => 'img',
+			'attributes' => array()
+		), $this->_path . $this->_map[$smiley] .'.png');
+
+		return $l . $image . $r;
+	}
+	
 }

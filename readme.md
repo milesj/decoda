@@ -1,6 +1,8 @@
 # Decoda v3.0 ALPHA #
 
-A stand alone lightweight, BBcode style parser class.
+A lightweight lexical string parser for BBCode styled markup.
+
+Version(s) 3.x are not backwards compatible with 2.9 and lower. The newer versions were completely rewritten as a lexical parser that examines the string stack, where as the older versions were using archaic regex parsing. The newer versions also boast a very powerful filter and hook system, so your old code will need to be changed to support the newer functionality.
 
 ## Requirements ##
 
@@ -23,7 +25,7 @@ A stand alone lightweight, BBcode style parser class.
 * Basic support for localized messages
 * Supports the following filters and tags:
 
-	Default - b, i, u, sup, sub
+	Default - b, i, u, s, sup, sub
 	Text - font, size, color, h1-h6
 	Block - align, float, hide, alert, note, div, spoiler
 	Code - code, var
@@ -36,5 +38,5 @@ A stand alone lightweight, BBcode style parser class.
 
 ## Unsupported ##
 
-* URLs that begin with www and not http:// will not be converted (intentional)
-* Certain videos are not supported as their embed code does not match the URL
+* URLs that begin with www will not be converted (intentional)
+* Certain videos are not supported as their embed code does not match the URL in the address bar

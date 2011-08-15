@@ -133,6 +133,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 			}
 		}
 		
+		// Build HTML tag
 		$tag = $setup['tag'];
 		
 		if (is_array($tag)) {

@@ -8,7 +8,9 @@
 				</div>
 			<?php } ?>
 			
-			<?php echo $this->message('quoteBy', array('author' => $author)); ?>
+			<?php echo $this->message('quoteBy', array(
+				'author' => htmlentities($author, ENT_NOQUOTES, 'UTF-8')
+			)); ?>
 		</div>
 	<?php } else if (!empty($date)) { ?>
 		<div class="decoda-quoteDate">

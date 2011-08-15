@@ -17,7 +17,7 @@ class CodeFilter extends DecodaFilter {
 			'preserve' => true,
 			'escape' => true,
 			'attributes' => array(
-				'lang' => '([-_\sa-zA-Z0-9]+)',
+				'lang' => '([a-zA-Z0-9]+)',
 				'hl' => '([0-9,]+)'
 			)
 		),

@@ -4,7 +4,6 @@ A stand alone lightweight, BBcode style parser class.
 
 Todo:
 * Child depth limitation
-* Not converting linebreaks from rendered templates
 
 ## Requirements ##
 

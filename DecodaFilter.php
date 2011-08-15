@@ -35,6 +35,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'lineBreaks' => true,
 			'selfClose' => false,
 			'preserve' => false,
+			'escape' => false,
 			'parent' => array(),
 			'children' => array(),
 			'attributes' => array(),
@@ -82,25 +83,29 @@ abstract class DecodaFilter extends DecodaAbstract {
 	 */
 	public function parse(array $tag, $content) {
 		$setup = $this->tag($tag['tag']);
+		$xhtml = $this->getParser()->config('xhtml');
 		
 		if (empty($setup)) {
 			return;
-		} else if (!empty($setup['template'])) {
-			return $this->_render($tag, $content);
-		}		
-		
-		$attributes = $tag['attributes'];
-		$xhtml = $this->getParser()->config('xhtml');
-		$attr = '';
-		$tag = $setup['tag'];
-		
-		if (is_array($tag)) {
-			$tag = $tag[$xhtml];
 		}
 		
+		// Add linebreaks
 		if ($setup['lineBreaks']) {
 			$content = nl2br($content, $xhtml);
 		}
+		
+		// Escape entities
+		if ($setup['escape']) {
+			$content = htmlentities($content, ENT_NOQUOTES, 'UTF-8');
+		}
+		
+		// Use a template if it exists
+		if (!empty($setup['template'])) {
+			return $this->_render($tag, $content);
+		}	
+		
+		$attributes = $tag['attributes'];
+		$attr = '';
 
 		// If content doesn't match the pattern, don't wrap in a tag
 		if (empty($attributes['default']) && !empty($setup['pattern'])) {
@@ -126,6 +131,12 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 				$attr .= ' '. $key .'="'. $value .'"';
 			}
+		}
+		
+		$tag = $setup['tag'];
+		
+		if (is_array($tag)) {
+			$tag = $tag[$xhtml];
 		}
 		
 		$parsed = '<'. $tag . $attr;
@@ -154,7 +165,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 		if (!file_exists($path)) {
 			throw new Exception(sprintf('Template file %s does not exist.', $setup['template']));
 		}
-		
+
 		$vars = array();
 		
 		foreach ($tag['attributes'] as $key => $value) {
@@ -170,6 +181,10 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 		include $path;
 
+		if ($setup['lineBreaks']) {
+			return str_replace(array("\n", "\r"), "", ob_get_clean());
+		}
+		
 		return ob_get_clean();
 	}
 	

@@ -407,7 +407,7 @@ class Decoda {
 
 				foreach ($matches as $match) {
 					$key = strtolower($match[1]);
-					$value = trim($match[2], $this->config('close'));
+					$value = trim($match[2]);
 
 					if ($key == $tag['tag']) {
 						$key = 'default';
@@ -467,6 +467,7 @@ class Decoda {
 				break;
 
 				case self::TAG_OPEN:
+					// @todo - redo, doesn't work necessarily
 					if ($parent['depth'] >= 0 && !isset($parent['currentDepth'])) {
 						$parent['currentDepth'] = count($parents);
 					}
@@ -512,11 +513,7 @@ class Decoda {
 
 						$clean[] = $chunk;
 
-						if ($root) {
-							if (empty($openTags)) {
-								continue;
-							}
-
+						if ($root && !empty($openTags)) {
 							$last = end($openTags);
 
 							if ($last['tag'] == $chunk['tag']) {
@@ -549,7 +546,7 @@ class Decoda {
 	}
 
 	/**
-	 * Apply default filters if none are set.
+	 * Apply default filters and hooks if none are set.
 	 * 
 	 * @access protected
 	 * @return void
@@ -701,6 +698,7 @@ class Decoda {
 					$index = ($closeIndex - $openIndex);
 					$tag = array();
 
+					// Only reduce if not last index
 					if ($index != $count) {
 						$index = $index - 1;
 					}

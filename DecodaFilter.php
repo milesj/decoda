@@ -36,7 +36,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'selfClose' => false,
 			'preserve' => false,
 			'escape' => false,
-			'depth' => false,
+			'depth' => -1,
 			'parent' => array(),
 			'children' => array(),
 			'attributes' => array(),

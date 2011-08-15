@@ -262,11 +262,11 @@ class Decoda {
 		$child = $filter->tag($tag);
 
 		// Remove children after a certain nested depth
-		//if (isset($parent['currentDepth']) && $parent['currentDepth'] > $parent['depth']) {
-			//return false;
+		if (isset($parent['currentDepth']) && $parent['currentDepth'] > $parent['depth']) {
+			return false;
 
 		// Children that can only be within a certain parent
-		/*} else*/ if (!empty($child['parent']) && !in_array($parent['key'], $child['parent'])) {
+		} else if (!empty($child['parent']) && !in_array($parent['key'], $child['parent'])) {
 			return false;
 
 		// Parents that can only have direct descendant children
@@ -436,11 +436,12 @@ class Decoda {
 	protected function _cleanChunks(array $chunks, array $wrapper = array()) {
 		$clean = array();
 		$openTags = array();
-		$prevTag = array();
-		$prevParent = array();
+		$prevChunk = array();
 		$disallowed = array();
 		$parents = array();
+		$depths = array();
 		$count = count($chunks);
+		$tag = '';
 		$i = 0;
 
 		if (!empty($wrapper)) {
@@ -453,13 +454,13 @@ class Decoda {
 
 		while ($i < $count) {
 			$chunk = $chunks[$i];
-			$prevParent = $parent;
+			$tag = isset($chunk['tag']) ? $chunk['tag'] : '';
 
 			switch ($chunk['type']) {
 				case self::TAG_NONE:
 					if (empty($disallowed)) {
-						if (!empty($prevTag) && $prevTag['type'] === self::TAG_NONE) {
-							$chunk['text'] = $prevTag['text'] . $chunk['text'];
+						if (!empty($prevChunk) && $prevChunk['type'] === self::TAG_NONE) {
+							$chunk['text'] = $prevChunk['text'] . $chunk['text'];
 							array_pop($clean);
 						}
 
@@ -468,14 +469,19 @@ class Decoda {
 				break;
 
 				case self::TAG_OPEN:
-					// @todo - redo, doesn't work necessarily
-					if ($parent['depth'] >= 0 && !isset($parent['currentDepth'])) {
-						$parent['currentDepth'] = count($parents);
+					if ($parent['depth'] >= 0 && !isset($depths[$tag])) {
+						$depths[$tag] = 1;
+						$parent['currentDepth'] = $depths[$tag];
+						
+					} else if (isset($depths[$tag])) {
+						$depths[$tag] += 1;
+						$parent['currentDepth'] = $depths[$tag];
 					}
 
-					if ($this->isAllowed($parent, $chunk['tag'])) {						
+					if ($this->isAllowed($parent, $tag)) {
+						$prevParent = $parent;
 						$parents[] = $parent;
-						$parent = $this->getFilterByTag($chunk['tag'])->tag($chunk['tag']);
+						$parent = $this->getFilterByTag($tag)->tag($tag);
 						
 						if ($prevParent['preserve']) {
 							$chunk['type'] = self::TAG_NONE;
@@ -485,19 +491,24 @@ class Decoda {
 						$clean[] = $chunk;	
 
 						if ($root) {
-							$openTags[] = array('tag' => $chunk['tag'], 'index' => $i);
+							$openTags[] = array('tag' => $tag, 'index' => $i);
 						}
 					} else {
-						$disallowed[] = array('tag' => $chunk['tag'], 'index' => $i);
+						$disallowed[] = array('tag' => $tag, 'index' => $i);
 					}
 				break;
 
 				case self::TAG_CLOSE:
+					// Reduce depth
+					if (isset($depths[$tag])) {
+						$depths[$tag] -= 1;
+					}
+					
 					// If something is not allowed, skip the close tag
 					if (!empty($disallowed)) {
 						$last = end($disallowed);
 
-						if ($last['tag'] == $chunk['tag']) {
+						if ($last['tag'] == $tag) {
 							array_pop($disallowed);
 							continue;
 						}
@@ -509,7 +520,7 @@ class Decoda {
 					}
 
 					// Now check for open tags if the tag is allowed
-					if ($this->isAllowed($parent, $chunk['tag'])) {
+					if ($this->isAllowed($parent, $tag)) {
 						if ($parent['preserve']) {
 							$chunk['type'] = self::TAG_NONE;
 						}
@@ -519,13 +530,13 @@ class Decoda {
 						if ($root && !empty($openTags)) {
 							$last = end($openTags);
 
-							if ($last['tag'] == $chunk['tag']) {
+							if ($last['tag'] == $tag) {
 								array_pop($openTags);
 							} else {
 								while (!empty($openTags)) {
 									$last = array_pop($openTags);
 
-									if ($last['tag'] != $chunk['tag']) {
+									if ($last['tag'] != $tag) {
 										unset($clean[$last['index']]);
 									}
 								}
@@ -536,7 +547,7 @@ class Decoda {
 			}
 
 			$i++;
-			$prevTag = $chunk;
+			$prevChunk = $chunk;
 		}
 
 		// Remove any unclosed tags

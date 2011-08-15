@@ -146,7 +146,7 @@ echo $code->parse(); ?>
 
 <h2>Code Block</h2>
 
-<?php $string = '[code]This is a [b]basic[/b] code block! 
+<?php $string = '[code]This is a [b][i][u]basic[/u][/i][/b] code block! 
 Decoda mark-up is not converted inside code tags, excluding the code tag itself.[/code]
 
 [code lang="php" hl="15"]/**

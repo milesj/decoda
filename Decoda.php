@@ -437,6 +437,7 @@ class Decoda {
 		$clean = array();
 		$openTags = array();
 		$prevTag = array();
+		$prevParent = array();
 		$disallowed = array();
 		$parents = array();
 		$count = count($chunks);
@@ -452,12 +453,12 @@ class Decoda {
 
 		while ($i < $count) {
 			$chunk = $chunks[$i];
-			$prevTag = end($clean);
+			$prevParent = $parent;
 
 			switch ($chunk['type']) {
 				case self::TAG_NONE:
 					if (empty($disallowed)) {
-						if ($prevTag['type'] === self::TAG_NONE) {
+						if (!empty($prevTag) && $prevTag['type'] === self::TAG_NONE) {
 							$chunk['text'] = $prevTag['text'] . $chunk['text'];
 							array_pop($clean);
 						}
@@ -472,14 +473,16 @@ class Decoda {
 						$parent['currentDepth'] = count($parents);
 					}
 
-					if ($this->isAllowed($parent, $chunk['tag'])) {
-						if ($parent['preserve']) {
-							$chunk['type'] = self::TAG_NONE;
-						}
-
-						$clean[] = $chunk;						
+					if ($this->isAllowed($parent, $chunk['tag'])) {						
 						$parents[] = $parent;
 						$parent = $this->getFilterByTag($chunk['tag'])->tag($chunk['tag']);
+						
+						if ($prevParent['preserve']) {
+							$chunk['type'] = self::TAG_NONE;
+							$parent['preserve'] = true;
+						}
+						
+						$clean[] = $chunk;	
 
 						if ($root) {
 							$openTags[] = array('tag' => $chunk['tag'], 'index' => $i);
@@ -533,6 +536,7 @@ class Decoda {
 			}
 
 			$i++;
+			$prevTag = $chunk;
 		}
 
 		// Remove any unclosed tags

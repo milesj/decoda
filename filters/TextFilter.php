@@ -67,5 +67,5 @@ class TextFilter extends DecodaFilter {
 			'allowed' => self::TYPE_INLINE
 		)
 	);
-	
+
 }

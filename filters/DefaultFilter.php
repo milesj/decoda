@@ -40,5 +40,5 @@ class DefaultFilter extends DecodaFilter {
 			'allowed' => self::TYPE_INLINE
 		)
 	);
-	
+
 }

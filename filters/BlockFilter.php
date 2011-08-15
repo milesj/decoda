@@ -60,5 +60,5 @@ class BlockFilter extends DecodaFilter {
 			'allowed' => self::TYPE_BOTH
 		)
 	);
-	
+
 }

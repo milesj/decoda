@@ -1,7 +1,7 @@
 <?php
 
 class ClickableHook extends DecodaHook {
-	
+
 	/**
 	 * Matches a link or an email, and converts it to an anchor tag.
 	 * 
@@ -27,32 +27,32 @@ class ClickableHook extends DecodaHook {
 		return $content;
 	}
 
-    /**
-     * Callback for email processing.
-     *
-     * @access protected
-     * @param array $matches
-     * @return string
-     */
-    protected function _emailCallback($matches) {
+	/**
+	 * Callback for email processing.
+	 *
+	 * @access protected
+	 * @param array $matches
+	 * @return string
+	 */
+	protected function _emailCallback($matches) {
 		return $this->getParser()->getFilter('Email')->parse(array(
 			'tag' => 'email',
 			'attributes' => array()
 		), trim($matches[0]));
-    }
+	}
 
-    /**
-     * Callback for URL processing.
-     *
-     * @access protected
-     * @param array $matches
-     * @return string
-     */
-    protected function _urlCallback($matches) {
+	/**
+	 * Callback for URL processing.
+	 *
+	 * @access protected
+	 * @param array $matches
+	 * @return string
+	 */
+	protected function _urlCallback($matches) {
 		return $this->getParser()->getFilter('Url')->parse(array(
 			'tag' => 'url',
 			'attributes' => array()
 		), trim($matches[0]));
-    }
-	
+	}
+
 }

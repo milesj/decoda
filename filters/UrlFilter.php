@@ -1,7 +1,7 @@
 <?php
 
 class UrlFilter extends DecodaFilter {
-	
+
 	/**
 	 * Regex pattern.
 	 */
@@ -39,7 +39,7 @@ class UrlFilter extends DecodaFilter {
 			)
 		)
 	);
-	
+
 	/**
 	 * Using shorthand variation if enabled.
 	 * 
@@ -52,8 +52,8 @@ class UrlFilter extends DecodaFilter {
 		if ($this->getParser()->config('shorthand')) {
 			return '['. parent::parse($tag, $this->message('link')) .']';
 		}
-		
+
 		return parent::parse($tag, $content);
 	}
-	
+
 }

@@ -1,7 +1,7 @@
 <?php
 
 class EmailFilter extends DecodaFilter {
-	
+
 	/**
 	 * Regex pattern.
 	 */
@@ -39,7 +39,7 @@ class EmailFilter extends DecodaFilter {
 			)
 		)
 	);
-	
+
 	/**
 	 * Encrypt the email before parsing it within tags.
 	 * 
@@ -53,7 +53,7 @@ class EmailFilter extends DecodaFilter {
 		$default = false;
 		$length = strlen($email);
 		$encrypted = '';
-		
+
 		if (isset($tag['attributes']['default'])) {
 			$email = $tag['attributes']['default'];
 			$default = true;
@@ -70,12 +70,12 @@ class EmailFilter extends DecodaFilter {
 		if ($this->getParser()->config('shorthand')) {
 			return '['. parent::parse($tag, $this->message('mail')) .']';
 		}
-		
+
 		if (!$default) {
 			$content = $encrypted;
 		}
-		
+
 		return parent::parse($tag, $content);
 	}
-	
+
 }

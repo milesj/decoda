@@ -1,15 +1,7 @@
 <?php
 
 class QuoteFilter extends DecodaFilter {
-	
-	/**
-	 * Configuration.
-	 * 
-	 * @access protected
-	 * @var array
-	 */
-	protected $_config = array('childDepth' => 2);
-	
+
 	/**
 	 * Supported tags.
 	 * 
@@ -27,8 +19,9 @@ class QuoteFilter extends DecodaFilter {
 			),
 			'map' => array(
 				'default' => 'author'
-			)
+			),
+			'depth' => 2
 		)
 	);
-	
+
 }

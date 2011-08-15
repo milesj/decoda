@@ -2,9 +2,6 @@
 
 A stand alone lightweight, BBcode style parser class.
 
-Todo:
-* Child depth limitation
-
 ## Requirements ##
 
 * PHP 5.2.x
@@ -17,11 +14,25 @@ Todo:
 
 * Parses custom code to valid (X)HTML markup
 * Setting to make links and emails auto-clickable
-* Setting to use shorthand links and emails
-* Implements the ability to censor words
-* Support for adding additional user code
-* Supports additional attributes for select tags
-* Supports the following: bold, italics, underline, alignment, color, font, sup, sub, font size, h1-h6, code (pre), urls, emails, images, divs, lists, quotes, videos
+* Setting to use shorthand text for links and emails
+* Provides Filters to parse markup and custom code
+* Provides Hooks to execute during the parsing cycle
+* Provides functionality to render complex markup using a template system
+* Can censor offensive words
+* Can convert smiley faces into images
+* Basic support for localized messages
+* Supports the following filters and tags:
+
+	Default - b, i, u, sup, sub
+	Text - font, size, color, h1-h6
+	Block - align, float, hide, alert, note, div, spoiler
+	Code - code, var
+	Email - email, mail
+	URL - url, link
+	Image - img, image
+	List - list, olist, li
+	Video - video
+	Quote - quote
 
 ## Unsupported ##
 

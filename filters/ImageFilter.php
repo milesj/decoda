@@ -30,7 +30,7 @@ class ImageFilter extends DecodaFilter {
 			)
 		)
 	);
-	
+
 	/**
 	 * Use the content as the image source.
 	 * 
@@ -41,12 +41,12 @@ class ImageFilter extends DecodaFilter {
 	 */
 	public function parse(array $tag, $content) {
 		$tag['attributes']['src'] = $content;
-		
+
 		if (!isset($tag['attributes']['alt'])) {
 			$tag['attributes']['alt'] = '';
 		}
-		
+
 		return parent::parse($tag, $content);
 	}
-	
+
 }

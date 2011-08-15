@@ -1,7 +1,7 @@
 <?php
 
 abstract class DecodaFilter extends DecodaAbstract {
-	
+
 	/**
 	 * Type constants.
 	 */
@@ -36,6 +36,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'selfClose' => false,
 			'preserve' => false,
 			'escape' => false,
+			'depth' => false,
 			'parent' => array(),
 			'children' => array(),
 			'attributes' => array(),
@@ -43,14 +44,14 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'format' => '',
 			'pattern' => ''
 		);
-		
+
 		if (isset($this->_tags[$tag])) {
 			return $this->_tags[$tag] + $defaults;
 		}
-		
+
 		return $defaults;
 	}
-	
+
 	/**
 	 * Return a message string from the parser.
 	 * 
@@ -62,7 +63,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 	public function message($key, array $vars = array()) {
 		return $this->getParser()->message($key, $vars);
 	}
-	
+
 	/**
 	 * Return all tags.
 	 * 
@@ -84,26 +85,26 @@ abstract class DecodaFilter extends DecodaAbstract {
 	public function parse(array $tag, $content) {
 		$setup = $this->tag($tag['tag']);
 		$xhtml = $this->getParser()->config('xhtml');
-		
+
 		if (empty($setup)) {
 			return;
 		}
-		
+
 		// Add linebreaks
 		if ($setup['lineBreaks']) {
 			$content = nl2br($content, $xhtml);
 		}
-		
+
 		// Escape entities
 		if ($setup['escape']) {
 			$content = htmlentities($content, ENT_NOQUOTES, 'UTF-8');
 		}
-		
+
 		// Use a template if it exists
 		if (!empty($setup['template'])) {
 			return $this->_render($tag, $content);
 		}	
-		
+
 		$attributes = $tag['attributes'];
 		$attr = '';
 
@@ -112,10 +113,10 @@ abstract class DecodaFilter extends DecodaAbstract {
 			if (!preg_match($setup['pattern'], $content)) {
 				return $content;
 			}
-			
+
 			$attributes['default'] = $content;
 		}
-		
+
 		// Format attributes
 		if (!empty($setup['format'])) {
 			$attr = ' '. $setup['format'];
@@ -132,25 +133,25 @@ abstract class DecodaFilter extends DecodaAbstract {
 				$attr .= ' '. $key .'="'. $value .'"';
 			}
 		}
-		
+
 		// Build HTML tag
 		$tag = $setup['tag'];
-		
+
 		if (is_array($tag)) {
 			$tag = $tag[$xhtml];
 		}
-		
+
 		$parsed = '<'. $tag . $attr;
-		
+
 		if ($setup['selfClose']) {
 			$parsed .= $xhtml ? '/>' : '>';
 		} else {
 			$parsed .= '>'. $content .'</'. $tag .'>';
 		}
-		
+
 		return $parsed;
 	}
-	
+
 	/**
 	 * Render the tag using a template.
 	 * 
@@ -168,7 +169,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 		}
 
 		$vars = array();
-		
+
 		foreach ($tag['attributes'] as $key => $value) {
 			if (isset($setup['map'][$key])) {
 				$key = $setup['map'][$key];
@@ -176,7 +177,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 			$vars[$key] = $value;
 		}
-		
+
 		extract($vars, EXTR_SKIP);
 		ob_start();
 
@@ -185,8 +186,8 @@ abstract class DecodaFilter extends DecodaAbstract {
 		if ($setup['lineBreaks']) {
 			return str_replace(array("\n", "\r"), "", ob_get_clean());
 		}
-		
+
 		return ob_get_clean();
 	}
-	
+
 }

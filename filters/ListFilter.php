@@ -32,5 +32,5 @@ class ListFilter extends DecodaFilter {
 			'parent' => array('olist', 'list')
 		)
 	);
-	
+
 }

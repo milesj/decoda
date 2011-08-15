@@ -27,5 +27,5 @@ class CodeFilter extends DecodaFilter {
 			'allowed' => self::TYPE_INLINE
 		)
 	);
-	
+
 }

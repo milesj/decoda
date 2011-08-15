@@ -19,7 +19,7 @@ class VideoFilter extends DecodaFilter {
 			)
 		)
 	);
-	
+
 	/**
 	 * Video formats.
 	 * 
@@ -84,7 +84,7 @@ class VideoFilter extends DecodaFilter {
 			'path' => 'http://cdn.livestream.com/embed/${id}?height={height}&width={width}&autoplay=false'
 		)
 	);
-	
+
 	/**
 	 * Custom build the HTML for videos.
 	 * 
@@ -96,14 +96,14 @@ class VideoFilter extends DecodaFilter {
 	public function parse(array $tag, $content) {
 		$provider = $tag['attributes']['default'];
 		$size = isset($tag['attributes']['size']) ? $tag['attributes']['size'] : 'medium';
-		
+
 		if (empty($this->_formats[$provider])) {
 			return $provider .':'. $content;
 		}
 
 		$video = $this->_formats[$provider];
 		$size = isset($video[$size]) ? $video[$size] : $video['medium'];
-		
+
 		$tag['attributes']['width'] = $size[0];
 		$tag['attributes']['height'] = $size[1];
 		$tag['attributes']['player'] = $video['player'];
@@ -111,5 +111,5 @@ class VideoFilter extends DecodaFilter {
 
 		return parent::parse($tag, $content);
 	}
-	
+
 }

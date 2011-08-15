@@ -68,6 +68,20 @@ class VideoFilter extends DecodaFilter {
 			'large' => array(525, 420),
 			'player' => 'embed',
 			'path' => 'http://mediaservices.myspace.com/services/media/embed.aspx/m={id},t=1,mt=video'
+		),
+		'wegame' => array(
+			'small' => array(325, 260),
+			'medium' => array(480, 387),
+			'large' => array(525, 420),
+			'player' => 'embed',
+			'path' => 'http://wegame.com/static/flash/player.swf?xmlrequest=http://www.wegame.com/player/video/{id}&embedPlayer=true'
+		),
+		'livestream' => array(
+			'small' => array(300, 193),
+			'medium' => array(480, 295),
+			'large' => array(560, 340),
+			'player' => 'iframe',
+			'path' => 'http://cdn.livestream.com/embed/${id}?height={height}&width={width}&autoplay=false'
 		)
 	);
 	
@@ -88,14 +102,14 @@ class VideoFilter extends DecodaFilter {
 		}
 
 		$video = $this->_formats[$provider];
-		$path = str_replace('{id}', $content, $video['path']);
 		$size = isset($video[$size]) ? $video[$size] : $video['medium'];
+		
+		$tag['attributes']['width'] = $size[0];
+		$tag['attributes']['height'] = $size[1];
+		$tag['attributes']['player'] = $video['player'];
+		$tag['attributes']['url'] = str_replace(array('{id}', '{width}', '{height}'), array($content, $size[0], $size[1]), $video['path']);
 
-		if ($video['player'] == 'embed') {
-			return '<embed src="'. $path .'" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="'. $size[0] .'" height="'. $size[1] .'"></embed>';
-		} else {
-			return '<iframe src="'. $path .'" width="'. $size[0] .'" height="'. $size[1] .'" frameborder="0"></iframe>';
-		}
+		return parent::parse($tag, $content);
 	}
 	
 }

@@ -56,7 +56,6 @@ class Decoda {
 		'parse' => true,
 		'shorthand' => false,
 		'xhtml' => false,
-		'quoteDepth' => 2,
 		'locale' => 'en-us'
 	);
 	

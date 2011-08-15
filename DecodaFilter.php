@@ -161,7 +161,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 	protected function _render(array $tag, $content) {
 		$setup = $this->tag($tag['tag']);
 		$path = DECODA_TEMPLATES . $setup['template'] .'.php';
-		
+
 		if (!file_exists($path)) {
 			throw new Exception(sprintf('Template file %s does not exist.', $setup['template']));
 		}

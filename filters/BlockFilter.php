@@ -46,7 +46,7 @@ class BlockFilter extends DecodaFilter {
 			'format' => 'class="decoda-note"'
 		),
 		'div' => array(
-			'template' => 'div',
+			'tag' => 'div',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'attributes' => array(

@@ -1,5 +1,4 @@
 <?php
-
 $show = $this->message('spoiler') .' ('. $this->message('show') .')';
 $hide = $this->message('spoiler') .' ('. $this->message('hide') .')';
 

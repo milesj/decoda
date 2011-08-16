@@ -1,42 +1,24 @@
-<?php // Turn on error reporting
+<?php
 error_reporting(E_ALL);
-
-function debug($var) {
-	echo '<pre>'. print_r($var, true) .'</pre>';
-}
-
-// Include Decoda
 include '../Decoda.php'; ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Decoda Examples</title>
-<style type="text/css">
-	body { padding: 15px; font: normal 12px Arial, Tahoma, sans-serif; color: #000; }
-	h1, h2, h3, h4, h5, h6, div, img, form, blockquote { margin: 0; padding: 0; }
-	h2 { margin-top: 50px; }
-	.align-left { text-align: left; }
-	.align-right { text-align: right; }
-	.align-center { text-align: center; }
-	.align-justify { text-align: justify; }
-	.decoda-quote { background: #FFFFCC; padding: 10px; margin: 0 0 15px 15px; }
-	.decoda-quoteAuthor { font-weight: bold; margin-bottom: 5px; }
-	.decoda-quoteAuthor .decoda-quoteDate { float: right; }
-	.decoda-spoilerBody { background: #FFFFCC; padding: 10px; margin-top: 10px; }
-	.decoda-code { background: #f4f4f4; padding: 10px; }
-	.decoda-alert { background: red; padding: 10px; }
-	.decoda-note { background: blue; padding: 10px; }
-</style>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="style.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
 <h1>Decoda Examples</h1>
 
-<?php $string = 'Copyright 2009-'. date('Y') .' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]';
-$code = new Decoda($string);
-echo $code->parse(); ?>
+<?php $code = new Decoda('Copyright 2009-'. date('Y') .' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]');
+echo $code->parse();
+
+include 'block.php'; ?>
+
+
 
 <h2>Basic Styles</h2>
 

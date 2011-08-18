@@ -17,12 +17,12 @@ class CodeFilter extends DecodaFilter {
 			'preserve' => true,
 			'escape' => true,
 			'attributes' => array(
-				'lang' => '([a-zA-Z0-9]+)',
+				'default' => '([a-zA-Z0-9]+)',
 				'hl' => '([0-9,]+)'
 			)
 		),
 		'var' => array(
-			'tag' => 'var',
+			'tag' => 'code',
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_INLINE
 		)

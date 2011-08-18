@@ -49,8 +49,14 @@ class UrlFilter extends DecodaFilter {
 	 * @return string
 	 */
 	public function parse(array $tag, $content) {
+		if (empty($tag['attributes']['default'])) {
+			$tag['attributes']['default'] = $content;
+		}
+		
 		if ($this->getParser()->config('shorthand')) {
-			return '['. parent::parse($tag, $this->message('link')) .']';
+			$tag['content'] = $this->message('link');
+			
+			return '['. parent::parse($tag, $content) .']';
 		}
 
 		return parent::parse($tag, $content);

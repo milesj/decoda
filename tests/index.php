@@ -19,7 +19,7 @@ include '../Decoda.php'; ?>
 <?php $code = new Decoda('Copyright 2009-'. date('Y') .' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]');
 echo $code->parse();
 
-include 'email.php'; ?>
+include 'url.php'; ?>
 
 
 

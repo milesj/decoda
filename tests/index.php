@@ -1,5 +1,8 @@
 <?php
 error_reporting(E_ALL);
+function debug($var) {
+	echo '<pre>'. print_r($var, true) .'</pre>';
+}
 include '../Decoda.php'; ?>
 
 <!DOCTYPE html>
@@ -16,7 +19,7 @@ include '../Decoda.php'; ?>
 <?php $code = new Decoda('Copyright 2009-'. date('Y') .' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]');
 echo $code->parse();
 
-include 'code.php'; ?>
+include 'email.php'; ?>
 
 
 

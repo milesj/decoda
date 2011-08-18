@@ -90,6 +90,18 @@ abstract class DecodaFilter extends DecodaAbstract {
 			return;
 		}
 
+		$attributes = $tag['attributes'];
+		$attr = '';
+
+		// If content doesn't match the pattern, don't wrap in a tag
+		if (!empty($setup['pattern'])) {
+			$test = !empty($attributes['default']) ? $attributes['default'] : $content;
+			
+			if (!preg_match($setup['pattern'], $test)) {
+				return $content;
+			}
+		}
+		
 		// Add linebreaks
 		if ($setup['lineBreaks']) {
 			$content = nl2br($content, $xhtml);
@@ -97,24 +109,12 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 		// Escape entities
 		if ($setup['escape']) {
-			$content = htmlentities($content, ENT_NOQUOTES, 'UTF-8');
+			$content = htmlentities($content, ENT_QUOTES, 'UTF-8');
 		}
 
 		// Use a template if it exists
 		if (!empty($setup['template'])) {
 			return $this->_render($tag, $content);
-		}	
-
-		$attributes = $tag['attributes'];
-		$attr = '';
-
-		// If content doesn't match the pattern, don't wrap in a tag
-		if (empty($attributes['default']) && !empty($setup['pattern'])) {
-			if (!preg_match($setup['pattern'], $content)) {
-				return $content;
-			}
-
-			$attributes['default'] = $content;
 		}
 
 		// Format attributes
@@ -129,24 +129,28 @@ abstract class DecodaFilter extends DecodaAbstract {
 				if (isset($setup['map'][$key])) {
 					$key = $setup['map'][$key];
 				}
+				
+				if ($key == 'default') {
+					continue;
+				}
 
 				$attr .= ' '. $key .'="'. $value .'"';
 			}
 		}
 
 		// Build HTML tag
-		$tag = $setup['tag'];
+		$html = $setup['tag'];
 
-		if (is_array($tag)) {
-			$tag = $tag[$xhtml];
+		if (is_array($html)) {
+			$html = $html[$xhtml];
 		}
 
-		$parsed = '<'. $tag . $attr;
+		$parsed = '<'. $html . $attr;
 
 		if ($setup['selfClose']) {
 			$parsed .= $xhtml ? '/>' : '>';
 		} else {
-			$parsed .= '>'. $content .'</'. $tag .'>';
+			$parsed .= '>'. (!empty($tag['content']) ? $tag['content'] : $content) .'</'. $html .'>';
 		}
 
 		return $parsed;

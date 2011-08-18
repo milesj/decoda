@@ -5,7 +5,7 @@ class EmailFilter extends DecodaFilter {
 	/**
 	 * Regex pattern.
 	 */
-	const EMAIL_PATTERN = '/(^|\n|\s)([-a-zA-Z0-9\.\+!]{1,64}+)@([-a-zA-Z0-9\.]{5,255}+)/';
+	const EMAIL_PATTERN = '/(^|\n|\s)([-a-z0-9\.\+!]{1,64}+)@([-a-z0-9]+\.[a-z\.]+)/is';
 
 	/**
 	 * Supported tags.
@@ -21,9 +21,6 @@ class EmailFilter extends DecodaFilter {
 			'pattern' => self::EMAIL_PATTERN,
 			'attributes' => array(
 				'default' => self::EMAIL_PATTERN
-			),
-			'map' => array(
-				'default' => 'href'
 			)
 		),
 		'mail' => array(
@@ -33,9 +30,6 @@ class EmailFilter extends DecodaFilter {
 			'pattern' => self::EMAIL_PATTERN,
 			'attributes' => array(
 				'default' => self::EMAIL_PATTERN
-			),
-			'map' => array(
-				'default' => 'href'
 			)
 		)
 	);
@@ -49,15 +43,16 @@ class EmailFilter extends DecodaFilter {
 	 * @return string
 	 */
 	public function parse(array $tag, $content) {
-		$email = $content;
-		$default = false;
-		$length = strlen($email);
-		$encrypted = '';
-
-		if (isset($tag['attributes']['default'])) {
+		if (empty($tag['attributes']['default'])) {
+			$email = $content;
+			$default = false;
+		} else {
 			$email = $tag['attributes']['default'];
 			$default = true;
 		}
+		
+		$encrypted = '';
+		$length = strlen($email);
 
 		if ($length > 0) {
 			for ($i = 0; $i < $length; ++$i) {
@@ -65,14 +60,16 @@ class EmailFilter extends DecodaFilter {
 			}
 		}
 
-		$tag['attributes']['default'] = 'mailto:'. $encrypted;
+		$tag['attributes']['href'] = 'mailto:'. $encrypted;
 
 		if ($this->getParser()->config('shorthand')) {
-			return '['. parent::parse($tag, $this->message('mail')) .']';
+			$tag['content'] = $this->message('mail');
+			
+			return '['. parent::parse($tag, $content) .']';
 		}
-
+		
 		if (!$default) {
-			$content = $encrypted;
+			$tag['content'] = $encrypted;
 		}
 
 		return parent::parse($tag, $content);

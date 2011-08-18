@@ -20,7 +20,7 @@ class CensorHook extends DecodaHook {
 		$path = DECODA_CONFIG .'censored.txt';
 
 		if (file_exists($path)) {
-			$this->_censored = array_map('trim', file($path));
+			$this->_censored = array_map('trim', array_filter(file($path)));
 		}
 	}
 
@@ -34,7 +34,7 @@ class CensorHook extends DecodaHook {
 	public function afterParse($content) {
 		if (!empty($this->_censored)) {
 			foreach ($this->_censored as $word) {
-				$content = preg_replace_callback('/(\s)?'. preg_quote(trim($word), '/') .'(\s)?/is', array($this, '_callback'), $content);
+				$content = preg_replace_callback('/(^|\s|\n)?'. $this->_prepare($word) .'(\s|\n)?/is', array($this, '_callback'), $content);
 			}
 		}
 
@@ -52,17 +52,47 @@ class CensorHook extends DecodaHook {
 		if (count($matches) == 1) {
 			return $matches[0];
 		}
-
+		
 		$length = mb_strlen(trim($matches[0]));
 		$censored = '';
+		$symbols = str_shuffle('*@#$*!&%');
 		$l = isset($matches[1]) ? $matches[1] : '';
 		$r = isset($matches[2]) ? $matches[2] : '';
-
-		for ($i = 1; $i <= $length; ++$i) {
-			$censored .= '*';
+		$i = 0;
+		$s = 0;
+		
+		while ($i < $length) {
+			$censored .= $symbols[$s];
+			
+			$i++;
+			$s++;
+			
+			if ($s > 7) {
+				$s = 0;
+			}
 		}
 
 		return $l . $censored . $r;
+	}
+	
+	/**
+	 * Prepare the regex pattern for each word.
+	 * 
+	 * @access protected
+	 * @param string $word
+	 * @return string 
+	 */
+	protected function _prepare($word) {
+		$letters = str_split($word);
+		$regex = '';
+		
+		foreach ($letters as $letter) {
+			$regex .= preg_quote($letter, '/') .'{1,}';
+		}
+		
+		$regex .= '(?:ing|in|g|er|r|ed|d)?';
+		
+		return $regex;
 	}
 
 }

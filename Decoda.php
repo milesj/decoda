@@ -329,7 +329,7 @@ class Decoda {
 			$this->_extractChunks();
 			$this->_parsed = $this->_parse($this->_nodes);
 		} else {
-			$this->_parsed = $this->_string;
+			$this->_parsed = nl2br($this->_string);
 		}
 
 		$this->_parsed = $this->_trigger('afterParse', $this->_parsed);

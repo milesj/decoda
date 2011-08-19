@@ -76,12 +76,12 @@ class VideoFilter extends DecodaFilter {
 			'player' => 'embed',
 			'path' => 'http://wegame.com/static/flash/player.swf?xmlrequest=http://www.wegame.com/player/video/{id}&embedPlayer=true'
 		),
-		'livestream' => array(
-			'small' => array(300, 193),
-			'medium' => array(480, 295),
-			'large' => array(560, 340),
-			'player' => 'iframe',
-			'path' => 'http://cdn.livestream.com/embed/${id}?height={height}&width={width}&autoplay=false'
+		'collegehumor' => array(
+			'small' => array(300, 169),
+			'medium' => array(450, 254),
+			'large' => array(600, 338),
+			'player' => 'embed',
+			'path' => 'http://collegehumor.com/moogaloop/moogaloop.swf?clip_id={id}&use_node_id=true&fullscreen=1'
 		)
 	);
 

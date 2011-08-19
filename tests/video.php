@@ -1,0 +1,12 @@
+
+<h2>Video</h2>
+
+<?php $code = new Decoda('[video="youtube"]piZrjDTx2eg[/video]
+[video="vimeo"]27315673[/video]
+[video="liveleak"]d4a_1313688628[/video]
+[video="veoh"]v21205329j6GXPXhT[/video]
+[video="dailymotion"]xklaf6_gamescom-2011_videogames[/video]
+[video="myspace"]108061717[/video]
+[video="wegame"]World_of_Workcraft[/video]
+[video="collegehumor"]6450423[/video]');
+echo $code->parse(); ?>

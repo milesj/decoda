@@ -25,9 +25,11 @@ include '../Decoda.php'; ?>
 		.align-right { text-align: right; }
 		.align-center { text-align: center; }
 		.align-justify { text-align: justify; }
-		.decoda-quote { background: #FFFFCC; padding: 10px; margin: 0 0 15px 15px; }
-		.decoda-quoteAuthor { font-weight: bold; margin-bottom: 5px; }
-		.decoda-quoteAuthor .decoda-quoteDate { float: right; }
+		.decoda-quote { background: #FFFFCC; padding: 10px; margin: 0 0 15px 15px; border-radius: 10px; }
+		.decoda-quote .decoda-quote { background: khaki; margin: 15px 0; }
+		.decoda-quote .decoda-quote .decoda-quote { background: goldenrod; }
+		.decoda-quoteHead { font-weight: bold; margin-bottom: 5px; }
+		.decoda-quoteDate { float: right; }
 		.decoda-spoilerBody { background: #FFFFCC; padding: 10px; margin-top: 10px; }
 		.decoda-code { background: #f4f4f4; padding: 10px; border-radius: 10px; }
 		.decoda-alert { background: lightpink; padding: 10px; border-radius: 10px; }

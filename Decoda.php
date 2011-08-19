@@ -211,6 +211,37 @@ class Decoda {
 
 		return $this;
 	}
+	
+	/**
+	 * Disable all filters.
+	 *
+	 * @access public
+	 * @return Decoda
+	 * @chainable
+	 */
+	public function disableFilters() {
+		$this->_filters = array();
+		$this->_filterMap = array();
+		
+		$this->addFilter(new EmptyFilter());
+		
+		return $this;
+	}
+	
+	/**
+	 * Disable all hooks.
+	 *
+	 * @access public
+	 * @return Decoda
+	 * @chainable
+	 */
+	public function disableHooks() {
+		$this->_hooks = array();
+		
+		$this->addHook(new EmptyHook());
+		
+		return $this;
+	}
 
 	/**
 	 * Return a specific filter based on class name or tag.

@@ -18,5 +18,5 @@ echo $code->parse(); ?>
 <?php $string = '[img]http://www.google.com/some/fake/image[/img]
 [img]google.com/some/fake/image.jpg[/img]';
 $code = new Decoda($string);
-$code->addHook(new EmptyHook());
+$code->disableHooks();
 echo $code->parse(); ?>

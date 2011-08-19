@@ -19,11 +19,11 @@ class ImageFilter extends DecodaFilter {
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_NONE,
 			'pattern' => self::IMAGE_PATTERN,
-			'selfClose' => true,
+			'autoClose' => true,
 			'attributes' => array(
-				'width' => '([0-9%]{1,4}+)',
-				'height' => '([0-9%]{1,4}+)',
-				'alt' => '(.*?)'
+				'width' => '/[0-9%]{1,4}+/',
+				'height' => '/[0-9%]{1,4}+/',
+				'alt' => '/.*?/'
 			)
 		),
 		'image' => array(
@@ -31,11 +31,11 @@ class ImageFilter extends DecodaFilter {
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_NONE,
 			'pattern' => self::IMAGE_PATTERN,
-			'selfClose' => true,
+			'autoClose' => true,
 			'attributes' => array(
-				'width' => '([0-9%]{1,4}+)',
-				'height' => '([0-9%]{1,4}+)',
-				'alt' => '(.*?)'
+				'width' => '/[0-9%]{1,4}+/',
+				'height' => '/[0-9%]{1,4}+/',
+				'alt' => '/.*?/'
 			)
 		)
 	);

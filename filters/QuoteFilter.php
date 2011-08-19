@@ -14,8 +14,8 @@ class QuoteFilter extends DecodaFilter {
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'attributes' => array(
-				'default' => '(.*?)',
-				'date' => '(.*?)'
+				'default' => '/.*?/',
+				'date' => '/.*?/'
 			),
 			'map' => array(
 				'default' => 'author'

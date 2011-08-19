@@ -14,27 +14,33 @@ class TextFilter extends DecodaFilter {
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_INLINE,
 			'attributes' => array(
-				'default' => '(.*?)'
+				'default' => array('(.*?)', 'font-family: {default}')
 			),
-			'format' => 'style="font-family: {default}, sans-serif;"'
+			'map' => array(
+				'default' => 'style'
+			)
 		),
 		'size' => array(
 			'tag' => 'span',
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_INLINE,
 			'attributes' => array(
-				'default' => '((?:[1-2]{1})?[0-9]{1})',
+				'default' => array('/[1-2]{1}[0-9]{1}/', 'font-size: {default}px'),
 			),
-			'format' => 'style="font-size: {default}px"'
+			'map' => array(
+				'default' => 'style'
+			)
 		),
 		'color' => array(
 			'tag' => 'span',
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_INLINE,
 			'attributes' => array(
-				'default' => '(#[0-9a-fA-F]{3,6}|[a-z]+)'
+				'default' => array('/(?:#[0-9a-f]{3,6}|[a-z]+)/i', 'color: {default}'),
 			),
-			'format' => 'style="color: {default}"'
+			'map' => array(
+				'default' => 'style'
+			)
 		),
 		'h1' => array(
 			'tag' => 'h1',

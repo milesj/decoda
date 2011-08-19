@@ -414,8 +414,16 @@ class Decoda {
 					}
 
 					if (isset($source['attributes'][$key])) {
-						if (preg_match($source['attributes'][$key], $value)) {
-							$tag['attributes'][$key] = $value;
+						$pattern = $source['attributes'][$key];
+						
+						if (is_array($pattern)) {
+							if (preg_match($pattern[0], $value)) {
+								$tag['attributes'][$key] = str_replace('{'. $key .'}', $value, $pattern[1]);
+							}
+						} else {
+							if (preg_match($pattern, $value)) {
+								$tag['attributes'][$key] = $value;
+							}
 						}
 					}
 				}

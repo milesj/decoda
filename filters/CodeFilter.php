@@ -17,8 +17,8 @@ class CodeFilter extends DecodaFilter {
 			'preserve' => true,
 			'escape' => true,
 			'attributes' => array(
-				'default' => '([a-zA-Z0-9]+)',
-				'hl' => '([0-9,]+)'
+				'default' => '/[a-zA-Z0-9]+/i',
+				'hl' => '/[0-9,]+/'
 			)
 		),
 		'var' => array(

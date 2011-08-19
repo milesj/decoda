@@ -14,8 +14,8 @@ class VideoFilter extends DecodaFilter {
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_NONE,
 			'attributes' => array(
-				'default' => '([a-zA-Z0-9]+)',
-				'size' => '(small|medium|large)'
+				'default' => '/[a-zA-Z0-9]+/',
+				'size' => '/small|medium|large/i'
 			)
 		)
 	);
@@ -95,7 +95,7 @@ class VideoFilter extends DecodaFilter {
 	 */
 	public function parse(array $tag, $content) {
 		$provider = $tag['attributes']['default'];
-		$size = isset($tag['attributes']['size']) ? $tag['attributes']['size'] : 'medium';
+		$size = strtolower(isset($tag['attributes']['size']) ? $tag['attributes']['size'] : 'medium');
 
 		if (empty($this->_formats[$provider])) {
 			return $provider .':'. $content;

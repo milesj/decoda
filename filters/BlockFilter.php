@@ -14,44 +14,54 @@ class BlockFilter extends DecodaFilter {
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'attributes' => array(
-				'default' => '(left|center|right|justify)'
+				'default' => array('/left|center|right|justify/i', 'align-{default}')
 			),
-			'format' => 'class="align-{default}"'
+			'map' => array(
+				'default' => 'class'
+			)
 		),
 		'float' => array(
 			'tag' => 'div',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'attributes' => array(
-				'default' => '(left|right|none)'
+				'default' => array('/left|right|none/i', 'float-{default}')
 			),
-			'format' => 'class="float-{default}"'
+			'map' => array(
+				'default' => 'class'
+			)
 		),
 		'hide' => array(
 			'tag' => 'span',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
-			'format' => 'style="display: none"'
+			'html' => array(
+				'style' => 'display: none'
+			)
 		),
 		'alert' => array(
 			'tag' => 'div',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
-			'format' => 'class="decoda-alert"'
+			'html' => array(
+				'class' => 'decoda-alert'
+			)
 		),
 		'note' => array(
 			'tag' => 'div',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
-			'format' => 'class="decoda-note"'
+			'html' => array(
+				'class' => 'decoda-note'
+			)
 		),
 		'div' => array(
 			'tag' => 'div',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'attributes' => array(
-				'id' => '([-_a-zA-Z0-9]+)',
-				'class' => '([-_a-zA-Z0-9\s]+)' 
+				'id' => '/[-_a-z0-9]+/i',
+				'class' => '/[-_a-z0-9\s]+/' 
 			)
 		),
 		'spoiler' => array(

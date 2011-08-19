@@ -30,10 +30,11 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'key' => $tag,
 			'tag' => '',
 			'template' => '',
+			'pattern' => '',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'lineBreaks' => true,
-			'selfClose' => false,
+			'autoClose' => false,
 			'preserve' => false,
 			'escape' => false,
 			'depth' => -1,
@@ -41,8 +42,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'children' => array(),
 			'attributes' => array(),
 			'map' => array(),
-			'format' => '',
-			'pattern' => ''
+			'html' => array()
 		);
 
 		if (isset($this->_tags[$tag])) {
@@ -90,12 +90,9 @@ abstract class DecodaFilter extends DecodaAbstract {
 			return;
 		}
 
-		$attributes = $tag['attributes'];
-		$attr = '';
-
 		// If content doesn't match the pattern, don't wrap in a tag
 		if (!empty($setup['pattern'])) {
-			$test = !empty($attributes['default']) ? $attributes['default'] : $content;
+			$test = !empty($tag['attributes']['default']) ? $tag['attributes']['default'] : $content;
 
 			if (!preg_match($setup['pattern'], $test)) {
 				return $content;
@@ -118,24 +115,29 @@ abstract class DecodaFilter extends DecodaAbstract {
 		}
 
 		// Format attributes
-		if (!empty($setup['format'])) {
-			$attr = ' '. $setup['format'];
-
-			foreach ($attributes as $key => $value) {
-				$attr = str_replace('{'. $key .'}', $value, $attr);
-			}
-		} else {
-			foreach ($attributes as $key => $value) {
+		$attributes = array();
+		$attr = '';
+		
+		if (!empty($tag['attributes'])) {
+			foreach ($tag['attributes'] as $key => $value) {
 				if (isset($setup['map'][$key])) {
 					$key = $setup['map'][$key];
 				}
-				
+
 				if ($key == 'default') {
 					continue;
 				}
-
-				$attr .= ' '. $key .'="'. $value .'"';
+				
+				$attributes[$key] = htmlentities($value, ENT_QUOTES, 'UTF-8');
 			}
+		}
+		
+		if (!empty($setup['html'])) {
+			$attributes += $setup['html'];
+		}
+		
+		foreach ($attributes as $key => $value) {
+			$attr .= ' '. $key .'="'. $value .'"';
 		}
 
 		// Build HTML tag
@@ -147,7 +149,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 		$parsed = '<'. $html . $attr;
 
-		if ($setup['selfClose']) {
+		if ($setup['autoClose']) {
 			$parsed .= $xhtml ? '/>' : '>';
 		} else {
 			$parsed .= '>'. (!empty($tag['content']) ? $tag['content'] : $content) .'</'. $html .'>';

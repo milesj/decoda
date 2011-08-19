@@ -5,7 +5,7 @@ class UrlFilter extends DecodaFilter {
 	/**
 	 * Regex pattern.
 	 */
-	const URL_PATTERN = '/^((?:http|ftp|irc|file|telnet)s?:\/\/)(.*?)$/';
+	const URL_PATTERN = '/^((?:http|ftp|irc|file|telnet)s?:\/\/)(.*?)$/is';
 
 	/**
 	 * Supported tags.

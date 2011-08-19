@@ -96,7 +96,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 		// If content doesn't match the pattern, don't wrap in a tag
 		if (!empty($setup['pattern'])) {
 			$test = !empty($attributes['default']) ? $attributes['default'] : $content;
-			
+
 			if (!preg_match($setup['pattern'], $test)) {
 				return $content;
 			}

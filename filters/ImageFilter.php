@@ -1,6 +1,11 @@
 <?php
 
 class ImageFilter extends DecodaFilter {
+	
+	/**
+	 * Regex pattern.
+	 */
+	const IMAGE_PATTERN = '/^(?:http|ftp|file)s?:\/\/(.*?)\.(jpg|jpeg|png|gif|bmp)$/is';
 
 	/**
 	 * Supported tags.
@@ -13,20 +18,24 @@ class ImageFilter extends DecodaFilter {
 			'tag' => 'img',
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_NONE,
+			'pattern' => self::IMAGE_PATTERN,
 			'selfClose' => true,
 			'attributes' => array(
 				'width' => '([0-9%]{1,4}+)',
-				'height' => '([0-9%]{1,4}+)'
+				'height' => '([0-9%]{1,4}+)',
+				'alt' => '(.*?)'
 			)
 		),
 		'image' => array(
 			'tag' => 'img',
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_NONE,
+			'pattern' => self::IMAGE_PATTERN,
 			'selfClose' => true,
 			'attributes' => array(
 				'width' => '([0-9%]{1,4}+)',
-				'height' => '([0-9%]{1,4}+)'
+				'height' => '([0-9%]{1,4}+)',
+				'alt' => '(.*?)'
 			)
 		)
 	);
@@ -42,7 +51,7 @@ class ImageFilter extends DecodaFilter {
 	public function parse(array $tag, $content) {
 		$tag['attributes']['src'] = $content;
 
-		if (!isset($tag['attributes']['alt'])) {
+		if (empty($tag['attributes']['alt'])) {
 			$tag['attributes']['alt'] = '';
 		}
 

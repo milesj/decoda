@@ -4,7 +4,7 @@
 error_reporting(E_ALL);
 
 // Include class
-include '../Decoda.php';
+include '../decoda/Decoda.php';
 
 // Build menus
 $view = strtolower(isset($_GET['view']) ? $_GET['view'] : 'features');

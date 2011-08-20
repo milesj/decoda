@@ -32,9 +32,9 @@ class Decoda {
 	/**
 	 * Tag type constants.
 	 */
+	const TAG_NONE = 0;
 	const TAG_OPEN = 1;
 	const TAG_CLOSE = 2;
-	const TAG_NONE = 0;
 
 	/**
 	 * Extracted chunks of text and tags.
@@ -53,7 +53,6 @@ class Decoda {
 	protected $_config = array(
 		'open' => '[',
 		'close' => ']',
-		'parse' => true,
 		'disabled' => false,
 		'shorthand' => false,
 		'xhtml' => false,
@@ -137,11 +136,10 @@ class Decoda {
 	 * 
 	 * @access public
 	 * @param string $string
-	 * @param array $config 
 	 * @return void
 	 */
-	public function __construct($string, array $config = array()) {
-		$this->configure($config);
+	public function __construct($string) {
+		$this->_messages = json_decode(file_get_contents(DECODA_CONFIG .'messages.json'), true);
 		$this->reset($string);
 	}
 
@@ -195,30 +193,17 @@ class Decoda {
 	public function config($key) {
 		return isset($this->_config[$key]) ? $this->_config[$key] : null;
 	}
-
+	
 	/**
-	 * Apply configuration.
+	 * Toggle parsing.
 	 *
 	 * @access public
-	 * @param string $options
-	 * @param mixed $value
+	 * @param boolean $status
 	 * @return Decoda
 	 * @chainable
 	 */
-	public function configure($options, $value = true) {
-		if (is_array($options)) {
-			foreach ($options as $option => $value) {
-				$this->configure($option, $value);
-			}
-		} else {
-			if (isset($this->_config[$options])) {
-				$this->_config[$options] = $value;
-			} else {
-				throw new Exception(sprintf('Configuration %s does not exist.', $options));
-			}
-		}
-
-		return $this;
+	public function disable($status = true) {
+		$this->_config['disabled'] = (bool) $status;
 	}
 	
 	/**
@@ -324,6 +309,24 @@ class Decoda {
 
 		return false;
 	}
+	
+	/**
+	 * Set the locale.
+	 * 
+	 * @access public
+	 * @param string $locale
+	 * @return Decoda 
+	 * @chainable
+	 */
+	public function locale($locale) {
+		if (empty($this->_messages[$locale])) {
+			throw new Exception(sprintf('Localized strings for %s do not exist.', $locale));
+		}
+		
+		$this->_config['locale'] = $locale;
+		
+		return $this;
+	}
 
 	/**
 	 * Return a message string if it exists.
@@ -335,11 +338,6 @@ class Decoda {
 	 */
 	public function message($key, array $vars = array()) {
 		$locale = $this->config('locale');
-
-		if (empty($this->_messages[$locale])) {
-			throw new Exception(sprintf('Localized strings for %s do not exist.', $locale));
-		}
-
 		$string = isset($this->_messages[$locale][$key]) ? $this->_messages[$locale][$key] : '';
 
 		if (!empty($vars)) {
@@ -365,7 +363,7 @@ class Decoda {
 		$this->_defaults();
 		$this->_string = $this->_trigger('beforeParse', $this->_string);
 
-		if ($this->config('parse')) {
+		if (strpos($this->_string, $this->config('open')) !== false && strpos($this->_string, $this->config('close')) !== false) {
 			$this->_extractChunks();
 			$this->_parsed = $this->_parse($this->_nodes);
 		} else {
@@ -386,14 +384,64 @@ class Decoda {
 	 * @chainable
 	 */
 	public function reset($string) {
-		if ((strpos($string, $this->config('open')) === false) && (strpos($string, $this->config('close')) === false)) {
-			$this->configure('parse', false);
-		} else {
-			$this->_messages = json_decode(file_get_contents(DECODA_CONFIG .'messages.json'), true);
-		}
-
+		$this->_chunks = array();
+		$this->_filters = array();
+		$this->_filterMap = array();
+		$this->_hooks = array();
+		$this->_nodes = array();
+		$this->_tags = array();
+		$this->_whitelist = array();
 		$this->_string = $string;
+		$this->_parsed = '';
 
+		return $this;
+	}
+	
+	/**
+	 * Change the open/close markup brackets.
+	 * 
+	 * @access public
+	 * @param string $open
+	 * @param string $close
+	 * @return Decoda
+	 * @chainable
+	 */
+	public function useBrackets($open, $close) {
+		if (empty($open) || empty($close)) {
+			throw new Exception('Both the open and close brackets are required.');
+		}
+		
+		$this->_config['open'] = (string) $open;
+		$this->_config['close'] = (string) $close;
+		
+		return $this;
+	}
+	
+	/**
+	 * Toggle shorthand syntax.
+	 * 
+	 * @access public
+	 * @param boolean $status
+	 * @return Decoda 
+	 * @chainable
+	 */
+	public function useShorthand($status = true) {
+		$this->_config['shorthand'] = (bool) $status;
+		
+		return $this;
+	}
+	
+	/**
+	 * Toggle XHTML.
+	 * 
+	 * @access public
+	 * @param boolean $status
+	 * @return Decoda 
+	 * @chainable
+	 */
+	public function useXhtml($status = true) {
+		$this->_config['xhtml'] = (bool) $status;
+		
 		return $this;
 	}
 	
@@ -811,6 +859,7 @@ class Decoda {
 	 */
 	protected function _parse(array $nodes, array $wrapper = array()) {
 		$parsed = '';
+		$xhtml = $this->config('xhtml');
 
 		if (empty($nodes)) {
 			return $parsed;
@@ -819,7 +868,7 @@ class Decoda {
 		foreach ($nodes as $node) {
 			if (is_string($node)) {
 				if (empty($wrapper)) {
-					$parsed .= nl2br($node);
+					$parsed .= nl2br($node, $xhtml);
 				} else {
 					$parsed .= $node;
 				}

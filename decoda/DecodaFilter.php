@@ -1,5 +1,24 @@
 <?php
 
+/**
+ * @key					- (string) Decoda tag
+ * @tag					- (string) HTML replacement tag
+ * @template			- (string) Template file to use for rendering
+ * @pattern				- (string) Regex pattern that the content or default attribute must pass
+ * @type				- (constant) Type of HTML element: block or inline
+ * @allowed				- (constant) What types of elements are allowed to be nested
+ * @attributes			- (array) Custom attributes to parse out of the Decoda markup
+ * @map					- (array) Map parsed attributes to different names
+ * @html				- (array) Custom HTML attributes to append to the parsed tag
+ * @lineBreaks			- (boolean) Convert linebreaks within the content body
+ * @autoClose			- (boolean) HTML tag is self closing
+ * @preserveTags		- (boolean) Will not convert nested Decoda markup within this tag
+ * @escapeContent		- (boolean) Escape HTML entities within the content body
+ * @escapeAttributes	- (boolean) Escape HTML entities within the parsed attributes
+ * @maxChildDepth		- (integer) Max depth for nested children of the same tag (-1 to disable)
+ * @parent				- (array) List of Decoda keys that this tag can only be a direct child of
+ * @children			- (array) List of Decoda keys for all the tags that can only be a direct descendant
+ */
 abstract class DecodaFilter extends DecodaAbstract {
 
 	/**

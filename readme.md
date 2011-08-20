@@ -11,6 +11,7 @@ Version(s) 3.x are not backwards compatible with 2.9 and lower. The newer versio
 ## Contributors ##
 
 * "Marten-Plain" emoticons by Mårten Lundin - http://adiumxtras.com/index.php?a=xtras&xtra_id=6920
+* "HTML_BBCodeParser" by Seth Price - http://pear.php.net/package/HTML_BBCodeParser/
 
 ## Features ##
 

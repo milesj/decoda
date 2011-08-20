@@ -54,6 +54,7 @@ class Decoda {
 		'open' => '[',
 		'close' => ']',
 		'parse' => true,
+		'disabled' => false,
 		'shorthand' => false,
 		'xhtml' => false,
 		'locale' => 'en-us'
@@ -418,6 +419,7 @@ class Decoda {
 	 * @return array 
 	 */
 	protected function _buildTag($string) {
+		$disabled = $this->config('disabled');
 		$tag = array(
 			'tag' => '',
 			'text' => $string, 
@@ -453,29 +455,31 @@ class Decoda {
 			}
 
 			// Find attributes
-			preg_match_all('/([a-z]+)=\"(.*?)\"/i', $string, $matches, PREG_SET_ORDER);
+			if (!$disabled) {
+				preg_match_all('/([a-z]+)=\"(.*?)\"/i', $string, $matches, PREG_SET_ORDER);
 
-			if (!empty($matches)) {
-				$source = $this->_tags[$tag['tag']];
+				if (!empty($matches)) {
+					$source = $this->_tags[$tag['tag']];
 
-				foreach ($matches as $match) {
-					$key = strtolower($match[1]);
-					$value = trim($match[2]);
+					foreach ($matches as $match) {
+						$key = strtolower($match[1]);
+						$value = trim($match[2]);
 
-					if ($key == $tag['tag']) {
-						$key = 'default';
-					}
+						if ($key == $tag['tag']) {
+							$key = 'default';
+						}
 
-					if (isset($source['attributes'][$key])) {
-						$pattern = $source['attributes'][$key];
-						
-						if (is_array($pattern)) {
-							if (preg_match($pattern[0], $value)) {
-								$tag['attributes'][$key] = str_replace('{'. $key .'}', $value, $pattern[1]);
-							}
-						} else {
-							if (preg_match($pattern, $value)) {
-								$tag['attributes'][$key] = $value;
+						if (isset($source['attributes'][$key])) {
+							$pattern = $source['attributes'][$key];
+
+							if (is_array($pattern)) {
+								if (preg_match($pattern[0], $value)) {
+									$tag['attributes'][$key] = str_replace('{'. $key .'}', $value, $pattern[1]);
+								}
+							} else {
+								if (preg_match($pattern, $value)) {
+									$tag['attributes'][$key] = $value;
+								}
 							}
 						}
 					}
@@ -483,7 +487,7 @@ class Decoda {
 			}
 		}
 		
-		if (!empty($this->_whitelist) && !in_array($tag['tag'], $this->_whitelist)) {
+		if ($disabled || (!empty($this->_whitelist) && !in_array($tag['tag'], $this->_whitelist))) {
 			$tag['type'] = self::TAG_NONE;
 			$tag['text'] = '';
 		}

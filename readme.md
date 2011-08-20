@@ -23,18 +23,7 @@ Version(s) 3.x are not backwards compatible with 2.9 and lower. The newer versio
 * Can censor offensive words
 * Can convert smiley faces into images
 * Basic support for localized messages
-* Supports the following filters and tags:
-
-	Default - b, i, u, s, sup, sub
-	Text - font, size, color, h1-h6
-	Block - align, float, hide, alert, note, div, spoiler
-	Code - code, var
-	Email - email, mail
-	URL - url, link
-	Image - img, image
-	List - list, olist, li
-	Video - video
-	Quote - quote
+* Supports a wide range of tags
 
 ## Unsupported ##
 

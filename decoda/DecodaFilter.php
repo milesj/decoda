@@ -1,4 +1,15 @@
 <?php
+/**
+ * DecodaFilter
+ *
+ * A filter defines the list of tags and its associative markup to parse out of a string. 
+ * Supports a wide range of parameters to customize the output of each tag.
+ *
+ * @author      Miles Johnson - http://milesj.me
+ * @copyright   Copyright 2006-2011, Miles Johnson, Inc.
+ * @license     http://opensource.org/licenses/mit-license.php - Licensed under The MIT License
+ * @link        http://milesj.me/code/php/decoda
+ */
 
 /**
  * @key					- (string) Decoda tag

@@ -122,6 +122,14 @@ class Decoda {
 	 * @var array
 	 */
 	protected $_tags = array();
+	
+	/**
+	 * Whitelist of tags to parse.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
+	protected $_whitelist = array();
 
 	/**
 	 * Store the text and single instance configuration.
@@ -387,6 +395,20 @@ class Decoda {
 
 		return $this;
 	}
+	
+	/**
+	 * Add tags to the whitelist.
+	 * 
+	 * @access public
+	 * @return Decoda
+	 * @chainable 
+	 */
+	public function whitelist() {
+		$this->_whitelist += array_map('strtolower', func_get_args());
+		$this->_whitelist = array_filter($this->_whitelist);
+		
+		return $this;
+	}
 
 	/**
 	 * Determine if the string is an open or closing tag. If so, parse out the attributes.
@@ -423,7 +445,7 @@ class Decoda {
 
 			if (preg_match('/'. $oe .'([a-z0-9]+)(.*?)'. $ce .'/i', $string, $matches)) {
 				$tag['type'] = self::TAG_OPEN;
-				$tag['tag'] = $matches[1];
+				$tag['tag'] = strtolower($matches[1]);
 			}
 
 			if (!isset($this->_tags[$tag['tag']])) {
@@ -459,6 +481,11 @@ class Decoda {
 					}
 				}
 			}
+		}
+		
+		if (!empty($this->_whitelist) && !in_array($tag['tag'], $this->_whitelist)) {
+			$tag['type'] = self::TAG_NONE;
+			$tag['text'] = '';
 		}
 
 		return $tag;

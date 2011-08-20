@@ -27,22 +27,30 @@ abstract class DecodaFilter extends DecodaAbstract {
 	 */
 	public function tag($tag) {
 		$defaults = array(
+			// Meta
 			'key' => $tag,
 			'tag' => '',
 			'template' => '',
 			'pattern' => '',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
-			'lineBreaks' => true,
-			'autoClose' => false,
-			'preserve' => false,
-			'escape' => false,
-			'depth' => -1,
-			'parent' => array(),
-			'children' => array(),
+			
+			// Attributes
 			'attributes' => array(),
 			'map' => array(),
-			'html' => array()
+			'html' => array(),
+			
+			// Processes
+			'lineBreaks' => true,
+			'autoClose' => false,
+			'preserveTags' => false,
+			'escapeContent' => false,
+			'escapeAttributes' => true,
+			'maxChildDepth' => -1,
+			
+			// Hierarchy
+			'parent' => array(),
+			'children' => array()
 		);
 
 		if (isset($this->_tags[$tag])) {
@@ -105,7 +113,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 		}
 
 		// Escape entities
-		if ($setup['escape']) {
+		if ($setup['escapeContent']) {
 			$content = htmlentities($content, ENT_QUOTES, 'UTF-8');
 		}
 
@@ -128,7 +136,11 @@ abstract class DecodaFilter extends DecodaAbstract {
 					continue;
 				}
 				
-				$attributes[$key] = htmlentities($value, ENT_QUOTES, 'UTF-8');
+				if ($setup['escapeAttributes']) {
+					$attributes[$key] = htmlentities($value, ENT_QUOTES, 'UTF-8');
+				} else {
+					$attributes[$key] = $value;
+				}
 			}
 		}
 		

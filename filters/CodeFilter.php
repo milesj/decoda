@@ -14,8 +14,8 @@ class CodeFilter extends DecodaFilter {
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'lineBreaks' => false,
-			'preserve' => true,
-			'escape' => true,
+			'preserveTags' => true,
+			'escapeContent' => true,
 			'attributes' => array(
 				'default' => '/[a-zA-Z0-9]+/i',
 				'hl' => '/[0-9,]+/'

@@ -20,7 +20,7 @@ class QuoteFilter extends DecodaFilter {
 			'map' => array(
 				'default' => 'author'
 			),
-			'depth' => 2
+			'maxChildDepth' => 2
 		)
 	);
 

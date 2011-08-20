@@ -14,7 +14,7 @@ include '../Decoda.php'; ?>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<style type="text/css">
 		* { margin: 0; padding: 0; }
-		body { padding: 50px; font: normal 12px Arial, Tahoma, sans-serif; color: #000; }
+		body { padding: 50px; font: normal 12px/150% Arial, Tahoma, sans-serif; color: #000; }
 		h1 { font-size: 32px; }
 		h2 { margin: 50px 0 15px 0; font-size: 24px; }
 		code { background: beige; padding: 2px 5px; border-radius: 5px; }
@@ -49,7 +49,7 @@ echo $code->parse();
 
 $view = strtolower(isset($_GET['view']) ? $_GET['view'] : 'default');
 
-if (file_exists($view .'.php')) {
+if (file_exists($view .'.php') && $view != 'index') {
 	include $view .'.php';
 } else {
 	include 'default.php';

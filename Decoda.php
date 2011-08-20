@@ -293,7 +293,7 @@ class Decoda {
 		$child = $filter->tag($tag);
 
 		// Remove children after a certain nested depth
-		if (isset($parent['currentDepth']) && $parent['currentDepth'] > $parent['depth']) {
+		if (isset($parent['currentDepth']) && $parent['currentDepth'] > $parent['maxChildDepth']) {
 			return false;
 
 		// Children that can only be within a certain parent
@@ -508,7 +508,7 @@ class Decoda {
 				break;
 
 				case self::TAG_OPEN:
-					if ($parent['depth'] >= 0 && !isset($depths[$tag])) {
+					if ($parent['maxChildDepth'] >= 0 && !isset($depths[$tag])) {
 						$depths[$tag] = 1;
 						$parent['currentDepth'] = $depths[$tag];
 						
@@ -522,9 +522,9 @@ class Decoda {
 						$parents[] = $parent;
 						$parent = $this->getFilterByTag($tag)->tag($tag);
 						
-						if ($prevParent['preserve']) {
+						if ($prevParent['preserveTags']) {
 							$chunk['type'] = self::TAG_NONE;
-							$parent['preserve'] = true;
+							$parent['preserveTags'] = true;
 						}
 						
 						$clean[] = $chunk;	
@@ -560,7 +560,7 @@ class Decoda {
 
 					// Now check for open tags if the tag is allowed
 					if ($this->isAllowed($parent, $tag)) {
-						if ($parent['preserve']) {
+						if ($parent['preserveTags']) {
 							$chunk['type'] = self::TAG_NONE;
 						}
 

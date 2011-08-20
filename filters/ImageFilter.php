@@ -5,7 +5,7 @@ class ImageFilter extends DecodaFilter {
 	/**
 	 * Regex pattern.
 	 */
-	const IMAGE_PATTERN = '/^(?:http|ftp|file)s?:\/\/(.*?)\.(jpg|jpeg|png|gif|bmp)$/is';
+	const IMAGE_PATTERN = '/^(?:(?:http|ftp|file)s?:\/\/)?(.*?)\.(jpg|jpeg|png|gif|bmp)$/is';
 
 	/**
 	 * Supported tags.

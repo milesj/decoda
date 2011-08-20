@@ -30,3 +30,12 @@ $code = new Decoda($string);
 echo $code->parse(); ?>
 
 <h2>Headers</h2>
+
+<?php $string = '[h1]Lorem ipsum dolor sit amet, consectetur adipiscing elit.[/h1]
+[h2]Volutpat tellus vulputate dui venenatis quis euismod turpis pellentesque.[/h2]
+[h3]Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien.[/h3]
+[h4]Quisque viverra feugiat purus, in luctus faucibus felis eget viverra.[/h4]
+[h5]Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien.[/h5]
+[h6]Lorem ipsum dolor sit amet, consectetur adipiscing elit.[/h6]';
+$code = new Decoda($string);
+echo $code->parse(); ?>

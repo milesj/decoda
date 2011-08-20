@@ -16,7 +16,7 @@ echo $code->parse(); ?>
 <h2>Image <span>with fake URLs</h2>
 
 <?php $string = '[img]http://www.google.com/some/fake/image[/img]
-[img]google.com/some/fake/image.jpg[/img]';
+[img]google.com/some/fake/image.jg[/img]';
 $code = new Decoda($string);
 $code->disableHooks();
 echo $code->parse(); ?>

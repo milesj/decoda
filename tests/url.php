@@ -9,7 +9,7 @@
 [url]telnet://telnetsite.com[/url]
 [url="http://domain.com"]Linked URL[/url]
 
-Valid websites (auto-linked with book):
+Valid websites (auto-linked with hook):
 http://domain.com
 http://sub.domain.com/?with=param
 http://user:pass@domain.com:80/?with=param
@@ -31,7 +31,7 @@ echo $code->parse(); ?>
 [link]telnet://telnetsite.com[/link]
 [link="http://domain.com"]Linked URL[/link]
 
-Valid websites (auto-linked with book):
+Valid websites (auto-linked with hook):
 http://domain.com
 http://sub.domain.com/?with=param
 http://user:pass@domain.com:80/?with=param
@@ -50,5 +50,6 @@ echo $code->parse(); ?>
 [url]ftp://ftpsite.com[/url]
 [url]irc://ircsite.com[/url]
 [url]telnet://telnetsite.com[/url]';
-$code = new Decoda($string, array('shorthand' => true));
+$code = new Decoda($string);
+$code->useShorthand();
 echo $code->parse(); ?>

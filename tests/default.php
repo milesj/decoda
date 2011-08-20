@@ -14,7 +14,8 @@ echo $code->parse(); ?>
 <?php $string = '[b]Bold[/b]
 [i]Italics[/i]
 [b][i][u]Bold, italics, underline[/u][/i][/b]';
-$code = new Decoda($string, array('xhtml' => true));
+$code = new Decoda($string);
+$code->useXhtml();
 echo $code->parse(); ?>
 
 <h2>Super-script and sub-script</h2>

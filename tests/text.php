@@ -23,7 +23,7 @@ echo $code->parse(); ?>
 
 <?php $string = '[color="red"]Lorem ipsum dolor sit amet, consectetur adipiscing elit.[/color]
 [color="blue"]Volutpat tellus vulputate dui venenatis quis euismod turpis pellentesque.[/color]
-[color="00ff00"]Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien.[/color]
+[color="#f66"]Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien.[/color]
 [color="#ff0088"]Quisque viverra feugiat purus, in luctus faucibus felis eget viverra.[/color]
 [color="#cccccc"]Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien.[/color]';
 $code = new Decoda($string);

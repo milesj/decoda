@@ -32,5 +32,6 @@ echo $code->parse(); ?>
 <?php $string = 'email@domain.com (auto-linked with hook)
 [email]email@domain.com[/email]
 [email="email@domain.com"]Send me an email![/email]';
-$code = new Decoda($string, array('shorthand' => true));
+$code = new Decoda($string);
+$code->useShorthand();
 echo $code->parse(); ?>

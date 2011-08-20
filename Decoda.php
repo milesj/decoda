@@ -675,7 +675,7 @@ class Decoda {
 			unset($clean[$last['index']]);
 		}
 
-		return $clean;
+		return array_values($clean);
 	}
 
 	/**

@@ -337,6 +337,52 @@ class Decoda {
 
 		return $this->_parsed;
 	}
+	
+	/**
+	 * Remove filter(s).
+	 * 
+	 * @access public
+	 * @param string|array $filters
+	 * @return Decoda 
+	 * @chainable
+	 */
+	public function removeFilter($filters) {
+		if (!is_array($filters)) {
+			$filters = array($filters);
+		}
+		
+		foreach ($filters as $filter) {
+			unset($this->_filters[$filter]);
+			
+			foreach ($this->_filterMap as $tag => $fil) {
+				if ($fil == $filter) {
+					unset($this->_filterMap[$tag]);
+				}
+			}
+		}
+		
+		return $this;
+	}
+	
+	/**
+	 * Remove hook(s).
+	 * 
+	 * @access public
+	 * @param string|array $hooks
+	 * @return Decoda 
+	 * @chainable
+	 */
+	public function removeHook($hooks) {
+		if (!is_array($hooks)) {
+			$hooks = array($hooks);
+		}
+		
+		foreach ($hooks as $hook) {
+			unset($this->_hooks[$hook]);
+		}
+		
+		return $this;
+	}
 
 	/**
 	 * Reset the parser to a new string.

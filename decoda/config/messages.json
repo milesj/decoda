@@ -55,6 +55,14 @@
 		"mail": "ταχυδρομείο",
 		"quoteBy": "Παράθεση από {author}"
 	},
+	"bg-bg": {
+		"spoiler": "спойлер",
+		"hide": "крия",
+		"show": "шоу",
+		"link": "връзка",
+		"mail": "поща",
+		"quoteBy": "цитат от {author}"
+	},
 	"ru-ru": {
 		"spoiler": "спойлер",
 		"hide": "скрывать",
@@ -86,5 +94,13 @@
 		"link": "링크",
 		"mail": "우편",
 		"quoteBy": "{author}에 의해 견적"
+	},
+	"id-id": {
+		"spoiler": "Spoiler",
+		"hide": "Menyembunyikan",
+		"show": "Tampilkan",
+		"link": "link",
+		"mail": "email",
+		"quoteBy": "Quote by {author}"
 	}
 }

@@ -217,7 +217,7 @@ class Decoda {
 	public function disableFilters() {
 		$this->_filters = array();
 		$this->_filterMap = array();
-		
+
 		$this->addFilter(new EmptyFilter());
 		
 		return $this;
@@ -239,7 +239,7 @@ class Decoda {
 	}
 
 	/**
-	 * Return a specific filter based on class name or tag.
+	 * Return a specific filter based on class name.
 	 * 
 	 * @access public
 	 * @param string $filter
@@ -268,6 +268,27 @@ class Decoda {
 	 */
 	public function getFilters() {
 		return $this->_filters;
+	}
+
+	/**
+	 * Return a specific hook based on class name.
+	 * 
+	 * @access public
+	 * @param string $hook
+	 * @return DecodaHook
+	 */
+	public function getHook($hook) {
+		return isset($this->_hooks[$hook]) ? $this->_hooks[$hook] : null;
+	}
+
+	/**
+	 * Return all hooks.
+	 * 
+	 * @access public
+	 * @return array
+	 */
+	public function getHooks() {
+		return $this->_hooks;
 	}
 
 	/**

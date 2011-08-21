@@ -50,6 +50,21 @@ class CensorHook extends DecodaHook {
 
 		return $content;
 	}
+	
+	/**
+	 * Add words to the blacklist.
+	 * 
+	 * @access public
+	 * @param array $words 
+	 * @return DecodaHook
+	 * @chainable
+	 */
+	public function blacklist(array $words) {
+		$this->_censored += array_filter($words);
+		$this->_censored = array_unique($this->_censored);
+		
+		return $this;
+	}
 
 	/**
 	 * Censor a word if its only by itself.

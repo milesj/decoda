@@ -15,7 +15,7 @@ echo $code->parse(); ?>
 [i]Italics[/i]
 [b][i][u]Bold, italics, underline[/u][/i][/b]';
 $code = new Decoda($string);
-$code->useXhtml();
+$code->setXhtml();
 echo $code->parse(); ?>
 
 <h2>Super-script and sub-script</h2>

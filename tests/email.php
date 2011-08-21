@@ -33,5 +33,5 @@ echo $code->parse(); ?>
 [email]email@domain.com[/email]
 [email="email@domain.com"]Send me an email![/email]';
 $code = new Decoda($string);
-$code->useShorthand();
+$code->setShorthand();
 echo $code->parse(); ?>

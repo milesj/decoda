@@ -13,17 +13,6 @@
 abstract class DecodaHook extends DecodaAbstract {
 
 	/**
-	 * Process the content before the parsing begins.
-	 * 
-	 * @access public
-	 * @param string $content
-	 * @return string
-	 */
-	public function beforeParse($content) {
-		return $content;
-	}
-
-	/**
 	 * Process the content after the parsing has finished.
 	 * 
 	 * @access public
@@ -31,6 +20,17 @@ abstract class DecodaHook extends DecodaAbstract {
 	 * @return string
 	 */
 	public function afterParse($content) {
+		return $content;
+	}
+
+	/**
+	 * Process the content before the parsing begins.
+	 * 
+	 * @access public
+	 * @param string $content
+	 * @return string
+	 */
+	public function beforeParse($content) {
 		return $content;
 	}
 

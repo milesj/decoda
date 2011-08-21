@@ -292,65 +292,6 @@ class Decoda {
 	}
 
 	/**
-	 * Validate that the following child can be nested within the parent.
-	 * 
-	 * @access public
-	 * @param array $parent
-	 * @param string $tag
-	 * @return boolean 
-	 */
-	public function isAllowed($parent, $tag) {
-		$filter = $this->getFilterByTag($tag);
-
-		if (!$filter) {
-			return false;
-		}
-
-		$child = $filter->tag($tag);
-
-		// Remove children after a certain nested depth
-		if (isset($parent['currentDepth']) && $parent['currentDepth'] > $parent['maxChildDepth']) {
-			return false;
-
-		// Children that can only be within a certain parent
-		} else if (!empty($child['parent']) && !in_array($parent['key'], $child['parent'])) {
-			return false;
-
-		// Parents that can only have direct descendant children
-		} else if (!empty($parent['children']) && !in_array($child['key'], $parent['children'])) {
-			return false;
-
-		// Block element that accepts both types
-		} else if ($parent['allowed'] == DecodaFilter::TYPE_BOTH) {
-			return true;
-
-		// Inline elements can go within everything
-		} else if (($parent['allowed'] == DecodaFilter::TYPE_INLINE || $parent['allowed'] == DecodaFilter::TYPE_BLOCK) && $child['type'] == DecodaFilter::TYPE_INLINE) {
-			return true;
-		}
-
-		return false;
-	}
-	
-	/**
-	 * Set the locale.
-	 * 
-	 * @access public
-	 * @param string $locale
-	 * @return Decoda 
-	 * @chainable
-	 */
-	public function locale($locale) {
-		if (empty($this->_messages[$locale])) {
-			throw new Exception(sprintf('Localized strings for %s do not exist.', $locale));
-		}
-		
-		$this->_config['locale'] = $locale;
-		
-		return $this;
-	}
-
-	/**
 	 * Return a message string if it exists.
 	 *
 	 * @access public
@@ -389,7 +330,7 @@ class Decoda {
 			$this->_extractChunks();
 			$this->_parsed = $this->_parse($this->_nodes);
 		} else {
-			$this->_parsed = nl2br($this->_string);
+			$this->_parsed = nl2br($this->_string, $this->config('xhtml'));
 		}
 
 		$this->_parsed = $this->_trigger('afterParse', $this->_parsed);
@@ -428,13 +369,31 @@ class Decoda {
 	 * @return Decoda
 	 * @chainable
 	 */
-	public function useBrackets($open, $close) {
+	public function setBrackets($open, $close) {
 		if (empty($open) || empty($close)) {
 			throw new Exception('Both the open and close brackets are required.');
 		}
 		
 		$this->_config['open'] = (string) $open;
 		$this->_config['close'] = (string) $close;
+		
+		return $this;
+	}
+	
+	/**
+	 * Set the locale.
+	 * 
+	 * @access public
+	 * @param string $locale
+	 * @return Decoda 
+	 * @chainable
+	 */
+	public function setLocale($locale) {
+		if (empty($this->_messages[$locale])) {
+			throw new Exception(sprintf('Localized strings for %s do not exist.', $locale));
+		}
+		
+		$this->_config['locale'] = $locale;
 		
 		return $this;
 	}
@@ -447,7 +406,7 @@ class Decoda {
 	 * @return Decoda 
 	 * @chainable
 	 */
-	public function useShorthand($status = true) {
+	public function setShorthand($status = true) {
 		$this->_config['shorthand'] = (bool) $status;
 		
 		return $this;
@@ -461,7 +420,7 @@ class Decoda {
 	 * @return Decoda 
 	 * @chainable
 	 */
-	public function useXhtml($status = true) {
+	public function setXhtml($status = true) {
 		$this->_config['xhtml'] = (bool) $status;
 		
 		return $this;
@@ -618,7 +577,7 @@ class Decoda {
 						$parent['currentDepth'] = $depths[$tag];
 					}
 
-					if ($this->isAllowed($parent, $tag)) {
+					if ($this->_isAllowed($parent, $tag)) {
 						$prevParent = $parent;
 						$parents[] = $parent;
 						$parent = $this->getFilterByTag($tag)->tag($tag);
@@ -660,7 +619,7 @@ class Decoda {
 					}
 
 					// Now check for open tags if the tag is allowed
-					if ($this->isAllowed($parent, $tag)) {
+					if ($this->_isAllowed($parent, $tag)) {
 						if ($parent['preserveTags']) {
 							$chunk['type'] = self::TAG_NONE;
 						}
@@ -869,6 +828,47 @@ class Decoda {
 		}
 
 		return $nodes;
+	}
+
+	/**
+	 * Validate that the following child can be nested within the parent.
+	 * 
+	 * @access protected
+	 * @param array $parent
+	 * @param string $tag
+	 * @return boolean 
+	 */
+	protected function _isAllowed($parent, $tag) {
+		$filter = $this->getFilterByTag($tag);
+
+		if (!$filter) {
+			return false;
+		}
+
+		$child = $filter->tag($tag);
+
+		// Remove children after a certain nested depth
+		if (isset($parent['currentDepth']) && $parent['currentDepth'] > $parent['maxChildDepth']) {
+			return false;
+
+		// Children that can only be within a certain parent
+		} else if (!empty($child['parent']) && !in_array($parent['key'], $child['parent'])) {
+			return false;
+
+		// Parents that can only have direct descendant children
+		} else if (!empty($parent['children']) && !in_array($child['key'], $parent['children'])) {
+			return false;
+
+		// Block element that accepts both types
+		} else if ($parent['allowed'] == DecodaFilter::TYPE_BOTH) {
+			return true;
+
+		// Inline elements can go within everything
+		} else if (($parent['allowed'] == DecodaFilter::TYPE_INLINE || $parent['allowed'] == DecodaFilter::TYPE_BLOCK) && $child['type'] == DecodaFilter::TYPE_INLINE) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

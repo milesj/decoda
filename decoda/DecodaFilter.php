@@ -49,48 +49,6 @@ abstract class DecodaFilter extends DecodaAbstract {
 	protected $_tags = array();
 
 	/**
-	 * Return a tag if it exists, and merge with defaults.
-	 * 
-	 * @access public
-	 * @param string $tag
-	 * @return array
-	 */
-	public function tag($tag) {
-		$defaults = array(
-			// Meta
-			'key' => $tag,
-			'tag' => '',
-			'template' => '',
-			'pattern' => '',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_BOTH,
-			
-			// Attributes
-			'attributes' => array(),
-			'map' => array(),
-			'html' => array(),
-			
-			// Processes
-			'lineBreaks' => true,
-			'autoClose' => false,
-			'preserveTags' => false,
-			'escapeContent' => false,
-			'escapeAttributes' => true,
-			'maxChildDepth' => -1,
-			
-			// Hierarchy
-			'parent' => array(),
-			'children' => array()
-		);
-
-		if (isset($this->_tags[$tag])) {
-			return $this->_tags[$tag] + $defaults;
-		}
-
-		return $defaults;
-	}
-
-	/**
 	 * Return a message string from the parser.
 	 * 
 	 * @access public
@@ -100,16 +58,6 @@ abstract class DecodaFilter extends DecodaAbstract {
 	 */
 	public function message($key, array $vars = array()) {
 		return $this->getParser()->message($key, $vars);
-	}
-
-	/**
-	 * Return all tags.
-	 * 
-	 * @access public
-	 * @return array
-	 */
-	public function tags() {
-		return $this->_tags;
 	}
 
 	/**
@@ -198,6 +146,58 @@ abstract class DecodaFilter extends DecodaAbstract {
 		}
 
 		return $parsed;
+	}
+
+	/**
+	 * Return a tag if it exists, and merge with defaults.
+	 * 
+	 * @access public
+	 * @param string $tag
+	 * @return array
+	 */
+	public function tag($tag) {
+		$defaults = array(
+			// Meta
+			'key' => $tag,
+			'tag' => '',
+			'template' => '',
+			'pattern' => '',
+			'type' => self::TYPE_BLOCK,
+			'allowed' => self::TYPE_BOTH,
+			
+			// Attributes
+			'attributes' => array(),
+			'map' => array(),
+			'html' => array(),
+			
+			// Processes
+			'lineBreaks' => true,
+			'autoClose' => false,
+			'preserveTags' => false,
+			'escapeContent' => false,
+			'escapeAttributes' => true,
+			'maxChildDepth' => -1,
+			
+			// Hierarchy
+			'parent' => array(),
+			'children' => array()
+		);
+
+		if (isset($this->_tags[$tag])) {
+			return $this->_tags[$tag] + $defaults;
+		}
+
+		return $defaults;
+	}
+
+	/**
+	 * Return all tags.
+	 * 
+	 * @access public
+	 * @return array
+	 */
+	public function tags() {
+		return $this->_tags;
 	}
 
 	/**

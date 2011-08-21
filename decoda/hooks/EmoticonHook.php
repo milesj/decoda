@@ -66,13 +66,11 @@ class EmoticonHook extends DecodaHook {
 	 * @return string
 	 */
 	public function beforeParse($content) {
-		if (!$this->getParser()->getFilter('Image')) {
-			return $content;
-		}
-
-		foreach ($this->_emoticons as $emoticon => $smilies) {
-			foreach ($smilies as $smile) {
-				$content = preg_replace_callback('/(\s)?'. preg_quote($smile, '/') .'(\s)?/is', array($this, '_emoticonCallback'), $content);
+		if ($this->getParser()->getFilter('Image') && !empty($this->_emoticons)) {
+			foreach ($this->_emoticons as $emoticon => $smilies) {
+				foreach ($smilies as $smile) {
+					$content = preg_replace_callback('/(\s)?'. preg_quote($smile, '/') .'(\s)?/is', array($this, '_emoticonCallback'), $content);
+				}
 			}
 		}
 

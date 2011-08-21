@@ -3,15 +3,15 @@
 
 <?php 
 $code = new Decoda('[b]Test[/b]');
-$code->locale('de-de');
+$code->setLocale('de-de');
 echo 'German: '. $code->message('quoteBy') .'<br>';
 
 $code = new Decoda('[b]Test[/b]');
-$code->locale('fr-fr');
+$code->setLocale('fr-fr');
 echo 'French: '. $code->message('quoteBy') .'<br>';
 
 $code = new Decoda('[b]Test[/b]');
-$code->locale('ko-kr');
+$code->setLocale('ko-kr');
 echo 'Korean: '. $code->message('quoteBy') .'<br>';  ?>
 
 <h2>Whitelisting tags</h2>
@@ -59,7 +59,7 @@ echo $code->parse(); ?>
 {b}{i}{u}Bold, italics, underline{/u}{/i}{/b}';
 
 $code = new Decoda($string);
-$code->useBrackets('{', '}');
+$code->setBrackets('{', '}');
 echo $code->parse(); ?>
 
 <h2>Shorthand emails and URLs</h2>
@@ -68,7 +68,7 @@ echo $code->parse(); ?>
 [url]http://domain.com/[/url]';
 
 $code = new Decoda($string);
-$code->useShorthand();
+$code->setShorthand();
 echo $code->parse(); ?>
 
 <h2>XHTML markup</h2>
@@ -80,5 +80,5 @@ echo $code->parse(); ?>
 [b][i][u]Bold, italics, underline[/u][/i][/b]';
 
 $code = new Decoda($string);
-$code->useXhtml();
+$code->setXhtml();
 echo $code->parse(); ?>

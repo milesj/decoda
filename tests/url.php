@@ -51,5 +51,5 @@ echo $code->parse(); ?>
 [url]irc://ircsite.com[/url]
 [url]telnet://telnetsite.com[/url]';
 $code = new Decoda($string);
-$code->useShorthand();
+$code->setShorthand();
 echo $code->parse(); ?>

@@ -13,6 +13,16 @@
 class EmoticonHook extends DecodaHook {
 
 	/**
+	 * Configuration.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
+	protected $_config = array(
+		'path' => ''
+	);
+
+	/**
 	 * Mapping of emoticons and smilies.
 	 *
 	 * @access protected
@@ -27,22 +37,17 @@ class EmoticonHook extends DecodaHook {
 	 * @var array
 	 */
 	protected $_map = array();
-	
-	/**
-	 * Relative path to the emoticons folder.
-	 * 
-	 * @access protected
-	 * @var array
-	 */
-	protected $_path = array();
 
 	/**
 	 * Load the emoticons from the JSON file.
 	 *
 	 * @access public
+	 * @param array $config 
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct(array $config = array()) {
+		parent::__construct($config);
+		
 		$path = DECODA_CONFIG .'emoticons.json';
 
 		if (file_exists($path)) {
@@ -53,8 +58,10 @@ class EmoticonHook extends DecodaHook {
 					$this->_map[$smile] = $emoticon;
 				}
 			}
-
-			$this->_path = str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']), '\\', '/'), array('', '/', '/'), DECODA_EMOTICONS);
+			
+			if (empty($this->_config['path'])) {
+				$this->_config['path'] = str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']), '\\', '/'), array('', '/', '/'), DECODA_EMOTICONS);
+			}
 		}
 	}
 
@@ -97,7 +104,7 @@ class EmoticonHook extends DecodaHook {
 		$image = $this->getParser()->getFilter('Image')->parse(array(
 			'tag' => 'img',
 			'attributes' => array()
-		), $this->_path . $this->_map[$smiley] .'.png');
+		), $this->_config['path'] . $this->_map[$smiley] .'.png');
 
 		return $l . $image . $r;
 	}

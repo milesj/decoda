@@ -20,13 +20,9 @@ define('DECODA_TEMPLATES', DECODA .'templates/');
 define('DECODA_EMOTICONS', DECODA .'emoticons/');
 
 // Includes
-spl_autoload_register();
-set_include_path(implode(PATH_SEPARATOR, array(
-	get_include_path(),
-	DECODA, DECODA_HOOKS, 
-	DECODA_CONFIG, DECODA_FILTERS,
-	DECODA_TEMPLATES, DECODA_EMOTICONS
-)));
+include_once DECODA .'DecodaAbstract.php';
+include_once DECODA .'DecodaHook.php';
+include_once DECODA .'DecodaFilter.php';
 
 class Decoda {
 
@@ -140,6 +136,8 @@ class Decoda {
 	 * @return void
 	 */
 	public function __construct($string = '') {
+		spl_autoload_register(array($this, '_loadFile'));
+		
 		$this->_messages = json_decode(file_get_contents(DECODA_CONFIG .'messages.json'), true);
 		$this->reset($string, true);
 	}
@@ -921,6 +919,22 @@ class Decoda {
 		}
 
 		return false;
+	}
+	
+	/**
+	 * Autoload filters and hooks.
+	 * 
+	 * @access protected
+	 * @param string $class 
+	 * @return void
+	 */
+	protected function _loadFile($class) {
+		if (strpos($class, 'Filter') !== false) {
+			include_once DECODA_FILTERS . $class .'.php';
+			
+		} else if (strpos($class, 'Hook') !== false) {
+			include_once DECODA_HOOKS . $class .'.php';
+		}
 	}
 
 	/**

@@ -21,16 +21,29 @@ class CensorHook extends DecodaHook {
 	protected $_censored = array();
 
 	/**
+	 * Configuration.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
+	protected $_config = array(
+		'suffix' => array('ing', 'in', 'er', 'r', 'ed', 'd')
+	);
+	
+	/**
 	 * Load the censored words from the text file.
 	 *
 	 * @access public
+	 * @param array $config 
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct(array $config = array()) {
+		parent::__construct($config);
+		
 		$path = DECODA_CONFIG .'censored.txt';
 
 		if (file_exists($path)) {
-			$this->_censored = array_map('trim', array_filter(file($path)));
+			$this->blacklist(file($path));
 		}
 	}
 
@@ -60,7 +73,7 @@ class CensorHook extends DecodaHook {
 	 * @chainable
 	 */
 	public function blacklist(array $words) {
-		$this->_censored += array_filter($words);
+		$this->_censored = array_map('trim', array_filter($words)) + $this->_censored;
 		$this->_censored = array_unique($this->_censored);
 		
 		return $this;
@@ -115,7 +128,13 @@ class CensorHook extends DecodaHook {
 			$regex .= preg_quote($letter, '/') .'{1,}';
 		}
 		
-		$regex .= '(?:ing|in|g|er|r|ed|d)?';
+		$suffix = $this->config('suffix');
+		
+		if (is_array($suffix)) {
+			$suffix = implode('|', $suffix);
+		}
+		
+		$regex .= '(?:'. $suffix .')?';
 		
 		return $regex;
 	}

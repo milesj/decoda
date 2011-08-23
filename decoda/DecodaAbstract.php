@@ -11,6 +11,14 @@
  */
 
 abstract class DecodaAbstract {
+	
+	/**
+	 * Configuration.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
+	protected $_config = array();
 
 	/**
 	 * Parent Decoda object.
@@ -19,6 +27,28 @@ abstract class DecodaAbstract {
 	 * @var Decoda
 	 */
 	protected $_parser;
+	
+	/**
+	 * Apply configuration.
+	 * 
+	 * @access public
+	 * @param array $config 
+	 * @return void
+	 */
+	public function __construct(array $config = array()) {
+		$this->_config = $config + $this->_config;
+	}
+
+	/**
+	 * Return a specific configuration key value.
+	 * 
+	 * @access public
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function config($key) {
+		return isset($this->_config[$key]) ? $this->_config[$key] : null;
+	}
 
 	/**
 	 * Return the Decoda parser.

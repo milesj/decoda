@@ -141,6 +141,7 @@ class Decoda {
 	 */
 	public function __construct($string) {
 		$this->_messages = json_decode(file_get_contents(DECODA_CONFIG .'messages.json'), true);
+		$this->addFilter(new EmptyFilter());
 		$this->reset($string);
 	}
 
@@ -179,7 +180,9 @@ class Decoda {
 	public function addHook(DecodaHook $hook) {
 		$hook->setParser($this);
 
-		$this->_hooks[] = $hook;
+		$class = str_replace('Hook', '', get_class($hook));
+		
+		$this->_hooks[$class] = $hook;
 
 		return $this;
 	}
@@ -193,6 +196,33 @@ class Decoda {
 	 */
 	public function config($key) {
 		return isset($this->_config[$key]) ? $this->_config[$key] : null;
+	}
+
+	/**
+	 * Apply default filters and hooks if none are set.
+	 * 
+	 * @access public
+	 * @return void
+	 */
+	public function defaults() {			
+		if (empty($this->_filters)) {
+			$this->addFilter(new DefaultFilter());
+			$this->addFilter(new EmailFilter());
+			$this->addFilter(new ImageFilter());
+			$this->addFilter(new UrlFilter());
+			$this->addFilter(new TextFilter());
+			$this->addFilter(new BlockFilter());
+			$this->addFilter(new VideoFilter());
+			$this->addFilter(new CodeFilter());
+			$this->addFilter(new QuoteFilter());
+			$this->addFilter(new ListFilter());
+		}
+
+		if (empty($this->_hooks)) {
+			$this->addHook(new CensorHook());
+			$this->addHook(new ClickableHook());
+			$this->addHook(new EmoticonHook());
+		}
 	}
 	
 	/**
@@ -323,7 +353,6 @@ class Decoda {
 			return $this->_parsed;
 		}
 
-		$this->_defaults();
 		$this->_string = $this->_trigger('beforeParse', $this->_string);
 
 		if (strpos($this->_string, $this->config('open')) !== false && strpos($this->_string, $this->config('close')) !== false) {
@@ -703,35 +732,6 @@ class Decoda {
 		}
 
 		return array_values($clean);
-	}
-
-	/**
-	 * Apply default filters and hooks if none are set.
-	 * 
-	 * @access protected
-	 * @return void
-	 */
-	protected function _defaults() {			
-		if (empty($this->_filters)) {
-			$this->addFilter(new DefaultFilter());
-			$this->addFilter(new EmailFilter());
-			$this->addFilter(new ImageFilter());
-			$this->addFilter(new UrlFilter());
-			$this->addFilter(new TextFilter());
-			$this->addFilter(new BlockFilter());
-			$this->addFilter(new VideoFilter());
-			$this->addFilter(new CodeFilter());
-			$this->addFilter(new QuoteFilter());
-			$this->addFilter(new ListFilter());
-		}
-
-		if (empty($this->_hooks)) {
-			$this->addHook(new CensorHook());
-			$this->addHook(new ClickableHook());
-			$this->addHook(new EmoticonHook());
-		}
-
-		$this->addFilter(new EmptyFilter());
 	}
 
 	/**

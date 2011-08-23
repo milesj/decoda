@@ -17,4 +17,5 @@ fucker shiting bitched
 Hope it works out, I tried to make it as smart as possible.';
 
 $code = new Decoda($string);
+$code->addHook(new CensorHook());
 echo $code->parse(); ?>

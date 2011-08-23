@@ -1,4 +1,8 @@
 
+<?php
+$code = new Decoda();
+$code->addFilter(new CodeFilter()); ?>
+
 <h2>Code</h2>
 
 <?php $string = "[code]// Constants
@@ -17,7 +21,8 @@ set_include_path(implode(PATH_SEPARATOR, array(
 	DECODA_CONFIG, DECODA_FILTERS,
 	DECODA_TEMPLATES, DECODA_EMOTICONS
 )));[/code]";
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>
 
 <h2>Code <span>with language attribute</span></h2>
@@ -48,7 +53,8 @@ abstract class DecodaHook extends DecodaAbstract {
 	}
 
 } ?>[/code]';
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>
 
 <h2>Code <span>with row highlights attribute</span></h2>
@@ -86,7 +92,8 @@ abstract class DecodaAbstract {
 	}
 	
 } ?>[/code]';
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>
 
 <h2>Code <span>with Decoda markup</span></h2>
@@ -95,11 +102,13 @@ echo $code->parse(); ?>
 [i]Italics[/i]
 [u]Underline[/u]
 [s]Strike through[/s][/code]';
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>
 
 <h2>Var</h2>
 
 <?php $string = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. [var]Donec[/var] volutpat tellus vulputate dui venenatis quis euismod turpis pellentesque. Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien. Quisque viverra feugiat purus, [var]eu mollis felis condimentum id[/var]. In luctus faucibus felis eget viverra. Vivamus et velit orci. In in tellus mauris, at fermentum diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Sed a magna nunc, vel tempor magna. Nam dictum, arcu in pretium varius, libero enim hendrerit nisl, et commodo enim sapien eu augue. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse potenti. Proin tempor porta porttitor. Nullam a malesuada arcu.';
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>

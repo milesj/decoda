@@ -139,10 +139,9 @@ class Decoda {
 	 * @param string $string
 	 * @return void
 	 */
-	public function __construct($string) {
+	public function __construct($string = '') {
 		$this->_messages = json_decode(file_get_contents(DECODA_CONFIG .'messages.json'), true);
-		$this->addFilter(new EmptyFilter());
-		$this->reset($string);
+		$this->reset($string, true);
 	}
 
 	/**
@@ -202,27 +201,26 @@ class Decoda {
 	 * Apply default filters and hooks if none are set.
 	 * 
 	 * @access public
-	 * @return void
+	 * @return Decoda
+	 * @chainable
 	 */
-	public function defaults() {			
-		if (empty($this->_filters)) {
-			$this->addFilter(new DefaultFilter());
-			$this->addFilter(new EmailFilter());
-			$this->addFilter(new ImageFilter());
-			$this->addFilter(new UrlFilter());
-			$this->addFilter(new TextFilter());
-			$this->addFilter(new BlockFilter());
-			$this->addFilter(new VideoFilter());
-			$this->addFilter(new CodeFilter());
-			$this->addFilter(new QuoteFilter());
-			$this->addFilter(new ListFilter());
-		}
+	public function defaults() {		
+		$this->addFilter(new DefaultFilter());
+		$this->addFilter(new EmailFilter());
+		$this->addFilter(new ImageFilter());
+		$this->addFilter(new UrlFilter());
+		$this->addFilter(new TextFilter());
+		$this->addFilter(new BlockFilter());
+		$this->addFilter(new VideoFilter());
+		$this->addFilter(new CodeFilter());
+		$this->addFilter(new QuoteFilter());
+		$this->addFilter(new ListFilter());
 
-		if (empty($this->_hooks)) {
-			$this->addHook(new CensorHook());
-			$this->addHook(new ClickableHook());
-			$this->addHook(new EmoticonHook());
-		}
+		$this->addHook(new CensorHook());
+		$this->addHook(new ClickableHook());
+		$this->addHook(new EmoticonHook());
+		
+		return $this;
 	}
 	
 	/**
@@ -352,7 +350,7 @@ class Decoda {
 		if (!empty($this->_parsed)) {
 			return $this->_parsed;
 		}
-
+		
 		$this->_string = $this->_trigger('beforeParse', $this->_string);
 
 		if (strpos($this->_string, $this->config('open')) !== false && strpos($this->_string, $this->config('close')) !== false) {
@@ -418,19 +416,25 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $string
+	 * @param boolean $flush
 	 * @return Decoda
 	 * @chainable
 	 */
-	public function reset($string) {
+	public function reset($string, $flush = false) {
 		$this->_chunks = array();
-		$this->_filters = array();
-		$this->_filterMap = array();
-		$this->_hooks = array();
 		$this->_nodes = array();
-		$this->_tags = array();
 		$this->_whitelist = array();
-		$this->_string = $string;
+		$this->_string = (string) $string;
 		$this->_parsed = '';
+		
+		if ($flush) {
+			$this->_filters = array();
+			$this->_filterMap = array();
+			$this->_hooks = array();
+			$this->_tags = array();
+		}
+		
+		$this->addFilter(new EmptyFilter());
 
 		return $this;
 	}
@@ -744,10 +748,12 @@ class Decoda {
 		$str = $this->_string;
 		$strPos = 0;
 		$strLength = strlen($str);
+		$openBracket = $this->config('open');
+		$closeBracket = $this->config('close');
 
 		while ($strPos < $strLength) {
 			$tag = array();
-			$openPos = strpos($str, $this->config('open'), $strPos);
+			$openPos = strpos($str, $openBracket, $strPos);
 
 			if ($openPos === false) {
 				$openPos = $strLength;
@@ -757,14 +763,14 @@ class Decoda {
 			if ($openPos + 1 > $strLength) {
 				$nextOpenPos = $strLength;
 			} else {
-				$nextOpenPos = strpos($str, $this->config('open'), $openPos + 1);
+				$nextOpenPos = strpos($str, $openBracket, $openPos + 1);
 
 				if ($nextOpenPos === false) {
 					$nextOpenPos = $strLength;
 				}
 			}
 
-			$closePos = strpos($str, $this->config('close'), $strPos);
+			$closePos = strpos($str, $closeBracket, $strPos);
 
 			if ($closePos === false) {
 				$closePos = $strLength + 1;

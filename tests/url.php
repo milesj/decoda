@@ -1,4 +1,9 @@
 
+<?php
+$code = new Decoda();
+$code->addFilter(new UrlFilter());
+$code->addHook(new ClickableHook()); ?>
+
 <h2>URL</h2>
 
 <?php $string = 'Valid websites:
@@ -18,7 +23,8 @@ Invalid websites:
 [url]domain.com[/url]
 [url]www.domain.com[/url]
 [url]wtf://unsupportedprotocol.com/[/url]';
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>
 
 <h2>Link</h2>
@@ -40,7 +46,8 @@ Invalid websites:
 [link]domain.com[/link]
 [link]www.domain.com[/link]
 [link]wtf://unsupportedprotocol.com/[/link]';
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>
 
 <h2>URL <span>with shorthand</span></h2>
@@ -50,6 +57,7 @@ echo $code->parse(); ?>
 [url]ftp://ftpsite.com[/url]
 [url]irc://ircsite.com[/url]
 [url]telnet://telnetsite.com[/url]';
-$code = new Decoda($string);
+
 $code->setShorthand();
+$code->reset($string);
 echo $code->parse(); ?>

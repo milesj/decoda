@@ -90,6 +90,7 @@ function buildMenu($items, $view) {
 	
 	<?php // Copyright
 	$code = new Decoda('Copyright 2009-'. date('Y') .' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]');
+	$code->defaults();
 	echo $code->parse(); ?>
 
 	<dl>

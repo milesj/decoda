@@ -7,6 +7,7 @@
 Strike through[/s]';
 
 $code = new Decoda($string);
+$code->addFilter(new DefaultFilter());
 echo $code->parse(); ?>
 
 <h2>Incorrectly nested</h2>
@@ -16,6 +17,7 @@ echo $code->parse(); ?>
 [i][u]Bold, italics, underline (wrong)[/b][/i][/u]';
 
 $code = new Decoda($string);
+$code->addFilter(new DefaultFilter());
 echo $code->parse(); ?>
 
 <h2>Incorrectly nested hierarchy</h2>
@@ -31,5 +33,8 @@ echo $code->parse(); ?>
 [li]Curabitur tincidunt, lacus eget iaculis tincidunt.[/li]
 [li]Curabitur sed [i]tellus[/i]. Donec id dolor.[/li]
 [/list]';
+
 $code = new Decoda($string);
+$code->addFilter(new DefaultFilter());
+$code->addFilter(new ListFilter());
 echo $code->parse(); ?>

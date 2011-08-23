@@ -1,4 +1,8 @@
 
+<?php
+$code = new Decoda();
+$code->addFilter(new TextFilter()); ?>
+
 <h2>Font Family</h2>
 
 <?php $string = '[font="Arial"]Lorem ipsum dolor sit amet, consectetur adipiscing elit.[/font]
@@ -6,7 +10,8 @@
 [font="Tahoma"]Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien.[/font]
 [font="Monospace, \'Lucida Sans\'"]Quisque viverra feugiat purus, in luctus faucibus felis eget viverra.[/font]
 [font="Times"]Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien.[/font]';
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>
 
 <h2>Size <span>(10-29)</span></h2>
@@ -16,7 +21,8 @@ echo $code->parse(); ?>
 [size="19"]Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien.[/size]
 [size="27"]Quisque viverra feugiat purus, in luctus faucibus felis eget viverra.[/size]
 [size="32"]Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien.[/size]';
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>
 
 <h2>Color</h2>
@@ -26,7 +32,8 @@ echo $code->parse(); ?>
 [color="#f66"]Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien.[/color]
 [color="#ff0088"]Quisque viverra feugiat purus, in luctus faucibus felis eget viverra.[/color]
 [color="#cccccc"]Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien.[/color]';
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>
 
 <h2>Headers</h2>
@@ -37,5 +44,6 @@ echo $code->parse(); ?>
 [h4]Quisque viverra feugiat purus, in luctus faucibus felis eget viverra.[/h4]
 [h5]Suspendisse sit amet ipsum eu odio sagittis ultrices at non sapien.[/h5]
 [h6]Lorem ipsum dolor sit amet, consectetur adipiscing elit.[/h6]';
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>

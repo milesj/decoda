@@ -10,4 +10,7 @@ email@domain
 www.domain.com';
 
 $code = new Decoda($string);
+$code->addFilter(new EmailFilter());
+$code->addFilter(new UrlFilter());
+$code->addHook(new ClickableHook());
 echo $code->parse(); ?>

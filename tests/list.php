@@ -1,4 +1,8 @@
 
+<?php
+$code = new Decoda();
+$code->addFilter(new ListFilter()); ?>
+
 <h2>List</h2>
 
 <?php $string = '[list]
@@ -9,7 +13,8 @@
 [li]Curabitur tincidunt, lacus eget iaculis tincidunt.[/li]
 [li]Curabitur sed tellus. Donec id dolor.[/li]
 [/list]';
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>
 
 <h2>Ordered List</h2>
@@ -22,5 +27,6 @@ echo $code->parse(); ?>
 [li]Curabitur tincidunt, lacus eget iaculis tincidunt.[/li]
 [li]Curabitur sed tellus. Donec id dolor.[/li]
 [/olist]';
-$code = new Decoda($string);
+
+$code->reset($string);
 echo $code->parse(); ?>

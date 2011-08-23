@@ -2,15 +2,15 @@
 <h2>Localization</h2>
 
 <?php 
-$code = new Decoda('[b]Test[/b]');
+$code = new Decoda('[b]Features[/b]');
+$code->addFilter(new QuoteFilter());
+
 $code->setLocale('de-de');
 echo 'German: '. $code->message('quoteBy') .'<br>';
 
-$code = new Decoda('[b]Test[/b]');
 $code->setLocale('fr-fr');
 echo 'French: '. $code->message('quoteBy') .'<br>';
 
-$code = new Decoda('[b]Test[/b]');
 $code->setLocale('ko-kr');
 echo 'Korean: '. $code->message('quoteBy') .'<br>';  ?>
 
@@ -47,7 +47,7 @@ echo $code->parse(); ?>
 [b][i][u]Bold, italics, underline[/u][/i][/b]';
 
 $code = new Decoda($string);
-$code->disable();
+$code->defaults()->disable();
 echo $code->parse(); ?>
 
 <h2>Customizable brackets</h2>
@@ -59,7 +59,7 @@ echo $code->parse(); ?>
 {b}{i}{u}Bold, italics, underline{/u}{/i}{/b}';
 
 $code = new Decoda($string);
-$code->setBrackets('{', '}');
+$code->addFilter(new DefaultFilter())->setBrackets('{', '}');
 echo $code->parse(); ?>
 
 <h2>Shorthand emails and URLs</h2>
@@ -68,7 +68,7 @@ echo $code->parse(); ?>
 [url]http://domain.com/[/url]';
 
 $code = new Decoda($string);
-$code->setShorthand();
+$code->addFilter(new EmailFilter())->addFilter(new UrlFilter())->setShorthand();
 echo $code->parse(); ?>
 
 <h2>XHTML markup</h2>
@@ -80,5 +80,5 @@ echo $code->parse(); ?>
 [b][i][u]Bold, italics, underline[/u][/i][/b]';
 
 $code = new Decoda($string);
-$code->setXhtml();
+$code->addFilter(new DefaultFilter())->setXhtml();
 echo $code->parse(); ?>

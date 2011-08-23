@@ -18,6 +18,16 @@ class EmailFilter extends DecodaFilter {
 	const EMAIL_PATTERN = '/(^|\n|\s)([-a-z0-9\.\+!]{1,64}+)@([-a-z0-9]+\.[a-z\.]+)/is';
 
 	/**
+	 * Configuration.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
+	protected $_config = array(
+		'encrypt' => true
+	);
+	
+	/**
 	 * Supported tags.
 	 * 
 	 * @access protected
@@ -62,14 +72,19 @@ class EmailFilter extends DecodaFilter {
 			$email = $tag['attributes']['default'];
 			$default = true;
 		}
-		
-		$encrypted = '';
-		$length = strlen($email);
 
-		if ($length > 0) {
-			for ($i = 0; $i < $length; ++$i) {
-				$encrypted .= '&#' . ord(substr($email, $i, 1)) . ';';
+		$encrypted = '';
+		
+		if ($this->_config['encrypt']) {
+			$length = strlen($email);
+
+			if ($length > 0) {
+				for ($i = 0; $i < $length; ++$i) {
+					$encrypted .= '&#' . ord(substr($email, $i, 1)) . ';';
+				}
 			}
+		} else {
+			$encrypted = $email;
 		}
 
 		$tag['attributes']['href'] = 'mailto:'. $encrypted;

@@ -88,6 +88,8 @@ abstract class DecodaFilter extends DecodaAbstract {
 		// Add linebreaks
 		if ($setup['lineBreaks']) {
 			$content = nl2br($content, $xhtml);
+		} else {
+			$content = str_replace(array("\n", "\r"), "", $content);
 		}
 
 		// Escape entities

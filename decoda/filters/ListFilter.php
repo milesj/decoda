@@ -23,7 +23,7 @@ class ListFilter extends DecodaFilter {
 			'tag' => 'ol',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
-			'lineBreaks' => false,
+			'lineBreaks' => self::NL_REMOVE,
 			'children' => array('li'),
 			'html' => array(
 				'class' => 'decoda-olist'
@@ -33,7 +33,7 @@ class ListFilter extends DecodaFilter {
 			'tag' => 'ul',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
-			'lineBreaks' => false,
+			'lineBreaks' => self::NL_REMOVE,
 			'children' => array('li'),
 			'html' => array(
 				'class' => 'decoda-list'

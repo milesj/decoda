@@ -34,11 +34,27 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Type constants.
+	 * 
+	 * TYPE_NONE	- Will not accept block or inline (for validating)
+	 * TYPE_INLINE	- Inline element that can only contain child inlines
+	 * TYPE_BLOCK	- Block element that can contain both inline and block
+	 * TYPE_BOTH	- Will accept either type (for validating)
 	 */
 	const TYPE_NONE = 0;
 	const TYPE_INLINE = 1;
 	const TYPE_BLOCK = 2;
 	const TYPE_BOTH = 3;
+	
+	/**
+	 * Newline and carriage return formatting.
+	 * 
+	 * NL_REMOVE	- Will be removed
+	 * NL_PRESERVE	- Will be preserved as \n and \r
+	 * NL_CONVERT	- Will be converted to <br> tags
+	 */
+	const NL_REMOVE = 0;
+	const NL_PRESERVE = 1;
+	const NL_CONVERT = 2;
 
 	/**
 	 * Supported tags.
@@ -86,10 +102,13 @@ abstract class DecodaFilter extends DecodaAbstract {
 		}
 		
 		// Add linebreaks
-		if ($setup['lineBreaks']) {
-			$content = nl2br($content, $xhtml);
-		} else {
-			$content = str_replace(array("\n", "\r"), "", $content);
+		switch ($setup['lineBreaks']) {
+			case self::NL_REMOVE:
+				$content = str_replace(array("\n", "\r"), "", $content);
+			break;
+			case self::NL_CONVERT:
+				$content = nl2br($content, $xhtml);
+			break;
 		}
 
 		// Escape entities
@@ -173,7 +192,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'html' => array(),
 			
 			// Processes
-			'lineBreaks' => true,
+			'lineBreaks' => self::NL_CONVERT,
 			'autoClose' => false,
 			'preserveTags' => false,
 			'escapeContent' => false,
@@ -233,7 +252,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 		include $path;
 
-		if ($setup['lineBreaks']) {
+		if ($setup['lineBreaks'] != self::NL_PRESERVE) {
 			return str_replace(array("\n", "\r"), "", ob_get_clean());
 		}
 

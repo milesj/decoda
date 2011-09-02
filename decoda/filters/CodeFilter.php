@@ -23,7 +23,7 @@ class CodeFilter extends DecodaFilter {
 			'template' => 'code',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
-			'lineBreaks' => false,
+			'lineBreaks' => self::NL_PRESERVE,
 			'preserveTags' => true,
 			'escapeContent' => true,
 			'attributes' => array(

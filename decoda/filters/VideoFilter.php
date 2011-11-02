@@ -38,11 +38,11 @@ class VideoFilter extends DecodaFilter {
 	 */
 	protected $_formats = array(
 		'youtube' => array(
-			'small' => array(560, 349),
-			'medium' => array(640, 390),
-			'large' => array(853, 515),
-			'player' => 'embed',
-			'path' => 'http://youtube.com/v/{id}'
+			'small' => array(560, 315),
+			'medium' => array(640, 360),
+			'large' => array(853, 480),
+			'player' => 'iframe',
+			'path' => 'http://www.youtube.com/embed/{id}'
 		),
 		'vimeo' => array(
 			'small' => array(400, 225),

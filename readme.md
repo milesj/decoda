@@ -1,4 +1,4 @@
-# Decoda v3.0 ALPHA #
+# Decoda v3.0 #
 
 A lightweight lexical string parser for BBCode styled markup.
 
@@ -25,6 +25,7 @@ Version(s) 3.x are not backwards compatible with 2.9 and lower. The newer versio
 * Can convert smiley faces into images
 * Basic support for localized messages
 * Supports a wide range of tags
+* Fixes incorrectly nested tags
 
 ## Unsupported ##
 

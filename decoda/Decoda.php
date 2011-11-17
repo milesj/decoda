@@ -32,6 +32,14 @@ class Decoda {
 	const TAG_NONE = 0;
 	const TAG_OPEN = 1;
 	const TAG_CLOSE = 2;
+	
+	/**
+	 * Error type constants.
+	 */
+	const ERROR_ALL = 0;
+	const ERROR_NESTING = 1;
+	const ERROR_CLOSING = 2;
+	const ERROR_SCOPE = 3;
 
 	/**
 	 * Extracted chunks of text and tags.
@@ -55,6 +63,14 @@ class Decoda {
 		'xhtml' => false,
 		'locale' => 'en-us'
 	);
+	
+	/**
+	 * Logged errors for incorrectly nested nodes and types.
+	 * 
+	 * @access protected
+	 * @var array
+	 */
+	protected $_errors = array();
 
 	/**
 	 * List of all instantiated filter objects.
@@ -262,6 +278,37 @@ class Decoda {
 		$this->addHook(new EmptyHook());
 		
 		return $this;
+	}
+	
+	/**
+	 * Return the parsing errors.
+	 * 
+	 * @access public
+	 * @param int $type
+	 * @return array
+	 */
+	public function getErrors($type = self::ERROR_ALL) {
+		if ($type == self::ERROR_ALL) {
+			return $this->_errors;
+		}
+		
+		$clean = array();
+		
+		if (!empty($this->_errors)) {
+			foreach ($this->_errors as $error) {
+				if ($error['type'] == self::ERROR_NESTING) {
+					$clean[] = $error;
+					
+				} else if ($error['type'] == self::ERROR_CLOSING) {
+					$clean[] = $error;
+					
+				} else if ($error['type'] == self::ERROR_SCOPE) {
+					$clean[] = $error;
+				}
+			}
+		}
+		
+		return $clean;
 	}
 
 	/**
@@ -634,7 +681,7 @@ class Decoda {
 
 			switch ($chunk['type']) {
 				case self::TAG_NONE:
-					if (empty($disallowed)) {
+					if (empty($parent['children'])) {
 						if (!empty($prevChunk) && $prevChunk['type'] === self::TAG_NONE) {
 							$chunk['text'] = $prevChunk['text'] . $chunk['text'];
 							array_pop($clean);
@@ -705,7 +752,7 @@ class Decoda {
 
 						if ($root && !empty($openTags)) {
 							$last = end($openTags);
-
+							
 							if ($last['tag'] == $tag) {
 								array_pop($openTags);
 							} else {
@@ -713,6 +760,11 @@ class Decoda {
 									$last = array_pop($openTags);
 
 									if ($last['tag'] != $tag) {
+										$this->_errors[] = array(
+											'type' => self::ERROR_NESTING,
+											'tag' => $last['tag']
+										);
+										
 										unset($clean[$last['index']]);
 									}
 								}
@@ -729,7 +781,12 @@ class Decoda {
 		// Remove any unclosed tags
 		while (!empty($openTags)) {
 			$last = array_pop($openTags);
-
+			
+			$this->_errors[] = array(
+				'type' => self::ERROR_CLOSING,
+				'tag' => $last['tag']
+			);
+			
 			unset($clean[$last['index']]);
 		}
 
@@ -917,6 +974,12 @@ class Decoda {
 		} else if (($parent['allowed'] == DecodaFilter::TYPE_INLINE || $parent['allowed'] == DecodaFilter::TYPE_BLOCK) && $child['type'] == DecodaFilter::TYPE_INLINE) {
 			return true;
 		}
+		
+		$this->_errors[] = array(
+			'type' => self::ERROR_SCOPE,
+			'parent' => $parent['key'],
+			'child' => $child['key']
+		);
 
 		return false;
 	}

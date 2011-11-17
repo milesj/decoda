@@ -78,6 +78,14 @@ class BlockFilter extends DecodaFilter {
 			'template' => 'spoiler',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH
+		),
+		'center' => array(
+			'tag' => 'div',
+			'type' => self::TYPE_BLOCK,
+			'allowed' => self::TYPE_BOTH,
+			'html' => array(
+				'class' => 'align-center'
+			)
 		)
 	);
 

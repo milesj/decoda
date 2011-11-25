@@ -402,7 +402,7 @@ class Decoda {
 			$this->_extractChunks();
 			$this->_parsed = $this->_parse($this->_nodes);
 		} else {
-			$this->_parsed = nl2br($this->_string, $this->config('xhtml'));
+			$this->_parsed = self::nl2br($this->_string, $this->config('xhtml'));
 		}
 
 		$this->_parsed = $this->_trigger('afterParse', $this->_parsed);
@@ -558,7 +558,8 @@ class Decoda {
 	 * @chainable 
 	 */
 	public function whitelist() {
-		$this->_whitelist += array_map('strtolower', func_get_args());
+		$args = func_get_args();
+		$this->_whitelist += array_map('strtolower', $args);
 		$this->_whitelist = array_filter($this->_whitelist);
 		
 		return $this;
@@ -1019,7 +1020,7 @@ class Decoda {
 		foreach ($nodes as $node) {
 			if (is_string($node)) {
 				if (empty($wrapper)) {
-					$parsed .= nl2br($node, $xhtml);
+					$parsed .= self::nl2br($node, $xhtml);
 				} else {
 					$parsed .= $node;
 				}
@@ -1049,6 +1050,23 @@ class Decoda {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Inserts HTML line breaks before all newlines in a string.
+	 * If the server is running PHP 5.2, the second parameter will be ignored
+	 * 
+	 * @access public
+	 * @param string $string
+	 * @param bool $xhtml
+	 * @return string
+	 */
+	public static function nl2br($string, $is_xhtml = true) {
+		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+			return nl2br($string);
+		} else {
+			return nl2br($string, $is_xhtml);
+		}
 	}
 
 }

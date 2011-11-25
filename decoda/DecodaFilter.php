@@ -107,7 +107,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 				$content = str_replace(array("\n", "\r"), "", $content);
 			break;
 			case self::NL_CONVERT:
-				$content = nl2br($content, $xhtml);
+				$content = Decoda::nl2br($content, $xhtml);
 			break;
 		}
 

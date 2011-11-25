@@ -558,7 +558,8 @@ class Decoda {
 	 * @chainable 
 	 */
 	public function whitelist() {
-		$this->_whitelist += array_map('strtolower', func_get_args());
+		$args = func_get_args();
+		$this->_whitelist += array_map('strtolower', $args);
 		$this->_whitelist = array_filter($this->_whitelist);
 		
 		return $this;

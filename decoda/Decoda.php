@@ -12,12 +12,29 @@
  */
 
 // Constants
-define('DECODA', dirname(__FILE__) .'/');
-define('DECODA_HOOKS', DECODA .'hooks/');
-define('DECODA_CONFIG', DECODA .'config/');
-define('DECODA_FILTERS', DECODA .'filters/');
-define('DECODA_TEMPLATES', DECODA .'templates/');
-define('DECODA_EMOTICONS', DECODA .'emoticons/');
+if (!defined('DECODA')) {
+	define('DECODA', dirname(__FILE__) . '/');
+}
+
+if (!defined('DECODA_HOOKS')) {
+	define('DECODA_HOOKS', DECODA . 'hooks/');
+}
+
+if (!defined('DECODA_CONFIG')) {
+	define('DECODA_CONFIG', DECODA . 'config/');
+}
+
+if (!defined('DECODA_FILTERS')) {
+	define('DECODA_FILTERS', DECODA . 'filters/');
+}
+
+if (!defined('DECODA_TEMPLATES')) {
+	define('DECODA_TEMPLATES', DECODA . 'templates/');
+}
+
+if (!defined('DECODA_EMOTICONS')) {
+	define('DECODA_EMOTICONS', DECODA . 'emoticons/');
+}
 
 // Includes
 include_once DECODA .'DecodaAbstract.php';
@@ -383,6 +400,23 @@ class Decoda {
 		}
 
 		return $string;
+	}
+
+	/**
+	 * Inserts HTML line breaks before all newlines in a string.
+	 * If the server is running PHP 5.2, the second parameter will be ignored.
+	 * 
+	 * @access public
+	 * @param string $string
+	 * @param boolean $xhtml
+	 * @return string
+	 */
+	public static function nl2br($string, $xhtml = true) {
+		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+			return nl2br($string);
+		} else {
+			return nl2br($string, $xhtml);
+		}
 	}
 
 	/**
@@ -1050,23 +1084,6 @@ class Decoda {
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Inserts HTML line breaks before all newlines in a string.
-	 * If the server is running PHP 5.2, the second parameter will be ignored
-	 * 
-	 * @access public
-	 * @param string $string
-	 * @param bool $xhtml
-	 * @return string
-	 */
-	public static function nl2br($string, $is_xhtml = true) {
-		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-			return nl2br($string);
-		} else {
-			return nl2br($string, $is_xhtml);
-		}
 	}
 
 }

@@ -2,11 +2,13 @@
 
 A lightweight lexical string parser for BBCode styled markup.
 
+## Compatibility ##
+
 Version(s) 3.x are not backwards compatible with 2.9 and lower. The newer versions were completely rewritten as a lexical parser that examines the string stack, where as the older versions were using archaic regex parsing. The newer versions also boast a very powerful filter and hook system, so your old code will need to be changed to support the newer functionality.
 
 ## Requirements ##
 
-* PHP 5.2.x
+* PHP 5.2, 5.3
 
 ## Contributors ##
 
@@ -25,8 +27,31 @@ Version(s) 3.x are not backwards compatible with 2.9 and lower. The newer versio
 * Can convert smiley faces into images
 * Basic support for localized messages
 * Supports a wide range of tags
-* Fixes incorrectly nested tags
+* Fixes incorrectly nested tags by removing the broken/unclosed tags
 * Logs errors for validation
+
+## Filters ##
+
+The following filters and supported tags are available.
+
+* Default: b, i, u, s, sup, sub
+* Block: align, float, hide, alert, note, div, spoiler, center
+* Code: code, var
+* Email: email, mail
+* Image: image, img
+* List: list, olist, li
+* Quote: quote
+* Text: font, size, color, h1-h6
+* Url: url, link
+* Video: video
+
+## Hooks ##
+
+The following hooks are available.
+
+* Censor: Censors all words found within config/censored.txt
+* Clickable: Converts all non-tag wrapped URLs and emails into clickable links
+* Emoticon: Converts all smilies found within config/emoticons.json into emoticon images
 
 ## Unsupported ##
 

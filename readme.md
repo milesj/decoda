@@ -57,3 +57,7 @@ The following hooks are available.
 
 * URLs that begin with www will not be converted (intentional)
 * Certain videos are not supported as their embed code does not match the URL in the address bar
+
+## Documentation ##
+
+Thorough documentation can be found here: http://milesj.me/code/php/decoda

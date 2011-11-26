@@ -264,6 +264,8 @@ class Decoda {
 	 */
 	public function disable($status = true) {
 		$this->_config['disabled'] = (bool) $status;
+		
+		return $this;
 	}
 	
 	/**
@@ -593,6 +595,11 @@ class Decoda {
 	 */
 	public function whitelist() {
 		$args = func_get_args();
+		
+		if (isset($args[0]) && is_array($args[0])) {
+			$args = $args[0];
+		}
+		
 		$this->_whitelist += array_map('strtolower', $args);
 		$this->_whitelist = array_filter($this->_whitelist);
 		

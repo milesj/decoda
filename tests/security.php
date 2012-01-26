@@ -7,7 +7,7 @@ $code->defaults(); ?>
 
 <?php $string = '<script>alert("I can use XSS");</script>
 [b]<script>alert(document.cookie);</script>[/b]
-[div class="onload=\'alert(document);\'"]Attribute XSS prevention[/div]';
+[div class="javascript:alert(document);"]Attribute XSS prevention[/div]';
 
 $code->reset($string);
 echo $code->parse(); ?>

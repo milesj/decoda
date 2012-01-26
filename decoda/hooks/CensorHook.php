@@ -34,8 +34,7 @@ class CensorHook extends DecodaHook {
 	 * Load the censored words from the text file.
 	 *
 	 * @access public
-	 * @param array $config 
-	 * @return void
+	 * @param array $config
 	 */
 	public function __construct(array $config = array()) {
 		parent::__construct($config);

@@ -166,7 +166,6 @@ class Decoda {
 	 * 
 	 * @access public
 	 * @param string $string
-	 * @return void
 	 */
 	public function __construct($string = '') {
 		spl_autoload_register(array($this, '_loadFile'));
@@ -431,7 +430,8 @@ class Decoda {
 		if (!empty($this->_parsed)) {
 			return $this->_parsed;
 		}
-		
+
+		$this->_string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $this->_string);
 		$this->_string = $this->_trigger('beforeParse', $this->_string);
 
 		if (strpos($this->_string, $this->config('open')) !== false && strpos($this->_string, $this->config('close')) !== false) {

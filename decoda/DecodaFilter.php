@@ -111,11 +111,6 @@ abstract class DecodaFilter extends DecodaAbstract {
 			break;
 		}
 
-		// Escape entities
-		if ($setup['escapeContent']) {
-			$content = htmlentities($content, ENT_QUOTES, 'UTF-8');
-		}
-
 		// Use a template if it exists
 		if (!empty($setup['template'])) {
 			return $this->_render($tag, $content);
@@ -195,7 +190,6 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'lineBreaks' => self::NL_CONVERT,
 			'autoClose' => false,
 			'preserveTags' => false,
-			'escapeContent' => false,
 			'escapeAttributes' => true,
 			'maxChildDepth' => -1,
 			

@@ -32,8 +32,7 @@ abstract class DecodaAbstract {
 	 * Apply configuration.
 	 * 
 	 * @access public
-	 * @param array $config 
-	 * @return void
+	 * @param array $config
 	 */
 	public function __construct(array $config = array()) {
 		$this->_config = $config + $this->_config;

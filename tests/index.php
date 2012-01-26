@@ -11,6 +11,7 @@ $view = strtolower(isset($_GET['view']) ? $_GET['view'] : 'features');
 
 $about = array(
 	'features' => 'Features',
+	'security' => 'Security',
 	'nesting' => 'Invalid nesting'
 );
 

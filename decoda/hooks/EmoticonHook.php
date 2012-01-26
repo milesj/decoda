@@ -42,8 +42,7 @@ class EmoticonHook extends DecodaHook {
 	 * Load the emoticons from the JSON file.
 	 *
 	 * @access public
-	 * @param array $config 
-	 * @return void
+	 * @param array $config
 	 */
 	public function __construct(array $config = array()) {
 		parent::__construct($config);

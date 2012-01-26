@@ -168,7 +168,7 @@ class Decoda {
 	 * @param string $string
 	 */
 	public function __construct($string = '') {
-		spl_autoload_register(array($this, '_loadFile'));
+		spl_autoload_register(array($this, 'loadFile'));
 		
 		$this->_messages = json_decode(file_get_contents(DECODA_CONFIG .'messages.json'), true);
 		$this->reset($string, true);
@@ -380,6 +380,22 @@ class Decoda {
 	 */
 	public function getHooks() {
 		return $this->_hooks;
+	}
+
+	/**
+	 * Autoload filters and hooks.
+	 *
+	 * @access public
+	 * @param string $class
+	 * @return void
+	 */
+	public function loadFile($class) {
+		if (strpos($class, 'Filter') !== false) {
+			include_once DECODA_FILTERS . $class . '.php';
+
+		} else if (strpos($class, 'Hook') !== false) {
+			include_once DECODA_HOOKS . $class . '.php';
+		}
 	}
 
 	/**
@@ -1024,22 +1040,6 @@ class Decoda {
 		);
 
 		return false;
-	}
-	
-	/**
-	 * Autoload filters and hooks.
-	 * 
-	 * @access protected
-	 * @param string $class 
-	 * @return void
-	 */
-	protected function _loadFile($class) {
-		if (strpos($class, 'Filter') !== false) {
-			include_once DECODA_FILTERS . $class .'.php';
-			
-		} else if (strpos($class, 'Hook') !== false) {
-			include_once DECODA_HOOKS . $class .'.php';
-		}
 	}
 
 	/**

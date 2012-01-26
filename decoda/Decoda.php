@@ -78,7 +78,8 @@ class Decoda {
 		'disabled' => false,
 		'shorthand' => false,
 		'xhtml' => false,
-		'locale' => 'en-us'
+		'locale' => 'en-us',
+		'escapeHtml' => true
 	);
 	
 	/**
@@ -438,6 +439,7 @@ class Decoda {
 			$this->_extractChunks();
 			$this->_parsed = $this->_parse($this->_nodes);
 		} else {
+			if ($this->config('escapeHtml')) $this->_string = htmlentities($this->_string, ENT_QUOTES, 'UTF-8');
 			$this->_parsed = self::nl2br($this->_string, $this->config('xhtml'));
 		}
 
@@ -571,7 +573,21 @@ class Decoda {
 		
 		return $this;
 	}
-	
+
+	/**
+	 * Toggle the escape HTML option.
+	 *
+	 * @access public
+	 * @param boolean $status
+	 * @return Decoda
+	 * @chainable
+	 */
+	public function setEscapeHtml($status = true) {
+		$this->_config['escapeHtml'] = (bool) $status;
+
+		return $this;
+	}
+
 	/**
 	 * Toggle XHTML.
 	 * 
@@ -1060,6 +1076,7 @@ class Decoda {
 
 		foreach ($nodes as $node) {
 			if (is_string($node)) {
+				if ($this->config('escapeHtml')) $node = htmlentities($node, ENT_QUOTES, 'UTF-8');
 				if (empty($wrapper)) {
 					$parsed .= self::nl2br($node, $xhtml);
 				} else {

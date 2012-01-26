@@ -12,7 +12,9 @@ echo $code->parse(); ?>
 
 <h2>Image <span>with width or height</span></h2>
 
-<?php $string = '[img width="500"]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]
+<?php $string = '[img width="500"]
+http://www.google.com/intl/en_ALL/images/srpr/logo1w.png
+[/img]
 [img height="50"]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]
 [img width="43%" height="50"]http://www.google.com/intl/en_ALL/images/srpr/logo1w.png[/img]';
 

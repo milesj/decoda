@@ -66,7 +66,7 @@ class UrlFilter extends DecodaFilter {
 		if ($this->getParser()->config('shorthand')) {
 			$tag['content'] = $this->message('link');
 			
-			return '['. parent::parse($tag, $content) .']';
+			return '[' . parent::parse($tag, $content) . ']';
 		}
 
 		return parent::parse($tag, $content);

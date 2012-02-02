@@ -25,8 +25,8 @@ class ClickableHook extends DecodaHook {
 			$login = '([-a-zA-Z0-9\.\+]+:[-a-zA-Z0-9\.\+]+@)?';
 			$domain = '([-a-zA-Z0-9\.]{5,255}+)';
 			$port = '(:[0-9]{0,6}+)?';
-			$query = '([a-zA-Z0-9'. preg_quote('-_=;:&?/[]', '/') .']+)?';
-			$content = preg_replace_callback('/(^|\n|\s)'. $protocol . $login . $domain . $port . $query .'/is', array($this, '_urlCallback'), $content);
+			$query = '([a-zA-Z0-9' . preg_quote('-_=;:&?/[]', '/') . ']+)?';
+			$content = preg_replace_callback('/(^|\n|\s)' . $protocol . $login . $domain . $port . $query . '/is', array($this, '_urlCallback'), $content);
 		}
 
 		// Based on schema: http://en.wikipedia.org/wiki/Email_address

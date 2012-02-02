@@ -1,6 +1,6 @@
 <?php
-$show = $this->message('spoiler') .' ('. $this->message('show') .')';
-$hide = $this->message('spoiler') .' ('. $this->message('hide') .')';
+$show = $this->message('spoiler') . ' (' . $this->message('show') . ')';
+$hide = $this->message('spoiler') . ' (' . $this->message('hide') . ')';
 
 $counter = rand();
 $click  = "document.getElementById('spoilerContent-". $counter ."').style.display = (document.getElementById('spoilerContent-". $counter ."').style.display == 'block' ? 'none' : 'block');";

@@ -47,7 +47,7 @@ class EmoticonHook extends DecodaHook {
 	public function __construct(array $config = array()) {
 		parent::__construct($config);
 		
-		$path = DECODA_CONFIG .'emoticons.json';
+		$path = DECODA_CONFIG . 'emoticons.json';
 
 		if (file_exists($path)) {
 			$this->_emoticons = json_decode(file_get_contents($path), true);
@@ -73,9 +73,9 @@ class EmoticonHook extends DecodaHook {
 	 */
 	public function beforeParse($content) {
 		if ($this->getParser()->getFilter('Image') && !empty($this->_emoticons)) {
-			foreach ($this->_emoticons as $emoticon => $smilies) {
+			foreach ($this->_emoticons as $smilies) {
 				foreach ($smilies as $smile) {
-					$content = preg_replace_callback('/(\s)?'. preg_quote($smile, '/') .'(\s)?/is', array($this, '_emoticonCallback'), $content);
+					$content = preg_replace_callback('/(\s)?' . preg_quote($smile, '/') . '(\s)?/is', array($this, '_emoticonCallback'), $content);
 				}
 			}
 		}
@@ -103,7 +103,7 @@ class EmoticonHook extends DecodaHook {
 		$image = $this->getParser()->getFilter('Image')->parse(array(
 			'tag' => 'img',
 			'attributes' => array()
-		), $this->_config['path'] . $this->_map[$smiley] .'.png');
+		), $this->_config['path'] . $this->_map[$smiley] . '.png');
 
 		return $l . $image . $r;
 	}

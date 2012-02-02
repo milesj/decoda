@@ -87,12 +87,12 @@ class EmailFilter extends DecodaFilter {
 			$encrypted = $email;
 		}
 
-		$tag['attributes']['href'] = 'mailto:'. $encrypted;
+		$tag['attributes']['href'] = 'mailto:' . $encrypted;
 
 		if ($this->getParser()->config('shorthand')) {
 			$tag['content'] = $this->message('mail');
 			
-			return '['. parent::parse($tag, $content) .']';
+			return '[' . parent::parse($tag, $content) . ']';
 		}
 		
 		if (!$default) {

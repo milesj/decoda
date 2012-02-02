@@ -37,9 +37,9 @@ if (!defined('DECODA_EMOTICONS')) {
 }
 
 // Includes
-include_once DECODA .'DecodaAbstract.php';
-include_once DECODA .'DecodaHook.php';
-include_once DECODA .'DecodaFilter.php';
+include_once DECODA . 'DecodaAbstract.php';
+include_once DECODA . 'DecodaHook.php';
+include_once DECODA . 'DecodaFilter.php';
 
 class Decoda {
 
@@ -170,7 +170,7 @@ class Decoda {
 	public function __construct($string = '') {
 		spl_autoload_register(array($this, 'loadFile'));
 		
-		$this->_messages = json_decode(file_get_contents(DECODA_CONFIG .'messages.json'), true);
+		$this->_messages = json_decode(file_get_contents(DECODA_CONFIG . 'messages.json'), true);
 		$this->reset($string, true);
 	}
 
@@ -195,6 +195,8 @@ class Decoda {
 			$this->_filterMap[$tag] = $class;
 		}
 
+		$filter->setupHooks($this);
+
 		return $this;
 	}
 
@@ -212,6 +214,8 @@ class Decoda {
 		$class = str_replace('Hook', '', get_class($hook));
 		
 		$this->_hooks[$class] = $hook;
+
+		$hook->setupFilters($this);
 
 		return $this;
 	}
@@ -246,6 +250,7 @@ class Decoda {
 		$this->addFilter(new QuoteFilter());
 		$this->addFilter(new ListFilter());
 
+		$this->addHook(new CodeHook());
 		$this->addHook(new CensorHook());
 		$this->addHook(new ClickableHook());
 		$this->addHook(new EmoticonHook());
@@ -412,7 +417,7 @@ class Decoda {
 
 		if (!empty($vars)) {
 			foreach ($vars as $key => $value) {
-				$string = str_replace('{'. $key .'}', $value, $string);
+				$string = str_replace('{' . $key . '}', $value, $string);
 			}
 		}
 
@@ -446,6 +451,8 @@ class Decoda {
 		if (!empty($this->_parsed)) {
 			return $this->_parsed;
 		}
+
+		ksort($this->_hooks);
 
 		$this->_string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $this->_string);
 		$this->_string = $this->_trigger('beforeParse', $this->_string);
@@ -656,7 +663,7 @@ class Decoda {
 			$oe = preg_quote($this->config('open'));
 			$ce = preg_quote($this->config('close'));
 
-			if (preg_match('/'. $oe .'([a-z0-9]+)(.*?)'. $ce .'/i', $string, $matches)) {
+			if (preg_match('/' . $oe . '([a-z0-9]+)(.*?)' . $ce . '/i', $string, $matches)) {
 				$tag['type'] = self::TAG_OPEN;
 				$tag['tag'] = strtolower($matches[1]);
 			}
@@ -685,7 +692,7 @@ class Decoda {
 
 							if (is_array($pattern)) {
 								if (preg_match($pattern[0], $value)) {
-									$tag['attributes'][$key] = str_replace('{'. $key .'}', $value, $pattern[1]);
+									$tag['attributes'][$key] = str_replace('{' . $key . '}', $value, $pattern[1]);
 								}
 							} else {
 								if (preg_match($pattern, $value)) {

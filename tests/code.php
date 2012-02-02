@@ -1,7 +1,9 @@
 
 <?php
 $code = new Decoda();
-$code->addFilter(new CodeFilter()); ?>
+$code->addFilter(new CodeFilter());
+$code->addHook(new EmoticonHook());
+$code->addHook(new CensorHook()); ?>
 
 <h2>Code</h2>
 
@@ -21,6 +23,21 @@ set_include_path(implode(PATH_SEPARATOR, array(
 	DECODA_CONFIG, DECODA_FILTERS,
 	DECODA_TEMPLATES, DECODA_EMOTICONS
 )));[/code]";
+
+$code->reset($string);
+echo $code->parse(); ?>
+
+<h2>Code <span>with filters and hooks</span></h2>
+
+<?php $string = "[code]email@domain.com
+
+:] :) :D :/ >[ :p :o >_>
+
+:happy: :aw: :cool: :kiss: :meh: :mmf: :heart:
+
+fuuCCkk shhiiiitt bITCH assHOLE peeniiss douchhe
+
+fucker shiting bitched[/code]";
 
 $code->reset($string);
 echo $code->parse(); ?>

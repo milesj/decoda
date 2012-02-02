@@ -34,4 +34,15 @@ abstract class DecodaHook extends DecodaAbstract {
 		return $content;
 	}
 
+	/**
+	 * Add any filter dependencies.
+	 *
+	 * @access public
+	 * @param Decoda $decoda
+	 * @return void
+	 */
+	public function setupFilters(Decoda $decoda) {
+		return;
+	}
+
 }

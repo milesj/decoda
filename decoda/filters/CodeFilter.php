@@ -37,4 +37,15 @@ class CodeFilter extends DecodaFilter {
 		)
 	);
 
+	/**
+	 * Add any hook dependencies.
+	 *
+	 * @access public
+	 * @param Decoda $decoda
+	 * @return void
+	 */
+	public function setupHooks(Decoda $decoda) {
+		$decoda->addHook(new CodeHook());
+	}
+
 }

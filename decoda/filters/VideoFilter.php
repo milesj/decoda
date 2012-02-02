@@ -108,7 +108,7 @@ class VideoFilter extends DecodaFilter {
 		$size = strtolower(isset($tag['attributes']['size']) ? $tag['attributes']['size'] : 'medium');
 
 		if (empty($this->_formats[$provider])) {
-			return $provider .':'. $content;
+			return $provider . ':' . $content;
 		}
 
 		$video = $this->_formats[$provider];

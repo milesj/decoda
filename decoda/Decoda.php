@@ -395,6 +395,10 @@ class Decoda {
 	 * @return void
 	 */
 	public function loadFile($class) {
+		if (class_exists($class) || interface_exists($class)) {
+			return;
+		}
+
 		if (strpos($class, 'Filter') !== false) {
 			include_once DECODA_FILTERS . $class . '.php';
 

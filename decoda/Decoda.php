@@ -78,6 +78,7 @@ class Decoda {
 		'disabled' => false,
 		'shorthand' => false,
 		'xhtml' => false,
+		'escape' => true,
 		'locale' => 'en-us'
 	);
 	
@@ -458,7 +459,10 @@ class Decoda {
 
 		ksort($this->_hooks);
 
-		$this->_string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $this->_string);
+		if ($this->config('escape')) {
+			$this->_string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $this->_string);
+		}
+
 		$this->_string = $this->_trigger('beforeParse', $this->_string);
 
 		if (strpos($this->_string, $this->config('open')) !== false && strpos($this->_string, $this->config('close')) !== false) {
@@ -564,6 +568,20 @@ class Decoda {
 		$this->_config['open'] = (string) $open;
 		$this->_config['close'] = (string) $close;
 		
+		return $this;
+	}
+
+	/**
+	 * Toggle XSS escaping.
+	 *
+	 * @access public
+	 * @param boolean $status
+	 * @return Decoda
+	 * @chainable
+	 */
+	public function setEscaping($status = true) {
+		$this->_config['escape'] = (bool) $status;
+
 		return $this;
 	}
 	

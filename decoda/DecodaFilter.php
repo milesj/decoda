@@ -127,7 +127,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 					$key = $setup['map'][$key];
 				}
 
-				if ($key == 'default') {
+				if ($key == 'default' || substr($value, 0, 11) == 'javascript:') {
 					continue;
 				}
 				

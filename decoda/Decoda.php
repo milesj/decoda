@@ -5,11 +5,11 @@
  * A lightweight lexical string parser for simple markup syntax.
  * Provides a very powerful filter and hook system to extend the parsing cycle.
  *
+ * @version     3.3.3
  * @author      Miles Johnson - http://milesj.me
  * @copyright   Copyright 2006-2011, Miles Johnson, Inc.
  * @license     http://opensource.org/licenses/mit-license.php - Licensed under The MIT License
  * @link        http://milesj.me/code/php/decoda
- * @version		3.3.2
  */
 
 // Constants

@@ -847,7 +847,7 @@ class Decoda {
 								while (!empty($openTags)) {
 									$last = array_pop($openTags);
 
-									if ($last['tag'] != $tag) {
+									if ($last['tag'] !== $tag) {
 										$this->_errors[] = array(
 											'type' => self::ERROR_NESTING,
 											'tag' => $last['tag']
@@ -1008,7 +1008,7 @@ class Decoda {
 					$tag = array();
 
 					// Only reduce if not last index
-					if ($index != $count) {
+					if ($index !== $count) {
 						$index = $index - 1;
 					}
 

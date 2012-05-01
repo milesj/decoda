@@ -13,6 +13,11 @@
 class VideoFilter extends DecodaFilter {
 
 	/**
+	 * Regex pattern.
+	 */
+	const VIDEO_PATTERN = '/^[-_a-z0-9]+$/is';
+
+	/**
 	 * Supported tags.
 	 *
 	 * @access protected
@@ -23,8 +28,10 @@ class VideoFilter extends DecodaFilter {
 			'template' => 'video',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_NONE,
+			'pattern' => self::VIDEO_PATTERN,
+			'patternFor' => 'content',
 			'attributes' => array(
-				'default' => '/[a-zA-Z0-9]+/',
+				'default' => '/[a-z0-9]+/i',
 				'size' => '/small|medium|large/i'
 			)
 		)

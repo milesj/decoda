@@ -2,7 +2,7 @@
 /**
  * DecodaFilter
  *
- * A filter defines the list of tags and its associative markup to parse out of a string. 
+ * A filter defines the list of tags and its associative markup to parse out of a string.
  * Supports a wide range of parameters to customize the output of each tag.
  *
  * @author      Miles Johnson - http://milesj.me
@@ -16,6 +16,7 @@
  * @tag					- (string) HTML replacement tag
  * @template			- (string) Template file to use for rendering
  * @pattern				- (string) Regex pattern that the content or default attribute must pass
+ * @patternFor			- (string) What to run the pattern on, either "content" or an attribute key
  * @type				- (constant) Type of HTML element: block or inline
  * @allowed				- (constant) What types of elements are allowed to be nested
  * @attributes			- (array) Custom attributes to parse out of the Decoda markup
@@ -24,7 +25,6 @@
  * @lineBreaks			- (boolean) Convert linebreaks within the content body
  * @autoClose			- (boolean) HTML tag is self closing
  * @preserveTags		- (boolean) Will not convert nested Decoda markup within this tag
- * @escapeContent		- (boolean) Escape HTML entities within the content body
  * @escapeAttributes	- (boolean) Escape HTML entities within the parsed attributes
  * @maxChildDepth		- (integer) Max depth for nested children of the same tag (-1 to disable)
  * @parent				- (array) List of Decoda keys that this tag can only be a direct child of
@@ -34,7 +34,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Type constants.
-	 * 
+	 *
 	 * TYPE_NONE	- Will not accept block or inline (for validating)
 	 * TYPE_INLINE	- Inline element that can only contain child inlines
 	 * TYPE_BLOCK	- Block element that can contain both inline and block
@@ -44,10 +44,10 @@ abstract class DecodaFilter extends DecodaAbstract {
 	const TYPE_INLINE = 1;
 	const TYPE_BLOCK = 2;
 	const TYPE_BOTH = 3;
-	
+
 	/**
 	 * Newline and carriage return formatting.
-	 * 
+	 *
 	 * NL_REMOVE	- Will be removed
 	 * NL_PRESERVE	- Will be preserved as \n and \r
 	 * NL_CONVERT	- Will be converted to <br> tags
@@ -58,7 +58,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Supported tags.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -66,7 +66,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Return a message string from the parser.
-	 * 
+	 *
 	 * @access public
 	 * @param string $key
 	 * @param array $vars
@@ -78,26 +78,31 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Parse the node and its content into an HTML tag.
-	 * 
+	 *
 	 * @access public
 	 * @param array $tag
 	 * @param string $content
-	 * @return string 
+	 * @return string
 	 */
 	public function parse(array $tag, $content) {
 		$setup = $this->tag($tag['tag']);
 		$xhtml = $this->getParser()->config('xhtml');
 		$content = trim($content);
-		
+
 		if (empty($setup)) {
 			return;
 		}
 
 		// If content doesn't match the pattern, don't wrap in a tag
 		if (!empty($setup['pattern'])) {
-			$test = !empty($tag['attributes']['default']) ? $tag['attributes']['default'] : $content;
+			if ($setup['patternFor'] === 'content') {
+				$test = $content;
 
-			if (!preg_match($setup['pattern'], $test)) {
+			} else if (!empty($tag['attributes'][$setup['patternFor']])) {
+				$test = $tag['attributes'][$setup['patternFor']];
+			}
+
+			if (isset($test) && !preg_match($setup['pattern'], $test)) {
 				return $content;
 			}
 		}
@@ -112,25 +117,20 @@ abstract class DecodaFilter extends DecodaAbstract {
 			break;
 		}
 
-		// Use a template if it exists
-		if (!empty($setup['template'])) {
-			return $this->_render($tag, $content);
-		}
-
 		// Format attributes
 		$attributes = array();
 		$attr = '';
-		
+
 		if (!empty($tag['attributes'])) {
 			foreach ($tag['attributes'] as $key => $value) {
 				if (isset($setup['map'][$key])) {
 					$key = $setup['map'][$key];
 				}
 
-				if ($key == 'default' || substr($value, 0, 11) == 'javascript:') {
+				if ($key === 'default' || substr($value, 0, 11) === 'javascript:') {
 					continue;
 				}
-				
+
 				if ($setup['escapeAttributes']) {
 					$attributes[$key] = htmlentities($value, ENT_QUOTES, 'UTF-8');
 				} else {
@@ -138,11 +138,18 @@ abstract class DecodaFilter extends DecodaAbstract {
 				}
 			}
 		}
-		
+
 		if (!empty($setup['html'])) {
 			$attributes += $setup['html'];
 		}
-		
+
+		// Use a template if it exists
+		if (!empty($setup['template'])) {
+			$tag['attributes'] = $attributes;
+
+			return $this->_render($tag, $content);
+		}
+
 		foreach ($attributes as $key => $value) {
 			$attr .= ' ' . $key . '="' . $value . '"';
 		}
@@ -178,7 +185,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Return a tag if it exists, and merge with defaults.
-	 * 
+	 *
 	 * @access public
 	 * @param string $tag
 	 * @return array
@@ -190,21 +197,22 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'tag' => '',
 			'template' => '',
 			'pattern' => '',
+			'patternFor' => 'default',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
-			
+
 			// Attributes
 			'attributes' => array(),
 			'map' => array(),
 			'html' => array(),
-			
+
 			// Processes
 			'lineBreaks' => self::NL_CONVERT,
 			'autoClose' => false,
 			'preserveTags' => false,
 			'escapeAttributes' => true,
 			'maxChildDepth' => -1,
-			
+
 			// Hierarchy
 			'parent' => array(),
 			'children' => array()
@@ -219,7 +227,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Return all tags.
-	 * 
+	 *
 	 * @access public
 	 * @return array
 	 */
@@ -229,11 +237,12 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Render the tag using a template.
-	 * 
+	 *
 	 * @access public
 	 * @param array $tag
 	 * @param string $content
-	 * @return string 
+	 * @return string
+	 * @throws Exception
 	 */
 	protected function _render(array $tag, $content) {
 		$setup = $this->tag($tag['tag']);
@@ -258,7 +267,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 		include $path;
 
-		if ($setup['lineBreaks'] != self::NL_PRESERVE) {
+		if ($setup['lineBreaks'] !== self::NL_PRESERVE) {
 			return str_replace(array("\n", "\r"), "", ob_get_clean());
 		}
 

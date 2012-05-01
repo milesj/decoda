@@ -29,6 +29,7 @@ class UrlFilter extends DecodaFilter {
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_INLINE,
 			'pattern' => self::URL_PATTERN,
+			'testNoDefault' => true,
 			'attributes' => array(
 				'default' => self::URL_PATTERN
 			),
@@ -41,6 +42,7 @@ class UrlFilter extends DecodaFilter {
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_INLINE,
 			'pattern' => self::URL_PATTERN,
+			'testNoDefault' => true,
 			'attributes' => array(
 				'default' => self::URL_PATTERN
 			),
@@ -59,8 +61,8 @@ class UrlFilter extends DecodaFilter {
 	 * @return string
 	 */
 	public function parse(array $tag, $content) {
-		if (empty($tag['attributes']['default'])) {
-			$tag['attributes']['default'] = $content;
+		if (empty($tag['attributes']['href']) && empty($tag['attributes']['default'])) {
+			$tag['attributes']['href'] = $content;
 		}
 
 		if ($this->getParser()->config('shorthand')) {

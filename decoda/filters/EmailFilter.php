@@ -39,6 +39,7 @@ class EmailFilter extends DecodaFilter {
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_INLINE,
 			'pattern' => self::EMAIL_PATTERN,
+			'testNoDefault' => true,
 			'escapeAttributes' => false,
 			'attributes' => array(
 				'default' => self::EMAIL_PATTERN
@@ -49,6 +50,7 @@ class EmailFilter extends DecodaFilter {
 			'type' => self::TYPE_INLINE,
 			'allowed' => self::TYPE_INLINE,
 			'pattern' => self::EMAIL_PATTERN,
+			'testNoDefault' => true,
 			'escapeAttributes' => false,
 			'attributes' => array(
 				'default' => self::EMAIL_PATTERN

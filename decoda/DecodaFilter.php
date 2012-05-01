@@ -16,7 +16,7 @@
  * @tag					- (string) HTML replacement tag
  * @template			- (string) Template file to use for rendering
  * @pattern				- (string) Regex pattern that the content or default attribute must pass
- * @patternFor			- (string) What to run the pattern on, either "content" or an attribute key
+ * @testNoDefault		- (boolean) Will only test the pattern on the content if the default attribute doesn't exist
  * @type				- (constant) Type of HTML element: block or inline
  * @allowed				- (constant) What types of elements are allowed to be nested
  * @attributes			- (array) Custom attributes to parse out of the Decoda markup
@@ -95,15 +95,8 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 		// If content doesn't match the pattern, don't wrap in a tag
 		if (!empty($setup['pattern'])) {
-			if ($setup['patternFor'] === 'content') {
-				$test = $content;
-
-			} else if (!empty($tag['attributes'][$setup['patternFor']])) {
-				$test = $tag['attributes'][$setup['patternFor']];
-			}
-
-			if (isset($test) && !preg_match($setup['pattern'], $test)) {
-				return $content;
+			if ($setup['testNoDefault'] && !isset($tag['attributes']['default']) && !preg_match($setup['pattern'], $content)) {
+				return sprintf('(Invalid %s)', $tag['tag']);
 			}
 		}
 
@@ -197,7 +190,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'tag' => '',
 			'template' => '',
 			'pattern' => '',
-			'patternFor' => 'default',
+			'testNoDefault' => false,
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 

@@ -29,7 +29,6 @@ class VideoFilter extends DecodaFilter {
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_NONE,
 			'pattern' => self::VIDEO_PATTERN,
-			'patternFor' => 'content',
 			'attributes' => array(
 				'default' => '/[a-z0-9]+/i',
 				'size' => '/small|medium|large/i'
@@ -115,7 +114,7 @@ class VideoFilter extends DecodaFilter {
 		$size = strtolower(isset($tag['attributes']['size']) ? $tag['attributes']['size'] : 'medium');
 
 		if (empty($this->_formats[$provider])) {
-			return $provider . ':' . $content;
+			return sprintf('(Invalid %s video code)', $provider);
 		}
 
 		$video = $this->_formats[$provider];
@@ -125,8 +124,6 @@ class VideoFilter extends DecodaFilter {
 		$tag['attributes']['height'] = $size[1];
 		$tag['attributes']['player'] = $video['player'];
 		$tag['attributes']['url'] = str_replace(array('{id}', '{width}', '{height}'), array($content, $size[0], $size[1]), $video['path']);
-
-		// XSS prevention
 
 		return parent::parse($tag, $content);
 	}

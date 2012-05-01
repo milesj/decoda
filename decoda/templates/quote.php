@@ -7,7 +7,7 @@
 					<?php echo date('M jS Y, H:i:s', is_numeric($date) ? $date : strtotime($date)); ?>
 				</span>
 			<?php }
-			
+
 			if (!empty($author)) { ?>
 				<span class="decoda-quoteAuthor">
 					<?php echo $this->message('quoteBy', array(
@@ -15,11 +15,11 @@
 					)); ?>
 				</span>
 			<?php } ?>
-			
+
 			<span class="clear"></span>
 		</div>
 	<?php } ?>
-	
+
 	<div class="decoda-quoteBody">
 		<?php echo $content; ?>
 	</div>

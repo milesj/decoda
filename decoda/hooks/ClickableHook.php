@@ -14,7 +14,7 @@ class ClickableHook extends DecodaHook {
 
 	/**
 	 * Matches a link or an email, and converts it to an anchor tag.
-	 * 
+	 *
 	 * @access public
 	 * @param string $content
 	 * @return string

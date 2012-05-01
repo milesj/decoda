@@ -14,12 +14,12 @@ class BlockFilter extends DecodaFilter {
 
 	/**
 	 * Supported tags.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
-	protected $_tags = array(  
-		'align' => array(   
+	protected $_tags = array(
+		'align' => array(
 			'tag' => 'div',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
@@ -71,7 +71,7 @@ class BlockFilter extends DecodaFilter {
 			'allowed' => self::TYPE_BOTH,
 			'attributes' => array(
 				'id' => '/[-_a-z0-9]+/i',
-				'class' => '/[-_a-z0-9\s]+/' 
+				'class' => '/[-_a-z0-9\s]+/'
 			)
 		),
 		'spoiler' => array(

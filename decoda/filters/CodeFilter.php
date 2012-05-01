@@ -14,12 +14,12 @@ class CodeFilter extends DecodaFilter {
 
 	/**
 	 * Supported tags.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
-	protected $_tags = array(  
-		'code' => array(   
+	protected $_tags = array(
+		'code' => array(
 			'template' => 'code',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,

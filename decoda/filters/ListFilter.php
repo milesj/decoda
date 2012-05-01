@@ -14,11 +14,11 @@ class ListFilter extends DecodaFilter {
 
 	/**
 	 * Supported tags.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
-	protected $_tags = array(  
+	protected $_tags = array(
 		'olist' => array(
 			'tag' => 'ol',
 			'type' => self::TYPE_BLOCK,

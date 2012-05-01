@@ -19,21 +19,21 @@ class EmailFilter extends DecodaFilter {
 
 	/**
 	 * Configuration.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
 	protected $_config = array(
 		'encrypt' => true
 	);
-	
+
 	/**
 	 * Supported tags.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
-	protected $_tags = array(  
+	protected $_tags = array(
 		'email' => array(
 			'tag' => 'a',
 			'type' => self::TYPE_INLINE,
@@ -58,7 +58,7 @@ class EmailFilter extends DecodaFilter {
 
 	/**
 	 * Encrypt the email before parsing it within tags.
-	 * 
+	 *
 	 * @access public
 	 * @param array $tag
 	 * @param string $content
@@ -74,7 +74,7 @@ class EmailFilter extends DecodaFilter {
 		}
 
 		$encrypted = '';
-		
+
 		if ($this->_config['encrypt']) {
 			$length = strlen($email);
 
@@ -91,10 +91,10 @@ class EmailFilter extends DecodaFilter {
 
 		if ($this->getParser()->config('shorthand')) {
 			$tag['content'] = $this->message('mail');
-			
+
 			return '[' . parent::parse($tag, $content) . ']';
 		}
-		
+
 		if (!$default) {
 			$tag['content'] = $encrypted;
 		}

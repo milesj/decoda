@@ -11,5 +11,5 @@
  */
 
 class EmptyFilter extends DecodaFilter {
-	
+
 }

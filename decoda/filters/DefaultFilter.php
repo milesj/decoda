@@ -14,11 +14,11 @@ class DefaultFilter extends DecodaFilter {
 
 	/**
 	 * Supported tags.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
-	protected $_tags = array(  
+	protected $_tags = array(
 		'b' => array(
 			'tag' => array('b', 'strong'),
 			'type' => self::TYPE_INLINE,

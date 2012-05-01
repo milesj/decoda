@@ -2,7 +2,7 @@
 /**
  * Decoda
  *
- * A lightweight lexical string parser for simple markup syntax. 
+ * A lightweight lexical string parser for simple markup syntax.
  * Provides a very powerful filter and hook system to extend the parsing cycle.
  *
  * @author      Miles Johnson - http://milesj.me
@@ -50,7 +50,7 @@ class Decoda {
 	const TAG_NONE = 0;
 	const TAG_OPEN = 1;
 	const TAG_CLOSE = 2;
-	
+
 	/**
 	 * Error type constants.
 	 */
@@ -61,7 +61,7 @@ class Decoda {
 
 	/**
 	 * Extracted chunks of text and tags.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -69,7 +69,7 @@ class Decoda {
 
 	/**
 	 * Configuration.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -82,10 +82,10 @@ class Decoda {
 		'escape' => true,
 		'locale' => 'en-us'
 	);
-	
+
 	/**
 	 * Logged errors for incorrectly nested nodes and types.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -93,7 +93,7 @@ class Decoda {
 
 	/**
 	 * List of all instantiated filter objects.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -101,7 +101,7 @@ class Decoda {
 
 	/**
 	 * Mapping of tags to its filter object.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -109,7 +109,7 @@ class Decoda {
 
 	/**
 	 * List of all instantiated hook objects.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -125,7 +125,7 @@ class Decoda {
 
 	/**
 	 * Children nodes.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -133,7 +133,7 @@ class Decoda {
 
 	/**
 	 * The parsed string.
-	 * 
+	 *
 	 * @access protected
 	 * @var string
 	 */
@@ -141,7 +141,7 @@ class Decoda {
 
 	/**
 	 * The raw string before parsing.
-	 * 
+	 *
 	 * @access protected
 	 * @var string
 	 */
@@ -149,15 +149,15 @@ class Decoda {
 
 	/**
 	 * List of tags from filters.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = array();
-	
+
 	/**
 	 * Whitelist of tags to parse.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -165,22 +165,22 @@ class Decoda {
 
 	/**
 	 * Store the text and single instance configuration.
-	 * 
+	 *
 	 * @access public
 	 * @param string $string
 	 */
 	public function __construct($string = '') {
 		spl_autoload_register(array($this, 'loadFile'));
-		
+
 		$this->_messages = json_decode(file_get_contents(DECODA_CONFIG . 'messages.json'), true);
 		$this->reset($string, true);
 	}
 
 	/**
 	 * Add additional filters.
-	 * 
+	 *
 	 * @access public
-	 * @param DecodaFilter $filter 
+	 * @param DecodaFilter $filter
 	 * @return Decoda
 	 * @chainable
 	 */
@@ -204,17 +204,17 @@ class Decoda {
 
 	/**
 	 * Add hooks that are triggered at specific events.
-	 * 
+	 *
 	 * @access public
 	 * @param DecodaHook $hook
-	 * @return Decoda 
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function addHook(DecodaHook $hook) {
 		$hook->setParser($this);
 
 		$class = str_replace('Hook', '', get_class($hook));
-		
+
 		$this->_hooks[$class] = $hook;
 
 		$hook->setupFilters($this);
@@ -224,7 +224,7 @@ class Decoda {
 
 	/**
 	 * Return a specific configuration key value.
-	 * 
+	 *
 	 * @access public
 	 * @param string $key
 	 * @return mixed
@@ -235,12 +235,12 @@ class Decoda {
 
 	/**
 	 * Apply default filters and hooks if none are set.
-	 * 
+	 *
 	 * @access public
 	 * @return Decoda
 	 * @chainable
 	 */
-	public function defaults() {		
+	public function defaults() {
 		$this->addFilter(new DefaultFilter());
 		$this->addFilter(new EmailFilter());
 		$this->addFilter(new ImageFilter());
@@ -256,10 +256,10 @@ class Decoda {
 		$this->addHook(new CensorHook());
 		$this->addHook(new ClickableHook());
 		$this->addHook(new EmoticonHook());
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Toggle parsing.
 	 *
@@ -270,10 +270,10 @@ class Decoda {
 	 */
 	public function disable($status = true) {
 		$this->_config['disabled'] = (bool) $status;
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Disable all filters.
 	 *
@@ -286,10 +286,10 @@ class Decoda {
 		$this->_filterMap = array();
 
 		$this->addFilter(new EmptyFilter());
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Disable all hooks.
 	 *
@@ -299,46 +299,46 @@ class Decoda {
 	 */
 	public function disableHooks() {
 		$this->_hooks = array();
-		
+
 		$this->addHook(new EmptyHook());
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Return the parsing errors.
-	 * 
+	 *
 	 * @access public
 	 * @param int $type
 	 * @return array
 	 */
 	public function getErrors($type = self::ERROR_ALL) {
-		if ($type == self::ERROR_ALL) {
+		if ($type === self::ERROR_ALL) {
 			return $this->_errors;
 		}
-		
+
 		$clean = array();
-		
+
 		if (!empty($this->_errors)) {
 			foreach ($this->_errors as $error) {
-				if ($error['type'] == self::ERROR_NESTING) {
+				if ($error['type'] === self::ERROR_NESTING) {
 					$clean[] = $error;
-					
-				} else if ($error['type'] == self::ERROR_CLOSING) {
+
+				} else if ($error['type'] === self::ERROR_CLOSING) {
 					$clean[] = $error;
-					
-				} else if ($error['type'] == self::ERROR_SCOPE) {
+
+				} else if ($error['type'] === self::ERROR_SCOPE) {
 					$clean[] = $error;
 				}
 			}
 		}
-		
+
 		return $clean;
 	}
 
 	/**
 	 * Return a specific filter based on class name.
-	 * 
+	 *
 	 * @access public
 	 * @param string $filter
 	 * @return DecodaFilter
@@ -349,7 +349,7 @@ class Decoda {
 
 	/**
 	 * Return a filter based on its supported tag.
-	 * 
+	 *
 	 * @access public
 	 * @param string $tag
 	 * @return DecodaFilter
@@ -360,7 +360,7 @@ class Decoda {
 
 	/**
 	 * Return all filters.
-	 * 
+	 *
 	 * @access public
 	 * @return array
 	 */
@@ -370,7 +370,7 @@ class Decoda {
 
 	/**
 	 * Return a specific hook based on class name.
-	 * 
+	 *
 	 * @access public
 	 * @param string $hook
 	 * @return DecodaHook
@@ -381,7 +381,7 @@ class Decoda {
 
 	/**
 	 * Return all hooks.
-	 * 
+	 *
 	 * @access public
 	 * @return array
 	 */
@@ -433,7 +433,7 @@ class Decoda {
 	/**
 	 * Inserts HTML line breaks before all newlines in a string.
 	 * If the server is running PHP 5.2, the second parameter will be ignored.
-	 * 
+	 *
 	 * @access public
 	 * @param string $string
 	 * @param boolean $xhtml
@@ -449,7 +449,7 @@ class Decoda {
 
 	/**
 	 * Parse the node list by looping through each one, validating, applying filters, building and finally concatenating the string.
-	 * 
+	 *
 	 * @access public
 	 * @return string
 	 */
@@ -477,50 +477,50 @@ class Decoda {
 
 		return $this->_parsed;
 	}
-	
+
 	/**
 	 * Remove filter(s).
-	 * 
+	 *
 	 * @access public
 	 * @param string|array $filters
-	 * @return Decoda 
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function removeFilter($filters) {
 		if (!is_array($filters)) {
 			$filters = array($filters);
 		}
-		
+
 		foreach ($filters as $filter) {
 			unset($this->_filters[$filter]);
-			
+
 			foreach ($this->_filterMap as $tag => $fil) {
-				if ($fil == $filter) {
+				if ($fil === $filter) {
 					unset($this->_filterMap[$tag]);
 				}
 			}
 		}
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Remove hook(s).
-	 * 
+	 *
 	 * @access public
 	 * @param string|array $hooks
-	 * @return Decoda 
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function removeHook($hooks) {
 		if (!is_array($hooks)) {
 			$hooks = array($hooks);
 		}
-		
+
 		foreach ($hooks as $hook) {
 			unset($this->_hooks[$hook]);
 		}
-		
+
 		return $this;
 	}
 
@@ -539,22 +539,22 @@ class Decoda {
 		$this->_whitelist = array();
 		$this->_string = (string) $string;
 		$this->_parsed = '';
-		
+
 		if ($flush) {
 			$this->_filters = array();
 			$this->_filterMap = array();
 			$this->_hooks = array();
 			$this->_tags = array();
 		}
-		
+
 		$this->addFilter(new EmptyFilter());
 
 		return $this;
 	}
-	
+
 	/**
 	 * Change the open/close markup brackets.
-	 * 
+	 *
 	 * @access public
 	 * @param string $open
 	 * @param string $close
@@ -565,10 +565,10 @@ class Decoda {
 		if (empty($open) || empty($close)) {
 			throw new Exception('Both the open and close brackets are required.');
 		}
-		
+
 		$this->_config['open'] = (string) $open;
 		$this->_config['close'] = (string) $close;
-		
+
 		return $this;
 	}
 
@@ -585,90 +585,90 @@ class Decoda {
 
 		return $this;
 	}
-	
+
 	/**
 	 * Set the locale.
-	 * 
+	 *
 	 * @access public
 	 * @param string $locale
-	 * @return Decoda 
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function setLocale($locale) {
 		if (empty($this->_messages[$locale])) {
 			throw new Exception(sprintf('Localized strings for %s do not exist.', $locale));
 		}
-		
+
 		$this->_config['locale'] = $locale;
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Toggle shorthand syntax.
-	 * 
+	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return Decoda 
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function setShorthand($status = true) {
 		$this->_config['shorthand'] = (bool) $status;
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Toggle XHTML.
-	 * 
+	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return Decoda 
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function setXhtml($status = true) {
 		$this->_config['xhtml'] = (bool) $status;
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Add tags to the whitelist.
-	 * 
+	 *
 	 * @access public
 	 * @return Decoda
-	 * @chainable 
+	 * @chainable
 	 */
 	public function whitelist() {
 		$args = func_get_args();
-		
+
 		if (isset($args[0]) && is_array($args[0])) {
 			$args = $args[0];
 		}
-		
+
 		$this->_whitelist += array_map('strtolower', $args);
 		$this->_whitelist = array_filter($this->_whitelist);
-		
+
 		return $this;
 	}
 
 	/**
 	 * Determine if the string is an open or closing tag. If so, parse out the attributes.
-	 * 
+	 *
 	 * @access protected
 	 * @param string $string
-	 * @return array 
+	 * @return array
 	 */
 	protected function _buildTag($string) {
 		$disabled = $this->config('disabled');
 		$tag = array(
 			'tag' => '',
-			'text' => $string, 
+			'text' => $string,
 			'attributes' => array()
 		);
 
 		// Closing tag
-		if (substr($string, 1, 1) == '/') {
+		if (substr($string, 1, 1) === '/') {
 			$tag['tag'] = strtolower(substr($string, 2, strlen($string) - 3));
 			$tag['type'] = self::TAG_CLOSE;
 
@@ -706,7 +706,7 @@ class Decoda {
 						$key = strtolower($match[1]);
 						$value = trim($match[2]);
 
-						if ($key == $tag['tag']) {
+						if ($key === $tag['tag']) {
 							$key = 'default';
 						}
 
@@ -727,7 +727,7 @@ class Decoda {
 				}
 			}
 		}
-		
+
 		if ($disabled || (!empty($this->_whitelist) && !in_array($tag['tag'], $this->_whitelist))) {
 			$tag['type'] = self::TAG_NONE;
 			$tag['text'] = '';
@@ -738,11 +738,11 @@ class Decoda {
 
 	/**
 	 * Clean the chunk list by verifying that open and closing tags are nested correctly.
-	 * 
+	 *
 	 * @access protected
 	 * @param array $chunks
 	 * @param array $wrapper
-	 * @return string 
+	 * @return string
 	 */
 	protected function _cleanChunks(array $chunks, array $wrapper = array()) {
 		$clean = array();
@@ -783,7 +783,7 @@ class Decoda {
 					if ($parent['maxChildDepth'] >= 0 && !isset($depths[$tag])) {
 						$depths[$tag] = 1;
 						$parent['currentDepth'] = $depths[$tag];
-						
+
 					} else if (isset($depths[$tag])) {
 						$depths[$tag] += 1;
 						$parent['currentDepth'] = $depths[$tag];
@@ -793,13 +793,13 @@ class Decoda {
 						$prevParent = $parent;
 						$parents[] = $parent;
 						$parent = $this->getFilterByTag($tag)->tag($tag);
-						
+
 						if ($prevParent['preserveTags']) {
 							$chunk['type'] = self::TAG_NONE;
 							$parent['preserveTags'] = true;
 						}
-						
-						$clean[] = $chunk;	
+
+						$clean[] = $chunk;
 
 						if ($root) {
 							$openTags[] = array('tag' => $tag, 'index' => $i);
@@ -814,12 +814,12 @@ class Decoda {
 					if (isset($depths[$tag])) {
 						$depths[$tag] -= 1;
 					}
-					
+
 					// If something is not allowed, skip the close tag
 					if (!empty($disallowed)) {
 						$last = end($disallowed);
 
-						if ($last['tag'] == $tag) {
+						if ($last['tag'] === $tag) {
 							array_pop($disallowed);
 							continue;
 						}
@@ -840,8 +840,8 @@ class Decoda {
 
 						if ($root && !empty($openTags)) {
 							$last = end($openTags);
-							
-							if ($last['tag'] == $tag) {
+
+							if ($last['tag'] === $tag) {
 								array_pop($openTags);
 							} else {
 								while (!empty($openTags)) {
@@ -852,7 +852,7 @@ class Decoda {
 											'type' => self::ERROR_NESTING,
 											'tag' => $last['tag']
 										);
-										
+
 										unset($clean[$last['index']]);
 									}
 								}
@@ -869,12 +869,12 @@ class Decoda {
 		// Remove any unclosed tags
 		while (!empty($openTags)) {
 			$last = array_pop($openTags);
-			
+
 			$this->_errors[] = array(
 				'type' => self::ERROR_CLOSING,
 				'tag' => $last['tag']
 			);
-			
+
 			unset($clean[$last['index']]);
 		}
 
@@ -883,7 +883,7 @@ class Decoda {
 
 	/**
 	 * Scan the string stack and extract any tags and chunks of text that were detected.
-	 * 
+	 *
 	 * @access protected
 	 * @return void
 	 */
@@ -920,29 +920,29 @@ class Decoda {
 			}
 
 			// Possible tag found, lets look
-			if ($openPos == $strPos) {
+			if ($openPos === $strPos) {
 
-			// Child open tag before closing tag
-			if ($nextOpenPos < $closePos) {
-				$newPos = $nextOpenPos;
-				$tag['text'] = substr($str, $strPos, ($nextOpenPos - $strPos));
-				$tag['type'] = self::TAG_NONE;
-
-			// Tag?
-			} else {
-				$newPos = $closePos + 1;
-				$newTag = $this->_buildTag(substr($str, $strPos, (($closePos - $strPos) + 1)));
-
-				// Valid tag
-				if ($newTag !== false) {
-					$tag = $newTag;
-
-				// Not a valid tag
-				} else {
-					$tag['text'] = substr($str, $strPos, $closePos - $strPos + 1);
+				// Child open tag before closing tag
+				if ($nextOpenPos < $closePos) {
+					$newPos = $nextOpenPos;
+					$tag['text'] = substr($str, $strPos, ($nextOpenPos - $strPos));
 					$tag['type'] = self::TAG_NONE;
+
+				// Tag?
+				} else {
+					$newPos = $closePos + 1;
+					$newTag = $this->_buildTag(substr($str, $strPos, (($closePos - $strPos) + 1)));
+
+					// Valid tag
+					if ($newTag !== false) {
+						$tag = $newTag;
+
+					// Not a valid tag
+					} else {
+						$tag['text'] = substr($str, $strPos, $closePos - $strPos + 1);
+						$tag['type'] = self::TAG_NONE;
+					}
 				}
-			}
 
 			// No tag, just text
 			} else {
@@ -968,11 +968,11 @@ class Decoda {
 
 	/**
 	 * Convert the chunks into a child parent hierarchy of nodes.
-	 * 
+	 *
 	 * @access protected
 	 * @param array $chunks
 	 * @param array $wrapper
-	 * @return array 
+	 * @return array
 	 */
 	protected function _extractNodes(array $chunks, array $wrapper = array()) {
 		$chunks = $this->_cleanChunks($chunks, $wrapper);
@@ -988,10 +988,10 @@ class Decoda {
 		while ($i < $count) {
 			$chunk = $chunks[$i];
 
-			if ($chunk['type'] == self::TAG_NONE && empty($tag)) {
+			if ($chunk['type'] === self::TAG_NONE && empty($tag)) {
 				$nodes[] = $chunk['text'];
 
-			} else if ($chunk['type'] == self::TAG_OPEN) {
+			} else if ($chunk['type'] === self::TAG_OPEN) {
 				$openCount++;
 
 				if (empty($tag)) {
@@ -999,10 +999,10 @@ class Decoda {
 					$tag = $chunk;
 				}
 
-			} else if ($chunk['type'] == self::TAG_CLOSE) {
+			} else if ($chunk['type'] === self::TAG_CLOSE) {
 				$closeCount++;
 
-				if ($openCount == $closeCount && $chunk['tag'] == $tag['tag']) {
+				if ($openCount === $closeCount && $chunk['tag'] === $tag['tag']) {
 					$closeIndex = $i;
 					$index = ($closeIndex - $openIndex);
 					$tag = array();
@@ -1027,11 +1027,11 @@ class Decoda {
 
 	/**
 	 * Validate that the following child can be nested within the parent.
-	 * 
+	 *
 	 * @access protected
 	 * @param array $parent
 	 * @param string $tag
-	 * @return boolean 
+	 * @return boolean
 	 */
 	protected function _isAllowed($parent, $tag) {
 		$filter = $this->getFilterByTag($tag);
@@ -1055,14 +1055,14 @@ class Decoda {
 			return false;
 
 		// Block element that accepts both types
-		} else if ($parent['allowed'] == DecodaFilter::TYPE_BOTH) {
+		} else if ($parent['allowed'] === DecodaFilter::TYPE_BOTH) {
 			return true;
 
 		// Inline elements can go within everything
-		} else if (($parent['allowed'] == DecodaFilter::TYPE_INLINE || $parent['allowed'] == DecodaFilter::TYPE_BLOCK) && $child['type'] == DecodaFilter::TYPE_INLINE) {
+		} else if (($parent['allowed'] === DecodaFilter::TYPE_INLINE || $parent['allowed'] === DecodaFilter::TYPE_BLOCK) && $child['type'] === DecodaFilter::TYPE_INLINE) {
 			return true;
 		}
-		
+
 		$this->_errors[] = array(
 			'type' => self::ERROR_SCOPE,
 			'parent' => $parent['key'],
@@ -1074,11 +1074,11 @@ class Decoda {
 
 	/**
 	 * Cycle through the nodes and parse the string with the appropriate filter.
-	 * 
+	 *
 	 * @access protected
 	 * @param array $nodes
 	 * @param array $wrapper
-	 * @return string 
+	 * @return string
 	 */
 	protected function _parse(array $nodes, array $wrapper = array()) {
 		$parsed = '';
@@ -1105,9 +1105,9 @@ class Decoda {
 
 	/**
 	 * Trigger all hooks at an event specified by the method name.
-	 * 
+	 *
 	 * @access protected
-	 * @param string $method 
+	 * @param string $method
 	 * @param string $content
 	 * @return string
 	 */

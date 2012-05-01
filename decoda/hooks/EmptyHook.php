@@ -11,5 +11,5 @@
  */
 
 class EmptyHook extends DecodaHook {
-	
+
 }

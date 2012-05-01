@@ -14,11 +14,11 @@ class TextFilter extends DecodaFilter {
 
 	/**
 	 * Supported tags.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
-	protected $_tags = array(  
+	protected $_tags = array(
 		'font' => array(
 			'tag' => 'span',
 			'type' => self::TYPE_INLINE,

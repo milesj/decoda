@@ -14,7 +14,7 @@ class EmoticonHook extends DecodaHook {
 
 	/**
 	 * Configuration.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -29,10 +29,10 @@ class EmoticonHook extends DecodaHook {
 	 * @var array
 	 */
 	protected $_emoticons = array();
-	
+
 	/**
 	 * Map of smilies to emoticons.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -46,7 +46,7 @@ class EmoticonHook extends DecodaHook {
 	 */
 	public function __construct(array $config = array()) {
 		parent::__construct($config);
-		
+
 		$path = DECODA_CONFIG . 'emoticons.json';
 
 		if (file_exists($path)) {
@@ -57,7 +57,7 @@ class EmoticonHook extends DecodaHook {
 					$this->_map[$smile] = $emoticon;
 				}
 			}
-			
+
 			if (empty($this->_config['path'])) {
 				$this->_config['path'] = str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']), '\\', '/'), array('', '/', '/'), DECODA_EMOTICONS);
 			}
@@ -66,7 +66,7 @@ class EmoticonHook extends DecodaHook {
 
 	/**
 	 * Parse out the emoticons and replace with images.
-	 * 
+	 *
 	 * @access public
 	 * @param string $content
 	 * @return string
@@ -85,15 +85,15 @@ class EmoticonHook extends DecodaHook {
 
 	/**
 	 * Callback for smiley processing.
-	 * 
+	 *
 	 * @access protected
 	 * @param array $matches
-	 * @return string 
+	 * @return string
 	 */
 	protected function _emoticonCallback($matches) {
 		$smiley = trim($matches[0]);
 
-		if (count($matches) == 1 || !isset($this->_map[$smiley])) {
+		if (count($matches) === 1 || !isset($this->_map[$smiley])) {
 			return $matches[0];
 		}
 
@@ -107,5 +107,5 @@ class EmoticonHook extends DecodaHook {
 
 		return $l . $image . $r;
 	}
-	
+
 }

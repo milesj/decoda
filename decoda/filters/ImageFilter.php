@@ -11,7 +11,7 @@
  */
 
 class ImageFilter extends DecodaFilter {
-	
+
 	/**
 	 * Regex pattern.
 	 */
@@ -19,11 +19,11 @@ class ImageFilter extends DecodaFilter {
 
 	/**
 	 * Supported tags.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
-	protected $_tags = array(  
+	protected $_tags = array(
 		'img' => array(
 			'tag' => 'img',
 			'type' => self::TYPE_INLINE,
@@ -52,7 +52,7 @@ class ImageFilter extends DecodaFilter {
 
 	/**
 	 * Use the content as the image source.
-	 * 
+	 *
 	 * @access public
 	 * @param array $tag
 	 * @param string $content

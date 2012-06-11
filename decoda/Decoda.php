@@ -710,6 +710,10 @@ class Decoda {
 							$key = 'default';
 						}
 
+                        if (isset($source['alias'][$key])) {
+                            $key = $source['alias'][$key];
+                        }
+
 						if (isset($source['attributes'][$key])) {
 							$pattern = $source['attributes'][$key];
 

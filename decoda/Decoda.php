@@ -452,11 +452,16 @@ class Decoda {
 	 * Parse the node list by looping through each one, validating, applying filters, building and finally concatenating the string.
 	 *
 	 * @access public
+	 * @param boolean $echo
 	 * @return string
 	 */
-	public function parse() {
+	public function parse($echo = false) {
 		if (!empty($this->_parsed)) {
-			return $this->_parsed;
+			if ($echo) {
+				echo $this->_parsed;
+			} else {
+				return $this->_parsed;
+			}
 		}
 
 		ksort($this->_hooks);
@@ -476,7 +481,11 @@ class Decoda {
 
 		$this->_parsed = $this->_trigger('afterParse', $this->_parsed);
 
-		return $this->_parsed;
+		if ($echo) {
+			echo $this->_parsed;
+		} else {
+			return $this->_parsed;
+		}
 	}
 
 	/**

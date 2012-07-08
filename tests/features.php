@@ -1,7 +1,7 @@
 
 <h2>Localization</h2>
 
-<?php 
+<?php
 $code = new Decoda('[b]Features[/b]');
 $code->addFilter(new QuoteFilter());
 

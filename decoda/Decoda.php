@@ -80,6 +80,7 @@ class Decoda {
 		'shorthand' => false,
 		'xhtml' => false,
 		'escape' => true,
+		'strict' => true,
 		'locale' => 'en-us'
 	);
 
@@ -621,6 +622,20 @@ class Decoda {
 	}
 
 	/**
+	 * Toggle strict parsing.
+	 *
+	 * @access public
+	 * @param boolean $strict
+	 * @return Decoda
+	 * @chainable
+	 */
+	public function setStrict($strict = true) {
+		$this->_config['strict'] = (bool) $strict;
+
+		return $this;
+	}
+
+	/**
 	 * Toggle XHTML.
 	 *
 	 * @access public
@@ -699,14 +714,35 @@ class Decoda {
 
 			// Find attributes
 			if (!$disabled) {
+				$found = array();
+
 				preg_match_all('/([a-z]+)=\"(.*?)\"/i', $string, $matches, PREG_SET_ORDER);
 
 				if (!empty($matches)) {
+					foreach ($matches as $match) {
+						$found[$match[1]] = $match[2];
+					}
+				}
+
+				// Find attributes that aren't surrounded by quotes
+				if (!$this->config('strict')) {
+					preg_match_all('/([a-z]+)=([^\s\]]+)/i', $string, $matches, PREG_SET_ORDER);
+
+					if (!empty($matches)) {
+						foreach ($matches as $match) {
+							if (!isset($found[$match[1]])) {
+								$found[$match[1]] = $match[2];
+							}
+						}
+					}
+				}
+
+				if (!empty($found)) {
 					$source = $this->_tags[$tag['tag']];
 
-					foreach ($matches as $match) {
-						$key = strtolower($match[1]);
-						$value = trim($match[2]);
+					foreach ($found as $key => $value) {
+						$key = strtolower($key);
+						$value = trim(trim($value), '"');
 
 						if ($key === $tag['tag']) {
 							$key = 'default';

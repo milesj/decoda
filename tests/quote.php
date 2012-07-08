@@ -1,4 +1,3 @@
-
 <?php
 $code = new Decoda();
 $code->addFilter(new QuoteFilter()); ?>
@@ -27,7 +26,7 @@ echo $code->parse(); ?>
 
 <h2>Quote <span>with author and date</span></h2>
 
-<?php $string = '[quote="Miles" date="2011-02-26 06:42:33"]Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque non sapien a eros tincidunt accumsan. Ut nisl dui, dignissim at posuere quis, facilisis eget lectus. Morbi vitae massa eu metus pharetra rhoncus. Suspendisse potenti. Phasellus laoreet dapibus dapibus. Duis faucibus lacinia diam, nec pharetra est pharetra vitae. Etiam sodales, nulla et ullamcorper mattis, augue nunc sollicitudin risus, nec imperdiet est leo vitae est. Integer ultricies, metus at scelerisque interdum, sapien lorem mollis orci, vel mattis felis augue vitae nunc. Fusce eget sem sed orci interdum commodo sit amet et metus. In ultricies feugiat eleifend. Aliquam erat volutpat.[/quote]';
+<?php $string = '[quote="Miles Johnson" date="2011-02-26 06:42:33"]Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque non sapien a eros tincidunt accumsan. Ut nisl dui, dignissim at posuere quis, facilisis eget lectus. Morbi vitae massa eu metus pharetra rhoncus. Suspendisse potenti. Phasellus laoreet dapibus dapibus. Duis faucibus lacinia diam, nec pharetra est pharetra vitae. Etiam sodales, nulla et ullamcorper mattis, augue nunc sollicitudin risus, nec imperdiet est leo vitae est. Integer ultricies, metus at scelerisque interdum, sapien lorem mollis orci, vel mattis felis augue vitae nunc. Fusce eget sem sed orci interdum commodo sit amet et metus. In ultricies feugiat eleifend. Aliquam erat volutpat.[/quote]';
 
 $code->reset($string);
 echo $code->parse(); ?>

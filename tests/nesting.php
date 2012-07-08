@@ -23,7 +23,7 @@ echo $code->parse(); ?>
 <h2>Incorrectly nested hierarchy</h2>
 
 <?php $string = '[li]List item outside of a list or olist.[/li]
-	
+
 [list]
 [b]Bold tag as the first descendant of list.[/b]
 [li]Lorem ipsum dolor sit amet, consectetuer adipiscing elit.[/li]

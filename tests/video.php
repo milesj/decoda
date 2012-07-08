@@ -1,4 +1,3 @@
-
 <?php
 $code = new Decoda();
 $code->addFilter(new VideoFilter()); ?>

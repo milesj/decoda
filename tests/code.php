@@ -1,4 +1,3 @@
-
 <?php
 $code = new Decoda();
 $code->addFilter(new CodeFilter());
@@ -19,7 +18,7 @@ define('DECODA_EMOTICONS', DECODA .'emoticons/');
 spl_autoload_register();
 set_include_path(implode(PATH_SEPARATOR, array(
 	get_include_path(),
-	DECODA, DECODA_HOOKS, 
+	DECODA, DECODA_HOOKS,
 	DECODA_CONFIG, DECODA_FILTERS,
 	DECODA_TEMPLATES, DECODA_EMOTICONS
 )));[/code]";
@@ -49,7 +48,7 @@ abstract class DecodaHook extends DecodaAbstract {
 
 	/**
 	 * Parse the given content before the primary parse.
-	 * 
+	 *
 	 * @access public
 	 * @param string $content
 	 * @return string
@@ -60,7 +59,7 @@ abstract class DecodaHook extends DecodaAbstract {
 
 	/**
 	 * Parse the given content after the primary parse.
-	 * 
+	 *
 	 * @access public
 	 * @param string $content
 	 * @return string
@@ -81,7 +80,7 @@ abstract class DecodaAbstract {
 
 	/**
 	 * Parent Decoda object.
-	 * 
+	 *
 	 * @access protected
 	 * @var Decoda
 	 */
@@ -89,7 +88,7 @@ abstract class DecodaAbstract {
 
 	/**
 	 * Return the Decoda parser.
-	 * 
+	 *
 	 * @access public
 	 * @return Decoda
 	 */
@@ -99,15 +98,15 @@ abstract class DecodaAbstract {
 
 	/**
 	 * Set the Decoda parser.
-	 * 
+	 *
 	 * @access public
-	 * @param Decoda $parser 
+	 * @param Decoda $parser
 	 * @return void
 	 */
 	public function setParser(Decoda $parser) {
 		$this->_parser = $parser;
 	}
-	
+
 } ?>[/code]';
 
 $code->reset($string);

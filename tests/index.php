@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Enable errors
 error_reporting(E_ALL);
@@ -88,7 +88,7 @@ function buildMenu($items, $view) {
 </head>
 <body>
 	<h1>Decoda</h1>
-	
+
 	<?php // Copyright
 	$code = new Decoda('Copyright 2009-'. date('Y') .' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]');
 	$code->defaults();

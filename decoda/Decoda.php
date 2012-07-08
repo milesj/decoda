@@ -559,6 +559,7 @@ class Decoda {
 	 * @param string $open
 	 * @param string $close
 	 * @return Decoda
+	 * @throws Exception
 	 * @chainable
 	 */
 	public function setBrackets($open, $close) {
@@ -592,6 +593,7 @@ class Decoda {
 	 * @access public
 	 * @param string $locale
 	 * @return Decoda
+	 * @throws Exception
 	 * @chainable
 	 */
 	public function setLocale($locale) {
@@ -710,9 +712,9 @@ class Decoda {
 							$key = 'default';
 						}
 
-                        if (isset($source['alias'][$key])) {
-                            $key = $source['alias'][$key];
-                        }
+						if (isset($source['alias'][$key])) {
+							$key = $source['alias'][$key];
+						}
 
 						if (isset($source['attributes'][$key])) {
 							$pattern = $source['attributes'][$key];

@@ -22,6 +22,7 @@
  * @attributes			- (array) Custom attributes to parse out of the Decoda markup
  * @map					- (array) Map parsed attributes to different names
  * @html				- (array) Custom HTML attributes to append to the parsed tag
+ * @alias				- (array) Map attribute names to another attribute name
  * @lineBreaks			- (boolean) Convert linebreaks within the content body
  * @autoClose			- (boolean) HTML tag is self closing
  * @preserveTags		- (boolean) Will not convert nested Decoda markup within this tag
@@ -198,6 +199,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'attributes' => array(),
 			'map' => array(),
 			'html' => array(),
+			'alias' => array(),
 
 			// Processes
 			'lineBreaks' => self::NL_CONVERT,

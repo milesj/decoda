@@ -1,20 +1,25 @@
 {
-    "name": "milesj/php-decoda",
-    "type": "library",
-    "description": "A lightweight lexical string parser for BBCode styled markup.",
-    "keywords": ["bbcode"],
-    "homepage": "https://github.com/milesj/php-decoda",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Miles Johnson",
-            "homepage": "http://milesj.me"
-        }
-    ],
-    "require": {
-        "php": ">=5.2"
-    },
-    "autoload": {
-        "psr-0": { "Decoda": "decoda" }
-    }
+	"name": "mjohnson/decoda",
+	"type": "library",
+	"description": "A lightweight lexical string parser for BBCode styled markup.",
+	"keywords": ["bbcode", "markup", "decoda"],
+	"homepage": "http://milesj.me/code/php/decoda",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Miles Johnson",
+			"homepage": "http://milesj.me"
+		}
+	],
+	"require": {
+		"php": ">=5.2"
+	},
+	"support": {
+		"source": "https://github.com/milesj/php-decoda",
+		"issues": "https://github.com/milesj/php-decoda/issues",
+		"wiki": "http://milesj.me/code/php/decoda"
+	},
+	"autoload": {
+		"psr-0": { "Decoda": "decoda" }
+	}
 }

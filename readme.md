@@ -1,4 +1,4 @@
-# Decoda v3.3.3 #
+# Decoda v3.4 #
 
 A lightweight lexical string parser for BBCode styled markup.
 
@@ -35,7 +35,7 @@ Version(s) 3.x are not backwards compatible with 2.9 and lower. The newer versio
 The following filters and supported tags are available.
 
 * Default: b, i, u, s, sup, sub
-* Block: align, float, hide, alert, note, div, spoiler, center
+* Block: align, float, hide, alert, note, div, spoiler, left, right, center, justify
 * Code: code, var
 * Email: email, mail
 * Image: image, img

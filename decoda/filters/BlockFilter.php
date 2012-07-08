@@ -30,6 +30,38 @@ class BlockFilter extends DecodaFilter {
 				'default' => 'class'
 			)
 		),
+		'left' => array(
+			'tag' => 'div',
+			'type' => self::TYPE_BLOCK,
+			'allowed' => self::TYPE_BOTH,
+			'html' => array(
+				'class' => 'align-left'
+			)
+		),
+		'right' => array(
+			'tag' => 'div',
+			'type' => self::TYPE_BLOCK,
+			'allowed' => self::TYPE_BOTH,
+			'html' => array(
+				'class' => 'align-right'
+			)
+		),
+		'center' => array(
+			'tag' => 'div',
+			'type' => self::TYPE_BLOCK,
+			'allowed' => self::TYPE_BOTH,
+			'html' => array(
+				'class' => 'align-center'
+			)
+		),
+		'justify' => array(
+			'tag' => 'div',
+			'type' => self::TYPE_BLOCK,
+			'allowed' => self::TYPE_BOTH,
+			'html' => array(
+				'class' => 'align-justify'
+			)
+		),
 		'float' => array(
 			'tag' => 'div',
 			'type' => self::TYPE_BLOCK,
@@ -78,14 +110,6 @@ class BlockFilter extends DecodaFilter {
 			'template' => 'spoiler',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH
-		),
-		'center' => array(
-			'tag' => 'div',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_BOTH,
-			'html' => array(
-				'class' => 'align-center'
-			)
 		)
 	);
 

@@ -12,6 +12,15 @@ $code->addFilter(new BlockFilter()); ?>
 $code->reset($string);
 echo $code->parse(); ?>
 
+<h2>Align Alternate</h2>
+
+<?php $string = '[center]Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam laoreet pulvinar sem. Aenean at odio.[/center]
+[justify]Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec elit. Fusce eget enim. Nullam tellus felis, sodales nec, sodales ac, commodo eu, ante.[/justify]
+[right]Curabitur tincidunt, lacus eget iaculis tincidunt, elit libero iaculis arcu, eleifend condimentum sem est quis dolor. Curabitur sed tellus. Donec id dolor.[/right]';
+
+$code->reset($string);
+echo $code->parse(); ?>
+
 <h2>Float</h2>
 
 <?php $string = '[float="right"]Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam laoreet pulvinar sem. Aenean at odio.[/float]

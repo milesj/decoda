@@ -1,4 +1,4 @@
-<?php if ($player == 'embed') { ?>
+<?php if ($player === 'embed') { ?>
 	<embed src="<?php echo $url; ?>"
 		type="application/x-shockwave-flash"
 		allowscriptaccess="always"

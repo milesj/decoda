@@ -3,7 +3,7 @@
 /**
  * PhpEngine
  *
- * Renders tags by using PHP as template engine. 
+ * Renders tags by using PHP as template engine.
  *
  * @author      Miles Johnson - http://milesj.me
  * @author      Sean C. Koop - sean.koop@icans-gmbh.com
@@ -13,7 +13,7 @@
  */
 
 class PhpEngine implements TemplateEngineInterface {
-    
+
 	/**
 	 * @access protected
 	 * @var string
@@ -90,10 +90,6 @@ class PhpEngine implements TemplateEngineInterface {
 		ob_start();
 
 		include $path;
-
-		if ($setup['lineBreaks'] !== DecodaFilter::NL_PRESERVE) {
-			return str_replace(array("\n", "\r"), "", ob_get_clean());
-		}
 
 		return ob_get_clean();
 	}

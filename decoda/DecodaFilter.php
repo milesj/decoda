@@ -152,7 +152,12 @@ abstract class DecodaFilter extends DecodaAbstract {
 			$tag['attributes'] = $attributes;
 
 			$templateEngine = $this->getTemplateEngine();
-			return $templateEngine->render($tag, $content);
+			$renderedTemplate =  $templateEngine->render($tag, $content);
+			if ($setup['lineBreaks'] !== self::NL_PRESERVE) {
+				return str_replace(array("\n", "\r"), "", $renderedTemplate);
+			}
+			
+			return $renderedTemplate;
 		}
 
 		foreach ($attributes as $key => $value) {
@@ -245,10 +250,10 @@ abstract class DecodaFilter extends DecodaAbstract {
 	 * Sets the template engine for this filter.
 	 *
 	 * @access public
-	 * @param TemplateEngineInterface $renderer
+	 * @param TemplateEngineInterface $templateEngine
 	 */
-	public function setTemplateEngine(TemplateEngineInterface $renderer) {
-		$this->_templateEngine = $renderer;
+	public function setTemplateEngine(TemplateEngineInterface $templateEngine) {
+		$this->_templateEngine = $templateEngine;
 	}
 
 	/**

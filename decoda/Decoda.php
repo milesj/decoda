@@ -29,8 +29,8 @@ if (!defined('DECODA_FILTERS')) {
 	define('DECODA_FILTERS', DECODA . 'filters/');
 }
 
-if (!defined('DECODA_TEMPLATES')) {
-	define('DECODA_TEMPLATES', DECODA . 'templates/');
+if (!defined('DECODA_TEMPLATE_ENGINE')) {
+	define('DECODA_TEMPLATE_ENGINE', DECODA . 'template-engine/');
 }
 
 if (!defined('DECODA_EMOTICONS')) {

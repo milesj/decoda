@@ -11,6 +11,8 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
+include_once DECODA_TEMPLATE_ENGINE . '/TemplateEngineInterface.php';
+
 /**
  * @key					- (string) Decoda tag
  * @tag					- (string) HTML replacement tag
@@ -64,6 +66,14 @@ abstract class DecodaFilter extends DecodaAbstract {
 	 * @var array
 	 */
 	protected $_tags = array();
+
+	/**
+	 * The used tempalte engine
+	 *
+	 * @access protected
+	 * @var TemplateEngineInterface
+	 */
+	protected $_templateEngine = null;
 
 	/**
 	 * Return a message string from the parser.
@@ -141,7 +151,8 @@ abstract class DecodaFilter extends DecodaAbstract {
 		if (!empty($setup['template'])) {
 			$tag['attributes'] = $attributes;
 
-			return $this->_render($tag, $content);
+			$templateEngine = $this->getTemplateEngine();
+			return $templateEngine->render($tag, $content);
 		}
 
 		foreach ($attributes as $key => $value) {
@@ -231,42 +242,30 @@ abstract class DecodaFilter extends DecodaAbstract {
 	}
 
 	/**
-	 * Render the tag using a template.
+	 * Sets the renderer for the template of a tag.
 	 *
 	 * @access public
-	 * @param array $tag
-	 * @param string $content
-	 * @return string
-	 * @throws Exception
+	 * @param TemplateEngineInterface $renderer
 	 */
-	protected function _render(array $tag, $content) {
-		$setup = $this->tag($tag['tag']);
-		$path = DECODA_TEMPLATES . $setup['template'] . '.php';
+	public function setTemplateEngine(TemplateEngineInterface $renderer) {
+		$this->_templateEngine = $renderer;
+	}
 
-		if (!file_exists($path)) {
-			throw new Exception(sprintf('Template file %s does not exist.', $setup['template']));
+	/**
+	 * Returns the used template renderer. In case no renderer were set the default php template renderer gonna
+	 * be used.
+	 *
+	 * @access public
+	 * @return TemplateEngineInterface
+	 */
+	public function getTemplateEngine() {
+		if ($this->_templateEngine === null) {
+			// Include just necessary in case the default php renderer gonna be used.
+			include_once DECODA_TEMPLATE_ENGINE . '/PhpEngine.php';
+			$this->_templateEngine = new PhpEngine($this);
 		}
 
-		$vars = array();
-
-		foreach ($tag['attributes'] as $key => $value) {
-			if (isset($setup['map'][$key])) {
-				$key = $setup['map'][$key];
-			}
-
-			$vars[$key] = $value;
-		}
-
-		extract($vars, EXTR_SKIP);
-		ob_start();
-
-		include $path;
-
-		if ($setup['lineBreaks'] !== self::NL_PRESERVE) {
-			return str_replace(array("\n", "\r"), "", ob_get_clean());
-		}
-
-		return ob_get_clean();
+		return $this->_templateEngine;
 	}
 
 }

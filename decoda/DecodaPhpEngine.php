@@ -12,7 +12,7 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-class PhpEngine implements TemplateEngineInterface {
+class DecodaPhpEngine implements DecodaTemplateEngineInterface {
 
 	/**
 	 * @access protected
@@ -27,15 +27,18 @@ class PhpEngine implements TemplateEngineInterface {
 	protected $_filter;
 
 	/**
+	 * Returne the current used Filter.
+	 *
 	 * @access public
-	 * @param DecodaFilter $filter
+	 * @return DecodaFilter
 	 */
-	public function __construct(DecodaFilter $filter) {
-		$this->_filter = $filter;
+	public function getFilter() {
+		return $this->_filter;
 	}
 
 	/**
-	 * Returns the path of the tag templates. In case no path were set the default decoda path will be used.
+	 * Returns the path of the tag templates.
+	 * In case no path were set the default decoda path will be used.
 	 *
 	 * @access public
 	 * @return string
@@ -49,22 +52,12 @@ class PhpEngine implements TemplateEngineInterface {
 	}
 
 	/**
-	 * Sets the path to the tag templates.
-	 *
-	 * @access public
-	 * @param string $path
-	 */
-	public function setPath($path) {
-		$this->_path = $path;
-	}
-
-	/**
 	 * Renders the tag by using php templates.
 	 * In case no template were found for the tag, a exception will be thrown.
 	 *
 	 * @access public
 	 * @param array $tag Contains the information about a tag.
-	 * @param string $content The content in the tag.
+	 * @param string $content The content within the tag.
 	 * @return string
 	 * @throws Exception
 	 */
@@ -95,16 +88,23 @@ class PhpEngine implements TemplateEngineInterface {
 	}
 
 	/**
-	 * Returne the used Filter for this template. Necessary, because some templates need the message method
-	 * of the filter class.
+	 * Sets the current used filter.
 	 *
 	 * @access public
-	 * @return DecodaFilter
+	 * @param DecodaFilter $filter
 	 */
-	public function getFilter() {
-		return $this->_filter;
+	public function setFilter(DecodaFilter $filter) {
+		$this->_filter = $filter;
+	}
+
+	/**
+	 * Sets the path to the tag templates.
+	 *
+	 * @access public
+	 * @param string $path
+	 */
+	public function setPath($path) {
+		$this->_path = $path;
 	}
 
 }
-
-?>

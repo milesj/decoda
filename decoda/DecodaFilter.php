@@ -11,8 +11,6 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-include_once DECODA_TEMPLATE_ENGINE . '/TemplateEngineInterface.php';
-
 /**
  * @key					- (string) Decoda tag
  * @tag					- (string) HTML replacement tag
@@ -151,12 +149,13 @@ abstract class DecodaFilter extends DecodaAbstract {
 		if (!empty($setup['template'])) {
 			$tag['attributes'] = $attributes;
 
-			$templateEngine = $this->getTemplateEngine();
+			$templateEngine = $this->getParser()->getTemplateEngine();
+			$templateEngine->setFilter($this);
 			$renderedTemplate =  $templateEngine->render($tag, $content);
 			if ($setup['lineBreaks'] !== self::NL_PRESERVE) {
 				return str_replace(array("\n", "\r"), "", $renderedTemplate);
 			}
-			
+
 			return $renderedTemplate;
 		}
 
@@ -244,33 +243,6 @@ abstract class DecodaFilter extends DecodaAbstract {
 	 */
 	public function tags() {
 		return $this->_tags;
-	}
-
-	/**
-	 * Sets the template engine for this filter.
-	 *
-	 * @access public
-	 * @param TemplateEngineInterface $templateEngine
-	 */
-	public function setTemplateEngine(TemplateEngineInterface $templateEngine) {
-		$this->_templateEngine = $templateEngine;
-	}
-
-	/**
-	 * Returns the current used template engine.
-	 * In case no engine is set the default php engine gonna be used.
-	 *
-	 * @access public
-	 * @return TemplateEngineInterface
-	 */
-	public function getTemplateEngine() {
-		if ($this->_templateEngine === null) {
-			// Include just necessary in case the default php renderer gonna be used.
-			include_once DECODA_TEMPLATE_ENGINE . '/PhpEngine.php';
-			$this->_templateEngine = new PhpEngine($this);
-		}
-
-		return $this->_templateEngine;
 	}
 
 }

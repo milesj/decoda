@@ -2,7 +2,7 @@
 /**
  * TemplateEngineInterface
  *
- * This interface represents the engine for tags which uses a template. 
+ * This interface represents the engine for tags which uses a template.
  * It contains the path were the templates for the tags are located and the logic
  * to render these templates.
  *
@@ -14,15 +14,15 @@
  */
 
 
-interface TemplateEngineInterface {
-    
+interface DecodaTemplateEngineInterface {
+
 	/**
-	 * Sets the path to the tag templates.
+	 * Returne the current used Filter.
 	 *
 	 * @access public
-	 * @param string $path
+	 * @return DecodaFilter
 	 */
-	public function setPath($path);
+	public function getFilter();
 
 	/**
 	 * Returns the path of the tag templates.
@@ -43,4 +43,21 @@ interface TemplateEngineInterface {
 	 * @throws Exception
 	 */
 	public function render(array $tag, $content);
+
+	/**
+	 * Sets the current used filter.
+	 *
+	 * @access public
+	 * @param DecodaFilter $filter
+	 */
+	public function setFilter(DecodaFilter $filter);
+
+	/**
+	 * Sets the path to the tag templates.
+	 *
+	 * @access public
+	 * @param string $path
+	 */
+	public function setPath($path);
+
 }

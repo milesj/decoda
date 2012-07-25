@@ -66,6 +66,14 @@ abstract class DecodaFilter extends DecodaAbstract {
 	protected $_tags = array();
 
 	/**
+	 * The used tempalte engine
+	 *
+	 * @access protected
+	 * @var TemplateEngineInterface
+	 */
+	protected $_templateEngine = null;
+
+	/**
 	 * Return a message string from the parser.
 	 *
 	 * @access public
@@ -141,7 +149,14 @@ abstract class DecodaFilter extends DecodaAbstract {
 		if (!empty($setup['template'])) {
 			$tag['attributes'] = $attributes;
 
-			return $this->_render($tag, $content);
+			$templateEngine = $this->getParser()->getTemplateEngine();
+			$templateEngine->setFilter($this);
+			$renderedTemplate =  $templateEngine->render($tag, $content);
+			if ($setup['lineBreaks'] !== self::NL_PRESERVE) {
+				return str_replace(array("\n", "\r"), "", $renderedTemplate);
+			}
+
+			return $renderedTemplate;
 		}
 
 		foreach ($attributes as $key => $value) {
@@ -228,45 +243,6 @@ abstract class DecodaFilter extends DecodaAbstract {
 	 */
 	public function tags() {
 		return $this->_tags;
-	}
-
-	/**
-	 * Render the tag using a template.
-	 *
-	 * @access public
-	 * @param array $tag
-	 * @param string $content
-	 * @return string
-	 * @throws Exception
-	 */
-	protected function _render(array $tag, $content) {
-		$setup = $this->tag($tag['tag']);
-		$path = DECODA_TEMPLATES . $setup['template'] . '.php';
-
-		if (!file_exists($path)) {
-			throw new Exception(sprintf('Template file %s does not exist.', $setup['template']));
-		}
-
-		$vars = array();
-
-		foreach ($tag['attributes'] as $key => $value) {
-			if (isset($setup['map'][$key])) {
-				$key = $setup['map'][$key];
-			}
-
-			$vars[$key] = $value;
-		}
-
-		extract($vars, EXTR_SKIP);
-		ob_start();
-
-		include $path;
-
-		if ($setup['lineBreaks'] !== self::NL_PRESERVE) {
-			return str_replace(array("\n", "\r"), "", ob_get_clean());
-		}
-
-		return ob_get_clean();
 	}
 
 }

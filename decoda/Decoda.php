@@ -29,10 +29,6 @@ if (!defined('DECODA_FILTERS')) {
 	define('DECODA_FILTERS', DECODA . 'filters/');
 }
 
-if (!defined('DECODA_TEMPLATES')) {
-	define('DECODA_TEMPLATES', DECODA . 'templates/');
-}
-
 if (!defined('DECODA_EMOTICONS')) {
 	define('DECODA_EMOTICONS', DECODA . 'emoticons/');
 }
@@ -41,6 +37,7 @@ if (!defined('DECODA_EMOTICONS')) {
 include_once DECODA . 'DecodaAbstract.php';
 include_once DECODA . 'DecodaHook.php';
 include_once DECODA . 'DecodaFilter.php';
+include_once DECODA . 'DecodaTemplateEngineInterface.php';
 
 class Decoda {
 
@@ -155,6 +152,14 @@ class Decoda {
 	 * @var array
 	 */
 	protected $_tags = array();
+
+	/**
+	 * The used template engine
+	 *
+	 * @access protected
+	 * @var TemplateEngineInterface
+	 */
+	protected $_templateEngine = null;
 
 	/**
 	 * Whitelist of tags to parse.
@@ -388,6 +393,23 @@ class Decoda {
 	 */
 	public function getHooks() {
 		return $this->_hooks;
+	}
+
+	/**
+	 * Returns the current used template engine.
+	 * In case no engine is set the default php engine gonna be used.
+	 *
+	 * @access public
+	 * @return DecodaTemplateEngineInterface
+	 */
+	public function getTemplateEngine() {
+		if ($this->_templateEngine === null) {
+			// Include just necessary in case the default php engine gonna be used.
+			include_once DECODA . 'DecodaPhpEngine.php';
+			$this->_templateEngine = new DecodaPhpEngine();
+		}
+
+		return $this->_templateEngine;
 	}
 
 	/**
@@ -640,6 +662,20 @@ class Decoda {
 	 */
 	public function setStrict($strict = true) {
 		$this->_config['strict'] = (bool) $strict;
+
+		return $this;
+	}
+
+	/**
+	 * Sets the template engine which gonna be used for all tags with templates.
+	 *
+	 * @access public
+	 * @param DecodaTemplateEngineInterface $templateEngine
+	 * @return Decoda
+	 * @chainable
+	 */
+	public function setTemplateEngine(DecodaTemplateEngineInterface $templateEngine) {
+		$this->_templateEngine = $templateEngine;
 
 		return $this;
 	}

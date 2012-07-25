@@ -1,6 +1,7 @@
 <?php
-$show = $this->message('spoiler') . ' (' . $this->message('show') . ')';
-$hide = $this->message('spoiler') . ' (' . $this->message('hide') . ')';
+$filter = $this->getFilter();
+$show = $filter->message('spoiler') . ' (' . $filter->message('show') . ')';
+$hide = $filter->message('spoiler') . ' (' . $filter->message('hide') . ')';
 
 $counter = rand();
 $click  = "document.getElementById('spoilerContent-". $counter ."').style.display = (document.getElementById('spoilerContent-". $counter ."').style.display == 'block' ? 'none' : 'block');";

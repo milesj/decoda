@@ -670,11 +670,11 @@ class Decoda {
 	 * Sets the template engine which gonna be used for all tags with templates.
 	 *
 	 * @access public
-	 * @param TemplateEngineInterface $templateEngine
+	 * @param DecodaTemplateEngineInterface $templateEngine
 	 * @return Decoda
 	 * @chainable
 	 */
-	public function setTemplateEngine(TemplateEngineInterface $templateEngine) {
+	public function setTemplateEngine(DecodaTemplateEngineInterface $templateEngine) {
 		$this->_templateEngine = $templateEngine;
 
 		return $this;

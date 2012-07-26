@@ -1,10 +1,9 @@
 <?php
 /**
- * TemplateEngineInterface
+ * DecodaTemplateEngineInterface
  *
- * This interface represents the engine for tags which uses a template.
- * It contains the path were the templates for the tags are located and the logic
- * to render these templates.
+ * This interface represents the rendering engine for tags that use a template.
+ * It contains the path were the templates are located and the logic to render these templates.
  *
  * @author      Miles Johnson - http://milesj.me
  * @author      Sean C. Koop - sean.koop@icans-gmbh.com
@@ -13,11 +12,10 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-
 interface DecodaTemplateEngineInterface {
 
 	/**
-	 * Returne the current used Filter.
+	 * Return the current filter.
 	 *
 	 * @access public
 	 * @return DecodaFilter
@@ -34,11 +32,10 @@ interface DecodaTemplateEngineInterface {
 
 	/**
 	 * Renders the tag by using the defined templates.
-	 * In case no template were found for the tag, a exception will be thrown.
 	 *
 	 * @access public
-	 * @param array $tag Contains the data of the tag.
-	 * @param string $content The content within the tag.
+	 * @param array $tag
+	 * @param string $content
 	 * @return string
 	 * @throws Exception
 	 */
@@ -49,6 +46,7 @@ interface DecodaTemplateEngineInterface {
 	 *
 	 * @access public
 	 * @param DecodaFilter $filter
+	 * @return void
 	 */
 	public function setFilter(DecodaFilter $filter);
 
@@ -57,6 +55,7 @@ interface DecodaTemplateEngineInterface {
 	 *
 	 * @access public
 	 * @param string $path
+	 * @return void
 	 */
 	public function setPath($path);
 

@@ -1,7 +1,6 @@
 <?php
-
 /**
- * PhpEngine
+ * DecodaPhpEngine
  *
  * Renders tags by using PHP as template engine.
  *
@@ -15,19 +14,23 @@
 class DecodaPhpEngine implements DecodaTemplateEngineInterface {
 
 	/**
+	 * Current path.
+	 *
 	 * @access protected
 	 * @var string
 	 */
 	protected $_path;
 
 	/**
+	 * Current filter.
+	 *
 	 * @access protected
 	 * @var DecodaFilter
 	 */
 	protected $_filter;
 
 	/**
-	 * Returne the current used Filter.
+	 * Return the current filter.
 	 *
 	 * @access public
 	 * @return DecodaFilter
@@ -37,8 +40,7 @@ class DecodaPhpEngine implements DecodaTemplateEngineInterface {
 	}
 
 	/**
-	 * Returns the path of the tag templates.
-	 * In case no path were set the default decoda path will be used.
+	 * Return the template path. If no path has been set, set it.
 	 *
 	 * @access public
 	 * @return string
@@ -53,11 +55,10 @@ class DecodaPhpEngine implements DecodaTemplateEngineInterface {
 
 	/**
 	 * Renders the tag by using php templates.
-	 * In case no template were found for the tag, a exception will be thrown.
 	 *
 	 * @access public
-	 * @param array $tag Contains the information about a tag.
-	 * @param string $content The content within the tag.
+	 * @param array $tag
+	 * @param string $content
 	 * @return string
 	 * @throws Exception
 	 */
@@ -88,13 +89,16 @@ class DecodaPhpEngine implements DecodaTemplateEngineInterface {
 	}
 
 	/**
-	 * Sets the current used filter.
+	 * Sets the current filter.
 	 *
 	 * @access public
 	 * @param DecodaFilter $filter
+	 * @return DecodaTemplateEngineInterface
 	 */
 	public function setFilter(DecodaFilter $filter) {
 		$this->_filter = $filter;
+
+		return $this;
 	}
 
 	/**
@@ -102,9 +106,12 @@ class DecodaPhpEngine implements DecodaTemplateEngineInterface {
 	 *
 	 * @access public
 	 * @param string $path
+	 * @return DecodaTemplateEngineInterface
 	 */
 	public function setPath($path) {
 		$this->_path = $path;
+
+		return $this;
 	}
 
 }

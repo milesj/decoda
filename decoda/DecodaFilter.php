@@ -66,14 +66,6 @@ abstract class DecodaFilter extends DecodaAbstract {
 	protected $_tags = array();
 
 	/**
-	 * The used tempalte engine
-	 *
-	 * @access protected
-	 * @var TemplateEngineInterface
-	 */
-	protected $_templateEngine = null;
-
-	/**
 	 * Return a message string from the parser.
 	 *
 	 * @access public
@@ -151,12 +143,14 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 			$templateEngine = $this->getParser()->getTemplateEngine();
 			$templateEngine->setFilter($this);
-			$renderedTemplate =  $templateEngine->render($tag, $content);
+
+			$parsed = $templateEngine->render($tag, $content);
+
 			if ($setup['lineBreaks'] !== self::NL_PRESERVE) {
-				return str_replace(array("\n", "\r"), "", $renderedTemplate);
+				$parsed = str_replace(array("\n", "\r"), "", $parsed);
 			}
 
-			return $renderedTemplate;
+			return $parsed;
 		}
 
 		foreach ($attributes as $key => $value) {

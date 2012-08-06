@@ -25,7 +25,8 @@ $filters = array(
 	'quote' => 'Quotes',
 	'text' => 'Text and Font',
 	'url' => 'URLs',
-	'video' => 'Videos'
+	'video' => 'Videos',
+	'engine' => 'Template Engine'
 );
 
 $hooks = array(
@@ -90,7 +91,7 @@ function buildMenu($items, $view) {
 	<h1>Decoda</h1>
 
 	<?php // Copyright
-	$code = new Decoda('Copyright 2009-'. date('Y') .' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]');
+	$code = new Decoda('Copyright 2009-' . date('Y') . ' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]');
 	$code->defaults();
 	echo $code->parse(); ?>
 

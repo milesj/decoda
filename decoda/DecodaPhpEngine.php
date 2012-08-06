@@ -47,7 +47,7 @@ class DecodaPhpEngine implements DecodaTemplateEngineInterface {
 	 */
 	public function getPath() {
 		if (empty($this->_path)) {
-			$this->_path = DECODA . '/templates/';
+			$this->setPath(DECODA . '/templates/');
 		}
 
 		return $this->_path;
@@ -109,6 +109,10 @@ class DecodaPhpEngine implements DecodaTemplateEngineInterface {
 	 * @return DecodaTemplateEngineInterface
 	 */
 	public function setPath($path) {
+		if (substr($path, -1) !== '/') {
+			$path .= '/';
+		}
+
 		$this->_path = $path;
 
 		return $this;

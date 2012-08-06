@@ -1,14 +1,11 @@
-# Decoda v3.5 #
+# Decoda v4 [DEVELOPMENT] #
 
 A lightweight lexical string parser for BBCode styled markup.
 
 ## Compatibility ##
 
-Version(s) 3.x are not backwards compatible with 2.9 and lower. The newer versions were completely rewritten as a lexical parser that examines the string stack, where as the older versions were using archaic regex parsing. The newer versions also boast a very powerful filter and hook system, so your old code will need to be changed to support the newer functionality.
-
-## Requirements ##
-
-* PHP 5.2, 5.3
+* PHP 5.2+ - v3.x - https://github.com/milesj/php-decoda/tree/3.x
+* PHP 5.3+ - v4.x - https://github.com/milesj/php-decoda
 
 ## Contributors ##
 

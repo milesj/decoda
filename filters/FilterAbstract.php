@@ -194,7 +194,7 @@ abstract class FilterAbstract implements FilterInterface {
 				$content = str_replace(array("\n", "\r"), "", $content);
 			break;
 			case self::NL_CONVERT:
-				$content = Decoda::nl2br($content, $xhtml);
+				$content = nl2br($content, $xhtml);
 			break;
 		}
 
@@ -228,10 +228,10 @@ abstract class FilterAbstract implements FilterInterface {
 		if (!empty($setup['template'])) {
 			$tag['attributes'] = $attributes;
 
-			$templateEngine = $this->getParser()->getTemplateEngine();
-			$templateEngine->setFilter($this);
+			$engine = $this->getParser()->getEngine();
+			$engine->setFilter($this);
 
-			$parsed = $templateEngine->render($tag, $content);
+			$parsed = $engine->render($tag, $content);
 
 			if ($setup['lineBreaks'] !== self::NL_PRESERVE) {
 				$parsed = str_replace(array("\n", "\r"), "", $parsed);

@@ -14,35 +14,40 @@
 
 namespace mjohnson\decoda;
 
+use mjohnson\decoda\engines\EngineInterface;
+use mjohnson\decoda\engines\PhpEngine;
 use mjohnson\decoda\filters\FilterInterface;
+use mjohnson\decoda\filters\FilterAbstract;
+use mjohnson\decoda\filters\BlockFilter;
+use mjohnson\decoda\filters\CodeFilter;
+use mjohnson\decoda\filters\DefaultFilter;
+use mjohnson\decoda\filters\EmailFilter;
+use mjohnson\decoda\filters\EmptyFilter;
+use mjohnson\decoda\filters\ImageFilter;
+use mjohnson\decoda\filters\ListFilter;
+use mjohnson\decoda\filters\QuoteFilter;
+use mjohnson\decoda\filters\TextFilter;
+use mjohnson\decoda\filters\UrlFilter;
+use mjohnson\decoda\filters\VideoFilter;
 use mjohnson\decoda\hooks\HookInterface;
+use mjohnson\decoda\hooks\CensorHook;
+use mjohnson\decoda\hooks\ClickableHook;
+use mjohnson\decoda\hooks\CodeHook;
+use mjohnson\decoda\hooks\EmoticonHook;
+use mjohnson\decoda\hooks\EmptyHook;
+use \Exception;
 
-// Constants
 if (!defined('DECODA')) {
-	define('DECODA', dirname(__FILE__) . '/');
-}
-
-if (!defined('DECODA_HOOKS')) {
-	define('DECODA_HOOKS', DECODA . 'hooks/');
+	define('DECODA', __DIR__ . '/');
 }
 
 if (!defined('DECODA_CONFIG')) {
 	define('DECODA_CONFIG', DECODA . 'config/');
 }
 
-if (!defined('DECODA_FILTERS')) {
-	define('DECODA_FILTERS', DECODA . 'filters/');
-}
-
 if (!defined('DECODA_EMOTICONS')) {
 	define('DECODA_EMOTICONS', DECODA . 'emoticons/');
 }
-
-// Includes
-include_once DECODA . 'DecodaAbstract.php';
-include_once DECODA . 'DecodaHook.php';
-include_once DECODA . 'DecodaFilter.php';
-include_once DECODA . 'DecodaTemplateEngineInterface.php';
 
 class Decoda {
 
@@ -162,7 +167,7 @@ class Decoda {
 	 * Template engine used for parsing.
 	 *
 	 * @access protected
-	 * @var mjohnson\decoda\engines\EngineInterface
+	 * @var \mjohnson\decoda\engines\EngineInterface
 	 */
 	protected $_engine = null;
 
@@ -191,8 +196,8 @@ class Decoda {
 	 * Add additional filters.
 	 *
 	 * @access public
-	 * @param mjohnson\decoda\filters\FilterInterface $filter
-	 * @return mjohnson\decoda\Decoda
+	 * @param \mjohnson\decoda\filters\FilterInterface $filter
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function addFilter(FilterInterface $filter) {
@@ -217,8 +222,8 @@ class Decoda {
 	 * Add hooks that are triggered at specific events.
 	 *
 	 * @access public
-	 * @param DecodaHook $hook
-	 * @return Decoda
+	 * @param \mjohnson\decoda\hooks\HookInterface $hook
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function addHook(HookInterface $hook) {
@@ -248,7 +253,7 @@ class Decoda {
 	 * Apply default filters and hooks if none are set.
 	 *
 	 * @access public
-	 * @return Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function defaults() {
@@ -276,7 +281,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function disable($status = true) {
@@ -289,7 +294,7 @@ class Decoda {
 	 * Disable all filters.
 	 *
 	 * @access public
-	 * @return Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function disableFilters() {
@@ -305,7 +310,7 @@ class Decoda {
 	 * Disable all hooks.
 	 *
 	 * @access public
-	 * @return Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function disableHooks() {
@@ -352,7 +357,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $filter
-	 * @return DecodaFilter
+	 * @return \mjohnson\decoda\filters\FilterInterface
 	 */
 	public function getFilter($filter) {
 		return isset($this->_filters[$filter]) ? $this->_filters[$filter] : null;
@@ -363,7 +368,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $tag
-	 * @return DecodaFilter
+	 * @return \mjohnson\decoda\filters\FilterInterface
 	 */
 	public function getFilterByTag($tag) {
 		return isset($this->_filterMap[$tag]) ? $this->_filters[$this->_filterMap[$tag]] : null;
@@ -384,7 +389,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $hook
-	 * @return DecodaHook
+	 * @return \mjohnson\decoda\hooks\HookInterface
 	 */
 	public function getHook($hook) {
 		return isset($this->_hooks[$hook]) ? $this->_hooks[$hook] : null;
@@ -405,16 +410,14 @@ class Decoda {
 	 * In case no engine is set the default php engine gonna be used.
 	 *
 	 * @access public
-	 * @return DecodaTemplateEngineInterface
+	 * @return \mjohnson\decoda\engines\EngineInterface
 	 */
-	public function getTemplateEngine() {
-		if ($this->_templateEngine === null) {
-			// Include just necessary in case the default php engine gonna be used.
-			include_once DECODA . 'DecodaPhpEngine.php';
-			$this->_templateEngine = new DecodaPhpEngine();
+	public function getEngine() {
+		if (!$this->_engine) {
+			$this->_engine = new PhpEngine();
 		}
 
-		return $this->_templateEngine;
+		return $this->_engine;
 	}
 
 	/**
@@ -459,23 +462,6 @@ class Decoda {
 	}
 
 	/**
-	 * Inserts HTML line breaks before all newlines in a string.
-	 * If the server is running PHP 5.2, the second parameter will be ignored.
-	 *
-	 * @access public
-	 * @param string $string
-	 * @param boolean $xhtml
-	 * @return string
-	 */
-	public static function nl2br($string, $xhtml = true) {
-		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-			return nl2br($string);
-		} else {
-			return nl2br($string, $xhtml);
-		}
-	}
-
-	/**
 	 * Parse the node list by looping through each one, validating, applying filters, building and finally concatenating the string.
 	 *
 	 * @access public
@@ -503,16 +489,16 @@ class Decoda {
 			$this->_extractChunks();
 			$this->_parsed = $this->_parse($this->_nodes);
 		} else {
-			$this->_parsed = self::nl2br($this->_string, $this->config('xhtml'));
+			$this->_parsed = nl2br($this->_string, $this->config('xhtml'));
 		}
 
 		$this->_parsed = $this->_trigger('afterParse', $this->_parsed);
 
 		if ($echo) {
 			echo $this->_parsed;
-		} else {
-			return $this->_parsed;
 		}
+
+		return $this->_parsed;
 	}
 
 	/**
@@ -520,7 +506,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string|array $filters
-	 * @return Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function removeFilter($filters) {
@@ -546,7 +532,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string|array $hooks
-	 * @return Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function removeHook($hooks) {
@@ -567,7 +553,7 @@ class Decoda {
 	 * @access public
 	 * @param string $string
 	 * @param boolean $flush
-	 * @return Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function reset($string, $flush = false) {
@@ -595,8 +581,8 @@ class Decoda {
 	 * @access public
 	 * @param string $open
 	 * @param string $close
-	 * @return Decoda
-	 * @throws Exception
+	 * @return \mjohnson\decoda\Decoda
+	 * @throws \Exception
 	 * @chainable
 	 */
 	public function setBrackets($open, $close) {
@@ -615,7 +601,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function setEscaping($status = true) {
@@ -629,8 +615,8 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $locale
-	 * @return Decoda
-	 * @throws Exception
+	 * @return \mjohnson\decoda\Decoda
+	 * @throws \Exception
 	 * @chainable
 	 */
 	public function setLocale($locale) {
@@ -648,7 +634,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function setShorthand($status = true) {
@@ -662,7 +648,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param boolean $strict
-	 * @return Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function setStrict($strict = true) {
@@ -675,12 +661,12 @@ class Decoda {
 	 * Sets the template engine which gonna be used for all tags with templates.
 	 *
 	 * @access public
-	 * @param DecodaTemplateEngineInterface $templateEngine
-	 * @return Decoda
+	 * @param \mjohnson\decoda\engines\EngineInterface $templateEngine
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
-	public function setTemplateEngine(DecodaTemplateEngineInterface $templateEngine) {
-		$this->_templateEngine = $templateEngine;
+	public function setTemplateEngine(EngineInterface $templateEngine) {
+		$this->_engine = $templateEngine;
 
 		return $this;
 	}
@@ -690,7 +676,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function setXhtml($status = true) {
@@ -703,7 +689,7 @@ class Decoda {
 	 * Add tags to the whitelist.
 	 *
 	 * @access public
-	 * @return Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
 	public function whitelist() {
@@ -1147,11 +1133,11 @@ class Decoda {
 			return false;
 
 		// Block element that accepts both types
-		} else if ($parent['allowed'] === DecodaFilter::TYPE_BOTH) {
+		} else if ($parent['allowed'] === FilterAbstract::TYPE_BOTH) {
 			return true;
 
 		// Inline elements can go within everything
-		} else if (($parent['allowed'] === DecodaFilter::TYPE_INLINE || $parent['allowed'] === DecodaFilter::TYPE_BLOCK) && $child['type'] === DecodaFilter::TYPE_INLINE) {
+		} else if (($parent['allowed'] === FilterAbstract::TYPE_INLINE || $parent['allowed'] === FilterAbstract::TYPE_BLOCK) && $child['type'] === FilterAbstract::TYPE_INLINE) {
 			return true;
 		}
 
@@ -1183,7 +1169,7 @@ class Decoda {
 		foreach ($nodes as $node) {
 			if (is_string($node)) {
 				if (empty($wrapper)) {
-					$parsed .= self::nl2br($node, $xhtml);
+					$parsed .= nl2br($node, $xhtml);
 				} else {
 					$parsed .= $node;
 				}

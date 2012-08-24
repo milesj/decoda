@@ -49,10 +49,12 @@ class CodeFilter extends FilterAbstract {
 	 *
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $decoda
-	 * @return void
+	 * @return \mjohnson\decoda\filters\CodeFilter
 	 */
 	public function setupHooks(Decoda $decoda) {
 		$decoda->addHook(new CodeHook());
+
+		return $this;
 	}
 
 }

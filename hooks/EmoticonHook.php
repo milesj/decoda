@@ -1,16 +1,21 @@
 <?php
 /**
- * EmoticonHook
- *
- * Converts smiley faces into emoticon images.
- *
  * @author      Miles Johnson - http://milesj.me
- * @copyright   Copyright 2006-2011, Miles Johnson, Inc.
+ * @copyright   Copyright 2006-2012, Miles Johnson, Inc.
  * @license     http://opensource.org/licenses/mit-license.php - Licensed under The MIT License
  * @link        http://milesj.me/code/php/decoda
  */
 
-class EmoticonHook extends DecodaHook {
+namespace mjohnson\decoda\hooks;
+
+use mjohnson\decoda\hooks\HookAbstract;
+
+/**
+ * Converts smiley faces into emoticon images.
+ *
+ * @package	mjohnson.decoda.hooks
+ */
+class EmoticonHook extends HookAbstract {
 
 	/**
 	 * Configuration.

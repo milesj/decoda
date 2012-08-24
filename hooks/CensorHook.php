@@ -1,16 +1,21 @@
 <?php
 /**
- * CensorHook
- *
- * Censors words found within the censored.txt blacklist.
- *
  * @author      Miles Johnson - http://milesj.me
- * @copyright   Copyright 2006-2011, Miles Johnson, Inc.
+ * @copyright   Copyright 2006-2012, Miles Johnson, Inc.
  * @license     http://opensource.org/licenses/mit-license.php - Licensed under The MIT License
  * @link        http://milesj.me/code/php/decoda
  */
 
-class CensorHook extends DecodaHook {
+namespace mjohnson\decoda\hooks;
+
+use mjohnson\decoda\hooks\HookAbstract;
+
+/**
+ * Censors words found within the censored.txt blacklist.
+ *
+ * @package	mjohnson.decoda.hooks
+ */
+class CensorHook extends HookAbstract {
 
 	/**
 	 * List of words to censor.
@@ -68,7 +73,7 @@ class CensorHook extends DecodaHook {
 	 *
 	 * @access public
 	 * @param array $words
-	 * @return DecodaHook
+	 * @return \mjohnson\decoda\hooks\CensorHook
 	 * @chainable
 	 */
 	public function blacklist(array $words) {
@@ -124,7 +129,7 @@ class CensorHook extends DecodaHook {
 		$regex = '';
 
 		foreach ($letters as $letter) {
-			$regex .= preg_quote($letter, '/') .'{1,}';
+			$regex .= preg_quote($letter, '/') . '{1,}';
 		}
 
 		$suffix = $this->config('suffix');
@@ -133,7 +138,7 @@ class CensorHook extends DecodaHook {
 			$suffix = implode('|', $suffix);
 		}
 
-		$regex .= '(?:' . $suffix .')?';
+		$regex .= '(?:' . $suffix . ')?';
 
 		return $regex;
 	}

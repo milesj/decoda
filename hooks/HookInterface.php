@@ -1,7 +1,7 @@
 <?php
 /**
  * @author      Miles Johnson - http://milesj.me
- * @copyright   Copyright 2006-2011, Miles Johnson, Inc.
+ * @copyright   Copyright 2006-2012, Miles Johnson, Inc.
  * @license     http://opensource.org/licenses/mit-license.php - Licensed under The MIT License
  * @link        http://milesj.me/code/php/decoda
  */
@@ -39,7 +39,7 @@ interface HookInterface {
 	 * Return the Decoda parser.
 	 *
 	 * @access public
-	 * @return mjohnson\decoda\Decoda
+	 * @return \mjohnson\decoda\Decoda
 	 */
 	public function getParser();
 
@@ -54,21 +54,21 @@ interface HookInterface {
 	public function message($key, array $vars = array());
 
 	/**
-	 * Add any filter dependencies.
-	 *
-	 * @access public
-	 * @param Decoda $decoda
-	 * @return void
-	 */
-	public function setupFilters(Decoda $decoda);
-
-	/**
 	 * Set the Decoda parser.
 	 *
 	 * @access public
-	 * @param mjohnson\decoda\Decoda $parser
-	 * @return mjohnson\decoda\filters\FilterInterface
+	 * @param \mjohnson\decoda\Decoda $parser
+	 * @return \mjohnson\decoda\hooks\HookInterface
 	 */
 	public function setParser(Decoda $parser);
+
+	/**
+	 * Add any filter dependencies.
+	 *
+	 * @access public
+	 * @param \mjohnson\decoda\Decoda $decoda
+	 * @return \mjohnson\decoda\hooks\HookInterface
+	 */
+	public function setupFilters(Decoda $decoda);
 
 }

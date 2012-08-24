@@ -1,16 +1,22 @@
 <?php
 /**
- * ClickableHook
- *
- * Converts URLs and emails (not wrapped in tags) into clickable links.
- *
  * @author      Miles Johnson - http://milesj.me
- * @copyright   Copyright 2006-2011, Miles Johnson, Inc.
+ * @copyright   Copyright 2006-2012, Miles Johnson, Inc.
  * @license     http://opensource.org/licenses/mit-license.php - Licensed under The MIT License
  * @link        http://milesj.me/code/php/decoda
  */
 
-class ClickableHook extends DecodaHook {
+namespace mjohnson\decoda\hooks;
+
+use mjohnson\decoda\filters\EmailFilter;
+use mjohnson\decoda\hooks\HookAbstract;
+
+/**
+ * Converts URLs and emails (not wrapped in tags) into clickable links.
+ *
+ * @package	mjohnson.decoda.hooks
+ */
+class ClickableHook extends HookAbstract {
 
 	/**
 	 * Matches a link or an email, and converts it to an anchor tag.

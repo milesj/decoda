@@ -1,24 +1,28 @@
 <?php
 /**
- * DecodaTemplateEngineInterface
- *
- * This interface represents the rendering engine for tags that use a template.
- * It contains the path were the templates are located and the logic to render these templates.
- *
  * @author      Miles Johnson - http://milesj.me
- * @author      Sean C. Koop - sean.koop@icans-gmbh.com
  * @copyright   Copyright 2006-2012, Miles Johnson, Inc.
  * @license     http://opensource.org/licenses/mit-license.php - Licensed under The MIT License
  * @link        http://milesj.me/code/php/decoda
  */
 
-interface DecodaTemplateEngineInterface {
+namespace mjohnson\decoda\engines;
+
+use mjohnson\decoda\filters\FilterInterface;
+
+/**
+ * This interface represents the rendering engine for tags that use a template.
+ * It contains the path were the templates are located and the logic to render these templates.
+ *
+ * @package	mjohnson.decoda.engines
+ */
+interface EngineInterface {
 
 	/**
 	 * Return the current filter.
 	 *
 	 * @access public
-	 * @return DecodaFilter
+	 * @return \mjohnson\decoda\filters\FilterInterface
 	 */
 	public function getFilter();
 
@@ -37,7 +41,7 @@ interface DecodaTemplateEngineInterface {
 	 * @param array $tag
 	 * @param string $content
 	 * @return string
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function render(array $tag, $content);
 
@@ -45,17 +49,17 @@ interface DecodaTemplateEngineInterface {
 	 * Sets the current used filter.
 	 *
 	 * @access public
-	 * @param DecodaFilter $filter
-	 * @return void
+	 * @param \mjohnson\decoda\filters\FilterInterface $filter
+	 * @return \mjohnson\decoda\engines\EngineInterface
 	 */
-	public function setFilter(DecodaFilter $filter);
+	public function setFilter(FilterInterface $filter);
 
 	/**
 	 * Sets the path to the tag templates.
 	 *
 	 * @access public
 	 * @param string $path
-	 * @return void
+	 * @return \mjohnson\decoda\engines\EngineInterface
 	 */
 	public function setPath($path);
 

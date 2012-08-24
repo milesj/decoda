@@ -12,6 +12,11 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
+namespace mjohnson\decoda;
+
+use mjohnson\decoda\filters\FilterInterface;
+use mjohnson\decoda\hooks\HookInterface;
+
 // Constants
 if (!defined('DECODA')) {
 	define('DECODA', dirname(__FILE__) . '/');
@@ -154,12 +159,12 @@ class Decoda {
 	protected $_tags = array();
 
 	/**
-	 * The used template engine
+	 * Template engine used for parsing.
 	 *
 	 * @access protected
-	 * @var TemplateEngineInterface
+	 * @var mjohnson\decoda\engines\EngineInterface
 	 */
-	protected $_templateEngine = null;
+	protected $_engine = null;
 
 	/**
 	 * Whitelist of tags to parse.
@@ -186,11 +191,11 @@ class Decoda {
 	 * Add additional filters.
 	 *
 	 * @access public
-	 * @param DecodaFilter $filter
-	 * @return Decoda
+	 * @param mjohnson\decoda\filters\FilterInterface $filter
+	 * @return mjohnson\decoda\Decoda
 	 * @chainable
 	 */
-	public function addFilter(DecodaFilter $filter) {
+	public function addFilter(FilterInterface $filter) {
 		$filter->setParser($this);
 
 		$class = str_replace('Filter', '', get_class($filter));
@@ -216,7 +221,7 @@ class Decoda {
 	 * @return Decoda
 	 * @chainable
 	 */
-	public function addHook(DecodaHook $hook) {
+	public function addHook(HookInterface $hook) {
 		$hook->setParser($this);
 
 		$class = str_replace('Hook', '', get_class($hook));

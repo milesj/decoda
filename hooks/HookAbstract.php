@@ -42,7 +42,7 @@ abstract class DecodaHook extends DecodaAbstract {
 	 * @return void
 	 */
 	public function setupFilters(Decoda $decoda) {
-		return;
+		return $this;;
 	}
 
 }

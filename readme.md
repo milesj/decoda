@@ -4,8 +4,8 @@ A lightweight lexical string parser for BBCode styled markup.
 
 ## Compatibility ##
 
-* PHP 5.2+ - v3.x - https://github.com/milesj/php-decoda/tree/3.x
 * PHP 5.3+ - v4.x - https://github.com/milesj/php-decoda
+* PHP 5.2+ - v3.x - https://github.com/milesj/php-decoda/tree/3.x
 
 ## Contributors ##
 

@@ -1,13 +1,7 @@
 <?php
 /**
- * Decoda
- *
- * A lightweight lexical string parser for simple markup syntax.
- * Provides a very powerful filter and hook system to extend the parsing cycle.
- *
- * @version     3.5
  * @author      Miles Johnson - http://milesj.me
- * @copyright   Copyright 2006-2011, Miles Johnson, Inc.
+ * @copyright   Copyright 2006-2012, Miles Johnson, Inc.
  * @license     http://opensource.org/licenses/mit-license.php - Licensed under The MIT License
  * @link        http://milesj.me/code/php/decoda
  */
@@ -49,6 +43,13 @@ if (!defined('DECODA_EMOTICONS')) {
 	define('DECODA_EMOTICONS', DECODA . 'emoticons/');
 }
 
+/**
+ * A lightweight lexical string parser for simple markup syntax.
+ * Provides a very powerful filter and hook system to extend the parsing cycle.
+ *
+ * @package	mjohnson.decoda
+ * @version	4.0
+ */
 class Decoda {
 
 	/**

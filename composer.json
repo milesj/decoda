@@ -12,11 +12,10 @@
 		}
 	],
 	"require": {
-		"php": ">=5.2"
+		"php": ">=5.3"
 	},
 	"support": {
 		"source": "https://github.com/milesj/php-decoda",
-		"issues": "https://github.com/milesj/php-decoda/issues",
 		"wiki": "http://milesj.me/code/php/decoda"
 	},
 	"autoload": {

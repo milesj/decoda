@@ -1,9 +1,5 @@
 <?php
 /**
- * CodeFilter
- *
- * Provides tags for code block and variable elements.
- *
  * @author      Miles Johnson - http://milesj.me
  * @copyright   Copyright 2006-2012, Miles Johnson, Inc.
  * @license     http://opensource.org/licenses/mit-license.php - Licensed under The MIT License
@@ -16,6 +12,11 @@ use mjohnson\decoda\Decoda;
 use mjohnson\decoda\filters\FilterAbstract;
 use mjohnson\decoda\hooks\CodeHook;
 
+/**
+ * Provides tags for code block and variable elements.
+ *
+ * @package	mjohnson.decoda.filters
+ */
 class CodeFilter extends FilterAbstract {
 
 	/**

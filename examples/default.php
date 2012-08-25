@@ -1,6 +1,6 @@
 <?php
-$code = new Decoda();
-$code->addFilter(new DefaultFilter()); ?>
+$code = new \mjohnson\decoda\Decoda();
+$code->addFilter(new \mjohnson\decoda\filters\DefaultFilter()); ?>
 
 <h2>Bold, italics, underline, strike-through</h2>
 

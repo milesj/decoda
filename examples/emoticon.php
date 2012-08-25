@@ -1,4 +1,3 @@
-
 <h2>Emoticons</h2>
 
 <?php $string = 'Decoda also comes with an emoticon system. It will convert any kind of smiley from emoticons.json into a small image.
@@ -10,7 +9,7 @@ It also supports the word syntax:
 
 :happy: :aw: :cool: :kiss: :meh: :mmf: :heart:';
 
-$code = new Decoda($string);
-$code->addFilter(new ImageFilter());
-$code->addHook(new EmoticonHook());
+$code = new \mjohnson\decoda\Decoda($string);
+$code->addFilter(new \mjohnson\decoda\filters\ImageFilter());
+$code->addHook(new \mjohnson\decoda\hooks\EmoticonHook());
 echo $code->parse(); ?>

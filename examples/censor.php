@@ -1,4 +1,3 @@
-
 <h2>Censoring</h2>
 
 <?php $string = 'Decoda uses a pretty awesome censoring system. It censors any word in the censored.txt blacklist file.
@@ -16,6 +15,6 @@ fucker shiting bitched
 
 Hope it works out, I tried to make it as smart as possible.';
 
-$code = new Decoda($string);
-$code->addHook(new CensorHook());
+$code = new \mjohnson\decoda\Decoda($string);
+$code->addHook(new \mjohnson\decoda\hooks\CensorHook());
 echo $code->parse(); ?>

@@ -1,4 +1,3 @@
-
 <h2>Clickable</h2>
 
 <?php $string = 'Valid:
@@ -9,8 +8,8 @@ Invalid:
 email@domain
 www.domain.com';
 
-$code = new Decoda($string);
-$code->addFilter(new EmailFilter());
-$code->addFilter(new UrlFilter());
-$code->addHook(new ClickableHook());
+$code = new \mjohnson\decoda\Decoda($string);
+$code->addFilter(new \mjohnson\decoda\filters\EmailFilter());
+$code->addFilter(new \mjohnson\decoda\filters\UrlFilter());
+$code->addHook(new \mjohnson\decoda\hooks\ClickableHook());
 echo $code->parse(); ?>

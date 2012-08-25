@@ -1,7 +1,7 @@
 <?php
-$code = new Decoda();
-$code->addFilter(new EmailFilter());
-$code->addHook(new ClickableHook()); ?>
+$code = new \mjohnson\decoda\Decoda();
+$code->addFilter(new \mjohnson\decoda\filters\EmailFilter());
+$code->addHook(new \mjohnson\decoda\hooks\ClickableHook()); ?>
 
 <h2>Email</h2>
 

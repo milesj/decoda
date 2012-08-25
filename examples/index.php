@@ -4,7 +4,7 @@
 error_reporting(E_ALL);
 
 // Include class
-include '../decoda/Decoda.php';
+include '../Decoda.php';
 
 // Build menus
 $view = strtolower(isset($_GET['view']) ? $_GET['view'] : 'features');
@@ -12,7 +12,8 @@ $view = strtolower(isset($_GET['view']) ? $_GET['view'] : 'features');
 $about = array(
 	'features' => 'Features',
 	'security' => 'Security',
-	'nesting' => 'Invalid nesting'
+	'nesting' => 'Invalid nesting',
+	'engine' => 'Template Engine'
 );
 
 $filters = array(
@@ -25,8 +26,7 @@ $filters = array(
 	'quote' => 'Quotes',
 	'text' => 'Text and Font',
 	'url' => 'URLs',
-	'video' => 'Videos',
-	'engine' => 'Template Engine'
+	'video' => 'Videos'
 );
 
 $hooks = array(
@@ -41,7 +41,7 @@ function debug($var) {
 
 function buildMenu($items, $view) {
 	foreach ($items as $key => $item) {
-		if ($view == $key) {
+		if ($view === $key) {
 			echo '<a href="?view='. $key .'" class="active">'. $item .'</a>';
 		} else {
 			echo '<a href="?view='. $key .'">'. $item .'</a>';
@@ -91,7 +91,7 @@ function buildMenu($items, $view) {
 	<h1>Decoda</h1>
 
 	<?php // Copyright
-	$code = new Decoda('Copyright 2009-' . date('Y') . ' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]');
+	$code = new \mjohnson\decoda\Decoda('Copyright 2009-' . date('Y') . ' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]');
 	$code->defaults();
 	echo $code->parse(); ?>
 
@@ -108,11 +108,10 @@ function buildMenu($items, $view) {
 
 	<span class="clear"></span>
 
-	<?php if (file_exists($view .'.php') && $view != 'index') {
-		include $view .'.php';
+	<?php if (file_exists($view . '.php') && $view !== 'index') {
+		include $view . '.php';
 	} else {
 		include 'features.php';
 	} ?>
-
 </body>
 </html>

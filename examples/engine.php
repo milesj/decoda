@@ -1,8 +1,6 @@
 <?php
 
-include '../decoda/DecodaPhpEngine.php';
-
-class TestEngine extends DecodaPhpEngine {
+class TestEngine extends \mjohnson\decoda\engines\EngineAbstract {
 
 	public function render(array $tag, $content) {
 		$setup = $this->getFilter()->tag($tag['tag']);
@@ -36,9 +34,9 @@ class TestEngine extends DecodaPhpEngine {
 $engine = new TestEngine();
 $engine->setPath(__DIR__ . '/templates/');
 
-$code = new Decoda();
-$code->addFilter(new QuoteFilter());
-$code->setTemplateEngine($engine); ?>
+$code = new \mjohnson\decoda\Decoda();
+$code->addFilter(new \mjohnson\decoda\filters\QuoteFilter());
+$code->setEngine($engine); ?>
 
 <h2>Test Rendering</h2>
 

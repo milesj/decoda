@@ -1,4 +1,3 @@
-
 <h2>Unclosed tags</h2>
 
 <?php $string = '[b]Bold
@@ -6,8 +5,8 @@
 [u]Underline[/b]
 Strike through[/s]';
 
-$code = new Decoda($string);
-$code->addFilter(new DefaultFilter());
+$code = new \mjohnson\decoda\Decoda($string);
+$code->addFilter(new \mjohnson\decoda\filters\DefaultFilter());
 echo $code->parse(); ?>
 
 <h2>Incorrectly nested</h2>
@@ -16,8 +15,8 @@ echo $code->parse(); ?>
 [b][i]Bold, italics[/i][/b]
 [i][u]Bold, italics, underline (wrong)[/b][/i][/u]';
 
-$code = new Decoda($string);
-$code->addFilter(new DefaultFilter());
+$code = new \mjohnson\decoda\Decoda($string);
+$code->addFilter(new \mjohnson\decoda\filters\DefaultFilter());
 echo $code->parse(); ?>
 
 <h2>Incorrectly nested hierarchy</h2>
@@ -34,7 +33,7 @@ echo $code->parse(); ?>
 [li]Curabitur sed [i]tellus[/i]. Donec id dolor.[/li]
 [/list]';
 
-$code = new Decoda($string);
-$code->addFilter(new DefaultFilter());
-$code->addFilter(new ListFilter());
+$code = new \mjohnson\decoda\Decoda($string);
+$code->addFilter(new \mjohnson\decoda\filters\DefaultFilter());
+$code->addFilter(new \mjohnson\decoda\filters\ListFilter());
 echo $code->parse(); ?>

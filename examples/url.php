@@ -1,7 +1,7 @@
 <?php
-$code = new Decoda();
-$code->addFilter(new UrlFilter());
-$code->addHook(new ClickableHook()); ?>
+$code = new \mjohnson\decoda\Decoda();
+$code->addFilter(new \mjohnson\decoda\filters\UrlFilter());
+$code->addHook(new \mjohnson\decoda\hooks\ClickableHook()); ?>
 
 <h2>URL</h2>
 

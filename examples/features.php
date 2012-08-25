@@ -1,9 +1,8 @@
-
 <h2>Localization</h2>
 
 <?php
-$code = new Decoda('[b]Features[/b]');
-$code->addFilter(new QuoteFilter());
+$code = new \mjohnson\decoda\Decoda('[b]Features[/b]');
+$code->addFilter(new \mjohnson\decoda\filters\QuoteFilter());
 
 $code->setLocale('de-de');
 echo 'German: '. $code->message('quoteBy') .'<br>';
@@ -22,8 +21,8 @@ echo 'Korean: '. $code->message('quoteBy') .'<br>';  ?>
 [s]Strike through[/s]
 [b][i][u]Bold, italics, underline[/u][/i][/b]';
 
-$code = new Decoda($string);
-$code->whitelist('b', 'i')->addFilter(new DefaultFilter());
+$code = new \mjohnson\decoda\Decoda($string);
+$code->whitelist('b', 'i')->addFilter(new \mjohnson\decoda\filters\DefaultFilter());
 echo $code->parse(); ?>
 
 <h2>Disabling hooks or filters</h2>
@@ -34,7 +33,7 @@ echo $code->parse(); ?>
 [s]Strike through[/s]
 [b][i][u]Bold, italics, underline[/u][/i][/b]';
 
-$code = new Decoda($string);
+$code = new \mjohnson\decoda\Decoda($string);
 $code->disableHooks()->disableFilters();
 echo $code->parse(); ?>
 
@@ -46,7 +45,7 @@ echo $code->parse(); ?>
 [s]Strike through[/s]
 [b][i][u]Bold, italics, underline[/u][/i][/b]';
 
-$code = new Decoda($string);
+$code = new \mjohnson\decoda\Decoda($string);
 $code->defaults()->disable();
 echo $code->parse(); ?>
 
@@ -58,8 +57,8 @@ echo $code->parse(); ?>
 {s}Strike through{/s}
 {b}{i}{u}Bold, italics, underline{/u}{/i}{/b}';
 
-$code = new Decoda($string);
-$code->addFilter(new DefaultFilter())->setBrackets('{', '}');
+$code = new \mjohnson\decoda\Decoda($string);
+$code->addFilter(new \mjohnson\decoda\filters\DefaultFilter())->setBrackets('{', '}');
 echo $code->parse(); ?>
 
 <h2>Shorthand emails and URLs</h2>
@@ -67,8 +66,8 @@ echo $code->parse(); ?>
 <?php $string = '[email]email@domain.com[/email]
 [url]http://domain.com/[/url]';
 
-$code = new Decoda($string);
-$code->addFilter(new EmailFilter())->addFilter(new UrlFilter())->setShorthand();
+$code = new \mjohnson\decoda\Decoda($string);
+$code->addFilter(new \mjohnson\decoda\filters\EmailFilter())->addFilter(new \mjohnson\decoda\filters\UrlFilter())->setShorthand();
 echo $code->parse(); ?>
 
 <h2>XHTML markup</h2>
@@ -79,6 +78,6 @@ echo $code->parse(); ?>
 [s]Strike through[/s]
 [b][i][u]Bold, italics, underline[/u][/i][/b]';
 
-$code = new Decoda($string);
-$code->addFilter(new DefaultFilter())->setXhtml();
+$code = new \mjohnson\decoda\Decoda($string);
+$code->addFilter(new \mjohnson\decoda\filters\DefaultFilter())->setXhtml();
 echo $code->parse(); ?>

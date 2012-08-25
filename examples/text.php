@@ -1,6 +1,6 @@
 <?php
-$code = new Decoda();
-$code->addFilter(new TextFilter()); ?>
+$code = new \mjohnson\decoda\Decoda();
+$code->addFilter(new \mjohnson\decoda\filters\TextFilter()); ?>
 
 <h2>Font Family</h2>
 

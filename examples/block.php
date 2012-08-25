@@ -1,6 +1,6 @@
 <?php
-$code = new Decoda();
-$code->addFilter(new BlockFilter()); ?>
+$code = new \mjohnson\decoda\Decoda();
+$code->addFilter(new \mjohnson\decoda\filters\BlockFilter()); ?>
 
 <h2>Align</h2>
 

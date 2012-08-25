@@ -9,30 +9,16 @@
 namespace mjohnson\decoda;
 
 use mjohnson\decoda\engines\EngineInterface;
-use mjohnson\decoda\engines\PhpEngine;
 use mjohnson\decoda\filters\FilterInterface;
 use mjohnson\decoda\filters\FilterAbstract;
-use mjohnson\decoda\filters\BlockFilter;
-use mjohnson\decoda\filters\CodeFilter;
-use mjohnson\decoda\filters\DefaultFilter;
-use mjohnson\decoda\filters\EmailFilter;
-use mjohnson\decoda\filters\EmptyFilter;
-use mjohnson\decoda\filters\ImageFilter;
-use mjohnson\decoda\filters\ListFilter;
-use mjohnson\decoda\filters\QuoteFilter;
-use mjohnson\decoda\filters\TextFilter;
-use mjohnson\decoda\filters\UrlFilter;
-use mjohnson\decoda\filters\VideoFilter;
 use mjohnson\decoda\hooks\HookInterface;
-use mjohnson\decoda\hooks\CensorHook;
-use mjohnson\decoda\hooks\ClickableHook;
-use mjohnson\decoda\hooks\CodeHook;
-use mjohnson\decoda\hooks\EmoticonHook;
-use mjohnson\decoda\hooks\EmptyHook;
 use \Exception;
 
+// Set constants and include path
 if (!defined('DECODA')) {
 	define('DECODA', __DIR__ . '/');
+
+	set_include_path(get_include_path() . PATH_SEPARATOR . DECODA);
 }
 
 if (!defined('DECODA_CONFIG')) {
@@ -204,7 +190,7 @@ class Decoda {
 	public function addFilter(FilterInterface $filter) {
 		$filter->setParser($this);
 
-		$class = str_replace('Filter', '', get_class($filter));
+		$class = str_replace('Filter', '', basename(get_class($filter)));
 		$tags = $filter->tags();
 
 		$this->_filters[$class] = $filter;
@@ -230,7 +216,7 @@ class Decoda {
 	public function addHook(HookInterface $hook) {
 		$hook->setParser($this);
 
-		$class = str_replace('Hook', '', get_class($hook));
+		$class = str_replace('Hook', '', basename(get_class($hook)));
 
 		$this->_hooks[$class] = $hook;
 
@@ -258,21 +244,21 @@ class Decoda {
 	 * @chainable
 	 */
 	public function defaults() {
-		$this->addFilter(new DefaultFilter());
-		$this->addFilter(new EmailFilter());
-		$this->addFilter(new ImageFilter());
-		$this->addFilter(new UrlFilter());
-		$this->addFilter(new TextFilter());
-		$this->addFilter(new BlockFilter());
-		$this->addFilter(new VideoFilter());
-		$this->addFilter(new CodeFilter());
-		$this->addFilter(new QuoteFilter());
-		$this->addFilter(new ListFilter());
+		$this->addFilter(new \mjohnson\decoda\filters\DefaultFilter());
+		$this->addFilter(new \mjohnson\decoda\filters\EmailFilter());
+		$this->addFilter(new \mjohnson\decoda\filters\ImageFilter());
+		$this->addFilter(new \mjohnson\decoda\filters\UrlFilter());
+		$this->addFilter(new \mjohnson\decoda\filters\TextFilter());
+		$this->addFilter(new \mjohnson\decoda\filters\BlockFilter());
+		$this->addFilter(new \mjohnson\decoda\filters\VideoFilter());
+		$this->addFilter(new \mjohnson\decoda\filters\CodeFilter());
+		$this->addFilter(new \mjohnson\decoda\filters\QuoteFilter());
+		$this->addFilter(new \mjohnson\decoda\filters\ListFilter());
 
-		$this->addHook(new CodeHook());
-		$this->addHook(new CensorHook());
-		$this->addHook(new ClickableHook());
-		$this->addHook(new EmoticonHook());
+		$this->addHook(new \mjohnson\decoda\hooks\CodeHook());
+		$this->addHook(new \mjohnson\decoda\hooks\CensorHook());
+		$this->addHook(new \mjohnson\decoda\hooks\ClickableHook());
+		$this->addHook(new \mjohnson\decoda\hooks\EmoticonHook());
 
 		return $this;
 	}
@@ -302,7 +288,7 @@ class Decoda {
 		$this->_filters = array();
 		$this->_filterMap = array();
 
-		$this->addFilter(new EmptyFilter());
+		$this->addFilter(new \mjohnson\decoda\filters\EmptyFilter());
 
 		return $this;
 	}
@@ -317,7 +303,7 @@ class Decoda {
 	public function disableHooks() {
 		$this->_hooks = array();
 
-		$this->addHook(new EmptyHook());
+		$this->addHook(new \mjohnson\decoda\hooks\EmptyHook());
 
 		return $this;
 	}
@@ -336,7 +322,7 @@ class Decoda {
 
 		$clean = array();
 
-		if (!empty($this->_errors)) {
+		if ($this->_errors) {
 			foreach ($this->_errors as $error) {
 				if ($error['type'] === self::ERROR_NESTING) {
 					$clean[] = $error;
@@ -372,7 +358,11 @@ class Decoda {
 	 * @return \mjohnson\decoda\filters\FilterInterface
 	 */
 	public function getFilterByTag($tag) {
-		return isset($this->_filterMap[$tag]) ? $this->_filters[$this->_filterMap[$tag]] : null;
+		if (isset($this->_filterMap[$tag])){
+			return $this->getFilter($this->_filterMap[$tag]);
+		}
+
+		return null;
 	}
 
 	/**
@@ -415,7 +405,7 @@ class Decoda {
 	 */
 	public function getEngine() {
 		if (!$this->_engine) {
-			$this->_engine = new PhpEngine();
+			$this->_engine = new \mjohnson\decoda\engines\PhpEngine();
 		}
 
 		return $this->_engine;
@@ -433,11 +423,16 @@ class Decoda {
 			return;
 		}
 
-		if (strpos($class, 'Filter') !== false) {
-			include_once DECODA_FILTERS . $class . '.php';
+		$path = str_replace('\\', '/', $class) . '.php';
+		$paths = array(
+			$path,
+			DECODA . str_replace('mjohnson/decoda', '', $path)
+		);
 
-		} else if (strpos($class, 'Hook') !== false) {
-			include_once DECODA_HOOKS . $class . '.php';
+		foreach ($paths as $path) {
+			if (file_exists($path)) {
+				include_once $path;
+			}
 		}
 	}
 
@@ -453,7 +448,7 @@ class Decoda {
 		$locale = $this->config('locale');
 		$string = isset($this->_messages[$locale][$key]) ? $this->_messages[$locale][$key] : '';
 
-		if (!empty($vars)) {
+		if ($vars) {
 			foreach ($vars as $key => $value) {
 				$string = str_replace('{' . $key . '}', $value, $string);
 			}
@@ -470,12 +465,12 @@ class Decoda {
 	 * @return string
 	 */
 	public function parse($echo = false) {
-		if (!empty($this->_parsed)) {
+		if ($this->_parsed) {
 			if ($echo) {
 				echo $this->_parsed;
-			} else {
-				return $this->_parsed;
 			}
+
+			return $this->_parsed;
 		}
 
 		ksort($this->_hooks);
@@ -511,11 +506,7 @@ class Decoda {
 	 * @chainable
 	 */
 	public function removeFilter($filters) {
-		if (!is_array($filters)) {
-			$filters = array($filters);
-		}
-
-		foreach ($filters as $filter) {
+		foreach ((array) $filters as $filter) {
 			unset($this->_filters[$filter]);
 
 			foreach ($this->_filterMap as $tag => $fil) {
@@ -537,11 +528,7 @@ class Decoda {
 	 * @chainable
 	 */
 	public function removeHook($hooks) {
-		if (!is_array($hooks)) {
-			$hooks = array($hooks);
-		}
-
-		foreach ($hooks as $hook) {
+		foreach ((array) $hooks as $hook) {
 			unset($this->_hooks[$hook]);
 		}
 
@@ -571,7 +558,7 @@ class Decoda {
 			$this->_tags = array();
 		}
 
-		$this->addFilter(new EmptyFilter());
+		$this->addFilter(new \mjohnson\decoda\filters\EmptyFilter());
 
 		return $this;
 	}
@@ -662,12 +649,12 @@ class Decoda {
 	 * Sets the template engine which gonna be used for all tags with templates.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\engines\EngineInterface $templateEngine
+	 * @param \mjohnson\decoda\engines\EngineInterface $engine
 	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
-	public function setTemplateEngine(EngineInterface $templateEngine) {
-		$this->_engine = $templateEngine;
+	public function setEngine(EngineInterface $engine) {
+		$this->_engine = $engine;
 
 		return $this;
 	}
@@ -755,7 +742,7 @@ class Decoda {
 
 				preg_match_all('/([a-z]+)=\"(.*?)\"/i', $string, $matches, PREG_SET_ORDER);
 
-				if (!empty($matches)) {
+				if ($matches) {
 					foreach ($matches as $match) {
 						$found[$match[1]] = $match[2];
 					}
@@ -765,7 +752,7 @@ class Decoda {
 				if (!$this->config('strict')) {
 					preg_match_all('/([a-z]+)=([^\s\]]+)/i', $string, $matches, PREG_SET_ORDER);
 
-					if (!empty($matches)) {
+					if ($matches) {
 						foreach ($matches as $match) {
 							if (!isset($found[$match[1]])) {
 								$found[$match[1]] = $match[2];
@@ -774,7 +761,7 @@ class Decoda {
 					}
 				}
 
-				if (!empty($found)) {
+				if ($found) {
 					$source = $this->_tags[$tag['tag']];
 
 					foreach ($found as $key => $value) {
@@ -807,7 +794,7 @@ class Decoda {
 			}
 		}
 
-		if ($disabled || (!empty($this->_whitelist) && !in_array($tag['tag'], $this->_whitelist))) {
+		if ($disabled || ($this->_whitelist && !in_array($tag['tag'], $this->_whitelist))) {
 			$tag['type'] = self::TAG_NONE;
 			$tag['text'] = '';
 		}
@@ -834,7 +821,7 @@ class Decoda {
 		$tag = '';
 		$i = 0;
 
-		if (!empty($wrapper)) {
+		if ($wrapper) {
 			$parent = $this->getFilterByTag($wrapper['tag'])->tag($wrapper['tag']);
 			$root = false;
 		} else {
@@ -895,7 +882,7 @@ class Decoda {
 					}
 
 					// If something is not allowed, skip the close tag
-					if (!empty($disallowed)) {
+					if ($disallowed) {
 						$last = end($disallowed);
 
 						if ($last['tag'] === $tag) {
@@ -905,7 +892,7 @@ class Decoda {
 					}
 
 					// Return to previous parent before allowing
-					if (!empty($parents)) {
+					if ($parents) {
 						$parent = array_pop($parents);
 					}
 
@@ -917,13 +904,13 @@ class Decoda {
 
 						$clean[] = $chunk;
 
-						if ($root && !empty($openTags)) {
+						if ($root && $openTags) {
 							$last = end($openTags);
 
 							if ($last['tag'] === $tag) {
 								array_pop($openTags);
 							} else {
-								while (!empty($openTags)) {
+								while ($openTags) {
 									$last = array_pop($openTags);
 
 									if ($last['tag'] !== $tag) {
@@ -946,7 +933,7 @@ class Decoda {
 		}
 
 		// Remove any unclosed tags
-		while (!empty($openTags)) {
+		while ($openTags) {
 			$last = array_pop($openTags);
 
 			$this->_errors[] = array(
@@ -1163,13 +1150,13 @@ class Decoda {
 		$parsed = '';
 		$xhtml = $this->config('xhtml');
 
-		if (empty($nodes)) {
+		if (!$nodes) {
 			return $parsed;
 		}
 
 		foreach ($nodes as $node) {
 			if (is_string($node)) {
-				if (empty($wrapper)) {
+				if (!$wrapper) {
 					$parsed .= nl2br($node, $xhtml);
 				} else {
 					$parsed .= $node;
@@ -1191,7 +1178,7 @@ class Decoda {
 	 * @return string
 	 */
 	protected function _trigger($method, $content) {
-		if (!empty($this->_hooks)) {
+		if ($this->_hooks) {
 			foreach ($this->_hooks as $hook) {
 				if (method_exists($hook, $method)) {
 					$content = $hook->{$method}($content);

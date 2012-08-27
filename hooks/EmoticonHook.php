@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\hooks;
 
+use mjohnson\decoda\Decoda;
 use mjohnson\decoda\hooks\HookAbstract;
 
 /**
@@ -24,7 +25,8 @@ class EmoticonHook extends HookAbstract {
 	 * @var array
 	 */
 	protected $_config = array(
-		'path' => ''
+		'path' => '/images/',
+		'extension' => 'png'
 	);
 
 	/**
@@ -44,32 +46,6 @@ class EmoticonHook extends HookAbstract {
 	protected $_map = array();
 
 	/**
-	 * Load the emoticons from the JSON file.
-	 *
-	 * @access public
-	 * @param array $config
-	 */
-	public function __construct(array $config = array()) {
-		parent::__construct($config);
-
-		$path = DECODA_CONFIG . 'emoticons.json';
-
-		if (file_exists($path)) {
-			$this->_emoticons = json_decode(file_get_contents($path), true);
-
-			foreach ($this->_emoticons as $emoticon => $smilies) {
-				foreach ($smilies as $smile) {
-					$this->_map[$smile] = $emoticon;
-				}
-			}
-
-			if (empty($this->_config['path'])) {
-				$this->_config['path'] = str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']), '\\', '/'), array('', '/', '/'), DECODA_EMOTICONS);
-			}
-		}
-	}
-
-	/**
 	 * Parse out the emoticons and replace with images.
 	 *
 	 * @access public
@@ -77,7 +53,7 @@ class EmoticonHook extends HookAbstract {
 	 * @return string
 	 */
 	public function beforeParse($content) {
-		if ($this->getParser()->getFilter('Image') && !empty($this->_emoticons)) {
+		if ($this->getParser()->getFilter('Image') && $this->_emoticons) {
 			foreach ($this->_emoticons as $smilies) {
 				foreach ($smilies as $smile) {
 					$content = preg_replace_callback('/(\s)?' . preg_quote($smile, '/') . '(\s)?/is', array($this, '_emoticonCallback'), $content);
@@ -86,6 +62,35 @@ class EmoticonHook extends HookAbstract {
 		}
 
 		return $content;
+	}
+
+	/**
+	 * Set the Decoda parser.
+	 *
+	 * @access public
+	 * @param \mjohnson\decoda\Decoda $parser
+	 * @return \mjohnson\decoda\hooks\EmoticonHook
+	 */
+	public function setParser(Decoda $parser) {
+		parent::setParser($parser);
+
+		foreach ($parser->getPaths() as $path) {
+			if (!file_exists($path . 'emoticons.json')) {
+				continue;
+			}
+
+			if ($emoticons = json_decode(file_get_contents($path . 'emoticons.json'), true)) {
+				foreach ($emoticons as $emoticon => $smilies) {
+					foreach ($smilies as $smile) {
+						$this->_map[$smile] = $emoticon;
+					}
+				}
+
+				$this->_emoticons = array_merge($this->_emoticons, $emoticons);
+			}
+		}
+
+		return $this;
 	}
 
 	/**
@@ -105,10 +110,15 @@ class EmoticonHook extends HookAbstract {
 		$l = isset($matches[1]) ? $matches[1] : '';
 		$r = isset($matches[2]) ? $matches[2] : '';
 
+		$path = sprintf('%s%s.%s',
+			$this->config('path'),
+			$this->_map[$smiley],
+			$this->config('extension'));
+
 		$image = $this->getParser()->getFilter('Image')->parse(array(
 			'tag' => 'img',
 			'attributes' => array()
-		), $this->_config['path'] . $this->_map[$smiley] . '.png');
+		), $path);
 
 		return $l . $image . $r;
 	}

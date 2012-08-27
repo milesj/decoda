@@ -33,7 +33,7 @@ class CodeFilter extends FilterAbstract {
 			'lineBreaks' => self::NL_PRESERVE,
 			'preserveTags' => true,
 			'attributes' => array(
-				'default' => '/[a-z0-9]+/i',
+				'default' => '/[-a-z0-9]+/i',
 				'hl' => '/[0-9,]+/'
 			)
 		),

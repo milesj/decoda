@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\hooks;
 
+use mjohnson\decoda\Decoda;
 use mjohnson\decoda\hooks\HookAbstract;
 
 /**
@@ -36,22 +37,6 @@ class CensorHook extends HookAbstract {
 	);
 
 	/**
-	 * Load the censored words from the text file.
-	 *
-	 * @access public
-	 * @param array $config
-	 */
-	public function __construct(array $config = array()) {
-		parent::__construct($config);
-
-		$path = DECODA_CONFIG . 'censored.txt';
-
-		if (file_exists($path)) {
-			$this->blacklist(file($path));
-		}
-	}
-
-	/**
 	 * Parse the content by censoring blacklisted words.
 	 *
 	 * @access public
@@ -59,7 +44,7 @@ class CensorHook extends HookAbstract {
 	 * @return string
 	 */
 	public function beforeParse($content) {
-		if (!empty($this->_censored)) {
+		if ($this->_censored) {
 			foreach ($this->_censored as $word) {
 				$content = preg_replace_callback('/(^|\s|\n)?' . $this->_prepare($word) . '(\s|\n|$)?/is', array($this, '_callback'), $content);
 			}
@@ -74,11 +59,29 @@ class CensorHook extends HookAbstract {
 	 * @access public
 	 * @param array $words
 	 * @return \mjohnson\decoda\hooks\CensorHook
-	 * @chainable
 	 */
 	public function blacklist(array $words) {
 		$this->_censored = array_map('trim', array_filter($words)) + $this->_censored;
 		$this->_censored = array_unique($this->_censored);
+
+		return $this;
+	}
+
+	/**
+	 * Set the Decoda parser.
+	 *
+	 * @access public
+	 * @param \mjohnson\decoda\Decoda $parser
+	 * @return \mjohnson\decoda\hooks\CensorHook
+	 */
+	public function setParser(Decoda $parser) {
+		parent::setParser($parser);
+
+		foreach ($parser->getPaths() as $path) {
+			if (file_exists($path . 'censored.txt')) {
+				$this->blacklist(file($path . 'censored.txt'));
+			}
+		}
 
 		return $this;
 	}

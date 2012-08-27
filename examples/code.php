@@ -2,25 +2,18 @@
 $code = new \mjohnson\decoda\Decoda();
 $code->addFilter(new \mjohnson\decoda\filters\CodeFilter());
 $code->addHook(new \mjohnson\decoda\hooks\EmoticonHook());
-$code->addHook(new\mjohnson\decoda\hooks\ CensorHook()); ?>
+$code->addHook(new\mjohnson\decoda\hooks\CensorHook()); ?>
 
 <h2>Code</h2>
 
 <?php $string = "[code]// Constants
-define('DECODA', dirname(__FILE__) .'/');
-define('DECODA_HOOKS', DECODA .'hooks/');
-define('DECODA_CONFIG', DECODA .'config/');
-define('DECODA_FILTERS', DECODA .'filters/');
-define('DECODA_TEMPLATES', DECODA .'templates/');
-define('DECODA_EMOTICONS', DECODA .'emoticons/');
+define('DECODA', __DIR__ .'/');
 
 // Includes
 spl_autoload_register();
 set_include_path(implode(PATH_SEPARATOR, array(
 	get_include_path(),
-	DECODA, DECODA_HOOKS,
-	DECODA_CONFIG, DECODA_FILTERS,
-	DECODA_TEMPLATES, DECODA_EMOTICONS
+	DECODA
 )));[/code]";
 
 $code->reset($string);
@@ -44,28 +37,18 @@ echo $code->parse(); ?>
 <h2>Code <span>with language attribute</span></h2>
 
 <?php $string = '[code="php"]<?php
-abstract class DecodaHook extends DecodaAbstract {
+abstract class HookAbstract implements HookInterface {
 
 	/**
-	 * Parse the given content before the primary parse.
+	 * Return a message string from the parser.
 	 *
 	 * @access public
-	 * @param string $content
+	 * @param string $key
+	 * @param array $vars
 	 * @return string
 	 */
-	public function beforeParse($content) {
-		return $content;
-	}
-
-	/**
-	 * Parse the given content after the primary parse.
-	 *
-	 * @access public
-	 * @param string $content
-	 * @return string
-	 */
-	public function afterParse($content) {
-		return $content;
+	public function message($key, array $vars = array()) {
+		return $this->getParser()->message($key, $vars);
 	}
 
 } ?>[/code]';
@@ -76,35 +59,24 @@ echo $code->parse(); ?>
 <h2>Code <span>with row highlights attribute</span></h2>
 
 <?php $string = '[code hl="1,15"]<?php
-abstract class DecodaAbstract {
+abstract class FilterAbstract implements FilterInterface {
 
 	/**
-	 * Parent Decoda object.
-	 *
-	 * @access protected
-	 * @var Decoda
-	 */
-	protected $_parser;
-
-	/**
-	 * Return the Decoda parser.
+	 * Return a tag if it exists, and merge with defaults.
 	 *
 	 * @access public
-	 * @return Decoda
+	 * @param string $tag
+	 * @return array
 	 */
-	public function getParser() {
-		return $this->_parser;
-	}
+	public function tag($tag) {
+		$defaults = $this->_defaults;
+		$defaults[\'key\'] = $tag;
 
-	/**
-	 * Set the Decoda parser.
-	 *
-	 * @access public
-	 * @param Decoda $parser
-	 * @return void
-	 */
-	public function setParser(Decoda $parser) {
-		$this->_parser = $parser;
+		if (isset($this->_tags[$tag])) {
+			return $this->_tags[$tag] + $defaults;
+		}
+
+		return $defaults;
 	}
 
 } ?>[/code]';

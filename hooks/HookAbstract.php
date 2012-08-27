@@ -105,7 +105,7 @@ abstract class HookAbstract implements HookInterface {
 	 *
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $parser
-	 * @return \mjohnson\decoda\filters\FilterAbstract
+	 * @return \mjohnson\decoda\hooks\HookAbstract
 	 */
 	public function setParser(Decoda $parser) {
 		$this->_parser = $parser;

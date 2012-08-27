@@ -11,5 +11,5 @@ It also supports the word syntax:
 
 $code = new \mjohnson\decoda\Decoda($string);
 $code->addFilter(new \mjohnson\decoda\filters\ImageFilter());
-$code->addHook(new \mjohnson\decoda\hooks\EmoticonHook());
+$code->addHook(new \mjohnson\decoda\hooks\EmoticonHook(array('path' => '../emoticons/')));
 echo $code->parse(); ?>

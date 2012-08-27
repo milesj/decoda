@@ -14,19 +14,11 @@ use mjohnson\decoda\filters\FilterAbstract;
 use mjohnson\decoda\hooks\HookInterface;
 use \Exception;
 
-// Set constants and include path
+// Set constant and include path
 if (!defined('DECODA')) {
 	define('DECODA', __DIR__ . '/');
 
 	set_include_path(get_include_path() . PATH_SEPARATOR . DECODA);
-}
-
-if (!defined('DECODA_CONFIG')) {
-	define('DECODA_CONFIG', DECODA . 'config/');
-}
-
-if (!defined('DECODA_EMOTICONS')) {
-	define('DECODA_EMOTICONS', DECODA . 'emoticons/');
 }
 
 /**
@@ -135,6 +127,14 @@ class Decoda {
 	protected $_parsed = '';
 
 	/**
+	 * Configuration folder paths.
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $_paths = array();
+
+	/**
 	 * The raw string before parsing.
 	 *
 	 * @access protected
@@ -175,7 +175,7 @@ class Decoda {
 	public function __construct($string = '') {
 		spl_autoload_register(array($this, 'loadFile'));
 
-		$this->_messages = json_decode(file_get_contents(DECODA_CONFIG . 'messages.json'), true);
+		$this->addPath(DECODA . 'config/');
 		$this->reset($string, true);
 	}
 
@@ -226,6 +226,19 @@ class Decoda {
 	}
 
 	/**
+	 * Add a configuration lookup path.
+	 *
+	 * @access public
+	 * @param string $path
+	 * @return \mjohnson\decoda\Decoda
+	 */
+	public function addPath($path) {
+		$this->_paths[] = $path;
+
+		return $this;
+	}
+
+	/**
 	 * Return a specific configuration key value.
 	 *
 	 * @access public
@@ -255,10 +268,8 @@ class Decoda {
 		$this->addFilter(new \mjohnson\decoda\filters\QuoteFilter());
 		$this->addFilter(new \mjohnson\decoda\filters\ListFilter());
 
-		$this->addHook(new \mjohnson\decoda\hooks\CodeHook());
 		$this->addHook(new \mjohnson\decoda\hooks\CensorHook());
 		$this->addHook(new \mjohnson\decoda\hooks\ClickableHook());
-		$this->addHook(new \mjohnson\decoda\hooks\EmoticonHook());
 
 		return $this;
 	}
@@ -412,6 +423,16 @@ class Decoda {
 	}
 
 	/**
+	 * Return the configuration folder paths.
+	 *
+	 * @access public
+	 * @return array
+	 */
+	public function getPaths() {
+		return $this->_paths;
+	}
+
+	/**
 	 * Autoload filters and hooks.
 	 *
 	 * @access public
@@ -423,11 +444,8 @@ class Decoda {
 			return;
 		}
 
-		$path = str_replace('\\', '/', $class) . '.php';
-		$paths = array(
-			$path,
-			DECODA . str_replace('mjohnson/decoda', '', $path)
-		);
+		$paths = array(str_replace('\\', '/', $class) . '.php');
+		$paths[] = DECODA . str_replace('mjohnson/decoda/', '', $paths[0]);
 
 		foreach ($paths as $path) {
 			if (file_exists($path)) {
@@ -445,6 +463,18 @@ class Decoda {
 	 * @return string
 	 */
 	public function message($key, array $vars = array()) {
+		if (!$this->_messages) {
+			$messages = array();
+
+			foreach ($this->getPaths() as $path) {
+				if (file_exists($path . 'messages.json')) {
+					$messages = array_merge($messages, json_decode(file_get_contents($path . 'messages.json'), true));
+				}
+			}
+
+			$this->_messages = $messages;
+		}
+
 		$locale = $this->config('locale');
 		$string = isset($this->_messages[$locale][$key]) ? $this->_messages[$locale][$key] : '';
 
@@ -608,6 +638,8 @@ class Decoda {
 	 * @chainable
 	 */
 	public function setLocale($locale) {
+		$this->message(null);
+
 		if (empty($this->_messages[$locale])) {
 			throw new Exception(sprintf('Localized strings for %s do not exist.', $locale));
 		}

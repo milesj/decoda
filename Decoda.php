@@ -231,6 +231,7 @@ class Decoda {
 	 * @access public
 	 * @param string $path
 	 * @return \mjohnson\decoda\Decoda
+	 * @chainable
 	 */
 	public function addPath($path) {
 		$this->_paths[] = $path;

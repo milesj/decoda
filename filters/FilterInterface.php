@@ -51,6 +51,7 @@ interface FilterInterface {
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $parser
 	 * @return \mjohnson\decoda\filters\FilterInterface
+	 * @chainable
 	 */
 	public function setParser(Decoda $parser);
 
@@ -60,6 +61,7 @@ interface FilterInterface {
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $decoda
 	 * @return \mjohnson\decoda\filters\FilterAbstract
+	 * @chainable
 	 */
 	public function setupHooks(Decoda $decoda);
 

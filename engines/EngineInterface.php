@@ -51,6 +51,7 @@ interface EngineInterface {
 	 * @access public
 	 * @param \mjohnson\decoda\filters\FilterInterface $filter
 	 * @return \mjohnson\decoda\engines\EngineInterface
+	 * @chainable
 	 */
 	public function setFilter(FilterInterface $filter);
 
@@ -60,6 +61,7 @@ interface EngineInterface {
 	 * @access public
 	 * @param string $path
 	 * @return \mjohnson\decoda\engines\EngineInterface
+	 * @chainable
 	 */
 	public function setPath($path);
 

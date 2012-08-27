@@ -59,6 +59,7 @@ class CensorHook extends HookAbstract {
 	 * @access public
 	 * @param array $words
 	 * @return \mjohnson\decoda\hooks\CensorHook
+	 * @chainable
 	 */
 	public function blacklist(array $words) {
 		$this->_censored = array_map('trim', array_filter($words)) + $this->_censored;
@@ -73,6 +74,7 @@ class CensorHook extends HookAbstract {
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $parser
 	 * @return \mjohnson\decoda\hooks\CensorHook
+	 * @chainable
 	 */
 	public function setParser(Decoda $parser) {
 		parent::setParser($parser);

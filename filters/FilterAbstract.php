@@ -268,6 +268,7 @@ abstract class FilterAbstract implements FilterInterface {
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $parser
 	 * @return \mjohnson\decoda\filters\FilterAbstract
+	 * @chainable
 	 */
 	public function setParser(Decoda $parser) {
 		$this->_parser = $parser;
@@ -281,6 +282,7 @@ abstract class FilterAbstract implements FilterInterface {
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $decoda
 	 * @return \mjohnson\decoda\filters\FilterAbstract
+	 * @chainable
 	 */
 	public function setupHooks(Decoda $decoda) {
 		return $this;

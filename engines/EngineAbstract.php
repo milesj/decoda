@@ -52,8 +52,8 @@ abstract class EngineAbstract implements EngineInterface {
 	 * @return string
 	 */
 	public function getPath() {
-		if (empty($this->_path)) {
-			$this->setPath(DECODA . '/templates/');
+		if (!$this->_path) {
+			$this->setPath(DECODA . 'templates/');
 		}
 
 		return $this->_path;
@@ -65,6 +65,7 @@ abstract class EngineAbstract implements EngineInterface {
 	 * @access public
 	 * @param \mjohnson\decoda\filters\FilterInterface $filter
 	 * @return \mjohnson\decoda\engines\EngineInterface
+	 * @chainable
 	 */
 	public function setFilter(FilterInterface $filter) {
 		$this->_filter = $filter;
@@ -78,6 +79,7 @@ abstract class EngineAbstract implements EngineInterface {
 	 * @access public
 	 * @param string $path
 	 * @return \mjohnson\decoda\engines\EngineInterface
+	 * @chainable
 	 */
 	public function setPath($path) {
 		if (substr($path, -1) !== '/') {

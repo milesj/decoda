@@ -175,7 +175,6 @@ abstract class FilterAbstract implements FilterInterface {
 	public function parse(array $tag, $content) {
 		$setup = $this->tag($tag['tag']);
 		$xhtml = $this->getParser()->config('xhtml');
-		$content = trim($content);
 
 		if (empty($setup)) {
 			return null;

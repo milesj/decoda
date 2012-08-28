@@ -27,6 +27,9 @@ class DefaultFilterTest extends TestCase {
 	 */
 	public function testBold() {
 		$this->assertEquals('<b>Bold</b>', $this->object->reset('[b]Bold[/b]')->parse());
+
+		$this->object->setXhtml(true);
+		$this->assertEquals('<strong>Bold</strong>', $this->object->reset('[b]Bold[/b]')->parse());
 	}
 
 	/**
@@ -34,6 +37,9 @@ class DefaultFilterTest extends TestCase {
 	 */
 	public function testItalic() {
 		$this->assertEquals('<i>Italic</i>', $this->object->reset('[i]Italic[/i]')->parse());
+
+		$this->object->setXhtml(true);
+		$this->assertEquals('<em>Italic</em>', $this->object->reset('[i]Italic[/i]')->parse());
 	}
 
 	/**

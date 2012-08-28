@@ -29,7 +29,7 @@ class BlockFilter extends FilterAbstract {
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'attributes' => array(
-				'default' => array('/left|center|right|justify/i', 'align-{default}')
+				'default' => array('/^left|center|right|justify$/i', 'align-{default}')
 			),
 			'map' => array(
 				'default' => 'class'
@@ -72,7 +72,7 @@ class BlockFilter extends FilterAbstract {
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'attributes' => array(
-				'default' => array('/left|right|none/i', 'float-{default}')
+				'default' => array('/^left|right|none$/i', 'float-{default}')
 			),
 			'map' => array(
 				'default' => 'class'
@@ -107,8 +107,11 @@ class BlockFilter extends FilterAbstract {
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
 			'attributes' => array(
-				'id' => '/[-_a-z0-9]+/i',
-				'class' => '/[-_a-z0-9\s]+/i'
+				'default' => '/^[-_a-z0-9]+$/i',
+				'class' => '/^[-_a-z0-9\s]+$/i'
+			),
+			'map' => array(
+				'default' => 'id'
 			)
 		),
 		'spoiler' => array(

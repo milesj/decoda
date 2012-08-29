@@ -18,11 +18,6 @@ use mjohnson\decoda\filters\FilterAbstract;
 class EmailFilter extends FilterAbstract {
 
 	/**
-	 * Regex pattern.
-	 */
-	const EMAIL_PATTERN = '/(^|\n|\s)([-a-z0-9\.\+!]{1,64}+)@([-a-z0-9]+\.[a-z\.]+)/is';
-
-	/**
 	 * Configuration.
 	 *
 	 * @access protected
@@ -42,23 +37,19 @@ class EmailFilter extends FilterAbstract {
 		'email' => array(
 			'tag' => 'a',
 			'type' => self::TYPE_INLINE,
-			'allowed' => self::TYPE_INLINE,
-			'pattern' => self::EMAIL_PATTERN,
-			'testNoDefault' => true,
+			'allowed' => self::TYPE_NONE,
 			'escapeAttributes' => false,
 			'attributes' => array(
-				'default' => self::EMAIL_PATTERN
+				'default' => true
 			)
 		),
 		'mail' => array(
 			'tag' => 'a',
 			'type' => self::TYPE_INLINE,
-			'allowed' => self::TYPE_INLINE,
-			'pattern' => self::EMAIL_PATTERN,
-			'testNoDefault' => true,
+			'allowed' => self::TYPE_NONE,
 			'escapeAttributes' => false,
 			'attributes' => array(
-				'default' => self::EMAIL_PATTERN
+				'default' => true
 			)
 		)
 	);
@@ -80,9 +71,14 @@ class EmailFilter extends FilterAbstract {
 			$default = true;
 		}
 
+		// Return an invalid email
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+			return $content;
+		}
+
 		$encrypted = '';
 
-		if ($this->_config['encrypt']) {
+		if ($this->config('encrypt')) {
 			$length = strlen($email);
 
 			if ($length > 0) {

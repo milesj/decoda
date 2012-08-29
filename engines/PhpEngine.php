@@ -49,7 +49,7 @@ class PhpEngine extends EngineAbstract {
 
 		include $path;
 
-		return ob_get_clean();
+		return trim(ob_get_clean());
 	}
 
 }

@@ -55,54 +55,57 @@ abstract class FilterAbstract implements FilterInterface {
 	/**
 	 * Default tag configuration.
 	 *
-	 * 	key					- (string) Decoda tag
-	 * 	tag					- (string) HTML replacement tag
-	 * 	template			- (string) Template file to use for rendering
-	 * 	pattern				- (string) Regex pattern that the content or default attribute must pass
-	 * 	testNoDefault		- (boolean) Will only test the pattern on the content if the default attribute doesn't exist
-	 * 	type				- (constant) Type of HTML element: block or inline
-	 * 	allowed				- (constant) What types of elements are allowed to be nested
-	 * 	attributes			- (array) Custom attributes to parse out of the Decoda markup
-	 * 	map					- (array) Map parsed attributes to different names
-	 * 	html				- (array) Custom HTML attributes to append to the parsed tag
-	 * 	alias				- (array) Map attribute names to another attribute name
-	 * 	lineBreaks			- (boolean) Convert linebreaks within the content body
-	 * 	autoClose			- (boolean) HTML tag is self closing
-	 * 	preserveTags		- (boolean) Will not convert nested Decoda markup within this tag
-	 * 	escapeAttributes	- (boolean) Escape HTML entities within the parsed attributes
-	 * 	maxChildDepth		- (integer) Max depth for nested children of the same tag (-1 to disable)
-	 * 	parent				- (array) List of Decoda keys that this tag can only be a direct child of
-	 * 	children			- (array) List of Decoda keys for all the tags that can only be a direct descendant
-	 *
 	 * @access protected
 	 * @var array
 	 */
 	protected $_defaults = array(
-		// Meta
+		/**
+		 * key				- (string) Decoda tag
+		 * tag				- (string) HTML replacement tag
+		 * template			- (string) Template file to use for rendering
+		 * displayType		- (constant) Type of HTML element: block or inline
+		 * allowedTypes		- (constant) What types of elements are allowed to be nested
+		 */
 		'key' => '',
 		'tag' => '',
 		'template' => '',
-		'pattern' => '',
-		'testNoDefault' => false,
-		'type' => self::TYPE_BLOCK,
-		'allowed' => self::TYPE_BOTH,
+		'displayType' => self::TYPE_BLOCK,
+		'allowedTypes' => self::TYPE_BOTH,
 
-		// Attributes
+		/**
+		 * attributes		- (array) Custom attributes to parse out of the Decoda tag
+		 * mapAttributes	- (array) Map parsed and custom attributes to different names
+		 * htmlAttributes	- (array) Custom HTML attributes to append to the parsed tag
+		 * escapeAttributes	- (boolean) Escape HTML entities within the parsed attributes
+		 */
 		'attributes' => array(),
-		'map' => array(),
-		'html' => array(),
-		'alias' => array(),
+		'mapAttributes' => array(),
+		'htmlAttributes' => array(),
+		'escapeAttributes' => true,
 
-		// Processes
+		/**
+		 * lineBreaks		- (boolean) Convert line breaks within the content body
+		 * autoClose		- (boolean) HTML tag is self closing
+		 * preserveTags		- (boolean) Will not convert nested Decoda markup within this tag
+		 * contentPattern	- (string) Regex pattern that the content or default attribute must pass
+		 * testNoDefault	- (boolean) Will only test the pattern on the content if the default attribute doesn't exist
+		 */
 		'lineBreaks' => self::NL_CONVERT,
 		'autoClose' => false,
 		'preserveTags' => false,
-		'escapeAttributes' => true,
-		'maxChildDepth' => -1,
+		'contentPattern' => '',
+		'testNoDefault' => false,
 
-		// Hierarchy
+		/**
+		 * parent				- (array) List of Decoda keys that this tag can only be a direct child of
+		 * childrenWhitelist	- (array) List of Decoda keys that can only be a direct descendant
+		 * childrenBlacklist	- (array) List of Decoda keys that can not be a direct descendant
+		 * maxChildDepth		- (integer) Max depth for nested children of the same tag (-1 to disable)
+		 */
 		'parent' => array(),
-		'children' => array()
+		'childrenWhitelist' => array(),
+		'childrenBlacklist' => array(),
+		'maxChildDepth' => -1,
 	);
 
 	/**
@@ -176,13 +179,13 @@ abstract class FilterAbstract implements FilterInterface {
 		$setup = $this->tag($tag['tag']);
 		$xhtml = $this->getParser()->config('xhtml');
 
-		if (empty($setup)) {
+		if (!$setup) {
 			return null;
 		}
 
 		// If content doesn't match the pattern, don't wrap in a tag
-		if (!empty($setup['pattern'])) {
-			if ($setup['testNoDefault'] && !isset($tag['attributes']['default']) && !preg_match($setup['pattern'], $content)) {
+		if ($setup['contentPattern']) {
+			if ($setup['testNoDefault'] && !isset($tag['attributes']['default']) && !preg_match($setup['contentPattern'], $content)) {
 				return sprintf('(Invalid %s)', $tag['tag']);
 			}
 		}
@@ -198,15 +201,11 @@ abstract class FilterAbstract implements FilterInterface {
 		}
 
 		// Format attributes
-		$attributes = array();
+		$attributes = (array) $setup['htmlAttributes'];
 		$attr = '';
 
-		if (!empty($tag['attributes'])) {
+		if ($tag['attributes']) {
 			foreach ($tag['attributes'] as $key => $value) {
-				if (isset($setup['map'][$key])) {
-					$key = $setup['map'][$key];
-				}
-
 				if ($key === 'default' || substr($value, 0, 11) === 'javascript:') {
 					continue;
 				}
@@ -219,12 +218,12 @@ abstract class FilterAbstract implements FilterInterface {
 			}
 		}
 
-		if (!empty($setup['html'])) {
-			$attributes += $setup['html'];
+		foreach ($attributes as $key => $value) {
+			$attr .= ' ' . $key . '="' . $value . '"';
 		}
 
 		// Use a template if it exists
-		if (!empty($setup['template'])) {
+		if ($setup['template']) {
 			$tag['attributes'] = $attributes;
 
 			$engine = $this->getParser()->getEngine();
@@ -239,10 +238,6 @@ abstract class FilterAbstract implements FilterInterface {
 			return $parsed;
 		}
 
-		foreach ($attributes as $key => $value) {
-			$attr .= ' ' . $key . '="' . $value . '"';
-		}
-
 		// Build HTML tag
 		$html = $setup['tag'];
 
@@ -250,12 +245,10 @@ abstract class FilterAbstract implements FilterInterface {
 			$html = $html[$xhtml];
 		}
 
-		$parsed = '<' . $html . $attr;
-
 		if ($setup['autoClose']) {
-			$parsed .= $xhtml ? '/>' : '>';
+			$parsed = '<' . $html . $attr . ($xhtml ? '/' : '') . '>';
 		} else {
-			$parsed .= '>' . (!empty($tag['content']) ? $tag['content'] : $content) . '</' . $html . '>';
+			$parsed = '<' . $html . $attr . '>' . (!empty($tag['content']) ? $tag['content'] : $content) . '</' . $html . '>';
 		}
 
 		return $parsed;

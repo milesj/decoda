@@ -31,9 +31,9 @@ class VideoFilter extends FilterAbstract {
 	protected $_tags = array(
 		'video' => array(
 			'template' => 'video',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_NONE,
-			'pattern' => self::VIDEO_PATTERN,
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_NONE,
+			'contentPattern' => self::VIDEO_PATTERN,
 			'attributes' => array(
 				'default' => '/[a-z0-9]+/i',
 				'size' => '/small|medium|large/i'

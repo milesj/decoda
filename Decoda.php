@@ -805,24 +805,26 @@ class Decoda {
 							$key = 'default';
 						}
 
-						if (isset($source['alias'][$key])) {
-							$key = $source['alias'][$key];
+						if (isset($source['mapAttributes'][$key])) {
+							$finalKey = $source['mapAttributes'][$key];
+						} else {
+							$finalKey = $key;
 						}
 
 						if (isset($source['attributes'][$key])) {
 							$pattern = $source['attributes'][$key];
 
 							if ($pattern === true) {
-								$tag['attributes'][$key] = $value;
+								$tag['attributes'][$finalKey] = $value;
 
 							} else if (is_array($pattern)) {
 								if (preg_match($pattern[0], $value)) {
-									$tag['attributes'][$key] = str_replace('{' . $key . '}', $value, $pattern[1]);
+									$tag['attributes'][$finalKey] = str_replace('{' . $key . '}', strtolower($value), $pattern[1]);
 								}
 
 							} else {
 								if (preg_match($pattern, $value)) {
-									$tag['attributes'][$key] = $value;
+									$tag['attributes'][$finalKey] = $value;
 								}
 							}
 						}
@@ -872,7 +874,7 @@ class Decoda {
 
 			switch ($chunk['type']) {
 				case self::TAG_NONE:
-					if (empty($parent['children'])) {
+					if (!$parent['childrenWhitelist'] && !$parent['childrenBlacklist']) {
 						if (!empty($prevChunk) && $prevChunk['type'] === self::TAG_NONE) {
 							$chunk['text'] = $prevChunk['text'] . $chunk['text'];
 							array_pop($clean);
@@ -1150,19 +1152,23 @@ class Decoda {
 			return false;
 
 		// Children that can only be within a certain parent
-		} else if (!empty($child['parent']) && !in_array($parent['key'], $child['parent'])) {
+		} else if ($child['parent'] && !in_array($parent['key'], $child['parent'])) {
+			return false;
+
+		// Parents that can not have specific direct descendant children
+		} else if ($parent['childrenBlacklist'] && in_array($child['key'], $parent['childrenBlacklist'])) {
 			return false;
 
 		// Parents that can only have direct descendant children
-		} else if (!empty($parent['children']) && !in_array($child['key'], $parent['children'])) {
+		} else if ($parent['childrenWhitelist'] && !in_array($child['key'], $parent['childrenWhitelist'])) {
 			return false;
 
 		// Block element that accepts both types
-		} else if ($parent['allowed'] === FilterAbstract::TYPE_BOTH) {
+		} else if ($parent['allowedTypes'] === FilterAbstract::TYPE_BOTH) {
 			return true;
 
 		// Inline elements can go within everything
-		} else if (($parent['allowed'] === FilterAbstract::TYPE_INLINE || $parent['allowed'] === FilterAbstract::TYPE_BLOCK) && $child['type'] === FilterAbstract::TYPE_INLINE) {
+		} else if (($parent['allowedTypes'] === FilterAbstract::TYPE_INLINE || $parent['allowedTypes'] === FilterAbstract::TYPE_BLOCK) && $child['displayType'] === FilterAbstract::TYPE_INLINE) {
 			return true;
 		}
 

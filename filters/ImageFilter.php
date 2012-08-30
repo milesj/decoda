@@ -31,26 +31,26 @@ class ImageFilter extends FilterAbstract {
 	protected $_tags = array(
 		'img' => array(
 			'tag' => 'img',
-			'type' => self::TYPE_INLINE,
-			'allowed' => self::TYPE_NONE,
-			'pattern' => self::IMAGE_PATTERN,
+			'displayType' => self::TYPE_INLINE,
+			'allowedTypes' => self::TYPE_NONE,
+			'contentPattern' => self::IMAGE_PATTERN,
 			'autoClose' => true,
 			'attributes' => array(
-				'width' => '/[0-9%]{1,4}+/',
-				'height' => '/[0-9%]{1,4}+/',
-				'alt' => '/.*?/'
+				'width' => '/^[0-9%]{1,4}+$/',
+				'height' => '/^[0-9%]{1,4}+$/',
+				'alt' => '/(.*?)/'
 			)
 		),
 		'image' => array(
 			'tag' => 'img',
-			'type' => self::TYPE_INLINE,
-			'allowed' => self::TYPE_NONE,
-			'pattern' => self::IMAGE_PATTERN,
+			'displayType' => self::TYPE_INLINE,
+			'allowedTypes' => self::TYPE_NONE,
+			'contentPattern' => self::IMAGE_PATTERN,
 			'autoClose' => true,
 			'attributes' => array(
-				'width' => '/[0-9%]{1,4}+/',
-				'height' => '/[0-9%]{1,4}+/',
-				'alt' => '/.*?/'
+				'width' => '/^[0-9%]{1,4}+$/',
+				'height' => '/^[0-9%]{1,4}+$/',
+				'alt' => '/(.*?)/'
 			)
 		)
 	);

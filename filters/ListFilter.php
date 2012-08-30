@@ -26,28 +26,28 @@ class ListFilter extends FilterAbstract {
 	protected $_tags = array(
 		'olist' => array(
 			'tag' => 'ol',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_BOTH,
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BOTH,
 			'lineBreaks' => self::NL_REMOVE,
-			'children' => array('li'),
-			'html' => array(
+			'childrenWhitelist' => array('li'),
+			'htmlAttributes' => array(
 				'class' => 'decoda-olist'
 			)
 		),
 		'list' => array(
 			'tag' => 'ul',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_BOTH,
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BOTH,
 			'lineBreaks' => self::NL_REMOVE,
-			'children' => array('li'),
-			'html' => array(
+			'childrenWhitelist' => array('li'),
+			'htmlAttributes' => array(
 				'class' => 'decoda-list'
 			)
 		),
 		'li' => array(
 			'tag' => 'li',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_BOTH,
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BOTH,
 			'parent' => array('olist', 'list')
 		)
 	);

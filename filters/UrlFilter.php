@@ -31,27 +31,27 @@ class UrlFilter extends FilterAbstract {
 	protected $_tags = array(
 		'url' => array(
 			'tag' => 'a',
-			'type' => self::TYPE_INLINE,
-			'allowed' => self::TYPE_INLINE,
-			'pattern' => self::URL_PATTERN,
+			'displayType' => self::TYPE_INLINE,
+			'allowedTypes' => self::TYPE_INLINE,
+			'contentPattern' => self::URL_PATTERN,
 			'testNoDefault' => true,
 			'attributes' => array(
 				'default' => self::URL_PATTERN
 			),
-			'map' => array(
+			'mapAttributes' => array(
 				'default' => 'href'
 			)
 		),
 		'link' => array(
 			'tag' => 'a',
-			'type' => self::TYPE_INLINE,
-			'allowed' => self::TYPE_INLINE,
-			'pattern' => self::URL_PATTERN,
+			'displayType' => self::TYPE_INLINE,
+			'allowedTypes' => self::TYPE_INLINE,
+			'contentPattern' => self::URL_PATTERN,
 			'testNoDefault' => true,
 			'attributes' => array(
 				'default' => self::URL_PATTERN
 			),
-			'map' => array(
+			'mapAttributes' => array(
 				'default' => 'href'
 			)
 		)

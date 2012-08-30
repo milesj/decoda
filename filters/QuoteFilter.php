@@ -26,13 +26,13 @@ class QuoteFilter extends FilterAbstract {
 	protected $_tags = array(
 		'quote' => array(
 			'template' => 'quote',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_BOTH,
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BOTH,
 			'attributes' => array(
-				'default' => '/.*?/',
-				'date' => '/.*?/'
+				'default' => '/(.*?)/',
+				'date' => '/(.*?)/'
 			),
-			'map' => array(
+			'mapAttributes' => array(
 				'default' => 'author'
 			),
 			'maxChildDepth' => 2

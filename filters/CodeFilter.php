@@ -28,22 +28,22 @@ class CodeFilter extends FilterAbstract {
 	protected $_tags = array(
 		'code' => array(
 			'template' => 'code',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_BOTH,
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BOTH,
 			'lineBreaks' => self::NL_PRESERVE,
 			'preserveTags' => true,
 			'attributes' => array(
 				'default' => '/^[-a-z0-9]+$/i',
 				'hl' => '/^[0-9,]+$/'
 			),
-			'map' => array(
+			'mapAttributes' => array(
 				'default' => 'lang'
 			)
 		),
 		'var' => array(
 			'tag' => 'code',
-			'type' => self::TYPE_INLINE,
-			'allowed' => self::TYPE_INLINE
+			'displayType' => self::TYPE_INLINE,
+			'allowedTypes' => self::TYPE_INLINE
 		)
 	);
 

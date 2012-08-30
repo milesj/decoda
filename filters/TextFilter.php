@@ -26,66 +26,66 @@ class TextFilter extends FilterAbstract {
 	protected $_tags = array(
 		'font' => array(
 			'tag' => 'span',
-			'type' => self::TYPE_INLINE,
-			'allowed' => self::TYPE_INLINE,
+			'displayType' => self::TYPE_INLINE,
+			'allowedTypes' => self::TYPE_INLINE,
 			'attributes' => array(
-				'default' => array('(.*?)', 'font-family: {default}')
+				'default' => array('/(.*?)/', 'font-family: {default}')
 			),
-			'map' => array(
+			'mapAttributes' => array(
 				'default' => 'style'
 			)
 		),
 		'size' => array(
 			'tag' => 'span',
-			'type' => self::TYPE_INLINE,
-			'allowed' => self::TYPE_INLINE,
+			'displayType' => self::TYPE_INLINE,
+			'allowedTypes' => self::TYPE_INLINE,
 			'attributes' => array(
-				'default' => array('/[1-2]{1}[0-9]{1}/', 'font-size: {default}px'),
+				'default' => array('/^[1-2]{1}[0-9]{1}$/', 'font-size: {default}px'),
 			),
-			'map' => array(
+			'mapAttributes' => array(
 				'default' => 'style'
 			)
 		),
 		'color' => array(
 			'tag' => 'span',
-			'type' => self::TYPE_INLINE,
-			'allowed' => self::TYPE_INLINE,
+			'displayType' => self::TYPE_INLINE,
+			'allowedTypes' => self::TYPE_INLINE,
 			'attributes' => array(
-				'default' => array('/(?:#[0-9a-f]{3,6}|[a-z]+)/i', 'color: {default}'),
+				'default' => array('/^(?:#[0-9a-f]{3,6}|[a-z]+)$/i', 'color: {default}'),
 			),
-			'map' => array(
+			'mapAttributes' => array(
 				'default' => 'style'
 			)
 		),
 		'h1' => array(
 			'tag' => 'h1',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_INLINE
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_INLINE
 		),
 		'h2' => array(
 			'tag' => 'h2',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_INLINE
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_INLINE
 		),
 		'h3' => array(
 			'tag' => 'h3',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_INLINE
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_INLINE
 		),
 		'h4' => array(
 			'tag' => 'h4',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_INLINE
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_INLINE
 		),
 		'h5' => array(
 			'tag' => 'h5',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_INLINE
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_INLINE
 		),
 		'h6' => array(
 			'tag' => 'h6',
-			'type' => self::TYPE_BLOCK,
-			'allowed' => self::TYPE_INLINE
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_INLINE
 		)
 	);
 

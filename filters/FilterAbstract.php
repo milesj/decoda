@@ -60,14 +60,14 @@ abstract class FilterAbstract implements FilterInterface {
 	 */
 	protected $_defaults = array(
 		/**
-		 * key				- (string) Decoda tag
-		 * tag				- (string) HTML replacement tag
+		 * tag				- (string) Decoda tag
+		 * htmlTag			- (string) HTML replacement tag
 		 * template			- (string) Template file to use for rendering
 		 * displayType		- (constant) Type of HTML element: block or inline
 		 * allowedTypes		- (constant) What types of elements are allowed to be nested
 		 */
-		'key' => '',
-		'tag' => '',
+		'htmlTag' => '',
+		'htmlTag' => '',
 		'template' => '',
 		'displayType' => self::TYPE_BLOCK,
 		'allowedTypes' => self::TYPE_BOTH,
@@ -239,7 +239,7 @@ abstract class FilterAbstract implements FilterInterface {
 		}
 
 		// Build HTML tag
-		$html = $setup['tag'];
+		$html = $setup['htmlTag'];
 
 		if (is_array($html)) {
 			$html = $html[$xhtml];
@@ -289,7 +289,7 @@ abstract class FilterAbstract implements FilterInterface {
 	 */
 	public function tag($tag) {
 		$defaults = $this->_defaults;
-		$defaults['key'] = $tag;
+		$defaults['tag'] = $tag;
 
 		if (isset($this->_tags[$tag])) {
 			return $this->_tags[$tag] + $defaults;

@@ -20,7 +20,7 @@ class TestFilter extends FilterAbstract {
 	 */
 	protected $_tags = array(
 		'example' => array(
-			'tag' => 'example',
+			'htmlTag' => 'example',
 			'displayType' => self::TYPE_INLINE,
 			'htmlAttributes' => array(
 				'class' => 'example'

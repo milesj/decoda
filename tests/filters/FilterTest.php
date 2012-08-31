@@ -46,6 +46,7 @@ class FilterTest extends TestCase {
 	 */
 	public function testMessage() {
 		$this->object->setParser(new Decoda());
+
 		$this->assertEquals('Quote by {author}', $this->object->message('quoteBy'));
 	}
 
@@ -53,7 +54,15 @@ class FilterTest extends TestCase {
 	 * Test that parse() renders a Decoda tag into an HTML tag.
 	 */
 	public function testParse() {
-		$this->assertEquals('', $this->object->parse());
+		$this->object->setParser(new Decoda());
+
+		$this->assertEquals('<example class="example">Content</example>', $this->object->parse(array(
+			'tag' => 'example',
+			'text' => '[example]',
+			'attributes' => array(),
+			'type' => Decoda::TAG_OPEN,
+			'children' => array('Content')
+		), 'Content'));
 	}
 
 	/**
@@ -62,7 +71,7 @@ class FilterTest extends TestCase {
 	public function testTags() {
 		$this->assertEquals(array(
 			'example' => array(
-				'tag' => 'example',
+				'htmlTag' => 'example',
 				'displayType' => TestFilter::TYPE_INLINE,
 				'htmlAttributes' => array(
 					'class' => 'example'
@@ -76,8 +85,8 @@ class FilterTest extends TestCase {
 	 */
 	public function testTag() {
 		$expected = array(
-			'key' => 'fakeTag',
-			'tag' => '',
+			'tag' => 'fakeTag',
+			'htmlTag' => '',
 			'template' => '',
 			'displayType' => TestFilter::TYPE_BLOCK,
 			'allowedTypes' => TestFilter::TYPE_BOTH,
@@ -98,8 +107,8 @@ class FilterTest extends TestCase {
 
 		$this->assertEquals($expected, $this->object->tag('fakeTag'));
 
-		$expected['key'] = 'example';
 		$expected['tag'] = 'example';
+		$expected['htmlTag'] = 'example';
 		$expected['displayType'] = TestFilter::TYPE_INLINE;
 		$expected['htmlAttributes'] = array('class' => 'example');
 

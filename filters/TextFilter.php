@@ -25,7 +25,7 @@ class TextFilter extends FilterAbstract {
 	 */
 	protected $_tags = array(
 		'font' => array(
-			'tag' => 'span',
+			'htmlTag' => 'span',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE,
 			'attributes' => array(
@@ -36,7 +36,7 @@ class TextFilter extends FilterAbstract {
 			)
 		),
 		'size' => array(
-			'tag' => 'span',
+			'htmlTag' => 'span',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE,
 			'attributes' => array(
@@ -47,7 +47,7 @@ class TextFilter extends FilterAbstract {
 			)
 		),
 		'color' => array(
-			'tag' => 'span',
+			'htmlTag' => 'span',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE,
 			'attributes' => array(
@@ -58,32 +58,32 @@ class TextFilter extends FilterAbstract {
 			)
 		),
 		'h1' => array(
-			'tag' => 'h1',
+			'htmlTag' => 'h1',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_INLINE
 		),
 		'h2' => array(
-			'tag' => 'h2',
+			'htmlTag' => 'h2',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_INLINE
 		),
 		'h3' => array(
-			'tag' => 'h3',
+			'htmlTag' => 'h3',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_INLINE
 		),
 		'h4' => array(
-			'tag' => 'h4',
+			'htmlTag' => 'h4',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_INLINE
 		),
 		'h5' => array(
-			'tag' => 'h5',
+			'htmlTag' => 'h5',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_INLINE
 		),
 		'h6' => array(
-			'tag' => 'h6',
+			'htmlTag' => 'h6',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_INLINE
 		)

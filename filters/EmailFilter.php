@@ -35,7 +35,7 @@ class EmailFilter extends FilterAbstract {
 	 */
 	protected $_tags = array(
 		'email' => array(
-			'tag' => 'a',
+			'htmlTag' => 'a',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_NONE,
 			'escapeAttributes' => false,
@@ -44,7 +44,7 @@ class EmailFilter extends FilterAbstract {
 			)
 		),
 		'mail' => array(
-			'tag' => 'a',
+			'htmlTag' => 'a',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_NONE,
 			'escapeAttributes' => false,

@@ -25,7 +25,7 @@ class ListFilter extends FilterAbstract {
 	 */
 	protected $_tags = array(
 		'olist' => array(
-			'tag' => 'ol',
+			'htmlTag' => 'ol',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'lineBreaks' => self::NL_REMOVE,
@@ -35,7 +35,7 @@ class ListFilter extends FilterAbstract {
 			)
 		),
 		'list' => array(
-			'tag' => 'ul',
+			'htmlTag' => 'ul',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'lineBreaks' => self::NL_REMOVE,
@@ -45,7 +45,7 @@ class ListFilter extends FilterAbstract {
 			)
 		),
 		'li' => array(
-			'tag' => 'li',
+			'htmlTag' => 'li',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'parent' => array('olist', 'list')

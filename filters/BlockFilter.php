@@ -25,7 +25,7 @@ class BlockFilter extends FilterAbstract {
 	 */
 	protected $_tags = array(
 		'align' => array(
-			'tag' => 'div',
+			'htmlTag' => 'div',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'attributes' => array(
@@ -36,7 +36,7 @@ class BlockFilter extends FilterAbstract {
 			)
 		),
 		'left' => array(
-			'tag' => 'div',
+			'htmlTag' => 'div',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'htmlAttributes' => array(
@@ -44,7 +44,7 @@ class BlockFilter extends FilterAbstract {
 			)
 		),
 		'right' => array(
-			'tag' => 'div',
+			'htmlTag' => 'div',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'htmlAttributes' => array(
@@ -52,7 +52,7 @@ class BlockFilter extends FilterAbstract {
 			)
 		),
 		'center' => array(
-			'tag' => 'div',
+			'htmlTag' => 'div',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'htmlAttributes' => array(
@@ -60,7 +60,7 @@ class BlockFilter extends FilterAbstract {
 			)
 		),
 		'justify' => array(
-			'tag' => 'div',
+			'htmlTag' => 'div',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'htmlAttributes' => array(
@@ -68,7 +68,7 @@ class BlockFilter extends FilterAbstract {
 			)
 		),
 		'float' => array(
-			'tag' => 'div',
+			'htmlTag' => 'div',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'attributes' => array(
@@ -79,7 +79,7 @@ class BlockFilter extends FilterAbstract {
 			)
 		),
 		'hide' => array(
-			'tag' => 'span',
+			'htmlTag' => 'span',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'htmlAttributes' => array(
@@ -87,7 +87,7 @@ class BlockFilter extends FilterAbstract {
 			)
 		),
 		'alert' => array(
-			'tag' => 'div',
+			'htmlTag' => 'div',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'htmlAttributes' => array(
@@ -95,7 +95,7 @@ class BlockFilter extends FilterAbstract {
 			)
 		),
 		'note' => array(
-			'tag' => 'div',
+			'htmlTag' => 'div',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'htmlAttributes' => array(
@@ -103,7 +103,7 @@ class BlockFilter extends FilterAbstract {
 			)
 		),
 		'div' => array(
-			'tag' => 'div',
+			'htmlTag' => 'div',
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'attributes' => array(

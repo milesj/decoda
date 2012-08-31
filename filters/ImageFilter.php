@@ -20,7 +20,7 @@ class ImageFilter extends FilterAbstract {
 	/**
 	 * Regex pattern.
 	 */
-	const IMAGE_PATTERN = '/^(?:https?:\/\/)?(.*?)\.(jpg|jpeg|png|gif|bmp)$/is';
+	const IMAGE_PATTERN = '/^https?:\/\/(.*?)\.(jpg|jpeg|png|gif|bmp)$/is';
 
 	/**
 	 * Supported tags.
@@ -30,7 +30,7 @@ class ImageFilter extends FilterAbstract {
 	 */
 	protected $_tags = array(
 		'img' => array(
-			'tag' => 'img',
+			'htmlTag' => 'img',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_NONE,
 			'contentPattern' => self::IMAGE_PATTERN,
@@ -42,7 +42,7 @@ class ImageFilter extends FilterAbstract {
 			)
 		),
 		'image' => array(
-			'tag' => 'img',
+			'htmlTag' => 'img',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_NONE,
 			'contentPattern' => self::IMAGE_PATTERN,

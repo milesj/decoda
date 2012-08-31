@@ -25,32 +25,32 @@ class DefaultFilter extends FilterAbstract {
 	 */
 	protected $_tags = array(
 		'b' => array(
-			'tag' => array('b', 'strong'),
+			'htmlTag' => array('b', 'strong'),
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE
 		),
 		'i' => array(
-			'tag' => array('i', 'em'),
+			'htmlTag' => array('i', 'em'),
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE
 		),
 		'u' => array(
-			'tag' => 'u',
+			'htmlTag' => 'u',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE
 		),
 		's' => array(
-			'tag' => 'del',
+			'htmlTag' => 'del',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE
 		),
 		'sub' => array(
-			'tag' => 'sub',
+			'htmlTag' => 'sub',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE
 		),
 		'sup' => array(
-			'tag' => 'sup',
+			'htmlTag' => 'sup',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE
 		)

@@ -30,7 +30,7 @@ class UrlFilter extends FilterAbstract {
 	 */
 	protected $_tags = array(
 		'url' => array(
-			'tag' => 'a',
+			'htmlTag' => 'a',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE,
 			'contentPattern' => self::URL_PATTERN,
@@ -43,7 +43,7 @@ class UrlFilter extends FilterAbstract {
 			)
 		),
 		'link' => array(
-			'tag' => 'a',
+			'htmlTag' => 'a',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE,
 			'contentPattern' => self::URL_PATTERN,

@@ -41,7 +41,7 @@ class CodeFilter extends FilterAbstract {
 			)
 		),
 		'var' => array(
-			'tag' => 'code',
+			'htmlTag' => 'code',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE
 		)

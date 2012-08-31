@@ -18,11 +18,6 @@ use mjohnson\decoda\filters\FilterAbstract;
 class UrlFilter extends FilterAbstract {
 
 	/**
-	 * Regex pattern.
-	 */
-	const URL_PATTERN = '/^((?:http|ftp|irc|file|telnet)s?:\/\/)(.*?)$/is';
-
-	/**
 	 * Supported tags.
 	 *
 	 * @access protected
@@ -33,10 +28,8 @@ class UrlFilter extends FilterAbstract {
 			'htmlTag' => 'a',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE,
-			'contentPattern' => self::URL_PATTERN,
-			'testNoDefault' => true,
 			'attributes' => array(
-				'default' => self::URL_PATTERN
+				'default' => true
 			),
 			'mapAttributes' => array(
 				'default' => 'href'
@@ -46,10 +39,8 @@ class UrlFilter extends FilterAbstract {
 			'htmlTag' => 'a',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE,
-			'contentPattern' => self::URL_PATTERN,
-			'testNoDefault' => true,
 			'attributes' => array(
-				'default' => self::URL_PATTERN
+				'default' => true
 			),
 			'mapAttributes' => array(
 				'default' => 'href'
@@ -66,9 +57,14 @@ class UrlFilter extends FilterAbstract {
 	 * @return string
 	 */
 	public function parse(array $tag, $content) {
-		if (empty($tag['attributes']['href']) && empty($tag['attributes']['default'])) {
-			$tag['attributes']['href'] = $content;
+		$url = isset($tag['attributes']['href']) ? $tag['attributes']['href'] : $content;
+
+		// Return an invalid URL
+		if (!filter_var($url, FILTER_VALIDATE_URL)) {
+			return $url;
 		}
+
+		$tag['attributes']['href'] = $url;
 
 		if ($this->getParser()->config('shorthand')) {
 			$tag['content'] = $this->message('link');

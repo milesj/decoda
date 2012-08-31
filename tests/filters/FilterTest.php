@@ -103,6 +103,7 @@ class FilterTest extends TestCase {
 			'childrenWhitelist' => array(),
 			'childrenBlacklist' => array(),
 			'maxChildDepth' => -1,
+			'persistContent' => true
 		);
 
 		$this->assertEquals($expected, $this->object->tag('fakeTag'));

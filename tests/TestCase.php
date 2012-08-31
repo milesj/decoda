@@ -27,4 +27,15 @@ class TestCase extends \PHPUnit_Framework_TestCase {
 		$this->object = new Decoda();
 	}
 
+	/**
+	 * Strip new lines and tabs to test template files easily.
+	 *
+	 * @access public
+	 * @param string $string
+	 * @return string
+	 */
+	public function clean($string) {
+		return str_replace(array("\t", "\r", "\n"), '', $string);
+	}
+
 }

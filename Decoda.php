@@ -874,6 +874,10 @@ class Decoda {
 
 			switch ($chunk['type']) {
 				case self::TAG_NONE:
+					if ($disallowed && !$parent['persistContent']) {
+						continue;
+					}
+
 					if (!$parent['childrenWhitelist'] && !$parent['childrenBlacklist']) {
 						if (!empty($prevChunk) && $prevChunk['type'] === self::TAG_NONE) {
 							$chunk['text'] = $prevChunk['text'] . $chunk['text'];

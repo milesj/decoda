@@ -18,6 +18,16 @@ use mjohnson\decoda\filters\FilterAbstract;
 class QuoteFilter extends FilterAbstract {
 
 	/**
+	 * Configuration.
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $_config = array(
+		'dateFormat' => 'M jS Y, H:i:s'
+	);
+
+	/**
 	 * Supported tags.
 	 *
 	 * @access protected
@@ -29,13 +39,14 @@ class QuoteFilter extends FilterAbstract {
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'attributes' => array(
-				'default' => '/(.*?)/',
-				'date' => '/(.*?)/'
+				'default' => '/^(.*?)$/',
+				'date' => '/^(.*?)$/'
 			),
 			'mapAttributes' => array(
 				'default' => 'author'
 			),
-			'maxChildDepth' => 2
+			'maxChildDepth' => 2,
+			'persistContent' => false
 		)
 	);
 

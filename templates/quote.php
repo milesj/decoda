@@ -1,15 +1,14 @@
-
 <blockquote class="decoda-quote">
 	<?php if (!empty($author) || !empty($date)) { ?>
-		<div class="decoda-quoteHead">
+		<div class="decoda-quote-head">
 			<?php if (!empty($date)) { ?>
-				<span class="decoda-quoteDate">
-					<?php echo date('M jS Y, H:i:s', is_numeric($date) ? $date : strtotime($date)); ?>
+				<span class="decoda-quote-date">
+					<?php echo date($dateFormat, is_numeric($date) ? $date : strtotime($date)); ?>
 				</span>
 			<?php }
 
 			if (!empty($author)) { ?>
-				<span class="decoda-quoteAuthor">
+				<span class="decoda-quote-author">
 					<?php echo $this->getFilter()->message('quoteBy', array(
 						'author' => htmlentities($author, ENT_NOQUOTES, 'UTF-8')
 					)); ?>
@@ -20,7 +19,7 @@
 		</div>
 	<?php } ?>
 
-	<div class="decoda-quoteBody">
+	<div class="decoda-quote-body">
 		<?php echo $content; ?>
 	</div>
 </blockquote>

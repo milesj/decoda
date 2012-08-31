@@ -18,6 +18,16 @@ use mjohnson\decoda\filters\FilterAbstract;
 class BlockFilter extends FilterAbstract {
 
 	/**
+	 * Configuration.
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $_config = array(
+		'spoilerToggle' => "$('#spoiler-content-{id}').toggle();"
+	);
+
+	/**
 	 * Supported tags.
 	 *
 	 * @access protected

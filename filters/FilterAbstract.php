@@ -101,11 +101,13 @@ abstract class FilterAbstract implements FilterInterface {
 		 * childrenWhitelist	- (array) List of Decoda keys that can only be a direct descendant
 		 * childrenBlacklist	- (array) List of Decoda keys that can not be a direct descendant
 		 * maxChildDepth		- (integer) Max depth for nested children of the same tag (-1 to disable)
+		 * persistContent		- (boolean) Should we persist text content from within deeply nested tags (but remove their wrapping tags)
 		 */
 		'parent' => array(),
 		'childrenWhitelist' => array(),
 		'childrenBlacklist' => array(),
 		'maxChildDepth' => -1,
+		'persistContent' => true
 	);
 
 	/**
@@ -228,7 +230,7 @@ abstract class FilterAbstract implements FilterInterface {
 
 		// Use a template if it exists
 		if ($setup['template']) {
-			$tag['attributes'] = $attributes;
+			$tag['attributes'] = $attributes + $this->_config;
 
 			$engine = $this->getParser()->getEngine();
 			$engine->setFilter($this);

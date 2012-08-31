@@ -1152,15 +1152,15 @@ class Decoda {
 			return false;
 
 		// Children that can only be within a certain parent
-		} else if ($child['parent'] && !in_array($parent['key'], $child['parent'])) {
+		} else if ($child['parent'] && !in_array($parent['tag'], $child['parent'])) {
 			return false;
 
 		// Parents that can not have specific direct descendant children
-		} else if ($parent['childrenBlacklist'] && in_array($child['key'], $parent['childrenBlacklist'])) {
+		} else if ($parent['childrenBlacklist'] && in_array($child['tag'], $parent['childrenBlacklist'])) {
 			return false;
 
 		// Parents that can only have direct descendant children
-		} else if ($parent['childrenWhitelist'] && !in_array($child['key'], $parent['childrenWhitelist'])) {
+		} else if ($parent['childrenWhitelist'] && !in_array($child['tag'], $parent['childrenWhitelist'])) {
 			return false;
 
 		// Block element that accepts both types
@@ -1174,8 +1174,8 @@ class Decoda {
 
 		$this->_errors[] = array(
 			'type' => self::ERROR_SCOPE,
-			'parent' => $parent['key'],
-			'child' => $child['key']
+			'parent' => $parent['tag'],
+			'child' => $child['tag']
 		);
 
 		return false;

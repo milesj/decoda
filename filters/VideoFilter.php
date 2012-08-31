@@ -35,8 +35,8 @@ class VideoFilter extends FilterAbstract {
 			'allowedTypes' => self::TYPE_NONE,
 			'contentPattern' => self::VIDEO_PATTERN,
 			'attributes' => array(
-				'default' => '/[a-z0-9]+/i',
-				'size' => '/small|medium|large/i'
+				'default' => '/^[a-z0-9]+$/i',
+				'size' => '/^(?:small|medium|large)$/i'
 			)
 		)
 	);

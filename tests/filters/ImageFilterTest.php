@@ -47,6 +47,10 @@ class ImageFilterTest extends TestCase {
 		// security
 		$this->assertEquals('(Invalid img)', $this->object->reset('[img]http://domain.com[/img]')->parse());
 		$this->assertEquals(null, $this->object->reset('[img]http://domain.com/image.gif?path=http://domain.com/image.png[/img]')->parse());
+
+		// xhtml
+		$this->object->setXhtml(true);
+		$this->assertEquals('<img src="http://domain.com/image.gif" alt="" />', $this->object->reset('[img]http://domain.com/image.gif[/img]')->parse());
 	}
 
 }

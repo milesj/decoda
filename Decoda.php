@@ -819,7 +819,7 @@ class Decoda {
 
 							} else if (is_array($pattern)) {
 								if (preg_match($pattern[0], $value)) {
-									$tag['attributes'][$finalKey] = str_replace('{' . $key . '}', strtolower($value), $pattern[1]);
+									$tag['attributes'][$finalKey] = str_replace('{' . $key . '}', $value, $pattern[1]);
 								}
 
 							} else {

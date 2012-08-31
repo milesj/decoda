@@ -250,7 +250,7 @@ abstract class FilterAbstract implements FilterInterface {
 		}
 
 		if ($setup['autoClose']) {
-			$parsed = '<' . $html . $attr . ($xhtml ? '/' : '') . '>';
+			$parsed = '<' . $html . $attr . ($xhtml ? ' /' : '') . '>';
 		} else {
 			$parsed = '<' . $html . $attr . '>' . (!empty($tag['content']) ? $tag['content'] : $content) . '</' . $html . '>';
 		}

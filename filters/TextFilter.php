@@ -28,8 +28,9 @@ class TextFilter extends FilterAbstract {
 			'htmlTag' => 'span',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE,
+			'escapeAttributes' => false,
 			'attributes' => array(
-				'default' => array('/(.*?)/', 'font-family: {default}')
+				'default' => array('/^[a-z0-9\-\s,\.\']+$/i', 'font-family: {default}')
 			),
 			'mapAttributes' => array(
 				'default' => 'style'

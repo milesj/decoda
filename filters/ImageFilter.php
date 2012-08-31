@@ -20,7 +20,7 @@ class ImageFilter extends FilterAbstract {
 	/**
 	 * Regex pattern.
 	 */
-	const IMAGE_PATTERN = '/^https?:\/\/(.*?)\.(jpg|jpeg|png|gif|bmp)$/is';
+	const IMAGE_PATTERN = '/^(?:https?:)?\/\/(.*?)\.(?:jpg|jpeg|png|gif|bmp)$/is';
 
 	/**
 	 * Supported tags.
@@ -64,8 +64,9 @@ class ImageFilter extends FilterAbstract {
 	 * @return string
 	 */
 	public function parse(array $tag, $content) {
+
 		// If more than 1 http:// is found in the string, possible XSS attack
-		if (substr_count($content, 'http://') > 1) {
+		if ((substr_count($content, 'http://') + substr_count($content, 'https://')) > 1) {
 			return null;
 		}
 

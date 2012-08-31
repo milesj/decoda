@@ -39,21 +39,4 @@ class EmailFilterTest extends TestCase {
 		$this->assertEquals($expected, $this->object->reset('[email="email@domain"]Email me![/email]')->parse());
 	}
 
-	/**
-	 * Test that [mail] renders anchor links that send to email.
-	 */
-	public function testMail() {
-		$expected = '<a href="mailto:&#101;&#109;&#97;&#105;&#108;&#64;&#100;&#111;&#109;&#97;&#105;&#110;&#46;&#99;&#111;&#109;">&#101;&#109;&#97;&#105;&#108;&#64;&#100;&#111;&#109;&#97;&#105;&#110;&#46;&#99;&#111;&#109;</a>';
-		$this->assertEquals($expected, $this->object->reset('[mail]email@domain.com[/mail]')->parse());
-
-		$expected = '<a href="mailto:&#101;&#109;&#97;&#105;&#108;&#64;&#100;&#111;&#109;&#97;&#105;&#110;&#46;&#99;&#111;&#109;">Email me!</a>';
-		$this->assertEquals($expected, $this->object->reset('[mail="email@domain.com"]Email me![/mail]')->parse());
-
-		$expected = 'email@domain';
-		$this->assertEquals($expected, $this->object->reset('[mail]email@domain[/mail]')->parse());
-
-		$expected = 'Email me!';
-		$this->assertEquals($expected, $this->object->reset('[mail="email@domain"]Email me![/mail]')->parse());
-	}
-
 }

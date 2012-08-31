@@ -66,7 +66,7 @@ abstract class FilterAbstract implements FilterInterface {
 		 * displayType		- (constant) Type of HTML element: block or inline
 		 * allowedTypes		- (constant) What types of elements are allowed to be nested
 		 */
-		'htmlTag' => '',
+		'tag' => '',
 		'htmlTag' => '',
 		'template' => '',
 		'displayType' => self::TYPE_BLOCK,
@@ -185,7 +185,11 @@ abstract class FilterAbstract implements FilterInterface {
 
 		// If content doesn't match the pattern, don't wrap in a tag
 		if ($setup['contentPattern']) {
-			if ($setup['testNoDefault'] && !isset($tag['attributes']['default']) && !preg_match($setup['contentPattern'], $content)) {
+			if ($setup['testNoDefault']) {
+				if (!isset($tag['attributes']['default']) && !preg_match($setup['contentPattern'], $content)) {
+					return sprintf('(Invalid %s)', $tag['tag']);
+				}
+			} else if (!preg_match($setup['contentPattern'], $content)) {
 				return sprintf('(Invalid %s)', $tag['tag']);
 			}
 		}

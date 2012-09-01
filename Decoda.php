@@ -290,37 +290,6 @@ class Decoda {
 	}
 
 	/**
-	 * Disable all filters.
-	 *
-	 * @access public
-	 * @return \mjohnson\decoda\Decoda
-	 * @chainable
-	 */
-	public function disableFilters() {
-		$this->_filters = array();
-		$this->_filterMap = array();
-
-		$this->addFilter(new \mjohnson\decoda\filters\EmptyFilter());
-
-		return $this;
-	}
-
-	/**
-	 * Disable all hooks.
-	 *
-	 * @access public
-	 * @return \mjohnson\decoda\Decoda
-	 * @chainable
-	 */
-	public function disableHooks() {
-		$this->_hooks = array();
-
-		$this->addHook(new \mjohnson\decoda\hooks\EmptyHook());
-
-		return $this;
-	}
-
-	/**
 	 * Return the parsing errors.
 	 *
 	 * @access public
@@ -583,13 +552,41 @@ class Decoda {
 		$this->_parsed = '';
 
 		if ($flush) {
-			$this->_filters = array();
-			$this->_filterMap = array();
-			$this->_hooks = array();
-			$this->_tags = array();
+			$this->resetFilters();
+			$this->resetHooks();
 		}
 
+		return $this;
+	}
+
+	/**
+	 * Reset all filters.
+	 *
+	 * @access public
+	 * @return \mjohnson\decoda\Decoda
+	 * @chainable
+	 */
+	public function resetFilters() {
+		$this->_filters = array();
+		$this->_filterMap = array();
+		$this->_tags = array();
+
 		$this->addFilter(new \mjohnson\decoda\filters\EmptyFilter());
+
+		return $this;
+	}
+
+	/**
+	 * Reset all hooks.
+	 *
+	 * @access public
+	 * @return \mjohnson\decoda\Decoda
+	 * @chainable
+	 */
+	public function resetHooks() {
+		$this->_hooks = array();
+
+		$this->addHook(new \mjohnson\decoda\hooks\EmptyHook());
 
 		return $this;
 	}

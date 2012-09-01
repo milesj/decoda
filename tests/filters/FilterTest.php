@@ -70,14 +70,10 @@ class FilterTest extends TestCase {
 	 */
 	public function testTags() {
 		$this->assertEquals(array(
-			'example' => array(
-				'htmlTag' => 'example',
-				'displayType' => TestFilter::TYPE_INLINE,
-				'htmlAttributes' => array(
-					'class' => 'example'
-				)
-			)
-		), $this->object->tags());
+			'example',
+			'template',
+			'templateMissing'
+		), array_keys($this->object->tags()));
 	}
 
 	/**

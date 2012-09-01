@@ -18,6 +18,16 @@ use mjohnson\decoda\filters\FilterAbstract;
 class UrlFilter extends FilterAbstract {
 
 	/**
+	 * Configuration.
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $_config = array(
+		'protocols' => array('http', 'ftp', 'irc', 'telnet')
+	);
+
+	/**
 	 * Supported tags.
 	 *
 	 * @access protected
@@ -58,9 +68,10 @@ class UrlFilter extends FilterAbstract {
 	 */
 	public function parse(array $tag, $content) {
 		$url = isset($tag['attributes']['href']) ? $tag['attributes']['href'] : $content;
+		$protocols = $this->config('protocols');
 
 		// Return an invalid URL
-		if (!filter_var($url, FILTER_VALIDATE_URL)) {
+		if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/^(' . implode('|', $protocols) . ')/i', $url)) {
 			return $url;
 		}
 

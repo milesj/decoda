@@ -40,6 +40,7 @@ class UrlFilterTest extends TestCase {
 
 		// invalid
 		$this->assertEquals('http:domain.com', $this->object->reset('[url]http:domain.com[/url]')->parse());
+		$this->assertEquals('file://image.png', $this->object->reset('[url]file://image.png[/url]')->parse());
 	}
 
 }

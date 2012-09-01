@@ -26,18 +26,27 @@ class ClickableHook extends HookAbstract {
 	 * @return string
 	 */
 	public function afterParse($content) {
-		if ($this->getParser()->getFilter('Url')) {
-			$protocol = '(http|ftp|irc|file|telnet)s?:\/?\/?';
-			$login = '([-a-zA-Z0-9\.\+]+:[-a-zA-Z0-9\.\+]+@)?';
-			$domain = '([-a-zA-Z0-9\.]{5,255}+)';
-			$port = '(:[0-9]{0,6}+)?';
-			$query = '([a-zA-Z0-9' . preg_quote('-_=;:&?/[]', '/') . ']+)?';
-			$content = preg_replace_callback('/(^|\n|\s)' . $protocol . $login . $domain . $port . $query . '/is', array($this, '_urlCallback'), $content);
+		if ($url = $this->getParser()->getFilter('Url')) {
+			$chars = preg_quote('-_=;:&?/[]%', '/');
+			$protocols = $url->config('protocols');
+
+			$pattern = sprintf('%s%s%s%s%s%s',
+				'(' . implode('|', $protocols) . ')s?:\/\/', // protocol
+				'([-a-z0-9\.\+]+:[-a-z0-9\.\+]+@)?', // login
+				'([-a-z0-9\.]{5,255}+)', // domain, tld
+				'(:[0-9]{0,6}+)?', // port
+				'([a-z0-9' . $chars . ']+)?', // query
+				'(#[a-z0-9' . $chars . ']+)?' // fragment
+			);
+
+			$content = preg_replace_callback('/(^|\n|\s)' . $pattern . '/is', array($this, '_urlCallback'), $content);
 		}
 
 		// Based on schema: http://en.wikipedia.org/wiki/Email_address
-		if ($this->getParser()->getFilter('Email')) {
-			$content = preg_replace_callback(EmailFilter::EMAIL_PATTERN, array($this, '_emailCallback'), $content);
+		if ($email = $this->getParser()->getFilter('Email')) {
+			$pattern = '/(^|\n|\s)([-a-z0-9\.\+!]{1,64}+)@([-a-z0-9]+\.[a-z\.]+)/is';
+
+			$content = preg_replace_callback($pattern, array($this, '_emailCallback'), $content);
 		}
 
 		return $content;
@@ -51,7 +60,7 @@ class ClickableHook extends HookAbstract {
 	 * @return string
 	 */
 	protected function _emailCallback($matches) {
-		return $this->getParser()->getFilter('Email')->parse(array(
+		return $matches[1] . $this->getParser()->getFilter('Email')->parse(array(
 			'tag' => 'email',
 			'attributes' => array()
 		), trim($matches[0]));
@@ -65,7 +74,7 @@ class ClickableHook extends HookAbstract {
 	 * @return string
 	 */
 	protected function _urlCallback($matches) {
-		return $this->getParser()->getFilter('Url')->parse(array(
+		return $matches[1] . $this->getParser()->getFilter('Url')->parse(array(
 			'tag' => 'url',
 			'attributes' => array()
 		), trim($matches[0]));

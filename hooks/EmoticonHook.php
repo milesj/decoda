@@ -53,10 +53,10 @@ class EmoticonHook extends HookAbstract {
 	 * @return string
 	 */
 	public function beforeParse($content) {
-		if ($this->getParser()->getFilter('Image') && $this->_emoticons) {
+		if ($this->_emoticons) {
 			foreach ($this->_emoticons as $smilies) {
 				foreach ($smilies as $smile) {
-					$content = preg_replace_callback('/(\s)?' . preg_quote($smile, '/') . '(\s)?/is', array($this, '_emoticonCallback'), $content);
+					$content = preg_replace_callback('/(^|\n|\s)?' . preg_quote($smile, '/') . '(\n|\s|$)?/is', array($this, '_emoticonCallback'), $content);
 				}
 			}
 		}
@@ -116,12 +116,13 @@ class EmoticonHook extends HookAbstract {
 			$this->_map[$smiley],
 			$this->config('extension'));
 
-		$image = $this->getParser()->getFilter('Image')->parse(array(
-			'tag' => 'img',
-			'attributes' => array()
-		), $path);
+		if ($this->getParser()->config('xhtml')) {
+			$image = '<img src="%s" alt="" />';
+		} else {
+			$image = '<img src="%s" alt="">';
+		}
 
-		return $l . $image . $r;
+		return $l . sprintf($image, $path) . $r;
 	}
 
 }

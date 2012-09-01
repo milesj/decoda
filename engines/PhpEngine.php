@@ -34,17 +34,7 @@ class PhpEngine extends EngineAbstract {
 			throw new \Exception(sprintf('Template file %s does not exist.', $setup['template']));
 		}
 
-		$vars = array();
-
-		foreach ($tag['attributes'] as $key => $value) {
-			if (isset($setup['map'][$key])) {
-				$key = $setup['map'][$key];
-			}
-
-			$vars[$key] = $value;
-		}
-
-		extract($vars, EXTR_SKIP);
+		extract($tag['attributes'], EXTR_SKIP);
 		ob_start();
 
 		include $path;

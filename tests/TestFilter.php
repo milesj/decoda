@@ -25,6 +25,12 @@ class TestFilter extends FilterAbstract {
 			'htmlAttributes' => array(
 				'class' => 'example'
 			)
+		),
+		'template' => array(
+			'template' => 'test'
+		),
+		'templateMissing' => array(
+			'template' => 'test_missing'
 		)
 	);
 

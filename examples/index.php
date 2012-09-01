@@ -77,14 +77,14 @@ function buildMenu($items, $view) {
 		.decoda-quote { background: #FFFFCC; padding: 10px; margin: 0 0 15px 15px; border-radius: 10px; }
 		.decoda-quote .decoda-quote { background: khaki; margin: 15px 0; }
 		.decoda-quote .decoda-quote .decoda-quote { background: goldenrod; }
-		.decoda-quoteHead { font-weight: bold; margin-bottom: 5px; }
-		.decoda-quoteDate { float: right; }
+		.decoda-quote-head { font-weight: bold; margin-bottom: 5px; }
+		.decoda-quote-date { float: right; }
 		.decoda-code { background: lightgray; padding: 10px; border-radius: 10px; }
 		.decoda-alert { background: lightpink; padding: 10px; border-radius: 10px; }
 		.decoda-note { background: powderblue; padding: 10px; border-radius: 10px; }
-		.decoda-spoilerContent { background: palegreen; margin-top: 5px; padding: 10px; border-radius: 10px; }
-		.decoda-spoilerContent .decoda-spoiler { margin-top: 10px; }
-		.decoda-spoilerContent .decoda-spoilerContent { background: oldlace; }
+		.decoda-spoiler-content { background: palegreen; margin-top: 5px; padding: 10px; border-radius: 10px; }
+		.decoda-spoiler-content .decoda-spoiler { margin-top: 10px; }
+		.decoda-spoiler-content .decoda-spoiler-content { background: oldlace; }
 	</style>
 </head>
 <body>

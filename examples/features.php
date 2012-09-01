@@ -34,7 +34,7 @@ echo $code->parse(); ?>
 [b][i][u]Bold, italics, underline[/u][/i][/b]';
 
 $code = new \mjohnson\decoda\Decoda($string);
-$code->disableHooks()->disableFilters();
+$code->resetHooks()->resetFilters();
 echo $code->parse(); ?>
 
 <h2>Disable tag parsing</h2>

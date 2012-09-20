@@ -21,10 +21,7 @@ class TestFilter extends FilterAbstract {
 	protected $_tags = array(
 		'example' => array(
 			'htmlTag' => 'example',
-			'displayType' => self::TYPE_INLINE,
-			'htmlAttributes' => array(
-				'class' => 'example'
-			)
+			'displayType' => self::TYPE_BLOCK
 		),
 		'template' => array(
 			'template' => 'test'
@@ -90,7 +87,51 @@ class TestFilter extends FilterAbstract {
 				'id' => 'custom-html'
 			),
 			'escapeAttributes' => true
-		)
+		),
+
+		// Parent child hierarchy
+		'parent' => array(
+			'htmlTag' => 'parent',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK
+		),
+		'parentNoPersist' => array(
+			'htmlTag' => 'parentNoPersist',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK,
+			'persistContent' => false
+		),
+		'parentWhitelist' => array(
+			'htmlTag' => 'parentWhitelist',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK,
+			'childrenWhitelist' => array('whiteChild')
+		),
+		'parentBlacklist' => array(
+			'htmlTag' => 'parentBlacklist',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK,
+			'childrenBlacklist' => array('whiteChild')
+		),
+		'whiteChild' => array(
+			'htmlTag' => 'whiteChild',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK,
+			'parent' => array('parent', 'parentWhitelist', 'parentBlacklist')
+		),
+		'blackChild' => array(
+			'htmlTag' => 'blackChild',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK,
+			'parent' => array('parent', 'parentWhitelist', 'parentBlacklist')
+		),
+		'depth' => array(
+			'htmlTag' => 'depth',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK,
+			'maxChildDepth' => 2,
+			'persistContent' => false
+		),
 	);
 
 }

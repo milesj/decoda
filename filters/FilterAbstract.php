@@ -45,6 +45,14 @@ abstract class FilterAbstract implements FilterInterface {
 	const NL_CONVERT = 2;
 
 	/**
+	 * Regex patterns for attribute parsing.
+	 */
+	const WILDCARD = '/(.*?)/';
+	const ALPHA = '/^[a-z_\-\s]+$/i';
+	const ALNUM = '/^[a-z0-9,_\s\.\-\+\/]+$/i';
+	const NUMERIC = '/^[0-9,\.\-\+\/]+$/';
+
+	/**
 	 * Configuration.
 	 *
 	 * @access protected

@@ -48,4 +48,63 @@ class DecodaTest extends TestCase {
 		$this->assertEquals('<blockAllowBoth><inline>Inline</inline><block>Block</block></blockAllowBoth>', $this->object->reset($string)->parse());
 	}
 
+	/**
+	 * Test attribute parsing, mapping and escaping.
+	 */
+	public function testAttributeParsing() {
+		// No attributes, has custom HTML attributes
+		$string = '[attributes]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		// Default attribute, uses wildcard pattern, is mapped and renamed to wildcard
+		$string = '[attributes="1337"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" wildcard="1337">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		$string = '[attributes="Decoda"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" wildcard="Decoda">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		$string = '[attributes="02/26/1988!"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" wildcard="02/26/1988!">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		// Alpha attribute, uses alpha pattern
+		$string = '[attributes alpha="1337"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		$string = '[attributes alpha="Decoda Parser"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" alpha="Decoda Parser">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		$string = '[attributes alpha="Spaces Dashes- Underscores_"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" alpha="Spaces Dashes- Underscores_">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		$string = '[attributes alpha="Other! Not* Allowed&"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		// Alnum attribute, uses alpha and numeric pattern
+		$string = '[attributes alnum="1337"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" alnum="1337">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		$string = '[attributes alnum="Decoda Parser"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" alnum="Decoda Parser">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		$string = '[attributes alnum="Spaces Dashes- Underscores_"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" alnum="Spaces Dashes- Underscores_">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		// Numeric attribute, uses numeric pattern
+		$string = '[attributes numeric="1337"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" numeric="1337">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		$string = '[attributes numeric="+1,337"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" numeric="+1,337">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		$string = '[attributes numeric="1,337.00"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" numeric="1,337.00">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		$string = '[attributes numeric="Decoda"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		// All attributes and escaping
+		$string = '[attributes="Decoda & Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" wildcard="Decoda &amp; Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337">Attributes</attributes>', $this->object->reset($string)->parse());
+	}
+
 }

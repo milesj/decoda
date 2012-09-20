@@ -39,8 +39,8 @@ class QuoteFilter extends FilterAbstract {
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'attributes' => array(
-				'default' => '/^(.*?)$/',
-				'date' => '/^(.*?)$/'
+				'default' => self::WILDCARD,
+				'date' => self::WILDCARD
 			),
 			'mapAttributes' => array(
 				'default' => 'author'

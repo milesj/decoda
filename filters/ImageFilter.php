@@ -21,6 +21,7 @@ class ImageFilter extends FilterAbstract {
 	 * Regex pattern.
 	 */
 	const IMAGE_PATTERN = '/^(?:https?:)?\/\/(.*?)\.(?:jpg|jpeg|png|gif|bmp)$/is';
+	const DIMENSION = '/^[0-9%]{1,4}+$/';
 
 	/**
 	 * Supported tags.
@@ -36,9 +37,9 @@ class ImageFilter extends FilterAbstract {
 			'contentPattern' => self::IMAGE_PATTERN,
 			'autoClose' => true,
 			'attributes' => array(
-				'width' => '/^[0-9%]{1,4}+$/',
-				'height' => '/^[0-9%]{1,4}+$/',
-				'alt' => '/(.*?)/'
+				'width' => self::DIMENSION,
+				'height' => self::DIMENSION,
+				'alt' => self::WILDCARD
 			)
 		),
 		'image' => array(
@@ -48,9 +49,9 @@ class ImageFilter extends FilterAbstract {
 			'contentPattern' => self::IMAGE_PATTERN,
 			'autoClose' => true,
 			'attributes' => array(
-				'width' => '/^[0-9%]{1,4}+$/',
-				'height' => '/^[0-9%]{1,4}+$/',
-				'alt' => '/(.*?)/'
+				'width' => self::DIMENSION,
+				'height' => self::DIMENSION,
+				'alt' => self::WILDCARD
 			)
 		)
 	);

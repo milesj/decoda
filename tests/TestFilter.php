@@ -72,6 +72,25 @@ class TestFilter extends FilterAbstract {
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH
 		),
+
+		// Attribute testing
+		'attributes' => array(
+			'htmlTag' => 'attributes',
+			'displayType' => self::TYPE_INLINE,
+			'attributes' => array(
+				'default' => self::WILDCARD,
+				'alpha' => self::ALPHA,
+				'alnum' => self::ALNUM,
+				'numeric' => self::NUMERIC
+			),
+			'mapAttributes' => array(
+				'default' => 'wildcard'
+			),
+			'htmlAttributes' => array(
+				'id' => 'custom-html'
+			),
+			'escapeAttributes' => true
+		)
 	);
 
 }

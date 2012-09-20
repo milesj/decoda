@@ -117,8 +117,8 @@ class BlockFilter extends FilterAbstract {
 			'displayType' => self::TYPE_BLOCK,
 			'allowedTypes' => self::TYPE_BOTH,
 			'attributes' => array(
-				'default' => '/^[-_a-z0-9]+$/i',
-				'class' => '/^[-_a-z0-9\s]+$/i'
+				'default' => self::ALPHA,
+				'class' => self::ALNUM
 			),
 			'mapAttributes' => array(
 				'default' => 'id'

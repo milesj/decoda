@@ -132,6 +132,26 @@ class TestFilter extends FilterAbstract {
 			'maxChildDepth' => 2,
 			'persistContent' => false
 		),
+
+		// CRLF formatting
+		'lineBreaksRemove' => array(
+			'htmlTag' => 'lineBreaksRemove',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK,
+			'lineBreaks' => self::NL_REMOVE
+		),
+		'lineBreaksPreserve' => array(
+			'htmlTag' => 'lineBreaksPreserve',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK,
+			'lineBreaks' => self::NL_PRESERVE
+		),
+		'lineBreaksConvert' => array(
+			'htmlTag' => 'lineBreaksConvert',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK,
+			'lineBreaks' => self::NL_CONVERT
+		),
 	);
 
 }

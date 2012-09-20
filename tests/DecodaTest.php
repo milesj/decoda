@@ -156,4 +156,25 @@ class DecodaTest extends TestCase {
 		$this->assertEquals('<depth>1 <depth>2 <depth>3 </depth></depth></depth>', $this->object->reset($string)->parse());
 	}
 
+	/**
+	 * Test CRLF formatting.
+	 */
+	public function testNewlineFormatting() {
+		// Remove CRLF
+		$string = "[lineBreaksRemove]Line\nBreak\rTests[/lineBreaksRemove]";
+		$this->assertEquals("<lineBreaksRemove>LineBreakTests</lineBreaksRemove>", $this->object->reset($string)->parse());
+
+		// Preserve CRLF
+		$string = "[lineBreaksPreserve]Line\nBreak\rTests[/lineBreaksPreserve]";
+		$this->assertEquals("<lineBreaksPreserve>Line\nBreak\rTests</lineBreaksPreserve>", $this->object->reset($string)->parse());
+
+		// Convert CRLF to <br>
+		$string = "[lineBreaksConvert]Line\nBreak\rTests[/lineBreaksConvert]";
+		$this->assertEquals("<lineBreaksConvert>Line<br>Break<br>Tests</lineBreaksConvert>", $this->object->reset($string)->parse());
+
+		// Test nested
+		$string = "[lineBreaksRemove]Line\nBreak\rTests[lineBreaksConvert]Line\nBreak\rTests[/lineBreaksConvert][/lineBreaksRemove]";
+		$this->assertEquals("<lineBreaksRemove>LineBreakTests<lineBreaksConvert>Line<br>Break<br>Tests</lineBreaksConvert></lineBreaksRemove>", $this->object->reset($string)->parse());
+	}
+
 }

@@ -206,11 +206,11 @@ abstract class FilterAbstract implements FilterInterface {
 
 		// Add line breaks
 		switch ($setup['lineBreaks']) {
-			case self::NL_REMOVE:
-				$content = str_replace(array("\n", "\r"), "", $content);
-			break;
 			case self::NL_CONVERT:
 				$content = nl2br($content, $xhtml);
+			// fall through
+			case self::NL_REMOVE:
+				$content = str_replace(array("\n", "\r"), "", $content);
 			break;
 		}
 

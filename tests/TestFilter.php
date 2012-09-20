@@ -31,7 +31,47 @@ class TestFilter extends FilterAbstract {
 		),
 		'templateMissing' => array(
 			'template' => 'test_missing'
-		)
+		),
+
+		// Inline and block nesting
+		'inline' => array(
+			'htmlTag' => 'inline',
+			'displayType' => self::TYPE_INLINE
+		),
+		'inlineAllowInline' => array(
+			'htmlTag' => 'inlineAllowInline',
+			'displayType' => self::TYPE_INLINE,
+			'allowedTypes' => self::TYPE_INLINE
+		),
+		'inlineAllowBlock' => array(
+			'htmlTag' => 'inlineAllowBlock',
+			'displayType' => self::TYPE_INLINE,
+			'allowedTypes' => self::TYPE_BLOCK
+		),
+		'inlineAllowBoth' => array(
+			'htmlTag' => 'inlineAllowBoth',
+			'displayType' => self::TYPE_INLINE,
+			'allowedTypes' => self::TYPE_BOTH
+		),
+		'block' => array(
+			'htmlTag' => 'block',
+			'displayType' => self::TYPE_BLOCK
+		),
+		'blockAllowInline' => array(
+			'htmlTag' => 'blockAllowInline',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_INLINE
+		),
+		'blockAllowBlock' => array(
+			'htmlTag' => 'blockAllowBlock',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK
+		),
+		'blockAllowBoth' => array(
+			'htmlTag' => 'blockAllowBoth',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BOTH
+		),
 	);
 
 }

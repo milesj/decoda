@@ -740,7 +740,7 @@ class Decoda {
 
 		// Closing tag
 		if (substr($string, 1, 1) === '/') {
-			$tag['tag'] = strtolower(substr($string, 2, strlen($string) - 3));
+			$tag['tag'] = substr($string, 2, strlen($string) - 3);
 			$tag['type'] = self::TAG_CLOSE;
 
 			if (!isset($this->_tags[$tag['tag']])) {
@@ -759,7 +759,7 @@ class Decoda {
 
 			if (preg_match('/' . $oe . '([a-z0-9]+)(.*?)' . $ce . '/i', $string, $matches)) {
 				$tag['type'] = self::TAG_OPEN;
-				$tag['tag'] = strtolower($matches[1]);
+				$tag['tag'] = $matches[1];
 			}
 
 			if (!isset($this->_tags[$tag['tag']])) {
@@ -1163,20 +1163,42 @@ class Decoda {
 		// Parents that can only have direct descendant children
 		} else if ($parent['childrenWhitelist'] && !in_array($child['tag'], $parent['childrenWhitelist'])) {
 			return false;
-
-		// Block element that accepts both types
-		} else if ($parent['allowedTypes'] === FilterAbstract::TYPE_BOTH) {
-			return true;
-
-		// Inline elements can go within everything
-		} else if (($parent['allowedTypes'] === FilterAbstract::TYPE_INLINE || $parent['allowedTypes'] === FilterAbstract::TYPE_BLOCK) && $child['displayType'] === FilterAbstract::TYPE_INLINE) {
-			return true;
 		}
 
+		// Validate the type nesting
+		switch ($parent['allowedTypes']) {
+			case FilterAbstract::TYPE_INLINE:
+				// Inline type only allowed
+				if ($child['displayType'] === FilterAbstract::TYPE_INLINE) {
+					return true;
+				}
+			break;
+			case FilterAbstract::TYPE_BLOCK:
+				// Block types only allowed if the parent is also a block
+				if ($parent['displayType'] === FilterAbstract::TYPE_BLOCK && $child['displayType'] === FilterAbstract::TYPE_BLOCK) {
+					return true;
+				}
+			break;
+			case FilterAbstract::TYPE_BOTH:
+				if ($parent['displayType'] === FilterAbstract::TYPE_INLINE) {
+					// Only allow inline if parent is inline
+					if ($child['displayType'] === FilterAbstract::TYPE_INLINE) {
+						return true;
+					}
+				} else {
+					return true;
+				}
+			break;
+		}
+
+		// Log the error
 		$this->_errors[] = array(
 			'type' => self::ERROR_SCOPE,
 			'parent' => $parent['tag'],
-			'child' => $child['tag']
+			'parentType' => $parent['displayType'],
+			'parentAllowed' => $parent['allowedTypes'],
+			'child' => $child['tag'],
+			'childType' => $child['displayType']
 		);
 
 		return false;

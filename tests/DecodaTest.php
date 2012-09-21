@@ -165,8 +165,17 @@ class DecodaTest extends TestCase {
 
 	}
 
+	/**
+	 * Test that setXhtml() changes all tags to XHTML equivalents.
+	 */
 	public function testXhtml() {
+		$this->object->addFilter(new DefaultFilter());
 
+		$this->assertEquals("<b>Bold</b><br>\n<i>Italics</i>", $this->object->reset("[b]Bold[/b]\n[i]Italics[/i]")->parse());
+
+		$this->object->setXhtml(true);
+
+		$this->assertEquals("<strong>Bold</strong><br />\n<em>Italics</em>", $this->object->reset("[b]Bold[/b]\n[i]Italics[/i]")->parse());
 	}
 
 	/**

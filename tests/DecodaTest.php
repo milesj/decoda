@@ -9,6 +9,8 @@
 namespace mjohnson\decoda\tests;
 
 use mjohnson\decoda\filters\DefaultFilter;
+use mjohnson\decoda\filters\EmailFilter;
+use mjohnson\decoda\filters\UrlFilter;
 use \Exception;
 
 class DecodaTest extends TestCase {
@@ -157,8 +159,20 @@ class DecodaTest extends TestCase {
 		}
 	}
 
+	/**
+	 * Test that setShorthand() applies short hand variations for URL and email.
+	 */
 	public function testShorthand() {
+		$this->object->addFilter(new UrlFilter());
+		$this->object->addFilter(new EmailFilter(array('encrypt' => false)));
 
+		$this->assertEquals('<a href="http://domain.com">http://domain.com</a>', $this->object->reset('[url]http://domain.com[/url]')->parse());
+		$this->assertEquals('<a href="mailto:user@domain.com">user@domain.com</a>', $this->object->reset('[email]user@domain.com[/email]')->parse());
+
+		$this->object->setShorthand(true);
+
+		$this->assertEquals('[<a href="http://domain.com">link</a>]', $this->object->reset('[url]http://domain.com[/url]')->parse());
+		$this->assertEquals('[<a href="mailto:user@domain.com">mail</a>]', $this->object->reset('[email]user@domain.com[/email]')->parse());
 	}
 
 	public function testStrict() {

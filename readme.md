@@ -1,4 +1,4 @@
-# Decoda v4 [DEVELOPMENT] #
+# Decoda v4.0.0 BETA #
 
 A lightweight lexical string parser for BBCode styled markup.
 
@@ -31,7 +31,7 @@ A lightweight lexical string parser for BBCode styled markup.
 
 The following filters and supported tags are available.
 
-* Default: b, i, u, s, sup, sub
+* Default: b, i, u, s, sup, sub, br, hr
 * Block: align, float, hide, alert, note, div, spoiler, left, right, center, justify
 * Code: code, var
 * Email: email, mail

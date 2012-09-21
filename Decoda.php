@@ -25,7 +25,7 @@ if (!defined('DECODA')) {
  * Provides a very powerful filter and hook system to extend the parsing cycle.
  *
  * @package	mjohnson.decoda
- * @version	4.0
+ * @version	4.0.0
  */
 class Decoda {
 

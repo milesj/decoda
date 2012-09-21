@@ -15,10 +15,9 @@
 		"php": ">=5.3"
 	},
 	"support": {
-		"source": "https://github.com/milesj/php-decoda",
-		"wiki": "http://milesj.me/code/php/decoda"
+		"source": "https://github.com/milesj/php-decoda"
 	},
 	"autoload": {
-		"psr-0": { "Decoda": "decoda" }
+		"psr-0": { "Decoda": "/" }
 	}
 }

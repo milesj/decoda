@@ -449,8 +449,16 @@ class DecodaTest extends TestCase {
 		$this->assertEquals('<b>Bold <i>Italics</i> Underline</b>', $this->object->reset('[b]Bold [i]Italics[/i] [u]Underline[/b]')->parse());
 	}
 
+	/**
+	 * Test for invalid nested tags.
+	 */
 	public function testInvalidNesting() {
+		$this->object->addFilter(new DefaultFilter());
 
+		$this->assertEquals('<b>Bold Italics</b>', $this->object->reset('[b]Bold [i]Italics[/b][/i]')->parse());
+		$this->assertEquals('<b>Bold <i>Italics</i> Underline</b>', $this->object->reset('[b]Bold [i]Italics[/i] [u]Underline[/b][/u]')->parse());
+		$this->assertEquals('<b>Bold Italics Underline</b>', $this->object->reset('[b]Bold [i]Italics [u]Underline[/b][/i][/u]')->parse());
+		$this->assertEquals('<b>Bold Italics <u>Underline</u></b>', $this->object->reset('[b]Bold [i]Italics [u]Underline[/u][/b][/i]')->parse());
 	}
 
 }

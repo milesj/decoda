@@ -11,7 +11,7 @@ namespace mjohnson\decoda;
 use mjohnson\decoda\engines\EngineInterface;
 use mjohnson\decoda\filters\Filter;
 use mjohnson\decoda\filters\FilterAbstract;
-use mjohnson\decoda\hooks\HookInterface;
+use mjohnson\decoda\hooks\Hook;
 use \Exception;
 
 // Set constant and include path
@@ -209,11 +209,11 @@ class Decoda {
 	 * Add hooks that are triggered at specific events.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\hooks\HookInterface $hook
+	 * @param \mjohnson\decoda\hooks\Hook $hook
 	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
-	public function addHook(HookInterface $hook) {
+	public function addHook(Hook $hook) {
 		$hook->setParser($this);
 
 		$class = str_replace('Hook', '', basename(get_class($hook)));
@@ -367,7 +367,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $hook
-	 * @return \mjohnson\decoda\hooks\HookInterface
+	 * @return \mjohnson\decoda\hooks\Hook
 	 * @throws \Exception
 	 */
 	public function getHook($hook) {

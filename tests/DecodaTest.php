@@ -9,6 +9,7 @@
 namespace mjohnson\decoda\tests;
 
 use mjohnson\decoda\filters\DefaultFilter;
+use mjohnson\decoda\hooks\CensorHook;
 use \Exception;
 
 class DecodaTest extends TestCase {
@@ -57,8 +58,31 @@ class DecodaTest extends TestCase {
 		$this->assertTrue(count($this->object->getFilters()) == 1);
 	}
 
+	/**
+	 * Test that adding, getting and resetting hooks work.
+	 */
 	public function testHooks() {
+		// Empty
+		$this->assertTrue(count($this->object->getHooks()) == 1);
 
+		try {
+			$this->object->getHook('Censor');
+			$this->assertTrue(false);
+		} catch (Exception $e) {
+			$this->assertTrue(true);
+		}
+
+		$this->object->addHook(new CensorHook());
+
+		// Empty, Censor
+		$this->assertTrue(count($this->object->getHooks()) == 2);
+
+		$this->assertInstanceOf('\mjohnson\decoda\hooks\Hook', $this->object->getHook('Censor'));
+
+		$this->object->resetFilters();
+
+		// Empty
+		$this->assertTrue(count($this->object->getHooks()) == 1);
 	}
 
 	public function testEngines() {

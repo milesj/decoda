@@ -9,7 +9,7 @@
 namespace mjohnson\decoda\hooks;
 
 use mjohnson\decoda\Decoda;
-use mjohnson\decoda\hooks\HookInterface;
+use mjohnson\decoda\hooks\Hook;
 
 /**
  * A hook allows you to inject functionality during certain events in the parsing cycle.
@@ -17,7 +17,7 @@ use mjohnson\decoda\hooks\HookInterface;
  * @package	mjohnson.decoda.hooks
  * @abstract
  */
-abstract class HookAbstract implements HookInterface {
+abstract class HookAbstract implements Hook {
 
 	/**
 	 * Configuration.

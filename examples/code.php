@@ -37,7 +37,7 @@ echo $code->parse(); ?>
 <h2>Code <span>with language attribute</span></h2>
 
 <?php $string = '[code="php"]<?php
-abstract class HookAbstract implements HookInterface {
+abstract class HookAbstract implements Hook {
 
 	/**
 	 * Return a message string from the parser.

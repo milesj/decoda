@@ -15,7 +15,7 @@ use mjohnson\decoda\Decoda;
  *
  * @package	mjohnson.decoda.hooks
  */
-interface HookInterface {
+interface Hook {
 
 	/**
 	 * Process the content after the parsing has finished.
@@ -58,7 +58,7 @@ interface HookInterface {
 	 *
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $parser
-	 * @return \mjohnson\decoda\hooks\HookInterface
+	 * @return \mjohnson\decoda\hooks\Hook
 	 * @chainable
 	 */
 	public function setParser(Decoda $parser);
@@ -68,7 +68,7 @@ interface HookInterface {
 	 *
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $decoda
-	 * @return \mjohnson\decoda\hooks\HookInterface
+	 * @return \mjohnson\decoda\hooks\Hook
 	 * @chainable
 	 */
 	public function setupFilters(Decoda $decoda);

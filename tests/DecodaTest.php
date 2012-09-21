@@ -19,6 +19,50 @@ class DecodaTest extends TestCase {
 		$this->object->addFilter(new TestFilter());
 	}
 
+	public function testFilters() {
+
+	}
+
+	public function testHooks() {
+
+	}
+
+	public function testEngines() {
+
+	}
+
+	public function testMessage() {
+
+	}
+
+	public function testBrackets() {
+
+	}
+
+	public function testEscaping() {
+
+	}
+
+	public function testLocale() {
+
+	}
+
+	public function testShorthand() {
+
+	}
+
+	public function testStrict() {
+
+	}
+
+	public function testXhtml() {
+
+	}
+
+	public function testWhitelist() {
+
+	}
+
 	/**
 	 * Test that nesting of inline and block elements.
 	 */

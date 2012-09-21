@@ -173,6 +173,19 @@ class DecodaTest extends TestCase {
 	}
 
 	/**
+	 * Test that resetting or removing filters doesn't convert tags.
+	 */
+	public function testReset() {
+		$this->object->addFilter(new DefaultFilter());
+
+		$this->assertEquals('<b>Bold</b> <i>Italics</i>', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->parse());
+
+		$this->object->resetFilters();
+
+		$this->assertEquals('[b]Bold[/b] [i]Italics[/i]', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->parse());
+	}
+
+	/**
 	 * Test that setShorthand() applies short hand variations for URL and email.
 	 */
 	public function testShorthand() {

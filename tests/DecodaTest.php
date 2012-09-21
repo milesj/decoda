@@ -100,6 +100,19 @@ class DecodaTest extends TestCase {
 	}
 
 	/**
+	 * Test that disable() stops all tag parsing.
+	 */
+	public function testDisable() {
+		$this->object->addFilter(new DefaultFilter());
+
+		$this->assertEquals('<b>Bold</b> <i>Italics</i>', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->parse());
+
+		$this->object->disable(true);
+
+		$this->assertEquals('Bold Italics', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->parse());
+	}
+
+	/**
 	 * Test that message() returns a formatted string.
 	 */
 	public function testMessage() {

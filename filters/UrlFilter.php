@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\filters;
 
+use mjohnson\decoda\Decoda;
 use mjohnson\decoda\filters\FilterAbstract;
 
 /**
@@ -36,8 +37,8 @@ class UrlFilter extends FilterAbstract {
 	protected $_tags = array(
 		'url' => array(
 			'htmlTag' => 'a',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE,
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE,
 			'attributes' => array(
 				'default' => true
 			),
@@ -47,8 +48,8 @@ class UrlFilter extends FilterAbstract {
 		),
 		'link' => array(
 			'htmlTag' => 'a',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE,
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE,
 			'attributes' => array(
 				'default' => true
 			),

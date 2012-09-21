@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\filters;
 
+use mjohnson\decoda\Decoda;
 use mjohnson\decoda\filters\FilterAbstract;
 
 /**
@@ -31,8 +32,8 @@ class VideoFilter extends FilterAbstract {
 	protected $_tags = array(
 		'video' => array(
 			'template' => 'video',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_NONE,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_NONE,
 			'contentPattern' => self::VIDEO_PATTERN,
 			'attributes' => array(
 				'default' => self::ALPHA,

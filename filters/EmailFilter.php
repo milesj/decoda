@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\filters;
 
+use mjohnson\decoda\Decoda;
 use mjohnson\decoda\filters\FilterAbstract;
 
 /**
@@ -36,8 +37,8 @@ class EmailFilter extends FilterAbstract {
 	protected $_tags = array(
 		'email' => array(
 			'htmlTag' => 'a',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_NONE,
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_NONE,
 			'escapeAttributes' => false,
 			'attributes' => array(
 				'default' => true
@@ -45,8 +46,8 @@ class EmailFilter extends FilterAbstract {
 		),
 		'mail' => array(
 			'htmlTag' => 'a',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_NONE,
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_NONE,
 			'escapeAttributes' => false,
 			'attributes' => array(
 				'default' => true

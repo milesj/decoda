@@ -60,7 +60,7 @@ interface Filter {
 	 *
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $decoda
-	 * @return \mjohnson\decoda\filters\FilterAbstract
+	 * @return \mjohnson\decoda\filters\Filter
 	 * @chainable
 	 */
 	public function setupHooks(Decoda $decoda);

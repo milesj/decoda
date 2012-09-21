@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\tests;
 
+use mjohnson\decoda\Decoda;
 use mjohnson\decoda\filters\FilterAbstract;
 
 class TestFilter extends FilterAbstract {
@@ -21,7 +22,7 @@ class TestFilter extends FilterAbstract {
 	protected $_tags = array(
 		'example' => array(
 			'htmlTag' => 'example',
-			'displayType' => self::TYPE_BLOCK
+			'displayType' => Decoda::TYPE_BLOCK
 		),
 		'template' => array(
 			'template' => 'test'
@@ -33,47 +34,47 @@ class TestFilter extends FilterAbstract {
 		// Inline and block nesting
 		'inline' => array(
 			'htmlTag' => 'inline',
-			'displayType' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_INLINE
 		),
 		'inlineAllowInline' => array(
 			'htmlTag' => 'inlineAllowInline',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		'inlineAllowBlock' => array(
 			'htmlTag' => 'inlineAllowBlock',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_BLOCK
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_BLOCK
 		),
 		'inlineAllowBoth' => array(
 			'htmlTag' => 'inlineAllowBoth',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_BOTH
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_BOTH
 		),
 		'block' => array(
 			'htmlTag' => 'block',
-			'displayType' => self::TYPE_BLOCK
+			'displayType' => Decoda::TYPE_BLOCK
 		),
 		'blockAllowInline' => array(
 			'htmlTag' => 'blockAllowInline',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		'blockAllowBlock' => array(
 			'htmlTag' => 'blockAllowBlock',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK
 		),
 		'blockAllowBoth' => array(
 			'htmlTag' => 'blockAllowBoth',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH
 		),
 
 		// Attribute testing
 		'attributes' => array(
 			'htmlTag' => 'attributes',
-			'displayType' => self::TYPE_INLINE,
+			'displayType' => Decoda::TYPE_INLINE,
 			'attributes' => array(
 				'default' => self::WILDCARD,
 				'alpha' => self::ALPHA,
@@ -92,43 +93,43 @@ class TestFilter extends FilterAbstract {
 		// Parent child hierarchy
 		'parent' => array(
 			'htmlTag' => 'parent',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK
 		),
 		'parentNoPersist' => array(
 			'htmlTag' => 'parentNoPersist',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK,
 			'persistContent' => false
 		),
 		'parentWhitelist' => array(
 			'htmlTag' => 'parentWhitelist',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK,
 			'childrenWhitelist' => array('whiteChild')
 		),
 		'parentBlacklist' => array(
 			'htmlTag' => 'parentBlacklist',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK,
 			'childrenBlacklist' => array('whiteChild')
 		),
 		'whiteChild' => array(
 			'htmlTag' => 'whiteChild',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK,
 			'parent' => array('parent', 'parentWhitelist', 'parentBlacklist')
 		),
 		'blackChild' => array(
 			'htmlTag' => 'blackChild',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK,
 			'parent' => array('parent', 'parentWhitelist', 'parentBlacklist')
 		),
 		'depth' => array(
 			'htmlTag' => 'depth',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK,
 			'maxChildDepth' => 2,
 			'persistContent' => false
 		),
@@ -136,28 +137,28 @@ class TestFilter extends FilterAbstract {
 		// CRLF formatting
 		'lineBreaksRemove' => array(
 			'htmlTag' => 'lineBreaksRemove',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK,
-			'lineBreaks' => self::NL_REMOVE
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK,
+			'lineBreaks' => Decoda::NL_REMOVE
 		),
 		'lineBreaksPreserve' => array(
 			'htmlTag' => 'lineBreaksPreserve',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK,
-			'lineBreaks' => self::NL_PRESERVE
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK,
+			'lineBreaks' => Decoda::NL_PRESERVE
 		),
 		'lineBreaksConvert' => array(
 			'htmlTag' => 'lineBreaksConvert',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK,
-			'lineBreaks' => self::NL_CONVERT
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK,
+			'lineBreaks' => Decoda::NL_CONVERT
 		),
 
 		// Content pattern matching
 		'pattern' => array(
 			'htmlTag' => 'pattern',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK,
 			'contentPattern' => '/^[a-z]+@[a-z]+$/i',
 			'attributes' => array(
 				'default' => self::WILDCARD
@@ -170,8 +171,8 @@ class TestFilter extends FilterAbstract {
 		// Self closing HTML tag
 		'autoClose' => array(
 			'htmlTag' => 'autoClose',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BLOCK,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BLOCK,
 			'autoClose' => true,
 			'attributes' => array(
 				'foo' => self::WILDCARD,

@@ -21,30 +21,6 @@ use mjohnson\decoda\filters\Filter;
 abstract class FilterAbstract implements Filter {
 
 	/**
-	 * Type constants.
-	 *
-	 * 	TYPE_NONE	- Will not accept block or inline (for validating)
-	 * 	TYPE_INLINE	- Inline element that can only contain child inlines
-	 * 	TYPE_BLOCK	- Block element that can contain both inline and block
-	 * 	TYPE_BOTH	- Will accept either type (for validating)
-	 */
-	const TYPE_NONE = 0;
-	const TYPE_INLINE = 1;
-	const TYPE_BLOCK = 2;
-	const TYPE_BOTH = 3;
-
-	/**
-	 * Newline and carriage return formatting.
-	 *
-	 * 	NL_REMOVE	- Will be removed
-	 * 	NL_PRESERVE	- Will be preserved as \n and \r
-	 * 	NL_CONVERT	- Will be converted to <br> tags
-	 */
-	const NL_REMOVE = 0;
-	const NL_PRESERVE = 1;
-	const NL_CONVERT = 2;
-
-	/**
 	 * Regex patterns for attribute parsing.
 	 */
 	const WILDCARD = '/(.*?)/';
@@ -77,8 +53,8 @@ abstract class FilterAbstract implements Filter {
 		'tag' => '',
 		'htmlTag' => '',
 		'template' => '',
-		'displayType' => self::TYPE_BLOCK,
-		'allowedTypes' => self::TYPE_BOTH,
+		'displayType' => Decoda::TYPE_BLOCK,
+		'allowedTypes' => Decoda::TYPE_BOTH,
 
 		/**
 		 * attributes		- (array) Custom attributes to parse out of the Decoda tag
@@ -96,7 +72,7 @@ abstract class FilterAbstract implements Filter {
 		 * autoClose		- (boolean) HTML tag is self closing
 		 * preserveTags		- (boolean) Will not convert nested Decoda markup within this tag
 		 */
-		'lineBreaks' => self::NL_CONVERT,
+		'lineBreaks' => Decoda::NL_CONVERT,
 		'autoClose' => false,
 		'preserveTags' => false,
 
@@ -204,10 +180,10 @@ abstract class FilterAbstract implements Filter {
 
 			// Process line breaks
 			switch ($setup['lineBreaks']) {
-				case self::NL_CONVERT:
+				case Decoda::NL_CONVERT:
 					$content = nl2br($content, $xhtml);
 				// fall through
-				case self::NL_REMOVE:
+				case Decoda::NL_REMOVE:
 					$content = str_replace(array("\n", "\r"), "", $content);
 				break;
 			}
@@ -244,7 +220,7 @@ abstract class FilterAbstract implements Filter {
 
 			$parsed = $engine->render($tag, $content);
 
-			if ($setup['lineBreaks'] !== self::NL_PRESERVE) {
+			if ($setup['lineBreaks'] !== Decoda::NL_PRESERVE) {
 				$parsed = str_replace(array("\n", "\r"), "", $parsed);
 			}
 
@@ -272,7 +248,7 @@ abstract class FilterAbstract implements Filter {
 	 *
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $parser
-	 * @return \mjohnson\decoda\filters\FilterAbstract
+	 * @return \mjohnson\decoda\filters\Filter
 	 * @chainable
 	 */
 	public function setParser(Decoda $parser) {
@@ -286,7 +262,7 @@ abstract class FilterAbstract implements Filter {
 	 *
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $decoda
-	 * @return \mjohnson\decoda\filters\FilterAbstract
+	 * @return \mjohnson\decoda\filters\Filter
 	 * @chainable
 	 */
 	public function setupHooks(Decoda $decoda) {

@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\filters;
 
+use mjohnson\decoda\Decoda;
 use mjohnson\decoda\filters\FilterAbstract;
 
 /**
@@ -26,9 +27,9 @@ class ListFilter extends FilterAbstract {
 	protected $_tags = array(
 		'olist' => array(
 			'htmlTag' => 'ol',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
-			'lineBreaks' => self::NL_REMOVE,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
+			'lineBreaks' => Decoda::NL_REMOVE,
 			'childrenWhitelist' => array('li'),
 			'htmlAttributes' => array(
 				'class' => 'decoda-olist'
@@ -36,9 +37,9 @@ class ListFilter extends FilterAbstract {
 		),
 		'list' => array(
 			'htmlTag' => 'ul',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
-			'lineBreaks' => self::NL_REMOVE,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
+			'lineBreaks' => Decoda::NL_REMOVE,
 			'childrenWhitelist' => array('li'),
 			'htmlAttributes' => array(
 				'class' => 'decoda-list'
@@ -46,8 +47,8 @@ class ListFilter extends FilterAbstract {
 		),
 		'li' => array(
 			'htmlTag' => 'li',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
 			'parent' => array('olist', 'list')
 		)
 	);

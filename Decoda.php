@@ -10,7 +10,6 @@ namespace mjohnson\decoda;
 
 use mjohnson\decoda\engines\Engine;
 use mjohnson\decoda\filters\Filter;
-use mjohnson\decoda\filters\FilterAbstract;
 use mjohnson\decoda\hooks\Hook;
 use \Exception;
 
@@ -45,6 +44,30 @@ class Decoda {
 	const ERROR_NESTING = 1;
 	const ERROR_CLOSING = 2;
 	const ERROR_SCOPE = 3;
+
+	/**
+	 * Type constants.
+	 *
+	 * 	TYPE_NONE	- Will not accept block or inline (for validating)
+	 * 	TYPE_INLINE	- Inline element that can only contain child inlines
+	 * 	TYPE_BLOCK	- Block element that can contain both inline and block
+	 * 	TYPE_BOTH	- Will accept either type (for validating)
+	 */
+	const TYPE_NONE = 0;
+	const TYPE_INLINE = 1;
+	const TYPE_BLOCK = 2;
+	const TYPE_BOTH = 3;
+
+	/**
+	 * Newline and carriage return formatting.
+	 *
+	 * 	NL_REMOVE	- Will be removed
+	 * 	NL_PRESERVE	- Will be preserved as \n and \r
+	 * 	NL_CONVERT	- Will be converted to <br> tags
+	 */
+	const NL_REMOVE = 0;
+	const NL_PRESERVE = 1;
+	const NL_CONVERT = 2;
 
 	/**
 	 * Blacklist of tags not to parse.
@@ -1236,22 +1259,22 @@ class Decoda {
 
 		// Validate the type nesting
 		switch ($parent['allowedTypes']) {
-			case FilterAbstract::TYPE_INLINE:
+			case self::TYPE_INLINE:
 				// Inline type only allowed
-				if ($child['displayType'] === FilterAbstract::TYPE_INLINE) {
+				if ($child['displayType'] === self::TYPE_INLINE) {
 					return true;
 				}
 			break;
-			case FilterAbstract::TYPE_BLOCK:
+			case self::TYPE_BLOCK:
 				// Block types only allowed if the parent is also a block
-				if ($parent['displayType'] === FilterAbstract::TYPE_BLOCK && $child['displayType'] === FilterAbstract::TYPE_BLOCK) {
+				if ($parent['displayType'] === self::TYPE_BLOCK && $child['displayType'] === self::TYPE_BLOCK) {
 					return true;
 				}
 			break;
-			case FilterAbstract::TYPE_BOTH:
-				if ($parent['displayType'] === FilterAbstract::TYPE_INLINE) {
+			case self::TYPE_BOTH:
+				if ($parent['displayType'] === self::TYPE_INLINE) {
 					// Only allow inline if parent is inline
-					if ($child['displayType'] === FilterAbstract::TYPE_INLINE) {
+					if ($child['displayType'] === self::TYPE_INLINE) {
 						return true;
 					}
 				} else {

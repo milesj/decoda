@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\filters;
 
+use mjohnson\decoda\Decoda;
 use mjohnson\decoda\filters\FilterAbstract;
 
 /**
@@ -26,8 +27,8 @@ class TextFilter extends FilterAbstract {
 	protected $_tags = array(
 		'font' => array(
 			'htmlTag' => 'span',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE,
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE,
 			'escapeAttributes' => false,
 			'attributes' => array(
 				'default' => array('/^[a-z0-9\-\s,\.\']+$/i', 'font-family: {default}')
@@ -38,8 +39,8 @@ class TextFilter extends FilterAbstract {
 		),
 		'size' => array(
 			'htmlTag' => 'span',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE,
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE,
 			'attributes' => array(
 				'default' => array('/^[1-2]{1}[0-9]{1}$/', 'font-size: {default}px'),
 			),
@@ -49,8 +50,8 @@ class TextFilter extends FilterAbstract {
 		),
 		'color' => array(
 			'htmlTag' => 'span',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE,
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE,
 			'attributes' => array(
 				'default' => array('/^(?:#[0-9a-f]{3,6}|[a-z]+)$/i', 'color: {default}'),
 			),
@@ -60,33 +61,33 @@ class TextFilter extends FilterAbstract {
 		),
 		'h1' => array(
 			'htmlTag' => 'h1',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		'h2' => array(
 			'htmlTag' => 'h2',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		'h3' => array(
 			'htmlTag' => 'h3',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		'h4' => array(
 			'htmlTag' => 'h4',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		'h5' => array(
 			'htmlTag' => 'h5',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		'h6' => array(
 			'htmlTag' => 'h6',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		)
 	);
 

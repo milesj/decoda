@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\filters;
 
+use mjohnson\decoda\Decoda;
 use mjohnson\decoda\filters\FilterAbstract;
 
 /**
@@ -32,8 +33,8 @@ class ImageFilter extends FilterAbstract {
 	protected $_tags = array(
 		'img' => array(
 			'htmlTag' => 'img',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_NONE,
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_NONE,
 			'contentPattern' => self::IMAGE_PATTERN,
 			'autoClose' => true,
 			'attributes' => array(
@@ -44,8 +45,8 @@ class ImageFilter extends FilterAbstract {
 		),
 		'image' => array(
 			'htmlTag' => 'img',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_NONE,
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_NONE,
 			'contentPattern' => self::IMAGE_PATTERN,
 			'autoClose' => true,
 			'attributes' => array(

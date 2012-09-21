@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\filters;
 
+use mjohnson\decoda\Decoda;
 use mjohnson\decoda\filters\FilterAbstract;
 
 /**
@@ -36,8 +37,8 @@ class BlockFilter extends FilterAbstract {
 	protected $_tags = array(
 		'align' => array(
 			'htmlTag' => 'div',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
 			'attributes' => array(
 				'default' => array('/^(?:left|center|right|justify)$/i', 'align-{default}')
 			),
@@ -47,40 +48,40 @@ class BlockFilter extends FilterAbstract {
 		),
 		'left' => array(
 			'htmlTag' => 'div',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
 			'htmlAttributes' => array(
 				'class' => 'align-left'
 			)
 		),
 		'right' => array(
 			'htmlTag' => 'div',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
 			'htmlAttributes' => array(
 				'class' => 'align-right'
 			)
 		),
 		'center' => array(
 			'htmlTag' => 'div',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
 			'htmlAttributes' => array(
 				'class' => 'align-center'
 			)
 		),
 		'justify' => array(
 			'htmlTag' => 'div',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
 			'htmlAttributes' => array(
 				'class' => 'align-justify'
 			)
 		),
 		'float' => array(
 			'htmlTag' => 'div',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
 			'attributes' => array(
 				'default' => array('/^(?:left|right|none)$/i', 'float-{default}')
 			),
@@ -90,32 +91,32 @@ class BlockFilter extends FilterAbstract {
 		),
 		'hide' => array(
 			'htmlTag' => 'span',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
 			'htmlAttributes' => array(
 				'style' => 'display: none'
 			)
 		),
 		'alert' => array(
 			'htmlTag' => 'div',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
 			'htmlAttributes' => array(
 				'class' => 'decoda-alert'
 			)
 		),
 		'note' => array(
 			'htmlTag' => 'div',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
 			'htmlAttributes' => array(
 				'class' => 'decoda-note'
 			)
 		),
 		'div' => array(
 			'htmlTag' => 'div',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
 			'attributes' => array(
 				'default' => self::ALPHA,
 				'class' => self::ALNUM
@@ -126,8 +127,8 @@ class BlockFilter extends FilterAbstract {
 		),
 		'spoiler' => array(
 			'template' => 'spoiler',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH
 		)
 	);
 

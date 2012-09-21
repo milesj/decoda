@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\filters;
 
+use mjohnson\decoda\Decoda;
 use mjohnson\decoda\filters\FilterAbstract;
 
 /**
@@ -26,45 +27,45 @@ class DefaultFilter extends FilterAbstract {
 	protected $_tags = array(
 		'b' => array(
 			'htmlTag' => array('b', 'strong'),
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		'i' => array(
 			'htmlTag' => array('i', 'em'),
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		'u' => array(
 			'htmlTag' => 'u',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		's' => array(
 			'htmlTag' => 'del',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		'sub' => array(
 			'htmlTag' => 'sub',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		'sup' => array(
 			'htmlTag' => 'sup',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		),
 		'br' => array(
 			'htmlTag' => 'br',
 			'autoClose' => true,
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_NONE
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_NONE
 		),
 		'hr' => array(
 			'htmlTag' => 'hr',
 			'autoClose' => true,
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_NONE
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_NONE
 		)
 	);
 

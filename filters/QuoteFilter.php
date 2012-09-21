@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\filters;
 
+use mjohnson\decoda\Decoda;
 use mjohnson\decoda\filters\FilterAbstract;
 
 /**
@@ -36,8 +37,8 @@ class QuoteFilter extends FilterAbstract {
 	protected $_tags = array(
 		'quote' => array(
 			'template' => 'quote',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
 			'attributes' => array(
 				'default' => self::WILDCARD,
 				'date' => self::WILDCARD

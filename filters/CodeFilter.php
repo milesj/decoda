@@ -28,9 +28,9 @@ class CodeFilter extends FilterAbstract {
 	protected $_tags = array(
 		'code' => array(
 			'template' => 'code',
-			'displayType' => self::TYPE_BLOCK,
-			'allowedTypes' => self::TYPE_BOTH,
-			'lineBreaks' => self::NL_PRESERVE,
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
+			'lineBreaks' => Decoda::NL_PRESERVE,
 			'preserveTags' => true,
 			'attributes' => array(
 				'default' => self::ALPHA,
@@ -42,8 +42,8 @@ class CodeFilter extends FilterAbstract {
 		),
 		'var' => array(
 			'htmlTag' => 'code',
-			'displayType' => self::TYPE_INLINE,
-			'allowedTypes' => self::TYPE_INLINE
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE
 		)
 	);
 

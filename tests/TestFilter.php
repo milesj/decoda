@@ -166,6 +166,18 @@ class TestFilter extends FilterAbstract {
 				'default' => 'attr'
 			)
 		),
+
+		// Self closing HTML tag
+		'autoClose' => array(
+			'htmlTag' => 'autoClose',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK,
+			'autoClose' => true,
+			'attributes' => array(
+				'foo' => self::WILDCARD,
+				'bar' => self::WILDCARD
+			)
+		),
 	);
 
 }

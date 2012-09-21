@@ -194,4 +194,19 @@ class DecodaTest extends TestCase {
 		$this->assertEquals('<pattern attr="test">user@pass</pattern>', $this->object->reset($string)->parse());
 	}
 
+	/**
+	 * Test that the content of the tag passes a regex pattern.
+	 */
+	public function testAutoClosingTags() {
+		$this->object->setXhtml(true);
+
+		// No content or attributes
+		$string = '[autoClose]Content[/autoClose]';
+		$this->assertEquals('<autoClose />', $this->object->reset($string)->parse());
+
+		// No content with attributes
+		$string = '[autoClose foo="1" bar="2"]Content[/autoClose]';
+		$this->assertEquals('<autoClose foo="1" bar="2" />', $this->object->reset($string)->parse());
+	}
+
 }

@@ -437,4 +437,12 @@ class DecodaTest extends TestCase {
 		$this->assertEquals('<autoClose foo="1" bar="2" />', $this->object->reset($string)->parse());
 	}
 
+	public function testUnclosedTags() {
+
+	}
+
+	public function testInvalidNesting() {
+
+	}
+
 }

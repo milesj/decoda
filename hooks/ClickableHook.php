@@ -10,6 +10,7 @@ namespace mjohnson\decoda\hooks;
 
 use mjohnson\decoda\filters\EmailFilter;
 use mjohnson\decoda\hooks\HookAbstract;
+use \Exception;
 
 /**
  * Converts URLs and emails (not wrapped in tags) into clickable links.
@@ -26,28 +27,32 @@ class ClickableHook extends HookAbstract {
 	 * @return string
 	 */
 	public function afterParse($content) {
-		if ($url = $this->getParser()->getFilter('Url')) {
-			$chars = preg_quote('-_=;:&?/[]%', '/');
-			$protocols = $url->config('protocols');
+		try {
+			if ($url = $this->getParser()->getFilter('Url')) {
+				$chars = preg_quote('-_=;:&?/[]%', '/');
+				$protocols = $url->config('protocols');
 
-			$pattern = sprintf('%s%s%s%s%s%s',
-				'(' . implode('|', $protocols) . ')s?:\/\/', // protocol
-				'([-a-z0-9\.\+]+:[-a-z0-9\.\+]+@)?', // login
-				'([-a-z0-9\.]{5,255}+)', // domain, tld
-				'(:[0-9]{0,6}+)?', // port
-				'([a-z0-9' . $chars . ']+)?', // query
-				'(#[a-z0-9' . $chars . ']+)?' // fragment
-			);
+				$pattern = sprintf('%s%s%s%s%s%s',
+					'(' . implode('|', $protocols) . ')s?:\/\/', // protocol
+					'([-a-z0-9\.\+]+:[-a-z0-9\.\+]+@)?', // login
+					'([-a-z0-9\.]{5,255}+)', // domain, tld
+					'(:[0-9]{0,6}+)?', // port
+					'([a-z0-9' . $chars . ']+)?', // query
+					'(#[a-z0-9' . $chars . ']+)?' // fragment
+				);
 
-			$content = preg_replace_callback('/(^|\n|\s)' . $pattern . '/is', array($this, '_urlCallback'), $content);
-		}
+				$content = preg_replace_callback('/(^|\n|\s)' . $pattern . '/is', array($this, '_urlCallback'), $content);
+			}
+		} catch (Exception $e) { }
 
 		// Based on schema: http://en.wikipedia.org/wiki/Email_address
-		if ($email = $this->getParser()->getFilter('Email')) {
-			$pattern = '/(^|\n|\s)([-a-z0-9\.\+!]{1,64}+)@([-a-z0-9]+\.[a-z\.]+)/is';
+		try {
+			if ($email = $this->getParser()->getFilter('Email')) {
+				$pattern = '/(^|\n|\s)([-a-z0-9\.\+!]{1,64}+)@([-a-z0-9]+\.[a-z\.]+)/is';
 
-			$content = preg_replace_callback($pattern, array($this, '_emailCallback'), $content);
-		}
+				$content = preg_replace_callback($pattern, array($this, '_emailCallback'), $content);
+			}
+		} catch (Exception $e) { }
 
 		return $content;
 	}

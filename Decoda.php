@@ -734,7 +734,7 @@ class Decoda {
 			$args = $args[0];
 		}
 
-		$this->_whitelist += array_map('strtolower', $args);
+		$this->_whitelist +=  $args;
 		$this->_whitelist = array_filter($this->_whitelist);
 
 		return $this;

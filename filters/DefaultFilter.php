@@ -53,6 +53,18 @@ class DefaultFilter extends FilterAbstract {
 			'htmlTag' => 'sup',
 			'displayType' => self::TYPE_INLINE,
 			'allowedTypes' => self::TYPE_INLINE
+		),
+		'br' => array(
+			'htmlTag' => 'br',
+			'autoClose' => true,
+			'displayType' => self::TYPE_INLINE,
+			'allowedTypes' => self::TYPE_NONE
+		),
+		'hr' => array(
+			'htmlTag' => 'hr',
+			'autoClose' => true,
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_NONE
 		)
 	);
 

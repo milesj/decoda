@@ -461,4 +461,23 @@ class DecodaTest extends TestCase {
 		$this->assertEquals('<b>Bold Italics <u>Underline</u></b>', $this->object->reset('[b]Bold [i]Italics [u]Underline[/u][/b][/i]')->parse());
 	}
 
+	/**
+	 * Test that self closing tags work.
+	 */
+	public function testSelfClosingTags() {
+		$this->object->addFilter(new DefaultFilter());
+
+		$this->assertEquals('Text <br> and <hr>', $this->object->reset('Text [br/] and [hr/]')->parse());
+		$this->assertEquals('Text <br> and <hr>', $this->object->reset('Text [br /] and [hr /]')->parse());
+		$this->assertEquals('<br><br>', $this->object->reset('[br/][br][br /]')->parse());
+		$this->assertEquals('<br>', $this->object->reset('[br]Content[/br]')->parse());
+
+		$this->object->setXhtml(true);
+
+		$this->assertEquals('Text <br /> and <hr />', $this->object->reset('Text [br/] and [hr/]')->parse());
+		$this->assertEquals('Text <br /> and <hr />', $this->object->reset('Text [br /] and [hr /]')->parse());
+		$this->assertEquals('<br /><br />', $this->object->reset('[br/][br][br /]')->parse());
+		$this->assertEquals('<br />', $this->object->reset('[br]Content[/br]')->parse());
+	}
+
 }

@@ -194,21 +194,23 @@ abstract class FilterAbstract implements Filter {
 			return null;
 		}
 
-		// If content doesn't match the pattern, don't wrap in a tag
-		if ($setup['contentPattern']) {
-			if (!preg_match($setup['contentPattern'], $content)) {
-				return sprintf('(Invalid %s)', $tag['tag']);
+		if ($content) {
+			// If content doesn't match the pattern, don't wrap in a tag
+			if ($setup['contentPattern']) {
+				if (!preg_match($setup['contentPattern'], $content)) {
+					return sprintf('(Invalid %s)', $tag['tag']);
+				}
 			}
-		}
 
-		// Add line breaks
-		switch ($setup['lineBreaks']) {
-			case self::NL_CONVERT:
-				$content = nl2br($content, $xhtml);
-			// fall through
-			case self::NL_REMOVE:
-				$content = str_replace(array("\n", "\r"), "", $content);
-			break;
+			// Process line breaks
+			switch ($setup['lineBreaks']) {
+				case self::NL_CONVERT:
+					$content = nl2br($content, $xhtml);
+				// fall through
+				case self::NL_REMOVE:
+					$content = str_replace(array("\n", "\r"), "", $content);
+				break;
+			}
 		}
 
 		// Format attributes

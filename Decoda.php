@@ -36,6 +36,7 @@ class Decoda {
 	const TAG_NONE = 0;
 	const TAG_OPEN = 1;
 	const TAG_CLOSE = 2;
+	const TAG_SELF_CLOSE = 3;
 
 	/**
 	 * Error type constants.
@@ -757,8 +758,17 @@ class Decoda {
 
 		// Closing tag
 		if (substr($string, 1, 1) === '/') {
-			$tag['tag'] = substr($string, 2, strlen($string) - 3);
+			$tag['tag'] = trim(substr($string, 2, strlen($string) - 3));
 			$tag['type'] = self::TAG_CLOSE;
+
+			if (!isset($this->_tags[$tag['tag']])) {
+				return false;
+			}
+
+		// Self closing tag
+		} else if (substr($string, -2) === '/]') {
+			$tag['tag'] = trim(substr($string, 1, strlen($string) - 3));
+			$tag['type'] = self::TAG_SELF_CLOSE;
 
 			if (!isset($this->_tags[$tag['tag']])) {
 				return false;
@@ -776,7 +786,7 @@ class Decoda {
 
 			if (preg_match('/' . $oe . '([a-z0-9]+)(.*?)' . $ce . '/i', $string, $matches)) {
 				$tag['type'] = self::TAG_OPEN;
-				$tag['tag'] = $matches[1];
+				$tag['tag'] = trim($matches[1]);
 			}
 
 			if (!isset($this->_tags[$tag['tag']])) {
@@ -983,6 +993,10 @@ class Decoda {
 						}
 					}
 				break;
+
+				case self::TAG_SELF_CLOSE:
+					$clean[] = $chunk;
+				break;
 			}
 
 			$i++;
@@ -1057,7 +1071,7 @@ class Decoda {
 					$newTag = $this->_buildTag(substr($str, $strPos, (($closePos - $strPos) + 1)));
 
 					// Valid tag
-					if ($newTag !== false) {
+					if ($newTag) {
 						$tag = $newTag;
 
 					// Not a valid tag
@@ -1113,6 +1127,10 @@ class Decoda {
 
 			if ($chunk['type'] === self::TAG_NONE && empty($tag)) {
 				$nodes[] = $chunk['text'];
+
+			} else if ($chunk['type'] === self::TAG_SELF_CLOSE) {
+				$chunk['children'] = array();
+				$nodes[] = $chunk;
 
 			} else if ($chunk['type'] === self::TAG_OPEN) {
 				$openCount++;

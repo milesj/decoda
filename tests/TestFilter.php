@@ -152,6 +152,20 @@ class TestFilter extends FilterAbstract {
 			'allowedTypes' => self::TYPE_BLOCK,
 			'lineBreaks' => self::NL_CONVERT
 		),
+
+		// Content pattern matching
+		'pattern' => array(
+			'htmlTag' => 'pattern',
+			'displayType' => self::TYPE_BLOCK,
+			'allowedTypes' => self::TYPE_BLOCK,
+			'contentPattern' => '/^[a-z]+@[a-z]+$/i',
+			'attributes' => array(
+				'default' => self::WILDCARD
+			),
+			'mapAttributes' => array(
+				'default' => 'attr'
+			)
+		),
 	);
 
 }

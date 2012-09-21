@@ -95,14 +95,15 @@ abstract class FilterAbstract implements FilterInterface {
 		 * lineBreaks		- (boolean) Convert line breaks within the content body
 		 * autoClose		- (boolean) HTML tag is self closing
 		 * preserveTags		- (boolean) Will not convert nested Decoda markup within this tag
-		 * contentPattern	- (string) Regex pattern that the content or default attribute must pass
-		 * testNoDefault	- (boolean) Will only test the pattern on the content if the default attribute doesn't exist
 		 */
 		'lineBreaks' => self::NL_CONVERT,
 		'autoClose' => false,
 		'preserveTags' => false,
+
+		/**
+		 * contentPattern	- (string) Regex pattern that the content or default attribute must pass
+		 */
 		'contentPattern' => '',
-		'testNoDefault' => false,
 
 		/**
 		 * parent				- (array) List of Decoda keys that this tag can only be a direct child of
@@ -195,11 +196,7 @@ abstract class FilterAbstract implements FilterInterface {
 
 		// If content doesn't match the pattern, don't wrap in a tag
 		if ($setup['contentPattern']) {
-			if ($setup['testNoDefault']) {
-				if (!isset($tag['attributes']['default']) && !preg_match($setup['contentPattern'], $content)) {
-					return sprintf('(Invalid %s)', $tag['tag']);
-				}
-			} else if (!preg_match($setup['contentPattern'], $content)) {
+			if (!preg_match($setup['contentPattern'], $content)) {
 				return sprintf('(Invalid %s)', $tag['tag']);
 			}
 		}

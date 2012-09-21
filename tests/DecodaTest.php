@@ -177,4 +177,21 @@ class DecodaTest extends TestCase {
 		$this->assertEquals("<lineBreaksRemove>LineBreakTests<lineBreaksConvert>Line<br>Break<br>Tests</lineBreaksConvert></lineBreaksRemove>", $this->object->reset($string)->parse());
 	}
 
+	/**
+	 * Test that the content of the tag passes a regex pattern.
+	 */
+	public function testContentPatternMatching() {
+		// Shouldn't pass
+		$string = '[pattern]userpass[/pattern]';
+		$this->assertEquals('(Invalid pattern)', $this->object->reset($string)->parse());
+
+		// Should pass
+		$string = '[pattern]user@pass[/pattern]';
+		$this->assertEquals('<pattern>user@pass</pattern>', $this->object->reset($string)->parse());
+
+		// Should pass with attributes
+		$string = '[pattern="test"]user@pass[/pattern]';
+		$this->assertEquals('<pattern attr="test">user@pass</pattern>', $this->object->reset($string)->parse());
+	}
+
 }

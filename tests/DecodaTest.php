@@ -96,8 +96,13 @@ class DecodaTest extends TestCase {
 		$this->assertInstanceOf('\mjohnson\decoda\tests\TestEngine', $this->object->getEngine());
 	}
 
+	/**
+	 * Test that message() returns a formatted string.
+	 */
 	public function testMessage() {
-
+		$this->assertEquals('', $this->object->message('foobar'));
+		$this->assertEquals('Spoiler', $this->object->message('spoiler'));
+		$this->assertEquals('Quote by Miles', $this->object->message('quoteBy', array('author' => 'Miles')));
 	}
 
 	public function testBrackets() {
@@ -108,8 +113,22 @@ class DecodaTest extends TestCase {
 
 	}
 
+	/**
+	 * Test that setLocale() changes the locale for messages.
+	 */
 	public function testLocale() {
+		$this->assertEquals('Spoiler', $this->object->message('spoiler'));
 
+		$this->object->setLocale('es-mx');
+
+		$this->assertEquals('Alerón', $this->object->message('spoiler'));
+
+		try {
+			$this->object->setLocale('no-no');
+			$this->assertTrue(false);
+		} catch (Exception $e) {
+			$this->assertTrue(true);
+		}
 	}
 
 	public function testShorthand() {

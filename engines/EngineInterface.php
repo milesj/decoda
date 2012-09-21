@@ -8,7 +8,7 @@
 
 namespace mjohnson\decoda\engines;
 
-use mjohnson\decoda\filters\FilterInterface;
+use mjohnson\decoda\filters\Filter;
 
 /**
  * This interface represents the rendering engine for tags that use a template.
@@ -22,7 +22,7 @@ interface EngineInterface {
 	 * Return the current filter.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\filters\FilterInterface
+	 * @return \mjohnson\decoda\filters\Filter
 	 */
 	public function getFilter();
 
@@ -49,11 +49,11 @@ interface EngineInterface {
 	 * Sets the current used filter.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\filters\FilterInterface $filter
+	 * @param \mjohnson\decoda\filters\Filter $filter
 	 * @return \mjohnson\decoda\engines\EngineInterface
 	 * @chainable
 	 */
-	public function setFilter(FilterInterface $filter);
+	public function setFilter(Filter $filter);
 
 	/**
 	 * Sets the path to the tag templates.

@@ -9,7 +9,7 @@
 namespace mjohnson\decoda;
 
 use mjohnson\decoda\engines\EngineInterface;
-use mjohnson\decoda\filters\FilterInterface;
+use mjohnson\decoda\filters\Filter;
 use mjohnson\decoda\filters\FilterAbstract;
 use mjohnson\decoda\hooks\HookInterface;
 use \Exception;
@@ -183,11 +183,11 @@ class Decoda {
 	 * Add additional filters.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\filters\FilterInterface $filter
+	 * @param \mjohnson\decoda\filters\Filter $filter
 	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
-	public function addFilter(FilterInterface $filter) {
+	public function addFilter(Filter $filter) {
 		$filter->setParser($this);
 
 		$class = str_replace('Filter', '', basename(get_class($filter)));
@@ -325,7 +325,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $filter
-	 * @return \mjohnson\decoda\filters\FilterInterface
+	 * @return \mjohnson\decoda\filters\Filter
 	 * @throws \Exception
 	 */
 	public function getFilter($filter) {
@@ -341,7 +341,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $tag
-	 * @return \mjohnson\decoda\filters\FilterInterface
+	 * @return \mjohnson\decoda\filters\Filter
 	 * @throws \Exception
 	 */
 	public function getFilterByTag($tag) {

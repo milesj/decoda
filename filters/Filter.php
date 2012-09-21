@@ -15,7 +15,7 @@ use mjohnson\decoda\Decoda;
  *
  * @package	mjohnson.decoda.filters
  */
-interface FilterInterface {
+interface Filter {
 
 	/**
 	 * Return the Decoda parser.
@@ -50,7 +50,7 @@ interface FilterInterface {
 	 *
 	 * @access public
 	 * @param \mjohnson\decoda\Decoda $parser
-	 * @return \mjohnson\decoda\filters\FilterInterface
+	 * @return \mjohnson\decoda\filters\Filter
 	 * @chainable
 	 */
 	public function setParser(Decoda $parser);

@@ -59,7 +59,7 @@ echo $code->parse(); ?>
 <h2>Code <span>with row highlights attribute</span></h2>
 
 <?php $string = '[code hl="1,15"]<?php
-abstract class FilterAbstract implements FilterInterface {
+abstract class FilterAbstract implements Filter {
 
 	/**
 	 * Return a tag if it exists, and merge with defaults.

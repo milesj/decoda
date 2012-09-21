@@ -41,7 +41,7 @@ class EngineTest extends TestCase {
 		$this->assertEquals(null, $this->object->getFilter());
 
 		$this->object->setFilter(new TestFilter());
-		$this->assertInstanceOf('mjohnson\decoda\filters\FilterInterface', $this->object->getFilter());
+		$this->assertInstanceOf('mjohnson\decoda\filters\Filter', $this->object->getFilter());
 	}
 
 }

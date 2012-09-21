@@ -46,7 +46,7 @@ class CodeFilterTest extends TestCase {
 
 		$string = <<<'CODE'
 [code hl="1,15"]<?php
-abstract class FilterAbstract implements FilterInterface {
+abstract class FilterAbstract implements Filter {
 
 	/**
 	 * Return a tag if it exists, and merge with defaults.
@@ -71,7 +71,7 @@ CODE;
 
 		$expected = <<<'CODE'
 <pre class="decoda-code" data-highlight="1,15">&lt;?php
-abstract class FilterAbstract implements FilterInterface {
+abstract class FilterAbstract implements Filter {
 
 	/**
 	 * Return a tag if it exists, and merge with defaults.

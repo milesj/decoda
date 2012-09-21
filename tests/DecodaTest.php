@@ -8,6 +8,9 @@
 
 namespace mjohnson\decoda\tests;
 
+use mjohnson\decoda\filters\DefaultFilter;
+use \Exception;
+
 class DecodaTest extends TestCase {
 
 	/**
@@ -19,8 +22,39 @@ class DecodaTest extends TestCase {
 		$this->object->addFilter(new TestFilter());
 	}
 
+	/**
+	 * Test that adding, getting and resetting filters work.
+	 */
 	public function testFilters() {
+		// Empty, Test
+		$this->assertTrue(count($this->object->getFilters()) == 2);
 
+		try {
+			$this->object->getFilter('Default');
+			$this->assertTrue(false);
+		} catch (Exception $e) {
+			$this->assertTrue(true);
+		}
+
+		try {
+			$this->object->getFilterByTag('b');
+			$this->assertTrue(false);
+		} catch (Exception $e) {
+			$this->assertTrue(true);
+		}
+
+		$this->object->addFilter(new DefaultFilter());
+
+		// Empty, Test, Default
+		$this->assertTrue(count($this->object->getFilters()) == 3);
+
+		$this->assertInstanceOf('\mjohnson\decoda\filters\Filter', $this->object->getFilter('Default'));
+		$this->assertInstanceOf('\mjohnson\decoda\filters\Filter', $this->object->getFilterByTag('b'));
+
+		$this->object->resetFilters();
+
+		// Empty
+		$this->assertTrue(count($this->object->getFilters()) == 1);
 	}
 
 	public function testHooks() {

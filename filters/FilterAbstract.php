@@ -9,7 +9,7 @@
 namespace mjohnson\decoda\filters;
 
 use mjohnson\decoda\Decoda;
-use mjohnson\decoda\filters\FilterInterface;
+use mjohnson\decoda\filters\Filter;
 
 /**
  * A filter defines the list of tags and its associative markup to parse out of a string.
@@ -18,7 +18,7 @@ use mjohnson\decoda\filters\FilterInterface;
  * @package	mjohnson.decoda.filters
  * @abstract
  */
-abstract class FilterAbstract implements FilterInterface {
+abstract class FilterAbstract implements Filter {
 
 	/**
 	 * Type constants.

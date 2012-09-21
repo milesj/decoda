@@ -8,7 +8,7 @@
 
 namespace mjohnson\decoda\engines;
 
-use mjohnson\decoda\filters\FilterInterface;
+use mjohnson\decoda\filters\Filter;
 use mjohnson\decoda\engines\EngineInterface;
 
 /**
@@ -31,7 +31,7 @@ abstract class EngineAbstract implements EngineInterface {
 	 * Current filter.
 	 *
 	 * @access protected
-	 * @var \mjohnson\decoda\filters\FilterInterface
+	 * @var \mjohnson\decoda\filters\Filter
 	 */
 	protected $_filter;
 
@@ -39,7 +39,7 @@ abstract class EngineAbstract implements EngineInterface {
 	 * Return the current filter.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\filters\FilterInterface
+	 * @return \mjohnson\decoda\filters\Filter
 	 */
 	public function getFilter() {
 		return $this->_filter;
@@ -63,11 +63,11 @@ abstract class EngineAbstract implements EngineInterface {
 	 * Sets the current filter.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\filters\FilterInterface $filter
+	 * @param \mjohnson\decoda\filters\Filter $filter
 	 * @return \mjohnson\decoda\engines\EngineInterface
 	 * @chainable
 	 */
-	public function setFilter(FilterInterface $filter) {
+	public function setFilter(Filter $filter) {
 		$this->_filter = $filter;
 
 		return $this;

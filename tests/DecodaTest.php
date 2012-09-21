@@ -237,6 +237,17 @@ class DecodaTest extends TestCase {
 	}
 
 	/**
+	 * Test that blacklist() denies specific tags.
+	 */
+	public function testBlacklist() {
+		$this->object->addFilter(new DefaultFilter());
+
+		$this->assertEquals('<b>Bold</b> <i>Italics</i>', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->parse());
+
+		$this->assertEquals('<b>Bold</b> Italics', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->blacklist('i')->parse());
+	}
+
+	/**
 	 * Test that whitelist() allows specific tags.
 	 */
 	public function testWhitelist() {

@@ -47,6 +47,14 @@ class Decoda {
 	const ERROR_SCOPE = 3;
 
 	/**
+	 * Blacklist of tags not to parse.
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $_blacklist = array();
+
+	/**
 	 * Extracted chunks of text and tags.
 	 *
 	 * @access protected
@@ -176,8 +184,8 @@ class Decoda {
 	public function __construct($string = '') {
 		spl_autoload_register(array($this, 'loadFile'));
 
-		$this->addPath(DECODA . 'config/');
 		$this->reset($string, true);
+		$this->addPath(DECODA . 'config/');
 	}
 
 	/**
@@ -236,6 +244,26 @@ class Decoda {
 	 */
 	public function addPath($path) {
 		$this->_paths[] = $path;
+
+		return $this;
+	}
+
+	/**
+	 * Add tags to the blacklist.
+	 *
+	 * @access public
+	 * @return \mjohnson\decoda\Decoda
+	 * @chainable
+	 */
+	public function blacklist() {
+		$args = func_get_args();
+
+		if (isset($args[0]) && is_array($args[0])) {
+			$args = $args[0];
+		}
+
+		$this->_blacklist +=  $args;
+		$this->_blacklist = array_filter($this->_blacklist);
 
 		return $this;
 	}
@@ -565,6 +593,7 @@ class Decoda {
 	public function reset($string, $flush = false) {
 		$this->_chunks = array();
 		$this->_nodes = array();
+		$this->_blacklist = array();
 		$this->_whitelist = array();
 		$this->_string = (string) $string;
 		$this->_parsed = '';
@@ -572,6 +601,7 @@ class Decoda {
 		if ($flush) {
 			$this->resetFilters();
 			$this->resetHooks();
+			$this->_paths = array();
 		}
 
 		return $this;
@@ -857,7 +887,11 @@ class Decoda {
 			}
 		}
 
-		if ($disabled || ($this->_whitelist && !in_array($tag['tag'], $this->_whitelist))) {
+		if (
+			$disabled ||
+			($this->_whitelist && !in_array($tag['tag'], $this->_whitelist)) ||
+			($this->_blacklist && in_array($tag['tag'], $this->_blacklist))
+		) {
 			$tag['type'] = self::TAG_NONE;
 			$tag['text'] = '';
 		}

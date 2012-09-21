@@ -326,9 +326,14 @@ class Decoda {
 	 * @access public
 	 * @param string $filter
 	 * @return \mjohnson\decoda\filters\FilterInterface
+	 * @throws \Exception
 	 */
 	public function getFilter($filter) {
-		return isset($this->_filters[$filter]) ? $this->_filters[$filter] : null;
+		if (isset($this->_filters[$filter])) {
+			return $this->_filters[$filter];
+		}
+
+		throw new Exception(sprintf('Filter %s does not exist.', $filter));
 	}
 
 	/**
@@ -337,13 +342,14 @@ class Decoda {
 	 * @access public
 	 * @param string $tag
 	 * @return \mjohnson\decoda\filters\FilterInterface
+	 * @throws \Exception
 	 */
 	public function getFilterByTag($tag) {
 		if (isset($this->_filterMap[$tag])){
 			return $this->getFilter($this->_filterMap[$tag]);
 		}
 
-		return null;
+		throw new Exception(sprintf('No filter could be located for tag %s.', $tag));
 	}
 
 	/**
@@ -362,9 +368,14 @@ class Decoda {
 	 * @access public
 	 * @param string $hook
 	 * @return \mjohnson\decoda\hooks\HookInterface
+	 * @throws \Exception
 	 */
 	public function getHook($hook) {
-		return isset($this->_hooks[$hook]) ? $this->_hooks[$hook] : null;
+		if (isset($this->_hooks[$hook])) {
+			return $this->_hooks[$hook];
+		}
+
+		throw new Exception(sprintf('Hook %s does not exist.', $hook));
 	}
 
 	/**
@@ -436,9 +447,11 @@ class Decoda {
 		if (!$this->_messages) {
 			$messages = array();
 
-			foreach ($this->getPaths() as $path) {
-				if (file_exists($path . 'messages.json')) {
-					$messages = array_merge($messages, json_decode(file_get_contents($path . 'messages.json'), true));
+			if ($paths = $this->getPaths()) {
+				foreach ($paths as $path) {
+					if (file_exists($path . 'messages.json')) {
+						$messages = array_merge($messages, json_decode(file_get_contents($path . 'messages.json'), true));
+					}
 				}
 			}
 
@@ -448,7 +461,7 @@ class Decoda {
 		$locale = $this->config('locale');
 		$string = isset($this->_messages[$locale][$key]) ? $this->_messages[$locale][$key] : '';
 
-		if ($vars) {
+		if ($string && $vars) {
 			foreach ($vars as $key => $value) {
 				$string = str_replace('{' . $key . '}', $value, $string);
 			}
@@ -471,6 +484,10 @@ class Decoda {
 			}
 
 			return $this->_parsed;
+		}
+
+		if (!$this->_filters && !$this->_hooks) {
+			return $this->_string;
 		}
 
 		ksort($this->_hooks);

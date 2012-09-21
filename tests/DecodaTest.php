@@ -175,8 +175,26 @@ class DecodaTest extends TestCase {
 		$this->assertEquals('[<a href="mailto:user@domain.com">mail</a>]', $this->object->reset('[email]user@domain.com[/email]')->parse());
 	}
 
+	/**
+	 * Test that setStrict() toggles strict attribute parsing.
+	 */
 	public function testStrict() {
+		// Strict requires double quotes
+		$this->assertEquals('<attributes id="custom-html" numeric="123" alpha="abc">Content</attributes>', $this->object->reset('[attributes numeric="123" alpha="abc"]Content[/attributes]')->parse());
+		$this->assertEquals('<attributes id="custom-html">Content</attributes>', $this->object->reset('[attributes numeric=123 alpha=abc]Content[/attributes]')->parse());
 
+		// Disabling strict doesn't require quotes
+		$this->object->setStrict(false);
+
+		$this->assertEquals('<attributes id="custom-html" numeric="123" alpha="abc">Content</attributes>', $this->object->reset('[attributes numeric="123" alpha="abc"]Content[/attributes]')->parse());
+		$this->assertEquals('<attributes id="custom-html" numeric="123" alpha="abc">Content</attributes>', $this->object->reset('[attributes numeric=123 alpha=abc]Content[/attributes]')->parse());
+
+		// Now lets mix the two
+		$this->assertEquals('<attributes id="custom-html" alpha="abc" numeric="123">Content</attributes>', $this->object->reset('[attributes numeric=123 alpha="abc"]Content[/attributes]')->parse());
+
+		// Now with spaces and mixed values
+		$this->assertEquals('<attributes id="custom-html" wildcard="Something" alnum="abc">Content</attributes>', $this->object->reset('[attributes=Something "quotes" here alnum=abc 123]Content[/attributes]')->parse());
+		$this->assertEquals('<attributes id="custom-html" wildcard="Miles&quot;gearvOsh&quot;Johnson" alnum="abc-123">Content</attributes>', $this->object->reset('[attributes=Miles"gearvOsh"Johnson alnum=abc-123]Content[/attributes]')->parse());
 	}
 
 	/**

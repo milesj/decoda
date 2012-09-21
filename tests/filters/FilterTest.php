@@ -56,7 +56,7 @@ class FilterTest extends TestCase {
 	public function testParse() {
 		$this->object->setParser(new Decoda());
 
-		$this->assertEquals('<example class="example">Content</example>', $this->object->parse(array(
+		$this->assertEquals('<example>Content</example>', $this->object->parse(array(
 			'tag' => 'example',
 			'text' => '[example]',
 			'attributes' => array(),
@@ -72,7 +72,28 @@ class FilterTest extends TestCase {
 		$this->assertEquals(array(
 			'example',
 			'template',
-			'templateMissing'
+			'templateMissing',
+			'inline',
+			'inlineAllowInline',
+			'inlineAllowBlock',
+			'inlineAllowBoth',
+			'block',
+			'blockAllowInline',
+			'blockAllowBlock',
+			'blockAllowBoth',
+			'attributes',
+			'parent',
+			'parentNoPersist',
+			'parentWhitelist',
+			'parentBlacklist',
+			'whiteChild',
+			'blackChild',
+			'depth',
+			'lineBreaksRemove',
+			'lineBreaksPreserve',
+			'lineBreaksConvert',
+			'pattern',
+			'autoClose'
 		), array_keys($this->object->tags()));
 	}
 
@@ -94,7 +115,6 @@ class FilterTest extends TestCase {
 			'autoClose' => false,
 			'preserveTags' => false,
 			'contentPattern' => '',
-			'testNoDefault' => false,
 			'parent' => array(),
 			'childrenWhitelist' => array(),
 			'childrenBlacklist' => array(),
@@ -106,8 +126,6 @@ class FilterTest extends TestCase {
 
 		$expected['tag'] = 'example';
 		$expected['htmlTag'] = 'example';
-		$expected['displayType'] = TestFilter::TYPE_INLINE;
-		$expected['htmlAttributes'] = array('class' => 'example');
 
 		$this->assertEquals($expected, $this->object->tag('example'));
 	}

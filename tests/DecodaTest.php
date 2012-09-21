@@ -8,6 +8,7 @@
 
 namespace mjohnson\decoda\tests;
 
+use mjohnson\decoda\filters\DefaultFilter;
 use \Exception;
 
 class DecodaTest extends TestCase {
@@ -105,8 +106,24 @@ class DecodaTest extends TestCase {
 		$this->assertEquals('Quote by Miles', $this->object->message('quoteBy', array('author' => 'Miles')));
 	}
 
+	/**
+	 * Test that setBrackets() changes the tag brackets.
+	 */
 	public function testBrackets() {
+		$this->object->addFilter(new DefaultFilter());
 
+		$this->assertEquals('{b}Bold{/b}', $this->object->reset('{b}Bold{/b}')->parse());
+
+		$this->object->setBrackets('{', '}');
+
+		$this->assertEquals('<b>Bold</b>', $this->object->reset('{b}Bold{/b}')->parse());
+
+		try {
+			$this->object->setBrackets('', null);
+			$this->assertTrue(false);
+		} catch (Exception $e) {
+			$this->assertTrue(true);
+		}
 	}
 
 	public function testEscaping() {

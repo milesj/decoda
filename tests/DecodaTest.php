@@ -126,8 +126,17 @@ class DecodaTest extends TestCase {
 		}
 	}
 
+	/**
+	 * Test that setEscaping() toggles HTML escaping.
+	 */
 	public function testEscaping() {
+		$this->object->addFilter(new DefaultFilter());
 
+		$this->assertEquals('&lt;b&gt;Bold&lt;/b&gt; <i>Italics</i>', $this->object->reset('<b>Bold</b> [i]Italics[/i]')->parse());
+
+		$this->object->setEscaping(false);
+
+		$this->assertEquals('<b>Bold</b> <i>Italics</i>', $this->object->reset('<b>Bold</b> [i]Italics[/i]')->parse());
 	}
 
 	/**

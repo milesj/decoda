@@ -437,8 +437,16 @@ class DecodaTest extends TestCase {
 		$this->assertEquals('<autoClose foo="1" bar="2" />', $this->object->reset($string)->parse());
 	}
 
+	/**
+	 * Test for unclosed tags.
+	 */
 	public function testUnclosedTags() {
+		$this->object->addFilter(new DefaultFilter());
 
+		$this->assertEquals('Bold', $this->object->reset('[b]Bold')->parse());
+		$this->assertEquals('Italics', $this->object->reset('Italics[/i]')->parse());
+		$this->assertEquals('Bold <i>Italics</i>', $this->object->reset('[b]Bold [i]Italics[/i]')->parse());
+		$this->assertEquals('<b>Bold <i>Italics</i> Underline</b>', $this->object->reset('[b]Bold [i]Italics[/i] [u]Underline[/b]')->parse());
 	}
 
 	public function testInvalidNesting() {

@@ -9,7 +9,7 @@
 namespace mjohnson\decoda\engines;
 
 use mjohnson\decoda\filters\Filter;
-use mjohnson\decoda\engines\EngineInterface;
+use mjohnson\decoda\engines\Engine;
 
 /**
  * Provides default methods for engines.
@@ -17,7 +17,7 @@ use mjohnson\decoda\engines\EngineInterface;
  * @package	mjohnson.decoda.engines
  * @abstract
  */
-abstract class EngineAbstract implements EngineInterface {
+abstract class EngineAbstract implements Engine {
 
 	/**
 	 * Current path.
@@ -64,7 +64,7 @@ abstract class EngineAbstract implements EngineInterface {
 	 *
 	 * @access public
 	 * @param \mjohnson\decoda\filters\Filter $filter
-	 * @return \mjohnson\decoda\engines\EngineInterface
+	 * @return \mjohnson\decoda\engines\Engine
 	 * @chainable
 	 */
 	public function setFilter(Filter $filter) {
@@ -78,7 +78,7 @@ abstract class EngineAbstract implements EngineInterface {
 	 *
 	 * @access public
 	 * @param string $path
-	 * @return \mjohnson\decoda\engines\EngineInterface
+	 * @return \mjohnson\decoda\engines\Engine
 	 * @chainable
 	 */
 	public function setPath($path) {

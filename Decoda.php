@@ -8,7 +8,7 @@
 
 namespace mjohnson\decoda;
 
-use mjohnson\decoda\engines\EngineInterface;
+use mjohnson\decoda\engines\Engine;
 use mjohnson\decoda\filters\Filter;
 use mjohnson\decoda\filters\FilterAbstract;
 use mjohnson\decoda\hooks\Hook;
@@ -154,7 +154,7 @@ class Decoda {
 	 * Template engine used for parsing.
 	 *
 	 * @access protected
-	 * @var \mjohnson\decoda\engines\EngineInterface
+	 * @var \mjohnson\decoda\engines\Engine
 	 */
 	protected $_engine = null;
 
@@ -393,7 +393,7 @@ class Decoda {
 	 * In case no engine is set the default php engine gonna be used.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\engines\EngineInterface
+	 * @return \mjohnson\decoda\engines\Engine
 	 */
 	public function getEngine() {
 		if (!$this->_engine) {
@@ -696,11 +696,11 @@ class Decoda {
 	 * Sets the template engine which gonna be used for all tags with templates.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\engines\EngineInterface $engine
+	 * @param \mjohnson\decoda\engines\Engine $engine
 	 * @return \mjohnson\decoda\Decoda
 	 * @chainable
 	 */
-	public function setEngine(EngineInterface $engine) {
+	public function setEngine(Engine $engine) {
 		$this->_engine = $engine;
 
 		return $this;

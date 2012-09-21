@@ -8,8 +8,6 @@
 
 namespace mjohnson\decoda\tests;
 
-use mjohnson\decoda\filters\DefaultFilter;
-use mjohnson\decoda\hooks\CensorHook;
 use \Exception;
 
 class DecodaTest extends TestCase {
@@ -27,30 +25,32 @@ class DecodaTest extends TestCase {
 	 * Test that adding, getting and resetting filters work.
 	 */
 	public function testFilters() {
+		$this->object->resetFilters();
+
+		// Empty
+		$this->assertTrue(count($this->object->getFilters()) == 1);
+
+		try {
+			$this->object->getFilter('Test');
+			$this->assertTrue(false);
+		} catch (Exception $e) {
+			$this->assertTrue(true);
+		}
+
+		try {
+			$this->object->getFilterByTag('example');
+			$this->assertTrue(false);
+		} catch (Exception $e) {
+			$this->assertTrue(true);
+		}
+
+		$this->object->addFilter(new TestFilter());
+
 		// Empty, Test
 		$this->assertTrue(count($this->object->getFilters()) == 2);
 
-		try {
-			$this->object->getFilter('Default');
-			$this->assertTrue(false);
-		} catch (Exception $e) {
-			$this->assertTrue(true);
-		}
-
-		try {
-			$this->object->getFilterByTag('b');
-			$this->assertTrue(false);
-		} catch (Exception $e) {
-			$this->assertTrue(true);
-		}
-
-		$this->object->addFilter(new DefaultFilter());
-
-		// Empty, Test, Default
-		$this->assertTrue(count($this->object->getFilters()) == 3);
-
-		$this->assertInstanceOf('\mjohnson\decoda\filters\Filter', $this->object->getFilter('Default'));
-		$this->assertInstanceOf('\mjohnson\decoda\filters\Filter', $this->object->getFilterByTag('b'));
+		$this->assertInstanceOf('\mjohnson\decoda\filters\Filter', $this->object->getFilter('Test'));
+		$this->assertInstanceOf('\mjohnson\decoda\filters\Filter', $this->object->getFilterByTag('example'));
 
 		$this->object->resetFilters();
 
@@ -66,27 +66,34 @@ class DecodaTest extends TestCase {
 		$this->assertTrue(count($this->object->getHooks()) == 1);
 
 		try {
-			$this->object->getHook('Censor');
+			$this->object->getHook('Test');
 			$this->assertTrue(false);
 		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}
 
-		$this->object->addHook(new CensorHook());
+		$this->object->addHook(new TestHook());
 
 		// Empty, Censor
 		$this->assertTrue(count($this->object->getHooks()) == 2);
 
-		$this->assertInstanceOf('\mjohnson\decoda\hooks\Hook', $this->object->getHook('Censor'));
+		$this->assertInstanceOf('\mjohnson\decoda\hooks\Hook', $this->object->getHook('Test'));
 
-		$this->object->resetFilters();
+		$this->object->resetHooks();
 
 		// Empty
 		$this->assertTrue(count($this->object->getHooks()) == 1);
 	}
 
+	/**
+	 * Test that getting and setting an engine works.
+	 */
 	public function testEngines() {
+		$this->assertInstanceOf('\mjohnson\decoda\engines\PhpEngine', $this->object->getEngine());
 
+		$this->object->setEngine(new TestEngine());
+
+		$this->assertInstanceOf('\mjohnson\decoda\tests\TestEngine', $this->object->getEngine());
 	}
 
 	public function testMessage() {

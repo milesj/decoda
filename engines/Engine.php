@@ -16,7 +16,7 @@ use mjohnson\decoda\filters\Filter;
  *
  * @package	mjohnson.decoda.engines
  */
-interface EngineInterface {
+interface Engine {
 
 	/**
 	 * Return the current filter.
@@ -50,7 +50,7 @@ interface EngineInterface {
 	 *
 	 * @access public
 	 * @param \mjohnson\decoda\filters\Filter $filter
-	 * @return \mjohnson\decoda\engines\EngineInterface
+	 * @return \mjohnson\decoda\engines\Engine
 	 * @chainable
 	 */
 	public function setFilter(Filter $filter);
@@ -60,7 +60,7 @@ interface EngineInterface {
 	 *
 	 * @access public
 	 * @param string $path
-	 * @return \mjohnson\decoda\engines\EngineInterface
+	 * @return \mjohnson\decoda\engines\Engine
 	 * @chainable
 	 */
 	public function setPath($path);

@@ -82,9 +82,9 @@ abstract class FilterAbstract implements Filter {
 		'contentPattern' => '',
 
 		/**
-		 * parent				- (array) List of Decoda keys that this tag can only be a direct child of
-		 * childrenWhitelist	- (array) List of Decoda keys that can only be a direct descendant
-		 * childrenBlacklist	- (array) List of Decoda keys that can not be a direct descendant
+		 * parent				- (array) List of Decoda tags that this tag can only be a direct child of
+		 * childrenWhitelist	- (array) List of Decoda tags that can only be a direct descendant
+		 * childrenBlacklist	- (array) List of Decoda tags that can not be a direct descendant
 		 * maxChildDepth		- (integer) Max depth for nested children of the same tag (-1 to disable)
 		 * persistContent		- (boolean) Should we persist text content from within deeply nested tags (but remove their wrapping tags)
 		 */

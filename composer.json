@@ -18,6 +18,6 @@
 		"source": "https://github.com/milesj/php-decoda"
 	},
 	"autoload": {
-		"psr-0": { "Decoda": "/" }
+		"psr-0": { "mjohnson/Decoda": "" }
 	}
 }

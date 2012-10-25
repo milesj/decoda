@@ -222,7 +222,9 @@ class Decoda {
 	public function addFilter(Filter $filter) {
 		$filter->setParser($this);
 
-		$class = str_replace('Filter', '', basename(get_class($filter)));
+		$class = str_replace('\\', '/', get_class($filter));
+		$class = str_replace('Filter', '', basename($class));
+
 		$tags = $filter->tags();
 
 		$this->_filters[$class] = $filter;
@@ -248,7 +250,8 @@ class Decoda {
 	public function addHook(Hook $hook) {
 		$hook->setParser($this);
 
-		$class = str_replace('Hook', '', basename(get_class($hook)));
+		$class = str_replace('\\', '/', get_class($hook));
+		$class = str_replace('Hook', '', basename($class));
 
 		$this->_hooks[$class] = $hook;
 

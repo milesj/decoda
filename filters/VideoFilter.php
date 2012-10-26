@@ -116,7 +116,7 @@ class VideoFilter extends FilterAbstract {
 	 * @return string
 	 */
 	public function parse(array $tag, $content) {
-		$provider = $tag['attributes']['default'];
+		$provider = isset($tag['attributes']['default']) ? $tag['attributes']['default'] : null;
 		$size = strtolower(isset($tag['attributes']['size']) ? $tag['attributes']['size'] : 'medium');
 
 		if (empty($this->_formats[$provider])) {

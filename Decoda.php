@@ -480,12 +480,17 @@ class Decoda {
 			return;
 		}
 
-		$paths = array(str_replace('\\', '/', $class) . '.php');
-		$paths[] = DECODA . str_replace('mjohnson/decoda/', '', $paths[0]);
+		$paths = explode(PATH_SEPARATOR, get_include_path());
+		$paths[] = DECODA;
+
+		$names = array(str_replace('\\', '/', $class) . '.php');
+		$names[] = str_replace('mjohnson/decoda/', '', $names[0]);
 
 		foreach ($paths as $path) {
-			if (file_exists($path)) {
-				include_once $path;
+			foreach ($names as $name) {
+				if (file_exists($path . $name)) {
+					include_once $path . $name;
+				}
 			}
 		}
 	}

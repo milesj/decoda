@@ -55,6 +55,17 @@ class DefaultFilter extends FilterAbstract {
 			'displayType' => Decoda::TYPE_INLINE,
 			'allowedTypes' => Decoda::TYPE_INLINE
 		),
+		'abbr' => array(
+			'htmlTag' => 'abbr',
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE,
+			'attributes' => array(
+				'default' => FilterAbstract::ALNUM
+			),
+			'mapAttributes' => array(
+				'default' => 'title'
+			)
+		),
 		'br' => array(
 			'htmlTag' => 'br',
 			'autoClose' => true,

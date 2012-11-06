@@ -70,4 +70,35 @@ class DefaultFilterTest extends TestCase {
 		$this->assertEquals('<sup>Superscript</sup>', $this->object->reset('[sup]Superscript[/sup]')->parse());
 	}
 
+	/**
+	 * Test [abbr] renders abbreviated text.
+	 */
+	public function testAbbr() {
+		$this->assertEquals('<abbr title="National Aeronautics and Space Administration">NASA</abbr>', $this->object->reset('[abbr="National Aeronautics and Space Administration"]NASA[/abbr]')->parse());
+	}
+
+	/**
+	 * Test [br] renders line breaks.
+	 */
+	public function testBr() {
+		$this->assertEquals('<br>', $this->object->reset('[br /]')->parse());
+		$this->assertEquals('<br>', $this->object->reset('[br/]')->parse());
+
+		$this->object->setXhtml(true);
+		$this->assertEquals('<br />', $this->object->reset('[br  /]')->parse());
+		$this->assertEquals('<br />', $this->object->reset('[br   /]')->parse());
+	}
+
+	/**
+	 * Test [hr] renders horizontal breaks.
+	 */
+	public function testHr() {
+		$this->assertEquals('<hr>', $this->object->reset('[hr /]')->parse());
+		$this->assertEquals('<hr>', $this->object->reset('[hr/]')->parse());
+
+		$this->object->setXhtml(true);
+		$this->assertEquals('<hr />', $this->object->reset('[hr  /]')->parse());
+		$this->assertEquals('<hr />', $this->object->reset('[hr   /]')->parse());
+	}
+
 }

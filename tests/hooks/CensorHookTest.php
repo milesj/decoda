@@ -32,6 +32,11 @@ class CensorHookTest extends TestCase {
 		$this->assertNotEquals('fuuuccckkkkk', $this->object->beforeParse('fuuuccckkkkk'));
 		$this->assertNotEquals('fffUUUcccKKKkk', $this->object->beforeParse('fffUUUcccKKKkk'));
 		$this->assertNotEquals('Hey, fuck you buddy!', $this->object->beforeParse('Hey, fuck you buddy!'));
+
+		// Don't censor words that share a blacklist
+		$this->assertNotEquals('nig', $this->object->beforeParse('nig'));
+		$this->assertNotEquals('nigger', $this->object->beforeParse('nigger'));
+		$this->assertEquals('Night', $this->object->beforeParse('Night'));
 	}
 
 	/**

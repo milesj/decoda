@@ -38,7 +38,8 @@ class CodeFilter extends FilterAbstract {
 			),
 			'mapAttributes' => array(
 				'default' => 'lang'
-			)
+			),
+			'stripContent' => true
 		),
 		'var' => array(
 			'htmlTag' => 'code',

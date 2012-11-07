@@ -47,7 +47,8 @@ class QuoteFilter extends FilterAbstract {
 				'default' => 'author'
 			),
 			'maxChildDepth' => 2,
-			'persistContent' => false
+			'persistContent' => false,
+			'stripContent' => true
 		)
 	);
 

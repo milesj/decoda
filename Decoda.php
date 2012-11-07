@@ -175,6 +175,14 @@ class Decoda {
 	protected $_string = '';
 
 	/**
+	 * The stripped string.
+	 *
+	 * @access protected
+	 * @var string
+	 */
+	protected $_stripped = '';
+
+	/**
 	 * List of tags from filters.
 	 *
 	 * @access protected
@@ -546,26 +554,27 @@ class Decoda {
 			return $this->_parsed;
 		}
 
+		$string = $this->_string;
+
 		if (!$this->_filters && !$this->_hooks) {
-			return $this->_string;
+			return $string;
 		}
 
 		ksort($this->_hooks);
 
 		if ($this->config('escape')) {
-			$this->_string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $this->_string);
+			$string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $string);
 		}
 
-		$this->_string = $this->_trigger('beforeParse', $this->_string);
+		$string = $this->_trigger('beforeParse', $string);
 
-		if (strpos($this->_string, $this->config('open')) !== false && strpos($this->_string, $this->config('close')) !== false) {
-			$this->_extractChunks();
-			$this->_parsed = $this->_parse($this->_nodes);
+		if (strpos($string, $this->config('open')) !== false && strpos($string, $this->config('close')) !== false) {
+			$string = $this->_parse($this->_extractChunks($string));
 		} else {
-			$this->_parsed = nl2br($this->_string, $this->config('xhtml'));
+			$string = nl2br($string, $this->config('xhtml'));
 		}
 
-		$this->_parsed = $this->_trigger('afterParse', $this->_parsed);
+		$this->_parsed = $this->_trigger('afterParse', $string);
 
 		if ($echo) {
 			echo $this->_parsed;
@@ -628,6 +637,7 @@ class Decoda {
 		$this->_whitelist = array();
 		$this->_string = (string) $string;
 		$this->_parsed = '';
+		$this->_stripped = '';
 
 		if ($flush) {
 			$this->resetFilters();
@@ -780,6 +790,56 @@ class Decoda {
 		$this->_config['xhtml'] = (bool) $status;
 
 		return $this;
+	}
+
+	/**
+	 * Strip the node list by looping through all the nodes and stripping out tags and content.
+	 *
+	 * @access public
+	 * @param boolean $html
+	 * @param boolean $echo
+	 * @return string
+	 */
+	public function strip($html = true, $echo = false) {
+		if ($this->_stripped) {
+			if ($echo) {
+				echo $this->_stripped;
+			}
+
+			return $this->_stripped;
+		}
+
+		$string = $this->_string;
+
+		if (!$this->_filters && !$this->_hooks) {
+			return $string;
+		}
+
+		ksort($this->_hooks);
+
+		if ($this->config('escape')) {
+			$string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $string);
+		}
+
+		$string = $this->_trigger('beforeParse', $string);
+
+		if (strpos($string, $this->config('open')) !== false && strpos($string, $this->config('close')) !== false) {
+			$string = $this->_strip($this->_extractChunks($string));
+		} else {
+			$string = nl2br($string, $this->config('xhtml'));
+		}
+
+		$this->_stripped = $this->_trigger('afterParse', $string);
+
+		if ($html) {
+			$this->_stripped = strip_tags($this->_stripped);
+		}
+
+		if ($echo) {
+			echo $this->_stripped;
+		}
+
+		return $this->_stripped;
 	}
 
 	/**
@@ -1087,18 +1147,18 @@ class Decoda {
 	 * Scan the string stack and extract any tags and chunks of text that were detected.
 	 *
 	 * @access protected
-	 * @return void
+	 * @param string $string
+	 * @return array
 	 */
-	protected function _extractChunks() {
-		$str = $this->_string;
+	protected function _extractChunks($string) {
 		$strPos = 0;
-		$strLength = strlen($str);
+		$strLength = strlen($string);
 		$openBracket = $this->config('open');
 		$closeBracket = $this->config('close');
 
 		while ($strPos < $strLength) {
 			$tag = array();
-			$openPos = strpos($str, $openBracket, $strPos);
+			$openPos = strpos($string, $openBracket, $strPos);
 
 			if ($openPos === false) {
 				$openPos = $strLength;
@@ -1108,14 +1168,14 @@ class Decoda {
 			if ($openPos + 1 > $strLength) {
 				$nextOpenPos = $strLength;
 			} else {
-				$nextOpenPos = strpos($str, $openBracket, $openPos + 1);
+				$nextOpenPos = strpos($string, $openBracket, $openPos + 1);
 
 				if ($nextOpenPos === false) {
 					$nextOpenPos = $strLength;
 				}
 			}
 
-			$closePos = strpos($str, $closeBracket, $strPos);
+			$closePos = strpos($string, $closeBracket, $strPos);
 
 			if ($closePos === false) {
 				$closePos = $strLength + 1;
@@ -1127,13 +1187,13 @@ class Decoda {
 				// Child open tag before closing tag
 				if ($nextOpenPos < $closePos) {
 					$newPos = $nextOpenPos;
-					$tag['text'] = substr($str, $strPos, ($nextOpenPos - $strPos));
+					$tag['text'] = substr($string, $strPos, ($nextOpenPos - $strPos));
 					$tag['type'] = self::TAG_NONE;
 
 				// Tag?
 				} else {
 					$newPos = $closePos + 1;
-					$newTag = $this->_buildTag(substr($str, $strPos, (($closePos - $strPos) + 1)));
+					$newTag = $this->_buildTag(substr($string, $strPos, (($closePos - $strPos) + 1)));
 
 					// Valid tag
 					if ($newTag) {
@@ -1141,7 +1201,7 @@ class Decoda {
 
 					// Not a valid tag
 					} else {
-						$tag['text'] = substr($str, $strPos, $closePos - $strPos + 1);
+						$tag['text'] = substr($string, $strPos, $closePos - $strPos + 1);
 						$tag['type'] = self::TAG_NONE;
 					}
 				}
@@ -1150,7 +1210,7 @@ class Decoda {
 			} else {
 				$newPos = $openPos;
 
-				$tag['text'] = substr($str, $strPos, ($openPos - $strPos));
+				$tag['text'] = substr($string, $strPos, ($openPos - $strPos));
 				$tag['type'] = self::TAG_NONE;
 			}
 
@@ -1166,6 +1226,8 @@ class Decoda {
 		}
 
 		$this->_nodes = $this->_extractNodes($this->_chunks);
+
+		return $this->_nodes;
 	}
 
 	/**
@@ -1329,6 +1391,37 @@ class Decoda {
 				}
 			} else {
 				$parsed .= $this->getFilterByTag($node['tag'])->parse($node, $this->_parse($node['children'], $node));
+			}
+		}
+
+		return $parsed;
+	}
+
+	/**
+	 * Cycle through the nodes and strip out tags and content.
+	 *
+	 * @access protected
+	 * @param array $nodes
+	 * @param array $wrapper
+	 * @return string
+	 */
+	protected function _strip(array $nodes, array $wrapper = array()) {
+		$parsed = '';
+		$xhtml = $this->config('xhtml');
+
+		if (!$nodes) {
+			return $parsed;
+		}
+
+		foreach ($nodes as $node) {
+			if (is_string($node)) {
+				if (!$wrapper) {
+					$parsed .= nl2br($node, $xhtml);
+				} else {
+					$parsed .= $node;
+				}
+			} else {
+				$parsed .= $this->getFilterByTag($node['tag'])->strip($node, $this->_strip($node['children'], $node));
 			}
 		}
 

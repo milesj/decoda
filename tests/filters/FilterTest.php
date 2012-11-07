@@ -115,6 +115,7 @@ class FilterTest extends TestCase {
 			'autoClose' => false,
 			'preserveTags' => false,
 			'contentPattern' => '',
+			'stripContent' => false,
 			'parent' => array(),
 			'childrenWhitelist' => array(),
 			'childrenBlacklist' => array(),

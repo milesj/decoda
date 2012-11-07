@@ -78,8 +78,10 @@ abstract class FilterAbstract implements Filter {
 
 		/**
 		 * contentPattern	- (string) Regex pattern that the content or default attribute must pass
+		 * stripContent		- (boolean) Should content within tags be removed when stripping tags
 		 */
 		'contentPattern' => '',
+		'stripContent' => false,
 
 		/**
 		 * parent				- (array) List of Decoda tags that this tag can only be a direct child of

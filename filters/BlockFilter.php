@@ -95,7 +95,8 @@ class BlockFilter extends FilterAbstract {
 			'allowedTypes' => Decoda::TYPE_BOTH,
 			'htmlAttributes' => array(
 				'style' => 'display: none'
-			)
+			),
+			'stripContent' => true
 		),
 		'alert' => array(
 			'htmlTag' => 'div',
@@ -103,7 +104,8 @@ class BlockFilter extends FilterAbstract {
 			'allowedTypes' => Decoda::TYPE_BOTH,
 			'htmlAttributes' => array(
 				'class' => 'decoda-alert'
-			)
+			),
+			'stripContent' => true
 		),
 		'note' => array(
 			'htmlTag' => 'div',
@@ -111,7 +113,8 @@ class BlockFilter extends FilterAbstract {
 			'allowedTypes' => Decoda::TYPE_BOTH,
 			'htmlAttributes' => array(
 				'class' => 'decoda-note'
-			)
+			),
+			'stripContent' => true
 		),
 		'div' => array(
 			'htmlTag' => 'div',
@@ -123,12 +126,14 @@ class BlockFilter extends FilterAbstract {
 			),
 			'mapAttributes' => array(
 				'default' => 'id'
-			)
+			),
+			'stripContent' => true
 		),
 		'spoiler' => array(
 			'template' => 'spoiler',
 			'displayType' => Decoda::TYPE_BLOCK,
-			'allowedTypes' => Decoda::TYPE_BOTH
+			'allowedTypes' => Decoda::TYPE_BOTH,
+			'stripContent' => true
 		)
 	);
 

@@ -574,7 +574,7 @@ class Decoda {
 			$string = nl2br($string, $this->config('xhtml'));
 		}
 
-		$this->_parsed = $this->_trigger('afterParse', $string);
+		$this->_parsed = trim($this->_trigger('afterParse', $string));
 
 		if ($echo) {
 			echo $this->_parsed;
@@ -821,7 +821,7 @@ class Decoda {
 			$string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $string);
 		}
 
-		$string = $this->_trigger('beforeParse', $string);
+		$string = $this->_trigger('beforeStrip', $string);
 
 		if (strpos($string, $this->config('open')) !== false && strpos($string, $this->config('close')) !== false) {
 			$string = $this->_strip($this->_extractChunks($string));
@@ -829,7 +829,7 @@ class Decoda {
 			$string = nl2br($string, $this->config('xhtml'));
 		}
 
-		$this->_stripped = $this->_trigger('afterParse', $string);
+		$this->_stripped = trim($this->_trigger('afterStrip', $string));
 
 		if ($html) {
 			$this->_stripped = strip_tags($this->_stripped);

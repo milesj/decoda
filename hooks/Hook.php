@@ -27,6 +27,15 @@ interface Hook {
 	public function afterParse($content);
 
 	/**
+	 * Process the content after the stripping has finished.
+	 *
+	 * @access public
+	 * @param string $content
+	 * @return string
+	 */
+	public function afterStrip($content);
+
+	/**
 	 * Process the content before the parsing begins.
 	 *
 	 * @access public
@@ -34,6 +43,15 @@ interface Hook {
 	 * @return string
 	 */
 	public function beforeParse($content);
+
+	/**
+	 * Process the content before the stripping begins.
+	 *
+	 * @access public
+	 * @param string $content
+	 * @return string
+	 */
+	public function beforeStrip($content);
 
 	/**
 	 * Return the Decoda parser.

@@ -44,13 +44,18 @@ class CensorHook extends HookAbstract {
 	 * @return string
 	 */
 	public function beforeParse($content) {
-		if ($this->_censored) {
-			foreach ($this->_censored as $word) {
-				$content = preg_replace_callback('/(^|\s|\n)+' . $this->_prepare($word) . '(\s|\n|$)+/is', array($this, '_callback'), $content);
-			}
-		}
+		return $this->_censor($content);
+	}
 
-		return $content;
+	/**
+	 * Parse the content by censoring blacklisted words.
+	 *
+	 * @access public
+	 * @param string $content
+	 * @return string
+	 */
+	public function beforeStrip($content) {
+		return $this->_censor($content);
 	}
 
 	/**
@@ -120,6 +125,23 @@ class CensorHook extends HookAbstract {
 		}
 
 		return $l . $censored . $r;
+	}
+
+	/**
+	 * Trigger censoring.
+	 *
+	 * @access protected
+	 * @param string $content
+	 * @return string
+	 */
+	protected function _censor($content) {
+		if ($this->_censored) {
+			foreach ($this->_censored as $word) {
+				$content = preg_replace_callback('/(^|\s|\n)+' . $this->_prepare($word) . '(\s|\n|$)+/is', array($this, '_callback'), $content);
+			}
+		}
+
+		return $content;
 	}
 
 	/**

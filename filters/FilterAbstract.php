@@ -272,6 +272,24 @@ abstract class FilterAbstract implements Filter {
 	}
 
 	/**
+	 * Strip a node and remove content dependent on settings.
+	 *
+	 * @access public
+	 * @param array $tag
+	 * @param string $content
+	 * @return string
+	 */
+	public function strip(array $tag, $content) {
+		$setup = $this->tag($tag['tag']);
+
+		if (!$setup || $setup['stripContent']) {
+			return '';
+		}
+
+		return $content;
+	}
+
+	/**
 	 * Return a tag if it exists, and merge with defaults.
 	 *
 	 * @access public

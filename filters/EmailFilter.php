@@ -106,4 +106,18 @@ class EmailFilter extends FilterAbstract {
 		return parent::parse($tag, $content);
 	}
 
+	/**
+	 * Strip a node but keep the email regardless of location.
+	 *
+	 * @access public
+	 * @param array $tag
+	 * @param string $content
+	 * @return string
+	 */
+	public function strip(array $tag, $content) {
+		$email = isset($tag['attributes']['default']) ? $tag['attributes']['default'] : $content;
+
+		return parent::strip($tag, $email);
+	}
+
 }

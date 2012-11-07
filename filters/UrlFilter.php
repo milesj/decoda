@@ -87,4 +87,18 @@ class UrlFilter extends FilterAbstract {
 		return parent::parse($tag, $content);
 	}
 
+	/**
+	 * Strip a node but keep the URL regardless of location.
+	 *
+	 * @access public
+	 * @param array $tag
+	 * @param string $content
+	 * @return string
+	 */
+	public function strip(array $tag, $content) {
+		$url = isset($tag['attributes']['href']) ? $tag['attributes']['href'] : $content;
+
+		return parent::strip($tag, $url);
+	}
+
 }

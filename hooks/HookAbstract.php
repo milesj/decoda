@@ -68,6 +68,17 @@ abstract class HookAbstract implements Hook {
 	}
 
 	/**
+	 * Process the content after the stripping has finished.
+	 *
+	 * @access public
+	 * @param string $content
+	 * @return string
+	 */
+	public function afterStrip($content) {
+		return $content;
+	}
+
+	/**
 	 * Process the content before the parsing begins.
 	 *
 	 * @access public
@@ -75,6 +86,17 @@ abstract class HookAbstract implements Hook {
 	 * @return string
 	 */
 	public function beforeParse($content) {
+		return $content;
+	}
+
+	/**
+	 * Process the content before the stripping begins.
+	 *
+	 * @access public
+	 * @param string $content
+	 * @return string
+	 */
+	public function beforeStrip($content) {
 		return $content;
 	}
 

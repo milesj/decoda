@@ -491,4 +491,23 @@ class DecodaTest extends TestCase {
 		$this->assertEquals('<br />', $this->object->reset('[br]Content[/br]')->parse());
 	}
 
+	/**
+	 * Test that strip removes tags and HTML.
+	 */
+	public function testStrip() {
+		$this->object->defaults();
+
+		$string = 'Test that [b]Bold[/b] [i]Italics[/i] leave the inner content.' . PHP_EOL . 'While certain tags like [quote]quote does not[/quote] keep content.';
+		$this->assertEquals('Test that Bold Italics leave the inner content.' . PHP_EOL . 'While certain tags like  keep content.', $this->object->reset($string)->strip());
+		$this->assertEquals('Test that Bold Italics leave the inner content.<br>' . PHP_EOL . 'While certain tags like  keep content.', $this->object->reset($string)->strip(false));
+
+		// Test weird scenarios like email, url and image
+		$this->assertEquals('Test http://domain.com/image.jpg', $this->object->reset('Test [img]http://domain.com/image.jpg[/img]')->strip());
+		$this->assertEquals('Test http://domain.com/', $this->object->reset('Test [url]http://domain.com/[/url]')->strip());
+		$this->assertEquals('Test http://domain.com/', $this->object->reset('Test [url="http://domain.com/"]Some URL![/url]')->strip());
+		$this->assertEquals('Test email@domain.com', $this->object->reset('Test [email]email@domain.com[/email]')->strip());
+		$this->assertEquals('Test email@domain.com', $this->object->reset('Test [email="email@domain.com"]Some email![/email]')->strip());
+		$this->assertEquals('Test', $this->object->reset('Test [code]code [b]blocks[/b][/code]')->strip());
+	}
+
 }

@@ -19,5 +19,6 @@
 	},
 	"autoload": {
 		"psr-0": { "mjohnson\\Decoda": "" }
-	}
+	},
+	"target-dir": "mjohnson/Decoda"
 }

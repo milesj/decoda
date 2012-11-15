@@ -18,7 +18,7 @@
 		"source": "https://github.com/milesj/php-decoda"
 	},
 	"autoload": {
-		"psr-0": { "mjohnson\\Decoda": "" }
+		"psr-0": { "mjohnson\\decoda": "" }
 	},
-	"target-dir": "mjohnson/Decoda"
+	"target-dir": "mjohnson/decoda"
 }

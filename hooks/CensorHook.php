@@ -107,7 +107,7 @@ class CensorHook extends HookAbstract {
 
 		$length = mb_strlen(trim($matches[0]));
 		$censored = '';
-		$symbols = str_shuffle('*@#$*!&%');
+		$symbols = str_shuffle('*@#$*!?%');
 		$l = isset($matches[1]) ? $matches[1] : '';
 		$r = isset($matches[2]) ? $matches[2] : '';
 		$i = 0;

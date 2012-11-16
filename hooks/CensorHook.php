@@ -137,7 +137,7 @@ class CensorHook extends HookAbstract {
 	protected function _censor($content) {
 		if ($this->_censored) {
 			foreach ($this->_censored as $word) {
-				$content = preg_replace_callback('/(^|\s|\n)+' . $this->_prepare($word) . '(\s|\n|$)+/is', array($this, '_callback'), $content);
+				$content = preg_replace_callback('/(^|\s|\n|[^\w]){1,1}(?:' . $this->_prepare($word) . ')([^\w]|\s|\n|$){1,1}/isS', array($this, '_callback'), $content);
 			}
 		}
 
@@ -156,7 +156,7 @@ class CensorHook extends HookAbstract {
 		$regex = '';
 
 		foreach ($letters as $letter) {
-			$regex .= preg_quote($letter, '/') . '{1,}';
+			$regex .= preg_quote($letter, '/') . '+';
 		}
 
 		$suffix = $this->config('suffix');

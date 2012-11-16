@@ -186,7 +186,7 @@ abstract class FilterAbstract implements Filter {
 					$content = nl2br($content, $xhtml);
 				// fall through
 				case Decoda::NL_REMOVE:
-					$content = str_replace(array("\n", "\r"), "", $content);
+					$content = str_replace("\n", "", $content);
 				break;
 			}
 		}
@@ -223,7 +223,7 @@ abstract class FilterAbstract implements Filter {
 			$parsed = $engine->render($tag, $content);
 
 			if ($setup['lineBreaks'] !== Decoda::NL_PRESERVE) {
-				$parsed = str_replace(array("\n", "\r"), "", $parsed);
+				$parsed = str_replace(array("\r", "\n"), "", $parsed);
 			}
 
 			return $parsed;

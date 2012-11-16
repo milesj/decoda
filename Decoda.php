@@ -62,7 +62,7 @@ class Decoda {
 	 * Newline and carriage return formatting.
 	 *
 	 * 	NL_REMOVE	- Will be removed
-	 * 	NL_PRESERVE	- Will be preserved as \n and \r
+	 * 	NL_PRESERVE	- Will be preserved as \n
 	 * 	NL_CONVERT	- Will be converted to <br> tags
 	 */
 	const NL_REMOVE = 0;
@@ -635,9 +635,13 @@ class Decoda {
 		$this->_nodes = array();
 		$this->_blacklist = array();
 		$this->_whitelist = array();
-		$this->_string = (string) $string;
 		$this->_parsed = '';
 		$this->_stripped = '';
+
+		// Normalize line feeds
+		$string = str_replace("\r\n", "\n", $string);
+		$string = str_replace("\r", "\n", $string);
+		$this->_string = $string;
 
 		if ($flush) {
 			$this->resetFilters();

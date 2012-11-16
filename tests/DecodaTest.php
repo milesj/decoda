@@ -405,7 +405,7 @@ class DecodaTest extends TestCase {
 
 		// Preserve CRLF
 		$string = "[lineBreaksPreserve]Line\nBreak\rTests[/lineBreaksPreserve]";
-		$this->assertEquals("<lineBreaksPreserve>Line\nBreak\rTests</lineBreaksPreserve>", $this->object->reset($string)->parse());
+		$this->assertEquals("<lineBreaksPreserve>Line\nBreak\nTests</lineBreaksPreserve>", $this->object->reset($string)->parse());
 
 		// Convert CRLF to <br>
 		$string = "[lineBreaksConvert]Line\nBreak\rTests[/lineBreaksConvert]";
@@ -498,8 +498,8 @@ class DecodaTest extends TestCase {
 		$this->object->defaults();
 
 		$string = 'Test that [b]Bold[/b] [i]Italics[/i] leave the inner content.' . PHP_EOL . 'While certain tags like [quote]quote does not[/quote] keep content.';
-		$this->assertEquals('Test that Bold Italics leave the inner content.' . PHP_EOL . 'While certain tags like  keep content.', $this->object->reset($string)->strip());
-		$this->assertEquals('Test that Bold Italics leave the inner content.<br>' . PHP_EOL . 'While certain tags like  keep content.', $this->object->reset($string)->strip(false));
+		$this->assertEquals("Test that Bold Italics leave the inner content.\nWhile certain tags like  keep content.", $this->object->reset($string)->strip());
+		$this->assertEquals("Test that Bold Italics leave the inner content.<br>\nWhile certain tags like  keep content.", $this->object->reset($string)->strip(false));
 
 		// Test weird scenarios like email, url and image
 		$this->assertEquals('Test http://domain.com/image.jpg', $this->object->reset('Test [img]http://domain.com/image.jpg[/img]')->strip());
@@ -508,6 +508,70 @@ class DecodaTest extends TestCase {
 		$this->assertEquals('Test email@domain.com', $this->object->reset('Test [email]email@domain.com[/email]')->strip());
 		$this->assertEquals('Test email@domain.com', $this->object->reset('Test [email="email@domain.com"]Some email![/email]')->strip());
 		$this->assertEquals('Test', $this->object->reset('Test [code]code [b]blocks[/b][/code]')->strip());
+
+		// Test large texts
+		$string = <<<'TEST'
+[b]Bold[/b]
+[i]Italics[/i]
+[u]Underline[/u]
+Sub[sub]script[/sub]
+Super[sup]script[/sup]
+[abbr="Na Aa Sa Aa"]NASA[/abbr]
+[hr/]
+[font="Arial"]Arial[/font]
+[font="Courier"]Courier[/font]
+[size="18"]Medium[/size]
+[color="red"]Red[/color]
+[h6]H6[/h6]
+[h1]H1[/h1]
+[left]Left[/left]
+[center]Center[/center]
+[right]Right[/right]
+[justify]Justify[/justify]
+[hide]Hidden[/hide]
+[spoiler]Spoiler[/spoiler]
+[list][li]List[/li][/list]
+[olist][li]Olist[/li][/olist]
+[quote="Miles"]Quote[/quote]
+[quote="Miles" date="10/10/2010"]Quote[/quote]
+[code]<div class="posts">
+	<?php foreach ($posts as $post) {
+		echo renderPost($post);
+	} ?>
+</div>[/code]
+Lorem ipsum dolor sit amet, consectetur [var]adipiscing elit[/var]. Nunc sem justo, faucibus vitae faucibus feugiat, pulvinar accumsan lacus. Sed et mauris est, quis convallis velit. Etiam ullamcorper eros sed eros facilisis imperdiet. Donec in mauris ut mauris congue tristique quis vitae velit. Cras ornare, magna ut laoreet sagittis, elit sem iaculis lorem, eu pharetra nibh massa eget arcu. [var]In varius gravida scelerisque[/var]. In hac habitasse platea dictumst. Mauris cursus mauris in arcu rutrum a lobortis ligula aliquet. Morbi ornare porttitor dolor, sit amet vehicula velit elementum quis. Vivamus in convallis sapien.
+TEST;
+
+		$expected = <<<'EXP'
+Bold
+Italics
+Underline
+Subscript
+Superscript
+NASA
+
+Arial
+Courier
+Medium
+Red
+H6
+H1
+Left
+Center
+Right
+Justify
+
+
+List
+Olist
+
+
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sem justo, faucibus vitae faucibus feugiat, pulvinar accumsan lacus. Sed et mauris est, quis convallis velit. Etiam ullamcorper eros sed eros facilisis imperdiet. Donec in mauris ut mauris congue tristique quis vitae velit. Cras ornare, magna ut laoreet sagittis, elit sem iaculis lorem, eu pharetra nibh massa eget arcu. In varius gravida scelerisque. In hac habitasse platea dictumst. Mauris cursus mauris in arcu rutrum a lobortis ligula aliquet. Morbi ornare porttitor dolor, sit amet vehicula velit elementum quis. Vivamus in convallis sapien.
+EXP;
+
+		// Replace new lines for the test
+		$this->assertEquals(str_replace("\r\n", "\n", $expected), $this->object->reset($string)->strip());
 	}
 
 }

@@ -100,7 +100,7 @@ class Decoda {
 		'xhtmlOutput' => false,
 		'escapeHtml' => true,
 		'strictMode' => true,
-		'maxNewlines' => 2
+		'maxNewlines' => 3
 	);
 
 	/**
@@ -615,7 +615,9 @@ class Decoda {
 			$string = nl2br($string, $this->config('xhtmlOutput'));
 		}
 
-		$this->_parsed = trim($this->_trigger('afterParse', $string));
+		$string = $this->_trigger('afterParse', $string);
+
+		$this->_parsed = $this->_cleanNewlines($string);
 
 		if ($echo) {
 			echo $this->_parsed;
@@ -872,11 +874,13 @@ class Decoda {
 			$string = nl2br($string, $this->config('xhtmlOutput'));
 		}
 
-		$this->_stripped = trim($this->_trigger('afterStrip', $string));
+		$string = $this->_trigger('afterStrip', $string);
 
 		if (!$html) {
-			$this->_stripped = strip_tags($this->_stripped);
+			$string = strip_tags($string);
 		}
+
+		$this->_stripped = $this->_cleanNewlines($string);
 
 		if ($echo) {
 			echo $this->_stripped;
@@ -1184,6 +1188,23 @@ class Decoda {
 		}
 
 		return array_values($clean);
+	}
+
+	/**
+	 * Remove any newlines above the max.
+	 *
+	 * @access protected
+	 * @param string $string
+	 * @return string
+	 */
+	protected function _cleanNewlines($string) {
+		$string = trim($string);
+
+		if ($max = $this->config('maxNewlines')) {
+			$string = preg_replace('/\n{' . ($max + 1) . ',}/', str_repeat("\n", $max), $string);
+		}
+
+		return $string;
 	}
 
 	/**

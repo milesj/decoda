@@ -497,7 +497,7 @@ class DecodaTest extends TestCase {
 
 		$string = 'Test that [b]Bold[/b] [i]Italics[/i] leave the inner content.' . PHP_EOL . 'While certain tags like [quote]quote does not[/quote] keep content.';
 		$this->assertEquals("Test that Bold Italics leave the inner content.\nWhile certain tags like  keep content.", $this->object->reset($string)->strip());
-		$this->assertEquals("Test that Bold Italics leave the inner content.<br>\nWhile certain tags like  keep content.", $this->object->reset($string)->strip(false));
+		$this->assertEquals("Test that Bold Italics leave the inner content.<br>\nWhile certain tags like  keep content.", $this->object->reset($string)->strip(true));
 
 		// Test weird scenarios like email, url and image
 		$this->assertEquals('Test http://domain.com/image.jpg', $this->object->reset('Test [img]http://domain.com/image.jpg[/img]')->strip());
@@ -562,7 +562,6 @@ Justify
 
 List
 Olist
-
 
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sem justo, faucibus vitae faucibus feugiat, pulvinar accumsan lacus. Sed et mauris est, quis convallis velit. Etiam ullamcorper eros sed eros facilisis imperdiet. Donec in mauris ut mauris congue tristique quis vitae velit. Cras ornare, magna ut laoreet sagittis, elit sem iaculis lorem, eu pharetra nibh massa eget arcu. In varius gravida scelerisque. In hac habitasse platea dictumst. Mauris cursus mauris in arcu rutrum a lobortis ligula aliquet. Morbi ornare porttitor dolor, sit amet vehicula velit elementum quis. Vivamus in convallis sapien.

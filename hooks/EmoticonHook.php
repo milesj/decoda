@@ -116,7 +116,7 @@ class EmoticonHook extends HookAbstract {
 			$this->_map[$smiley],
 			$this->config('extension'));
 
-		if ($this->getParser()->config('xhtml')) {
+		if ($this->getParser()->config('xhtmlOutput')) {
 			$image = '<img src="%s" alt="" />';
 		} else {
 			$image = '<img src="%s" alt="">';

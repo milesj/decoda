@@ -93,7 +93,7 @@ class EmailFilter extends FilterAbstract {
 
 		$tag['attributes']['href'] = 'mailto:' . $encrypted;
 
-		if ($this->getParser()->config('shorthand')) {
+		if ($this->getParser()->config('shorthandLinks')) {
 			$tag['content'] = $this->message('mail');
 
 			return '[' . parent::parse($tag, $content) . ']';

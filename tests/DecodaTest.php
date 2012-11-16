@@ -107,9 +107,7 @@ class DecodaTest extends TestCase {
 
 		$this->assertEquals('<b>Bold</b> <i>Italics</i>', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->parse());
 
-		$this->object->disable(true);
-
-		$this->assertEquals('Bold Italics', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->parse());
+		$this->assertEquals('[b]Bold[/b] [i]Italics[/i]', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->disable(true)->parse());
 	}
 
 	/**

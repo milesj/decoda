@@ -94,12 +94,13 @@ class Decoda {
 	protected $_config = array(
 		'open' => '[',
 		'close' => ']',
+		'locale' => 'en-us',
 		'disabled' => false,
-		'shorthand' => false,
-		'xhtml' => false,
-		'escape' => true,
-		'strict' => true,
-		'locale' => 'en-us'
+		'shorthandLinks' => false,
+		'xhtmlOutput' => false,
+		'escapeHtml' => true,
+		'strictMode' => true,
+		'maxNewlines' => 2
 	);
 
 	/**
@@ -211,10 +212,12 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $string
+	 * @param array $config
 	 */
-	public function __construct($string = '') {
+	public function __construct($string = '', array $config = array()) {
 		spl_autoload_register(array($this, 'loadFile'));
 
+		$this->configure($config);
 		$this->reset($string, true);
 		$this->addPath(DECODA . 'config/');
 	}
@@ -265,6 +268,8 @@ class Decoda {
 
 		$hook->setupFilters($this);
 
+		ksort($this->_hooks);
+
 		return $this;
 	}
 
@@ -311,6 +316,54 @@ class Decoda {
 	 */
 	public function config($key) {
 		return isset($this->_config[$key]) ? $this->_config[$key] : null;
+	}
+
+	/**
+	 * Apply multiple configurations at once.
+	 *
+	 * @access public
+	 * @param array $config
+	 * @return \mjohnson\decoda\Decoda
+	 * @chainable
+	 */
+	public function configure(array $config = array()) {
+		if (!$config) {
+			return $this;
+		}
+
+		foreach ($config as $key => $value) {
+			switch ($key) {
+				case 'open':
+				case 'close':
+					$this->setBrackets($config['open'], $config['close']);
+				break;
+				case 'locale':
+					$this->setLocale($value);
+				break;
+				case 'disabled':
+					$this->disable($value);
+				break;
+				case 'shorthand':
+				case 'shorthandLinks':
+					$this->setShorthand($value);
+				break;
+				case 'xhtml':
+				case 'xhtmlOutput':
+					$this->setXhtml($value);
+				case 'escape':
+				case 'escapeHtml':
+					$this->setEscaping($value);
+				case 'strict':
+				case 'strictMode':
+					$this->setStrict($value);
+				case 'newlines':
+				case 'maxNewlines':
+					$this->setMaxNewlines($value);
+				break;
+			}
+		}
+
+		return $this;
 	}
 
 	/**
@@ -554,24 +607,12 @@ class Decoda {
 			return $this->_parsed;
 		}
 
-		$string = $this->_string;
+		$string = $this->_trigger('beforeParse', $this->_string);
 
-		if (!$this->_filters && !$this->_hooks) {
-			return $string;
-		}
-
-		ksort($this->_hooks);
-
-		if ($this->config('escape')) {
-			$string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $string);
-		}
-
-		$string = $this->_trigger('beforeParse', $string);
-
-		if (strpos($string, $this->config('open')) !== false && strpos($string, $this->config('close')) !== false) {
+		if ($this->_isParseable($string)) {
 			$string = $this->_parse($this->_extractChunks($string));
 		} else {
-			$string = nl2br($string, $this->config('xhtml'));
+			$string = nl2br($string, $this->config('xhtmlOutput'));
 		}
 
 		$this->_parsed = trim($this->_trigger('afterParse', $string));
@@ -637,11 +678,7 @@ class Decoda {
 		$this->_whitelist = array();
 		$this->_parsed = '';
 		$this->_stripped = '';
-
-		// Normalize line feeds
-		$string = str_replace("\r\n", "\n", $string);
-		$string = str_replace("\r", "\n", $string);
-		$this->_string = $string;
+		$this->_string = $this->_escape($string);
 
 		if ($flush) {
 			$this->resetFilters();
@@ -714,7 +751,7 @@ class Decoda {
 	 * @chainable
 	 */
 	public function setEscaping($status = true) {
-		$this->_config['escape'] = (bool) $status;
+		$this->_config['escapeHtml'] = (bool) $status;
 
 		return $this;
 	}
@@ -741,6 +778,20 @@ class Decoda {
 	}
 
 	/**
+	 * Set the max amount of newlines.
+	 *
+	 * @access public
+	 * @param boolean $max
+	 * @return \mjohnson\decoda\Decoda
+	 * @chainable
+	 */
+	public function setMaxNewlines($max) {
+		$this->_config['maxNewlines'] = (int) $max;
+
+		return $this;
+	}
+
+	/**
 	 * Toggle shorthand syntax.
 	 *
 	 * @access public
@@ -749,7 +800,7 @@ class Decoda {
 	 * @chainable
 	 */
 	public function setShorthand($status = true) {
-		$this->_config['shorthand'] = (bool) $status;
+		$this->_config['shorthandLinks'] = (bool) $status;
 
 		return $this;
 	}
@@ -763,7 +814,7 @@ class Decoda {
 	 * @chainable
 	 */
 	public function setStrict($strict = true) {
-		$this->_config['strict'] = (bool) $strict;
+		$this->_config['strictMode'] = (bool) $strict;
 
 		return $this;
 	}
@@ -791,7 +842,7 @@ class Decoda {
 	 * @chainable
 	 */
 	public function setXhtml($status = true) {
-		$this->_config['xhtml'] = (bool) $status;
+		$this->_config['xhtmlOutput'] = (bool) $status;
 
 		return $this;
 	}
@@ -804,7 +855,7 @@ class Decoda {
 	 * @param boolean $echo
 	 * @return string
 	 */
-	public function strip($html = true, $echo = false) {
+	public function strip($html = false, $echo = false) {
 		if ($this->_stripped) {
 			if ($echo) {
 				echo $this->_stripped;
@@ -813,29 +864,17 @@ class Decoda {
 			return $this->_stripped;
 		}
 
-		$string = $this->_string;
+		$string = $this->_trigger('beforeStrip', $this->_string);
 
-		if (!$this->_filters && !$this->_hooks) {
-			return $string;
-		}
-
-		ksort($this->_hooks);
-
-		if ($this->config('escape')) {
-			$string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $string);
-		}
-
-		$string = $this->_trigger('beforeStrip', $string);
-
-		if (strpos($string, $this->config('open')) !== false && strpos($string, $this->config('close')) !== false) {
+		if ($this->_isParseable($string)) {
 			$string = $this->_strip($this->_extractChunks($string));
 		} else {
-			$string = nl2br($string, $this->config('xhtml'));
+			$string = nl2br($string, $this->config('xhtmlOutput'));
 		}
 
 		$this->_stripped = trim($this->_trigger('afterStrip', $string));
 
-		if ($html) {
+		if (!$html) {
 			$this->_stripped = strip_tags($this->_stripped);
 		}
 
@@ -931,7 +970,7 @@ class Decoda {
 				}
 
 				// Find attributes that aren't surrounded by quotes
-				if (!$this->config('strict')) {
+				if (!$this->config('strictMode')) {
 					preg_match_all('/([a-z]+)=([^\s\]]+)/i', $string, $matches, PREG_SET_ORDER);
 
 					if ($matches) {
@@ -1145,6 +1184,24 @@ class Decoda {
 		}
 
 		return array_values($clean);
+	}
+
+	/**
+	 * Normalize line feeds and escape HTML characters.
+	 *
+	 * @access protected
+	 * @param string $string
+	 * @return string
+	 */
+	protected function _escape($string) {
+		$string = str_replace("\r\n", "\n", $string);
+		$string = str_replace("\r", "\n", $string);
+
+		if ($this->config('escapeHtml')) {
+			$string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $string);
+		}
+
+		return $string;
 	}
 
 	/**
@@ -1371,6 +1428,21 @@ class Decoda {
 	}
 
 	/**
+	 * Return true if the string is parseable.
+	 *
+	 * @access protected
+	 * @param string $string
+	 * @return boolean
+	 */
+	protected function _isParseable($string) {
+		return (
+			strpos($string, $this->config('open')) !== false &&
+			strpos($string, $this->config('close')) !== false &&
+			!$this->config('disabled')
+		);
+	}
+
+	/**
 	 * Cycle through the nodes and parse the string with the appropriate filter.
 	 *
 	 * @access protected
@@ -1380,7 +1452,7 @@ class Decoda {
 	 */
 	protected function _parse(array $nodes, array $wrapper = array()) {
 		$parsed = '';
-		$xhtml = $this->config('xhtml');
+		$xhtml = $this->config('xhtmlOutput');
 
 		if (!$nodes) {
 			return $parsed;
@@ -1411,7 +1483,7 @@ class Decoda {
 	 */
 	protected function _strip(array $nodes, array $wrapper = array()) {
 		$parsed = '';
-		$xhtml = $this->config('xhtml');
+		$xhtml = $this->config('xhtmlOutput');
 
 		if (!$nodes) {
 			return $parsed;

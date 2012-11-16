@@ -78,7 +78,7 @@ class UrlFilter extends FilterAbstract {
 
 		$tag['attributes']['href'] = $url;
 
-		if ($this->getParser()->config('shorthand')) {
+		if ($this->getParser()->config('shorthandLinks')) {
 			$tag['content'] = $this->message('link');
 
 			return '[' . parent::parse($tag, $content) . ']';

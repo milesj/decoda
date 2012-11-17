@@ -929,6 +929,11 @@ class Decoda {
 			$tag['tag'] = trim(substr($string, 2, strlen($string) - 3));
 			$tag['type'] = self::TAG_CLOSE;
 
+			// Check for lowercase tag in case they uppercased it: IMG, B, etc
+			if (isset($this->_tags[strtolower($tag['tag'])])) {
+				$tag['tag'] = strtolower($tag['tag']);
+			}
+
 			if (!isset($this->_tags[$tag['tag']])) {
 				return false;
 			}
@@ -955,6 +960,11 @@ class Decoda {
 			if (preg_match('/' . $oe . '([a-z0-9]+)(.*?)' . $ce . '/i', $string, $matches)) {
 				$tag['type'] = self::TAG_OPEN;
 				$tag['tag'] = trim($matches[1]);
+			}
+
+			// Check for lowercase tag in case they uppercased it: IMG, B, etc
+			if (isset($this->_tags[strtolower($tag['tag'])])) {
+				$tag['tag'] = strtolower($tag['tag']);
 			}
 
 			if (!isset($this->_tags[$tag['tag']])) {

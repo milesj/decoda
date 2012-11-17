@@ -490,6 +490,15 @@ class DecodaTest extends TestCase {
 	}
 
 	/**
+	 * Test that uppercase tags are still recognized.
+	 */
+	public function testCapitalTags() {
+		$this->object->addFilter(new DefaultFilter());
+
+		$this->assertEquals('<b>Bold</b> <i>Italics</i>', $this->object->reset('[B]Bold[/B] [i]Italics[/i]')->parse());
+	}
+
+	/**
 	 * Test that strip removes tags and HTML.
 	 */
 	public function testStrip() {

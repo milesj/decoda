@@ -175,7 +175,9 @@ abstract class FilterAbstract implements Filter {
 		// Merge arguments with method of same tag name
 		// If the method returns false, exit early
 		if (method_exists($this, $tag['tag'])) {
-			if (!$this->{$tag['tag']}($tag, $content)) {
+			if ($response = call_user_func_array(array($this, $tag['tag']), array($tag, $content))) {
+				list($tag, $content) = $response;
+			} else {
 				return null;
 			}
 		}
@@ -192,7 +194,7 @@ abstract class FilterAbstract implements Filter {
 			switch ($setup['lineBreaks']) {
 				case Decoda::NL_CONVERT:
 					$content = nl2br($content, $xhtml);
-				// fall through
+				// Fall-through
 				case Decoda::NL_REMOVE:
 					$content = str_replace("\n", "", $content);
 				break;
@@ -232,6 +234,11 @@ abstract class FilterAbstract implements Filter {
 
 			if ($setup['lineBreaks'] !== Decoda::NL_PRESERVE) {
 				$parsed = str_replace(array("\r", "\n"), "", $parsed);
+
+			// Normalize
+			} else {
+				$parsed = str_replace("\r\n", "\n", $parsed);
+				$parsed = str_replace("\r", "\n", $parsed);
 			}
 
 			return $parsed;

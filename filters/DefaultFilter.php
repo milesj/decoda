@@ -102,16 +102,16 @@ class DefaultFilter extends FilterAbstract {
 	 * @access public
 	 * @param array $tag
 	 * @param string $content
-	 * @return string
+	 * @return array
 	 */
-	public function time(array &$tag, &$content) {
+	public function time(array $tag, $content) {
 		$timestamp = is_numeric($content) ? $content : strtotime($content);
 
 		$content = date($this->config('timeFormat'), $timestamp);
 
 		$tag['attributes']['datetime'] = date(DateTime::ISO8601, $timestamp);
 
-		return true;
+		return array($tag, $content);
 	}
 
 }

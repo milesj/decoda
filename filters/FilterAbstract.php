@@ -172,6 +172,14 @@ abstract class FilterAbstract implements Filter {
 			return null;
 		}
 
+		// Merge arguments with method of same tag name
+		// If the method returns false, exit early
+		if (method_exists($this, $tag['tag'])) {
+			if (!$this->{$tag['tag']}($tag, $content)) {
+				return null;
+			}
+		}
+
 		if ($content) {
 			// If content doesn't match the pattern, don't wrap in a tag
 			if ($setup['contentPattern']) {

@@ -101,4 +101,11 @@ class DefaultFilterTest extends TestCase {
 		$this->assertEquals('<hr />', $this->object->reset('[hr   /]')->parse());
 	}
 
+	/**
+	 * Test [time] renders time tags following a format.
+	 */
+	public function testTime() {
+		$this->assertEquals('<time datetime="1988-02-26T20:34:13+0000">Fri, Feb 26th 1988, 20:34</time>', $this->object->reset('[time]2/26/1988 20:34:13[/time]')->parse());
+	}
+
 }

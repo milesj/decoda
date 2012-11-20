@@ -10,6 +10,7 @@ namespace mjohnson\decoda\filters;
 
 use mjohnson\decoda\Decoda;
 use mjohnson\decoda\filters\FilterAbstract;
+use \DateTime;
 
 /**
  * Provides tags for basic font styling.
@@ -17,6 +18,16 @@ use mjohnson\decoda\filters\FilterAbstract;
  * @package	mjohnson.decoda.filters
  */
 class DefaultFilter extends FilterAbstract {
+
+	/**
+	 * Configuration.
+	 *
+	 * @access protected
+	 * @var array
+	 */
+	protected $_config = array(
+		'timeFormat' => 'D, M jS Y, H:i'
+	);
 
 	/**
 	 * Supported tags.
@@ -77,7 +88,30 @@ class DefaultFilter extends FilterAbstract {
 			'autoClose' => true,
 			'displayType' => Decoda::TYPE_BLOCK,
 			'allowedTypes' => Decoda::TYPE_NONE
+		),
+		'time' => array(
+			'htmlTag' => 'time',
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_NONE
 		)
 	);
+
+	/**
+	 * Parse the timestamps for the time tag.
+	 *
+	 * @access public
+	 * @param array $tag
+	 * @param string $content
+	 * @return string
+	 */
+	public function time(array &$tag, &$content) {
+		$timestamp = is_numeric($content) ? $content : strtotime($content);
+
+		$content = date($this->config('timeFormat'), $timestamp);
+
+		$tag['attributes']['datetime'] = date(DateTime::ISO8601, $timestamp);
+
+		return true;
+	}
 
 }

@@ -39,6 +39,78 @@ class VideoFilter extends FilterAbstract {
 				'default' => self::ALPHA,
 				'size' => '/^(?:small|medium|large)$/i'
 			)
+		),
+		'youtube' => array(
+			'template' => 'video',
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_NONE,
+			'contentPattern' => self::VIDEO_PATTERN,
+			'attributes' => array(
+				'size' => '/^(?:small|medium|large)$/i'
+			)
+		),
+		'vimeo' => array(
+			'template' => 'video',
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_NONE,
+			'contentPattern' => self::VIDEO_PATTERN,
+			'attributes' => array(
+				'size' => '/^(?:small|medium|large)$/i'
+			)
+		),
+		'veoh' => array(
+			'template' => 'video',
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_NONE,
+			'contentPattern' => self::VIDEO_PATTERN,
+			'attributes' => array(
+				'size' => '/^(?:small|medium|large)$/i'
+			)
+		),
+		'liveleak' => array(
+			'template' => 'video',
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_NONE,
+			'contentPattern' => self::VIDEO_PATTERN,
+			'attributes' => array(
+				'size' => '/^(?:small|medium|large)$/i'
+			)
+		),
+		'dailymotion' => array(
+			'template' => 'video',
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_NONE,
+			'contentPattern' => self::VIDEO_PATTERN,
+			'attributes' => array(
+				'size' => '/^(?:small|medium|large)$/i'
+			)
+		),
+		'myspace' => array(
+			'template' => 'video',
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_NONE,
+			'contentPattern' => self::VIDEO_PATTERN,
+			'attributes' => array(
+				'size' => '/^(?:small|medium|large)$/i'
+			)
+		),
+		'wegame' => array(
+			'template' => 'video',
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_NONE,
+			'contentPattern' => self::VIDEO_PATTERN,
+			'attributes' => array(
+				'size' => '/^(?:small|medium|large)$/i'
+			)
+		),
+		'collegehumor' => array(
+			'template' => 'video',
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_NONE,
+			'contentPattern' => self::VIDEO_PATTERN,
+			'attributes' => array(
+				'size' => '/^(?:small|medium|large)$/i'
+			)
 		)
 	);
 
@@ -54,7 +126,7 @@ class VideoFilter extends FilterAbstract {
 			'medium' => array(640, 360),
 			'large' => array(853, 480),
 			'player' => 'iframe',
-			'path' => 'http://www.youtube.com/embed/{id}'
+			'path' => 'http://youtube.com/embed/{id}'
 		),
 		'vimeo' => array(
 			'small' => array(400, 225),
@@ -64,10 +136,10 @@ class VideoFilter extends FilterAbstract {
 			'path' => 'http://player.vimeo.com/video/{id}'
 		),
 		'liveleak' => array(
-			'small' => array(450, 370),
-			'medium' => array(600, 493),
-			'large' => array(750, 617),
-			'player' => 'embed',
+			'small' => array(560, 315),
+			'medium' => array(640, 360),
+			'large' => array(853, 480),
+			'player' => 'iframe',
 			'path' => 'http://liveleak.com/e/{id}'
 		),
 		'veoh' => array(
@@ -75,14 +147,14 @@ class VideoFilter extends FilterAbstract {
 			'medium' => array(610, 507),
 			'large' => array(810, 674),
 			'player' => 'embed',
-			'path' => 'http://veoh.com/static/swf/webplayer/WebPlayer.swf?version=AFrontend.5.5.3.1004&permalinkId={id}&player=videodetailsembedded&videoAutoPlay=0&id=anonymous'
+			'path' => 'http://veoh.com/swf/webplayer/WebPlayer.swf?version=AFrontend.5.7.0.1390&permalinkId={id}&player=videodetailsembedded&videoAutoPlay=0&id=anonymous'
 		),
 		'dailymotion' => array(
-			'small' => array(320, 240),
-			'medium' => array(480, 360),
-			'large' => array(560, 420),
-			'player' => 'embed',
-			'path' => 'http://dailymotion.com/swf/video/{id}&additionalInfos=0&autoPlay=0'
+			'small' => array(320, 180),
+			'medium' => array(480, 270),
+			'large' => array(560, 315),
+			'player' => 'iframe',
+			'path' => 'http://dailymotion.com/embed/video/{id}'
 		),
 		'myspace' => array(
 			'small' => array(325, 260),
@@ -92,9 +164,9 @@ class VideoFilter extends FilterAbstract {
 			'path' => 'http://mediaservices.myspace.com/services/media/embed.aspx/m={id},t=1,mt=video'
 		),
 		'wegame' => array(
-			'small' => array(325, 260),
-			'medium' => array(480, 387),
-			'large' => array(525, 420),
+			'small' => array(325, 223),
+			'medium' => array(480, 330),
+			'large' => array(640, 440),
 			'player' => 'embed',
 			'path' => 'http://wegame.com/static/flash/player.swf?xmlrequest=http://www.wegame.com/player/video/{id}&embedPlayer=true'
 		),
@@ -102,8 +174,8 @@ class VideoFilter extends FilterAbstract {
 			'small' => array(300, 169),
 			'medium' => array(450, 254),
 			'large' => array(600, 338),
-			'player' => 'embed',
-			'path' => 'http://collegehumor.com/moogaloop/moogaloop.swf?clip_id={id}&use_node_id=true&fullscreen=1'
+			'player' => 'iframe',
+			'path' => 'http://collegehumor.com/e/{id}'
 		)
 	);
 
@@ -116,7 +188,7 @@ class VideoFilter extends FilterAbstract {
 	 * @return string
 	 */
 	public function parse(array $tag, $content) {
-		$provider = isset($tag['attributes']['default']) ? $tag['attributes']['default'] : null;
+		$provider = isset($tag['attributes']['default']) ? $tag['attributes']['default'] : $tag['tag'];
 		$size = strtolower(isset($tag['attributes']['size']) ? $tag['attributes']['size'] : 'medium');
 
 		if (empty($this->_formats[$provider])) {

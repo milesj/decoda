@@ -45,8 +45,8 @@ class ClickableHookTest extends TestCase {
 
 		// positioning
 		$this->assertEquals('<a href="http://domain.com">http://domain.com</a> at the beginning', $this->object->afterParse('http://domain.com at the beginning'));
-		$this->assertEquals('URL at the end <a href="http://domain.com">http://domain.com</a>', $this->object->afterParse('URL at the end http://domain.com'));
-		$this->assertEquals('URL in the middle <a href="http://domain.com">http://domain.com</a> of a string', $this->object->afterParse('URL in the middle http://domain.com of a string'));
+		$this->assertEquals('URL at the end <a href="ftp://domain.com">ftp://domain.com</a>', $this->object->afterParse('URL at the end ftp://domain.com'));
+		$this->assertEquals('URL in the middle <a href="https://domain.com">https://domain.com</a> of a string', $this->object->afterParse('URL in the middle https://domain.com of a string'));
 
 		// test that it doesn't grab URLs from within anchor tags
 		$this->assertEquals('<a href="http://domain.com">http://domain.com</a>', $this->object->afterParse('<a href="http://domain.com">http://domain.com</a>'));

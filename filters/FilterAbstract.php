@@ -58,7 +58,7 @@ abstract class FilterAbstract implements Filter {
 
 		/**
 		 * attributes		- (array) Custom attributes to parse out of the Decoda tag
-		 * mapAttributes	- (array) Map parsed and custom attributes to different names
+		 * mapAttributes	- (array) Map parsed and custom attributes to different names, as well as aliasing attributes
 		 * htmlAttributes	- (array) Custom HTML attributes to append to the parsed tag
 		 * escapeAttributes	- (boolean) Escape HTML entities within the parsed attributes
 		 */

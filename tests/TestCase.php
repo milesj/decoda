@@ -38,4 +38,15 @@ class TestCase extends \PHPUnit_Framework_TestCase {
 		return str_replace(array("\t", "\r", "\n"), '', $string);
 	}
 
+	/**
+	 * Convert newlines to \n.
+	 *
+	 * @access public
+	 * @param string $string
+	 * @return string
+	 */
+	public function nl($string) {
+		return str_replace("\r", "", $string);
+	}
+
 }

@@ -94,7 +94,7 @@ abstract class FilterAbstract implements Filter {
 } ?&gt;</pre>
 CODE;
 
-		$this->assertEquals($expected, $this->object->reset($string)->parse());
+		$this->assertEquals($this->nl($expected), $this->object->reset($string)->parse());
 	}
 
 	/**

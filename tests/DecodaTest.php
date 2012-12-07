@@ -339,6 +339,13 @@ class DecodaTest extends TestCase {
 		$string = '[attributes numeric="Decoda"]Attributes[/attributes]';
 		$this->assertEquals('<attributes id="custom-html">Attributes</attributes>', $this->object->reset($string)->parse());
 
+		// Attribute aliasing
+		$string = '[attributes n="1337"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" numeric="1337">Attributes</attributes>', $this->object->reset($string)->parse());
+
+		$string = '[attributes a="Decoda Parser"]Attributes[/attributes]';
+		$this->assertEquals('<attributes id="custom-html" alpha="Decoda Parser">Attributes</attributes>', $this->object->reset($string)->parse());
+
 		// All attributes and escaping
 		$string = '[attributes="Decoda & Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337"]Attributes[/attributes]';
 		$this->assertEquals('<attributes id="custom-html" wildcard="Decoda &amp; Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337">Attributes</attributes>', $this->object->reset($string)->parse());
@@ -577,7 +584,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sem justo, faucibu
 EXP;
 
 		// Replace new lines for the test
-		$this->assertEquals(str_replace("\r\n", "\n", $expected), $this->object->reset($string)->strip());
+		$this->assertEquals($this->nl($expected), $this->object->reset($string)->strip());
 	}
 
 }

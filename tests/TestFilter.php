@@ -82,7 +82,9 @@ class TestFilter extends FilterAbstract {
 				'numeric' => self::NUMERIC
 			),
 			'mapAttributes' => array(
-				'default' => 'wildcard'
+				'default' => 'wildcard',
+				'a' => 'alpha',
+				'n' => 'numeric'
 			),
 			'htmlAttributes' => array(
 				'id' => 'custom-html'

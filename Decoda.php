@@ -1009,6 +1009,11 @@ class Decoda {
 
 						if (isset($source['mapAttributes'][$key])) {
 							$finalKey = $source['mapAttributes'][$key];
+
+							// Allow for aliasing
+							if (isset($source['attributes'][$finalKey])) {
+								$key = $finalKey;
+							}
 						} else {
 							$finalKey = $key;
 						}

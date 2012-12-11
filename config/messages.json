@@ -8,12 +8,12 @@
 		"quoteBy": "Quote by {author}"
 	},
 	"es-mx": {
-		"spoiler": "Alerón",
+		"spoiler": "Spoiler",
 		"hide": "Ocultar",
 		"show": "Mostrar",
 		"link": "enlace",
 		"mail": "correo",
-		"quoteBy": "Cita por {author}"
+		"quoteBy": "{author} escribió:"
 	},
 	"fr-fr": {
 		"spoiler": "becquet",
@@ -33,11 +33,11 @@
 	},
 	"de-de": {
 		"spoiler": "Spoiler",
-		"hide": "Verbergen",
-		"show": "Zeigen",
+		"hide": "Verstecke",
+		"show": "Zeige",
 		"link": "link",
-		"mail": "post",
-		"quoteBy": "Zitat von {author}"
+		"mail": "mail",
+		"quoteBy": "{author} schrieb:"
 	},
 	"sv-se": {
 		"spoiler": "Spoiler",
@@ -65,11 +65,11 @@
 	},
 	"ru-ru": {
 		"spoiler": "спойлер",
-		"hide": "скрывать",
-		"show": "шоу",
+		"hide": "скрыть",
+		"show": "показать",
 		"link": "ссылка",
-		"mail": "почта",
-		"quoteBy": "цитата {author}"
+		"mail": "электронная почта",
+		"quoteBy": "{author} написал:"
 	},
 	"zh-cn": {
 		"spoiler": "扰流板",

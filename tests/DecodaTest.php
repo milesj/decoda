@@ -160,7 +160,7 @@ class DecodaTest extends TestCase {
 
 		$this->object->setLocale('es-mx');
 
-		$this->assertEquals('Alerón', $this->object->message('spoiler'));
+		$this->assertEquals('Spoiler', $this->object->message('spoiler'));
 
 		try {
 			$this->object->setLocale('no-no');

@@ -1,9 +1,8 @@
 <?php
 /**
- * @author      Miles Johnson - http://milesj.me
- * @copyright   Copyright 2006-2012, Miles Johnson, Inc.
- * @license     http://opensource.org/licenses/mit-license.php - Licensed under The MIT License
- * @link        http://milesj.me/code/php/decoda
+ * @copyright	Copyright 2006-2013, Miles Johnson - http://milesj.me
+ * @license		http://opensource.org/licenses/mit-license.php - Licensed under the MIT License
+ * @link		http://milesj.me/code/php/decoda
  */
 
 namespace Decoda;
@@ -449,7 +448,7 @@ class Decoda {
 			return $this->_filters[$filter];
 		}
 
-		throw new Exception(sprintf('Filter %s does not exist.', $filter));
+		throw new Exception(sprintf('Filter %s does not exist', $filter));
 	}
 
 	/**
@@ -465,7 +464,7 @@ class Decoda {
 			return $this->getFilter($this->_filterMap[$tag]);
 		}
 
-		throw new Exception(sprintf('No filter could be located for tag %s.', $tag));
+		throw new Exception(sprintf('No filter could be located for tag %s', $tag));
 	}
 
 	/**
@@ -491,7 +490,7 @@ class Decoda {
 			return $this->_hooks[$hook];
 		}
 
-		throw new Exception(sprintf('Hook %s does not exist.', $hook));
+		throw new Exception(sprintf('Hook %s does not exist', $hook));
 	}
 
 	/**
@@ -734,7 +733,7 @@ class Decoda {
 	 */
 	public function setBrackets($open, $close) {
 		if (!$open || !$close) {
-			throw new Exception('Both the open and close brackets are required.');
+			throw new Exception('Both the open and close brackets are required');
 		}
 
 		$this->_config['open'] = (string) $open;
@@ -770,7 +769,7 @@ class Decoda {
 		$this->message(null);
 
 		if (empty($this->_messages[$locale])) {
-			throw new Exception(sprintf('Localized strings for %s do not exist.', $locale));
+			throw new Exception(sprintf('Localized strings for %s do not exist', $locale));
 		}
 
 		$this->_config['locale'] = $locale;

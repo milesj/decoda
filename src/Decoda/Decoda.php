@@ -16,16 +16,13 @@ use \Exception;
 // Set constant and include path
 if (!defined('DECODA')) {
 	define('DECODA', __DIR__ . '/');
-
-	set_include_path(get_include_path() . PATH_SEPARATOR . DECODA);
 }
+
+set_include_path(get_include_path() . PATH_SEPARATOR . DECODA);
 
 /**
  * A lightweight lexical string parser for simple markup syntax.
  * Provides a very powerful filter and hook system to extend the parsing cycle.
- *
- * @package	mjohnson.decoda
- * @version	4.1.1
  */
 class Decoda {
 
@@ -233,8 +230,8 @@ class Decoda {
 	public function addFilter(Filter $filter) {
 		$filter->setParser($this);
 
-		$class = str_replace('\\', '/', get_class($filter));
-		$class = str_replace('Filter', '', basename($class));
+		$class = explode('\\', get_class($filter));
+		$class = str_replace('Filter', '', end($class));
 
 		$tags = $filter->tags();
 
@@ -261,8 +258,8 @@ class Decoda {
 	public function addHook(Hook $hook) {
 		$hook->setParser($this);
 
-		$class = str_replace('\\', '/', get_class($hook));
-		$class = str_replace('Hook', '', basename($class));
+		$class = explode('\\', get_class($hook));
+		$class = str_replace('Hook', '', end($class));
 
 		$this->_hooks[$class] = $hook;
 
@@ -301,7 +298,7 @@ class Decoda {
 			$args = $args[0];
 		}
 
-		$this->_blacklist +=  $args;
+		$this->_blacklist += $args;
 		$this->_blacklist = array_filter($this->_blacklist);
 
 		return $this;
@@ -350,12 +347,15 @@ class Decoda {
 				case 'xhtml':
 				case 'xhtmlOutput':
 					$this->setXhtml($value);
+				break;
 				case 'escape':
 				case 'escapeHtml':
 					$this->setEscaping($value);
+				break;
 				case 'strict':
 				case 'strictMode':
 					$this->setStrict($value);
+				break;
 				case 'newlines':
 				case 'maxNewlines':
 					$this->setMaxNewlines($value);
@@ -542,10 +542,9 @@ class Decoda {
 		}
 
 		$paths = explode(PATH_SEPARATOR, get_include_path());
-		$paths[] = DECODA;
+		$paths[] = dirname(DECODA) . '/';
 
 		$names = array(str_replace('\\', '/', $class) . '.php');
-		$names[] = str_replace('mjohnson/decoda/', '', $names[0]);
 
 		foreach ($paths as $path) {
 			foreach ($names as $name) {
@@ -734,7 +733,7 @@ class Decoda {
 	 * @chainable
 	 */
 	public function setBrackets($open, $close) {
-		if (empty($open) || empty($close)) {
+		if (!$open || !$close) {
 			throw new Exception('Both the open and close brackets are required.');
 		}
 
@@ -903,7 +902,7 @@ class Decoda {
 			$args = $args[0];
 		}
 
-		$this->_whitelist +=  $args;
+		$this->_whitelist += $args;
 		$this->_whitelist = array_filter($this->_whitelist);
 
 		return $this;

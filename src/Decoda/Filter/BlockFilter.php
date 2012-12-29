@@ -13,8 +13,6 @@ use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for block styled elements.
- *
- * @package	mjohnson.decoda.filters
  */
 class BlockFilter extends AbstractFilter {
 

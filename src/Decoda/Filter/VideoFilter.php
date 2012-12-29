@@ -13,8 +13,6 @@ use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides the tag for videos. Only a few video services are supported.
- *
- * @package	mjohnson.decoda.filters
  */
 class VideoFilter extends AbstractFilter {
 

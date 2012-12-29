@@ -13,8 +13,6 @@ use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for images.
- *
- * @package	mjohnson.decoda.filters
  */
 class ImageFilter extends AbstractFilter {
 

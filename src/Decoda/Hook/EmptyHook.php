@@ -12,8 +12,6 @@ use Decoda\Hook\AbstractHook;
 
 /**
  * An empty hook used for no operation events.
- *
- * @package	mjohnson.decoda.hooks
  */
 class EmptyHook extends AbstractHook {
 

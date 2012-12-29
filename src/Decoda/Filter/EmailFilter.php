@@ -13,8 +13,6 @@ use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for emails. Will obfuscate emails against bots.
- *
- * @package	mjohnson.decoda.filters
  */
 class EmailFilter extends AbstractFilter {
 

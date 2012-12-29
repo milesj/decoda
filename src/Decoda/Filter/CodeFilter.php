@@ -14,8 +14,6 @@ use Decoda\Hook\CodeHook;
 
 /**
  * Provides tags for code block and variable elements.
- *
- * @package	mjohnson.decoda.filters
  */
 class CodeFilter extends AbstractFilter {
 

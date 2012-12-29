@@ -13,8 +13,6 @@ use Decoda\Filter\Filter;
 /**
  * This interface represents the rendering engine for tags that use a template.
  * It contains the path were the templates are located and the logic to render these templates.
- *
- * @package	mjohnson.decoda.engines
  */
 interface Engine {
 

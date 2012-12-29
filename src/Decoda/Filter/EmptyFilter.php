@@ -12,8 +12,6 @@ use Decoda\Filter\AbstractFilter;
 
 /**
  * An empty filter for no operation events.
- *
- * @package	mjohnson.decoda.filters
  */
 class EmptyFilter extends AbstractFilter {
 

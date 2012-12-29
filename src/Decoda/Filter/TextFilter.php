@@ -13,8 +13,6 @@ use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for text and font styling.
- *
- * @package	mjohnson.decoda.filters
  */
 class TextFilter extends AbstractFilter {
 

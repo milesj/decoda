@@ -12,8 +12,6 @@ use Decoda\Hook\AbstractHook;
 
 /**
  * Encodes and decodes [code] blocks so that the inner content doesn't get processed.
- *
- * @package	mjohnson.decoda.hooks
  */
 class CodeHook extends AbstractHook {
 

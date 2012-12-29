@@ -12,8 +12,6 @@ use Decoda\Decoda;
 
 /**
  * Defines the methods for all Hooks to implement.
- *
- * @package	mjohnson.decoda.hooks
  */
 interface Hook {
 

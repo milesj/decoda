@@ -13,8 +13,6 @@ use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for URLs.
- *
- * @package	mjohnson.decoda.filters
  */
 class UrlFilter extends AbstractFilter {
 

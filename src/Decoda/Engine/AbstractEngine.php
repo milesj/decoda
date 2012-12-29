@@ -13,9 +13,6 @@ use Decoda\Engine\Engine;
 
 /**
  * Provides default methods for engines.
- *
- * @package	mjohnson.decoda.engines
- * @abstract
  */
 abstract class AbstractEngine implements Engine {
 

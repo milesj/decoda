@@ -13,8 +13,6 @@ use Decoda\Hook\AbstractHook;
 
 /**
  * Censors words found within the censored.txt blacklist.
- *
- * @package	mjohnson.decoda.hooks
  */
 class CensorHook extends AbstractHook {
 

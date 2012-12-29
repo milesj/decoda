@@ -13,8 +13,6 @@ use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for ordered and unordered lists.
- *
- * @package	mjohnson.decoda.filters
  */
 class ListFilter extends AbstractFilter {
 

@@ -13,8 +13,6 @@ use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides the tag for quoting users and blocks of texts.
- *
- * @package	mjohnson.decoda.filters
  */
 class QuoteFilter extends AbstractFilter {
 

@@ -9,11 +9,10 @@
 namespace Decoda\Engine;
 
 use Decoda\Engine\AbstractEngine;
+use \Exception;
 
 /**
  * Renders tags by using PHP as template engine.
- *
- * @package	mjohnson.decoda.engines
  */
 class PhpEngine extends AbstractEngine {
 
@@ -31,7 +30,7 @@ class PhpEngine extends AbstractEngine {
 		$path = $this->getPath() . $setup['template'] . '.php';
 
 		if (!file_exists($path)) {
-			throw new \Exception(sprintf('Template file %s does not exist.', $setup['template']));
+			throw new Exception(sprintf('Template file %s does not exist', $setup['template']));
 		}
 
 		extract($tag['attributes'], EXTR_SKIP);

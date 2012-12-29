@@ -8,14 +8,11 @@
 
 namespace Decoda\Hook;
 
-use Decoda\Filter\EmailFilter;
 use Decoda\Hook\AbstractHook;
 use \Exception;
 
 /**
  * Converts URLs and emails (not wrapped in tags) into clickable links.
- *
- * @package	mjohnson.decoda.hooks
  */
 class ClickableHook extends AbstractHook {
 
@@ -32,18 +29,19 @@ class ClickableHook extends AbstractHook {
 				$chars = preg_quote('-_=;:&?/[]%', '/');
 				$protocols = $url->config('protocols');
 
-				$pattern = sprintf('%s%s%s%s%s%s',
+				$pattern = implode('', array(
 					'(' . implode('|', $protocols) . ')s?:\/\/', // protocol
 					'([-a-z0-9\.\+]+:[-a-z0-9\.\+]+@)?', // login
 					'([-a-z0-9\.]{5,255}+)', // domain, tld
 					'(:[0-9]{0,6}+)?', // port
 					'([a-z0-9' . $chars . ']+)?', // query
 					'(#[a-z0-9' . $chars . ']+)?' // fragment
-				);
+				));
 
 				$content = preg_replace_callback('/(^|\n|\s)' . $pattern . '/is', array($this, '_urlCallback'), $content);
 			}
-		} catch (Exception $e) { }
+		} catch (Exception $e) {
+		}
 
 		// Based on schema: http://en.wikipedia.org/wiki/Email_address
 		try {
@@ -52,7 +50,8 @@ class ClickableHook extends AbstractHook {
 
 				$content = preg_replace_callback($pattern, array($this, '_emailCallback'), $content);
 			}
-		} catch (Exception $e) { }
+		} catch (Exception $e) {
+		}
 
 		return $content;
 	}

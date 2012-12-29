@@ -14,9 +14,6 @@ use Decoda\Filter\Filter;
 /**
  * A filter defines the list of tags and its associative markup to parse out of a string.
  * Supports a wide range of parameters to customize the output of each tag.
- *
- * @package	mjohnson.decoda.filters
- * @abstract
  */
 abstract class AbstractFilter implements Filter {
 
@@ -254,7 +251,7 @@ abstract class AbstractFilter implements Filter {
 		if ($setup['autoClose']) {
 			$parsed = '<' . $html . $attr . ($xhtml ? ' /' : '') . '>';
 		} else {
-			$parsed = '<' . $html . $attr . '>' . (!empty($tag['content']) ? $tag['content'] : $content) . '</' . $html . '>';
+			$parsed = '<' . $html . $attr . '>' . ($tag['content'] ?: $content) . '</' . $html . '>';
 		}
 
 		return $parsed;

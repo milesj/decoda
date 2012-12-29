@@ -13,8 +13,6 @@ use Decoda\Hook\AbstractHook;
 
 /**
  * Converts smiley faces into emoticon images.
- *
- * @package	mjohnson.decoda.hooks
  */
 class EmoticonHook extends AbstractHook {
 

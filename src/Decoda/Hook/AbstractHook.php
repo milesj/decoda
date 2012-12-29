@@ -13,9 +13,6 @@ use Decoda\Hook\Hook;
 
 /**
  * A hook allows you to inject functionality during certain events in the parsing cycle.
- *
- * @package	mjohnson.decoda.hooks
- * @abstract
  */
 abstract class AbstractHook implements Hook {
 

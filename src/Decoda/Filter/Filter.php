@@ -12,8 +12,6 @@ use Decoda\Decoda;
 
 /**
  * Defines the methods for all Filters to implement.
- *
- * @package	mjohnson.decoda.filters
  */
 interface Filter {
 

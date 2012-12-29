@@ -14,8 +14,6 @@ use \DateTime;
 
 /**
  * Provides tags for basic font styling.
- *
- * @package	mjohnson.decoda.filters
  */
 class DefaultFilter extends AbstractFilter {
 

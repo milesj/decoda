@@ -5,7 +5,18 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-define('DECODA', dirname(__DIR__) . '/');
+error_reporting(E_ALL | E_STRICT);
 
-include_once DECODA . 'Decoda.php';
-include_once DECODA . 'tests/TestCase.php';
+// Set constants
+define('TEST_DIR', __DIR__);
+define('VENDOR_DIR', dirname(TEST_DIR) . '/vendor');
+define('DECODA', dirname(TEST_DIR) . '/src/Decoda/');
+
+// Ensure that composer has installed all dependencies
+if (!file_exists(dirname(TEST_DIR) . '/composer.lock')) {
+	exit('Please install composer dependencies before running tests!');
+}
+
+// Include the composer autoloader
+$loader = require VENDOR_DIR . '/autoload.php';
+$loader->add('Decoda', TEST_DIR);

@@ -1,6 +1,6 @@
 <?php
-$code = new \mjohnson\decoda\Decoda();
-$code->addFilter(new \mjohnson\decoda\filters\ImageFilter()); ?>
+$code = new \Decoda\Decoda();
+$code->addFilter(new \Decoda\Filter\ImageFilter()); ?>
 
 <h2>Image</h2>
 

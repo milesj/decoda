@@ -23,6 +23,6 @@ Hope it works out, I tried to make it as smart as possible.
 
 fuck. cunt';
 
-$code = new \mjohnson\decoda\Decoda($string);
-$code->addHook(new \mjohnson\decoda\hooks\CensorHook());
+$code = new \Decoda\Decoda($string);
+$code->addHook(new \Decoda\Hook\CensorHook());
 echo $code->parse(); ?>

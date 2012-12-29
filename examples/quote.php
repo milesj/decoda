@@ -1,6 +1,6 @@
 <?php
-$code = new \mjohnson\decoda\Decoda();
-$code->addFilter(new \mjohnson\decoda\filters\QuoteFilter()); ?>
+$code = new \Decoda\Decoda();
+$code->addFilter(new \Decoda\Filter\QuoteFilter()); ?>
 
 <h2>Quote</h2>
 

@@ -1,10 +1,10 @@
 <?php
 
 // Enable errors
-error_reporting(E_ALL);
+error_reporting(E_ALL | E_STRICT);
 
 // Include class
-include '../Decoda.php';
+include '../src/Decoda/Decoda.php';
 
 // Build menus
 $view = strtolower(isset($_GET['view']) ? $_GET['view'] : 'features');
@@ -91,7 +91,7 @@ function buildMenu($items, $view) {
 	<h1>Decoda</h1>
 
 	<?php // Copyright
-	$code = new \mjohnson\decoda\Decoda('Copyright 2009-' . date('Y') . ' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]');
+	$code = new \Decoda\Decoda('Copyright 2009-' . date('Y') . ' [sup]&copy;[/sup] Miles Johnson - [url]http://milesj.me[/url]');
 	$code->defaults();
 	echo $code->parse(); ?>
 

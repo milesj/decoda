@@ -9,7 +9,7 @@ It also supports the word syntax:
 
 :happy: :aw: :cool: :kiss: :meh: :mmf: :heart:';
 
-$code = new \mjohnson\decoda\Decoda($string);
-$code->addFilter(new \mjohnson\decoda\filters\ImageFilter());
-$code->addHook(new \mjohnson\decoda\hooks\EmoticonHook(array('path' => '../emoticons/')));
+$code = new \Decoda\Decoda($string);
+$code->addFilter(new \Decoda\Filter\ImageFilter());
+$code->addHook(new \Decoda\Hook\EmoticonHook(array('path' => '../emoticons/')));
 echo $code->parse(); ?>

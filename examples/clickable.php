@@ -8,8 +8,8 @@ Invalid:
 email@domain
 www.domain.com';
 
-$code = new \mjohnson\decoda\Decoda($string);
-$code->addFilter(new \mjohnson\decoda\filters\EmailFilter());
-$code->addFilter(new \mjohnson\decoda\filters\UrlFilter());
-$code->addHook(new \mjohnson\decoda\hooks\ClickableHook());
+$code = new \Decoda\Decoda($string);
+$code->addFilter(new \Decoda\Filter\EmailFilter());
+$code->addFilter(new \Decoda\Filter\UrlFilter());
+$code->addHook(new \Decoda\Hook\ClickableHook());
 echo $code->parse(); ?>

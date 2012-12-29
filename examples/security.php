@@ -1,5 +1,5 @@
 <?php
-$code = new \mjohnson\decoda\Decoda();
+$code = new \Decoda\Decoda();
 $code->defaults(); ?>
 
 <h2>XSS Protection</h2>

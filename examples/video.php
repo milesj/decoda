@@ -1,6 +1,6 @@
 <?php
-$code = new \mjohnson\decoda\Decoda();
-$code->addFilter(new \mjohnson\decoda\filters\VideoFilter()); ?>
+$code = new \Decoda\Decoda();
+$code->addFilter(new \Decoda\Filter\VideoFilter()); ?>
 
 <h2>Video</h2>
 

@@ -1,8 +1,8 @@
 <?php
-$code = new \mjohnson\decoda\Decoda();
-$code->addFilter(new \mjohnson\decoda\filters\CodeFilter());
-$code->addHook(new \mjohnson\decoda\hooks\EmoticonHook());
-$code->addHook(new\mjohnson\decoda\hooks\CensorHook()); ?>
+$code = new \Decoda\Decoda();
+$code->addFilter(new \Decoda\Filter\CodeFilter());
+$code->addHook(new \Decoda\Hook\EmoticonHook());
+$code->addHook(new\Decoda\Hook\CensorHook()); ?>
 
 <h2>Code</h2>
 

@@ -250,7 +250,7 @@ abstract class AbstractFilter implements Filter {
 		if ($setup['autoClose']) {
 			$parsed = '<' . $html . $attr . ($xhtml ? ' /' : '') . '>';
 		} else {
-			$parsed = '<' . $html . $attr . '>' . ($tag['content'] ?: $content) . '</' . $html . '>';
+			$parsed = '<' . $html . $attr . '>' . (!empty($tag['content']) ? $tag['content'] : $content) . '</' . $html . '>';
 		}
 
 		return $parsed;

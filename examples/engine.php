@@ -1,13 +1,13 @@
 <?php
 
-class TestEngine extends \mjohnson\decoda\engines\EngineAbstract {
+class TestEngine extends \Decoda\Engine\AbstractEngine {
 
 	public function render(array $tag, $content) {
 		$setup = $this->getFilter()->tag($tag['tag']);
 		$path = $this->getPath() . $setup['template'] . '.tpl';
 
 		if (!file_exists($path)) {
-			throw new Exception(sprintf('Template file %s does not exist.', $setup['template']));
+			throw new Exception(sprintf('Template file %s does not exist', $setup['template']));
 		}
 
 		$vars = array();
@@ -34,8 +34,8 @@ class TestEngine extends \mjohnson\decoda\engines\EngineAbstract {
 $engine = new TestEngine();
 $engine->setPath(__DIR__ . '/templates/');
 
-$code = new \mjohnson\decoda\Decoda();
-$code->addFilter(new \mjohnson\decoda\filters\QuoteFilter());
+$code = new \Decoda\Decoda();
+$code->addFilter(new \Decoda\Filter\QuoteFilter());
 $code->setEngine($engine); ?>
 
 <h2>Test Rendering</h2>

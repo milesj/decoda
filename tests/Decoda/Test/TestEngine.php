@@ -5,18 +5,22 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests;
+namespace Decoda\Test;
 
-use mjohnson\decoda\engines\EngineAbstract;
+use Decoda\Engine\AbstractEngine;
 
-class TestEngine extends EngineAbstract {
+class TestEngine extends AbstractEngine {
 
 	/**
 	 * Render a template.
 	 *
+	 * @access public
 	 * @param array $tag
 	 * @param string $content
+	 * @return string
 	 */
-	public function render(array $tag, $content) {}
+	public function render(array $tag, $content) {
+		return '';
+	}
 
 }

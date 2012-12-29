@@ -5,9 +5,9 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests;
+namespace Decoda\Test;
 
-use mjohnson\decoda\Decoda;
+use Decoda\Decoda;
 
 class TestCase extends \PHPUnit_Framework_TestCase {
 

@@ -5,12 +5,12 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests\filters;
+namespace Decoda\Filter;
 
-use mjohnson\decoda\Decoda;
-use mjohnson\decoda\filters\ImageFilter;
-use mjohnson\decoda\hooks\EmoticonHook;
-use mjohnson\decoda\tests\TestCase;
+use Decoda\Decoda;
+use Decoda\Filter\ImageFilter;
+use Decoda\Hook\EmoticonHook;
+use Decoda\Test\TestCase;
 
 class EmoticonHookTest extends TestCase {
 

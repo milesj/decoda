@@ -5,11 +5,15 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests;
+namespace Decoda;
 
-use mjohnson\decoda\filters\DefaultFilter;
-use mjohnson\decoda\filters\EmailFilter;
-use mjohnson\decoda\filters\UrlFilter;
+use Decoda\Filter\DefaultFilter;
+use Decoda\Filter\EmailFilter;
+use Decoda\Filter\UrlFilter;
+use Decoda\Test\TestCase;
+use Decoda\Test\TestEngine;
+use Decoda\Test\TestFilter;
+use Decoda\Test\TestHook;
 use \Exception;
 
 class DecodaTest extends TestCase {
@@ -35,6 +39,7 @@ class DecodaTest extends TestCase {
 		try {
 			$this->object->getFilter('Test');
 			$this->assertTrue(false);
+
 		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}
@@ -42,6 +47,7 @@ class DecodaTest extends TestCase {
 		try {
 			$this->object->getFilterByTag('example');
 			$this->assertTrue(false);
+
 		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}
@@ -51,8 +57,8 @@ class DecodaTest extends TestCase {
 		// Empty, Test
 		$this->assertTrue(count($this->object->getFilters()) == 2);
 
-		$this->assertInstanceOf('\mjohnson\decoda\filters\Filter', $this->object->getFilter('Test'));
-		$this->assertInstanceOf('\mjohnson\decoda\filters\Filter', $this->object->getFilterByTag('example'));
+		$this->assertInstanceOf('\Decoda\Filter\Filter', $this->object->getFilter('Test'));
+		$this->assertInstanceOf('\Decoda\Filter\Filter', $this->object->getFilterByTag('example'));
 
 		$this->object->resetFilters();
 
@@ -70,6 +76,7 @@ class DecodaTest extends TestCase {
 		try {
 			$this->object->getHook('Test');
 			$this->assertTrue(false);
+
 		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}
@@ -79,7 +86,7 @@ class DecodaTest extends TestCase {
 		// Empty, Censor
 		$this->assertTrue(count($this->object->getHooks()) == 2);
 
-		$this->assertInstanceOf('\mjohnson\decoda\hooks\Hook', $this->object->getHook('Test'));
+		$this->assertInstanceOf('\Decoda\Hook\Hook', $this->object->getHook('Test'));
 
 		$this->object->resetHooks();
 
@@ -91,11 +98,11 @@ class DecodaTest extends TestCase {
 	 * Test that getting and setting an engine works.
 	 */
 	public function testEngines() {
-		$this->assertInstanceOf('\mjohnson\decoda\engines\PhpEngine', $this->object->getEngine());
+		$this->assertInstanceOf('\Decoda\Engine\PhpEngine', $this->object->getEngine());
 
 		$this->object->setEngine(new TestEngine());
 
-		$this->assertInstanceOf('\mjohnson\decoda\tests\TestEngine', $this->object->getEngine());
+		$this->assertInstanceOf('\Decoda\Test\TestEngine', $this->object->getEngine());
 	}
 
 	/**
@@ -133,6 +140,7 @@ class DecodaTest extends TestCase {
 		try {
 			$this->object->setBrackets('', null);
 			$this->assertTrue(false);
+
 		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}
@@ -164,6 +172,7 @@ class DecodaTest extends TestCase {
 		try {
 			$this->object->setLocale('no-no');
 			$this->assertTrue(false);
+
 		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}

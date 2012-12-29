@@ -5,10 +5,10 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests\filters;
+namespace Decoda\Filter;
 
-use mjohnson\decoda\filters\DefaultFilter;
-use mjohnson\decoda\tests\TestCase;
+use Decoda\Filter\DefaultFilter;
+use Decoda\Test\TestCase;
 
 class DefaultFilterTest extends TestCase {
 

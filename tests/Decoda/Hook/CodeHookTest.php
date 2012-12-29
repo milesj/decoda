@@ -5,11 +5,11 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests\filters;
+namespace Decoda\Filter;
 
-use mjohnson\decoda\Decoda;
-use mjohnson\decoda\hooks\CodeHook;
-use mjohnson\decoda\tests\TestCase;
+use Decoda\Decoda;
+use Decoda\Hook\CodeHook;
+use Decoda\Test\TestCase;
 
 class CodeHookTest extends TestCase {
 

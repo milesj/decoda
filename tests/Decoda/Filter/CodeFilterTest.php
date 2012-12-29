@@ -5,10 +5,10 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests\filters;
+namespace Decoda\Filter;
 
-use mjohnson\decoda\filters\CodeFilter;
-use mjohnson\decoda\tests\TestCase;
+use Decoda\Filter\CodeFilter;
+use Decoda\Test\TestCase;
 
 class CodeFilterTest extends TestCase {
 

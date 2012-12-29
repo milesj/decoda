@@ -5,10 +5,10 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests\filters;
+namespace Decoda\Filter;
 
-use mjohnson\decoda\filters\QuoteFilter;
-use mjohnson\decoda\tests\TestCase;
+use Decoda\Filter\QuoteFilter;
+use Decoda\Test\TestCase;
 
 class QuoteFilterTest extends TestCase {
 

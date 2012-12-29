@@ -5,12 +5,13 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests\engines;
+namespace Decoda\Engine;
 
-use mjohnson\decoda\Decoda;
-use mjohnson\decoda\engines\PhpEngine;
-use mjohnson\decoda\tests\TestCase;
-use mjohnson\decoda\tests\TestFilter;
+use Decoda\Decoda;
+use Decoda\Engine\PhpEngine;
+use Decoda\Test\TestCase;
+use Decoda\Test\TestFilter;
+use \Exception;
 
 class PhpEngineTest extends TestCase {
 
@@ -21,7 +22,7 @@ class PhpEngineTest extends TestCase {
 		parent::setUp();
 
 		$this->object = new PhpEngine();
-		$this->object->setPath(DECODA . 'tests/templates/');
+		$this->object->setPath(TEST_DIR . '/Decoda/templates/');
 		$this->object->setFilter(new TestFilter());
 	}
 
@@ -46,7 +47,8 @@ class PhpEngineTest extends TestCase {
 			), null);
 
 			$this->assertTrue(false);
-		} catch (\Exception $e) {
+
+		} catch (Exception $e) {
 			$this->assertTrue(true);
 		}
 	}

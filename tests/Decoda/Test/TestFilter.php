@@ -5,12 +5,12 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests;
+namespace Decoda\Test;
 
-use mjohnson\decoda\Decoda;
-use mjohnson\decoda\filters\FilterAbstract;
+use Decoda\Decoda;
+use Decoda\Filter\AbstractFilter;
 
-class TestFilter extends FilterAbstract {
+class TestFilter extends AbstractFilter {
 
 	/**
 	 * Example tags.

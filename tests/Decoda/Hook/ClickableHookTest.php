@@ -5,13 +5,13 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests\filters;
+namespace Decoda\Filter;
 
-use mjohnson\decoda\Decoda;
-use mjohnson\decoda\filters\EmailFilter;
-use mjohnson\decoda\filters\UrlFilter;
-use mjohnson\decoda\hooks\ClickableHook;
-use mjohnson\decoda\tests\TestCase;
+use Decoda\Decoda;
+use Decoda\Filter\EmailFilter;
+use Decoda\Filter\UrlFilter;
+use Decoda\Hook\ClickableHook;
+use Decoda\Test\TestCase;
 
 class ClickableHookTest extends TestCase {
 

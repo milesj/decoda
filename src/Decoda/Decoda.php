@@ -211,8 +211,6 @@ class Decoda {
 	 * @param array $config
 	 */
 	public function __construct($string = '', array $config = array()) {
-		spl_autoload_register(array($this, 'loadFile'));
-
 		$this->configure($config);
 		$this->reset($string, true);
 		$this->addPath(DECODA . 'config/');
@@ -526,32 +524,6 @@ class Decoda {
 	 */
 	public function getPaths() {
 		return $this->_paths;
-	}
-
-	/**
-	 * Autoload filters and hooks.
-	 *
-	 * @access public
-	 * @param string $class
-	 * @return void
-	 */
-	public function loadFile($class) {
-		if (class_exists($class) || interface_exists($class)) {
-			return;
-		}
-
-		$paths = explode(PATH_SEPARATOR, get_include_path());
-		$paths[] = dirname(DECODA) . '/';
-
-		$names = array(str_replace('\\', '/', $class) . '.php');
-
-		foreach ($paths as $path) {
-			foreach ($names as $name) {
-				if (file_exists($path . $name)) {
-					include_once $path . $name;
-				}
-			}
-		}
 	}
 
 	/**

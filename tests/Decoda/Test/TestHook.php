@@ -5,10 +5,10 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests;
+namespace Decoda\Test;
 
-use mjohnson\decoda\hooks\HookAbstract;
+use Decoda\Hook\AbstractHook;
 
-class TestHook extends HookAbstract {
+class TestHook extends AbstractHook {
 
 }

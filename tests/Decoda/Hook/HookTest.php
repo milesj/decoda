@@ -5,11 +5,11 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests\filters;
+namespace Decoda\Filter;
 
-use mjohnson\decoda\Decoda;
-use mjohnson\decoda\tests\TestCase;
-use mjohnson\decoda\tests\TestHook;
+use Decoda\Decoda;
+use Decoda\Test\TestCase;
+use Decoda\Test\TestHook;
 
 class HookTest extends TestCase {
 
@@ -37,7 +37,7 @@ class HookTest extends TestCase {
 		$this->assertEquals(null, $this->object->getParser());
 
 		$this->object->setParser(new Decoda());
-		$this->assertInstanceOf('mjohnson\decoda\Decoda', $this->object->getParser());
+		$this->assertInstanceOf('Decoda\Decoda', $this->object->getParser());
 	}
 
 	/**

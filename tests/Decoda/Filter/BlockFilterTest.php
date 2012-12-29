@@ -5,10 +5,10 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests\filters;
+namespace Decoda\Filter;
 
-use mjohnson\decoda\filters\BlockFilter;
-use mjohnson\decoda\tests\TestCase;
+use Decoda\Filter\BlockFilter;
+use Decoda\Test\TestCase;
 
 class BlockFilterTest extends TestCase {
 

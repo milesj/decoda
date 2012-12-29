@@ -5,12 +5,12 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\tests\engines;
+namespace Decoda\Engine;
 
-use mjohnson\decoda\Decoda;
-use mjohnson\decoda\tests\TestCase;
-use mjohnson\decoda\tests\TestEngine;
-use mjohnson\decoda\tests\TestFilter;
+use Decoda\Decoda;
+use Decoda\Test\TestCase;
+use Decoda\Test\TestEngine;
+use Decoda\Test\TestFilter;
 
 class EngineTest extends TestCase {
 
@@ -40,7 +40,7 @@ class EngineTest extends TestCase {
 		$this->assertEquals(null, $this->object->getFilter());
 
 		$this->object->setFilter(new TestFilter());
-		$this->assertInstanceOf('mjohnson\decoda\filters\Filter', $this->object->getFilter());
+		$this->assertInstanceOf('Decoda\Filter\Filter', $this->object->getFilter());
 	}
 
 }

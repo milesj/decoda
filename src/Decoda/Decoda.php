@@ -12,12 +12,10 @@ use Decoda\Filter\Filter;
 use Decoda\Hook\Hook;
 use \Exception;
 
-// Set constant and include path
+// Set constant
 if (!defined('DECODA')) {
 	define('DECODA', __DIR__ . '/');
 }
-
-set_include_path(get_include_path() . PATH_SEPARATOR . DECODA);
 
 /**
  * A lightweight lexical string parser for simple markup syntax.

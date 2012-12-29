@@ -6,10 +6,10 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\hooks;
+namespace Decoda\Hook;
 
-use mjohnson\decoda\Decoda;
-use mjohnson\decoda\hooks\Hook;
+use Decoda\Decoda;
+use Decoda\Hook\Hook;
 
 /**
  * A hook allows you to inject functionality during certain events in the parsing cycle.
@@ -31,7 +31,7 @@ abstract class HookAbstract implements Hook {
 	 * Decoda object.
 	 *
 	 * @access protected
-	 * @var \mjohnson\decoda\Decoda
+	 * @var \Decoda\Decoda
 	 */
 	protected $_parser;
 
@@ -104,7 +104,7 @@ abstract class HookAbstract implements Hook {
 	 * Return the Decoda parser.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 */
 	public function getParser() {
 		return $this->_parser;
@@ -126,8 +126,8 @@ abstract class HookAbstract implements Hook {
 	 * Set the Decoda parser.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\Decoda $parser
-	 * @return \mjohnson\decoda\hooks\HookAbstract
+	 * @param \Decoda\Decoda $parser
+	 * @return \Decoda\Hook\HookAbstract
 	 * @chainable
 	 */
 	public function setParser(Decoda $parser) {
@@ -140,8 +140,8 @@ abstract class HookAbstract implements Hook {
 	 * Add any filter dependencies.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\Decoda $decoda
-	 * @return \mjohnson\decoda\hooks\HookAbstract
+	 * @param \Decoda\Decoda $decoda
+	 * @return \Decoda\Hook\HookAbstract
 	 * @chainable
 	 */
 	public function setupFilters(Decoda $decoda) {

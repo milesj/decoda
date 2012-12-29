@@ -6,10 +6,10 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\hooks;
+namespace Decoda\Hook;
 
-use mjohnson\decoda\Decoda;
-use mjohnson\decoda\hooks\HookAbstract;
+use Decoda\Decoda;
+use Decoda\Hook\HookAbstract;
 
 /**
  * Converts smiley faces into emoticon images.
@@ -68,8 +68,8 @@ class EmoticonHook extends HookAbstract {
 	 * Set the Decoda parser.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\Decoda $parser
-	 * @return \mjohnson\decoda\hooks\EmoticonHook
+	 * @param \Decoda\Decoda $parser
+	 * @return \Decoda\Hook\EmoticonHook
 	 * @chainable
 	 */
 	public function setParser(Decoda $parser) {

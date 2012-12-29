@@ -6,9 +6,9 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\hooks;
+namespace Decoda\Hook;
 
-use mjohnson\decoda\hooks\HookAbstract;
+use Decoda\Hook\HookAbstract;
 
 /**
  * Encodes and decodes [code] blocks so that the inner content doesn't get processed.

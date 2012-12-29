@@ -6,9 +6,9 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\engines;
+namespace Decoda\Engine;
 
-use mjohnson\decoda\engines\EngineAbstract;
+use Decoda\Engine\EngineAbstract;
 
 /**
  * Renders tags by using PHP as template engine.

@@ -6,11 +6,11 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda;
+namespace Decoda;
 
-use mjohnson\decoda\engines\Engine;
-use mjohnson\decoda\filters\Filter;
-use mjohnson\decoda\hooks\Hook;
+use Decoda\Engine\Engine;
+use Decoda\Filter\Filter;
+use Decoda\Hook\Hook;
 use \Exception;
 
 // Set constant and include path
@@ -195,7 +195,7 @@ class Decoda {
 	 * Template engine used for parsing.
 	 *
 	 * @access protected
-	 * @var \mjohnson\decoda\engines\Engine
+	 * @var \Decoda\Engine\Engine
 	 */
 	protected $_engine = null;
 
@@ -226,8 +226,8 @@ class Decoda {
 	 * Add additional filters.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\filters\Filter $filter
-	 * @return \mjohnson\decoda\Decoda
+	 * @param \Decoda\Filter\Filter $filter
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function addFilter(Filter $filter) {
@@ -254,8 +254,8 @@ class Decoda {
 	 * Add hooks that are triggered at specific events.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\hooks\Hook $hook
-	 * @return \mjohnson\decoda\Decoda
+	 * @param \Decoda\Hook\Hook $hook
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function addHook(Hook $hook) {
@@ -278,7 +278,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $path
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function addPath($path) {
@@ -291,7 +291,7 @@ class Decoda {
 	 * Add tags to the blacklist.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function blacklist() {
@@ -323,7 +323,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param array $config
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function configure(array $config = array()) {
@@ -370,23 +370,23 @@ class Decoda {
 	 * Apply default filters and hooks if none are set.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function defaults() {
-		$this->addFilter(new \mjohnson\decoda\filters\DefaultFilter());
-		$this->addFilter(new \mjohnson\decoda\filters\EmailFilter());
-		$this->addFilter(new \mjohnson\decoda\filters\ImageFilter());
-		$this->addFilter(new \mjohnson\decoda\filters\UrlFilter());
-		$this->addFilter(new \mjohnson\decoda\filters\TextFilter());
-		$this->addFilter(new \mjohnson\decoda\filters\BlockFilter());
-		$this->addFilter(new \mjohnson\decoda\filters\VideoFilter());
-		$this->addFilter(new \mjohnson\decoda\filters\CodeFilter());
-		$this->addFilter(new \mjohnson\decoda\filters\QuoteFilter());
-		$this->addFilter(new \mjohnson\decoda\filters\ListFilter());
+		$this->addFilter(new \Decoda\Filter\DefaultFilter());
+		$this->addFilter(new \Decoda\Filter\EmailFilter());
+		$this->addFilter(new \Decoda\Filter\ImageFilter());
+		$this->addFilter(new \Decoda\Filter\UrlFilter());
+		$this->addFilter(new \Decoda\Filter\TextFilter());
+		$this->addFilter(new \Decoda\Filter\BlockFilter());
+		$this->addFilter(new \Decoda\Filter\VideoFilter());
+		$this->addFilter(new \Decoda\Filter\CodeFilter());
+		$this->addFilter(new \Decoda\Filter\QuoteFilter());
+		$this->addFilter(new \Decoda\Filter\ListFilter());
 
-		$this->addHook(new \mjohnson\decoda\hooks\CensorHook());
-		$this->addHook(new \mjohnson\decoda\hooks\ClickableHook());
+		$this->addHook(new \Decoda\Hook\CensorHook());
+		$this->addHook(new \Decoda\Hook\ClickableHook());
 
 		return $this;
 	}
@@ -396,7 +396,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function disable($status = true) {
@@ -441,7 +441,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $filter
-	 * @return \mjohnson\decoda\filters\Filter
+	 * @return \Decoda\Filter\Filter
 	 * @throws \Exception
 	 */
 	public function getFilter($filter) {
@@ -457,7 +457,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $tag
-	 * @return \mjohnson\decoda\filters\Filter
+	 * @return \Decoda\Filter\Filter
 	 * @throws \Exception
 	 */
 	public function getFilterByTag($tag) {
@@ -483,7 +483,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $hook
-	 * @return \mjohnson\decoda\hooks\Hook
+	 * @return \Decoda\Hook\Hook
 	 * @throws \Exception
 	 */
 	public function getHook($hook) {
@@ -509,11 +509,11 @@ class Decoda {
 	 * In case no engine is set the default php engine gonna be used.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\engines\Engine
+	 * @return \Decoda\Engine\Engine
 	 */
 	public function getEngine() {
 		if (!$this->_engine) {
-			$this->_engine = new \mjohnson\decoda\engines\PhpEngine();
+			$this->_engine = new \Decoda\Engine\PhpEngine();
 		}
 
 		return $this->_engine;
@@ -631,7 +631,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string|array $filters
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function removeFilter($filters) {
@@ -653,7 +653,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string|array $hooks
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function removeHook($hooks) {
@@ -670,7 +670,7 @@ class Decoda {
 	 * @access public
 	 * @param string $string
 	 * @param boolean $flush
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function reset($string, $flush = false) {
@@ -695,7 +695,7 @@ class Decoda {
 	 * Reset all filters.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function resetFilters() {
@@ -703,7 +703,7 @@ class Decoda {
 		$this->_filterMap = array();
 		$this->_tags = array();
 
-		$this->addFilter(new \mjohnson\decoda\filters\EmptyFilter());
+		$this->addFilter(new \Decoda\Filter\EmptyFilter());
 
 		return $this;
 	}
@@ -712,13 +712,13 @@ class Decoda {
 	 * Reset all hooks.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function resetHooks() {
 		$this->_hooks = array();
 
-		$this->addHook(new \mjohnson\decoda\hooks\EmptyHook());
+		$this->addHook(new \Decoda\Hook\EmptyHook());
 
 		return $this;
 	}
@@ -729,7 +729,7 @@ class Decoda {
 	 * @access public
 	 * @param string $open
 	 * @param string $close
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @throws \Exception
 	 * @chainable
 	 */
@@ -749,7 +749,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function setEscaping($status = true) {
@@ -763,7 +763,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $locale
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @throws \Exception
 	 * @chainable
 	 */
@@ -784,7 +784,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param boolean $max
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function setMaxNewlines($max) {
@@ -798,7 +798,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function setShorthand($status = true) {
@@ -812,7 +812,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param boolean $strict
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function setStrict($strict = true) {
@@ -825,8 +825,8 @@ class Decoda {
 	 * Sets the template engine which gonna be used for all tags with templates.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\engines\Engine $engine
-	 * @return \mjohnson\decoda\Decoda
+	 * @param \Decoda\Engine\Engine $engine
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function setEngine(Engine $engine) {
@@ -840,7 +840,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function setXhtml($status = true) {
@@ -893,7 +893,7 @@ class Decoda {
 	 * Add tags to the whitelist.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
 	public function whitelist() {

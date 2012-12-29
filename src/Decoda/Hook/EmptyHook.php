@@ -6,9 +6,9 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\hooks;
+namespace Decoda\Hook;
 
-use mjohnson\decoda\hooks\HookAbstract;
+use Decoda\Hook\HookAbstract;
 
 /**
  * An empty hook used for no operation events.

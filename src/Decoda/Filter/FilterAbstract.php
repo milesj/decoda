@@ -6,10 +6,10 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\filters;
+namespace Decoda\Filter;
 
-use mjohnson\decoda\Decoda;
-use mjohnson\decoda\filters\Filter;
+use Decoda\Decoda;
+use Decoda\Filter\Filter;
 
 /**
  * A filter defines the list of tags and its associative markup to parse out of a string.
@@ -101,7 +101,7 @@ abstract class FilterAbstract implements Filter {
 	 * Decoda object.
 	 *
 	 * @access protected
-	 * @var \mjohnson\decoda\Decoda
+	 * @var \Decoda\Decoda
 	 */
 	protected $_parser;
 
@@ -138,7 +138,7 @@ abstract class FilterAbstract implements Filter {
 	 * Return the Decoda parser.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 */
 	public function getParser() {
 		return $this->_parser;
@@ -264,8 +264,8 @@ abstract class FilterAbstract implements Filter {
 	 * Set the Decoda parser.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\Decoda $parser
-	 * @return \mjohnson\decoda\filters\Filter
+	 * @param \Decoda\Decoda $parser
+	 * @return \Decoda\Filter\Filter
 	 * @chainable
 	 */
 	public function setParser(Decoda $parser) {
@@ -278,8 +278,8 @@ abstract class FilterAbstract implements Filter {
 	 * Add any hook dependencies.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\Decoda $decoda
-	 * @return \mjohnson\decoda\filters\Filter
+	 * @param \Decoda\Decoda $decoda
+	 * @return \Decoda\Filter\Filter
 	 * @chainable
 	 */
 	public function setupHooks(Decoda $decoda) {

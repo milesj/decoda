@@ -6,10 +6,10 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\engines;
+namespace Decoda\Engine;
 
-use mjohnson\decoda\filters\Filter;
-use mjohnson\decoda\engines\Engine;
+use Decoda\Filter\Filter;
+use Decoda\Engine\Engine;
 
 /**
  * Provides default methods for engines.
@@ -31,7 +31,7 @@ abstract class EngineAbstract implements Engine {
 	 * Current filter.
 	 *
 	 * @access protected
-	 * @var \mjohnson\decoda\filters\Filter
+	 * @var \Decoda\Filter\Filter
 	 */
 	protected $_filter;
 
@@ -39,7 +39,7 @@ abstract class EngineAbstract implements Engine {
 	 * Return the current filter.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\filters\Filter
+	 * @return \Decoda\Filter\Filter
 	 */
 	public function getFilter() {
 		return $this->_filter;
@@ -63,8 +63,8 @@ abstract class EngineAbstract implements Engine {
 	 * Sets the current filter.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\filters\Filter $filter
-	 * @return \mjohnson\decoda\engines\Engine
+	 * @param \Decoda\Filter\Filter $filter
+	 * @return \Decoda\Engine\Engine
 	 * @chainable
 	 */
 	public function setFilter(Filter $filter) {
@@ -78,7 +78,7 @@ abstract class EngineAbstract implements Engine {
 	 *
 	 * @access public
 	 * @param string $path
-	 * @return \mjohnson\decoda\engines\Engine
+	 * @return \Decoda\Engine\Engine
 	 * @chainable
 	 */
 	public function setPath($path) {

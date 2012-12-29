@@ -6,10 +6,10 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\filters;
+namespace Decoda\Filter;
 
-use mjohnson\decoda\Decoda;
-use mjohnson\decoda\filters\FilterAbstract;
+use Decoda\Decoda;
+use Decoda\Filter\FilterAbstract;
 
 /**
  * Provides tags for text and font styling.

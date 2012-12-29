@@ -6,9 +6,9 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\filters;
+namespace Decoda\Filter;
 
-use mjohnson\decoda\filters\FilterAbstract;
+use Decoda\Filter\FilterAbstract;
 
 /**
  * An empty filter for no operation events.

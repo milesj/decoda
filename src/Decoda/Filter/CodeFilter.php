@@ -6,11 +6,11 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\filters;
+namespace Decoda\Filter;
 
-use mjohnson\decoda\Decoda;
-use mjohnson\decoda\filters\FilterAbstract;
-use mjohnson\decoda\hooks\CodeHook;
+use Decoda\Decoda;
+use Decoda\Filter\FilterAbstract;
+use Decoda\Hook\CodeHook;
 
 /**
  * Provides tags for code block and variable elements.
@@ -52,8 +52,8 @@ class CodeFilter extends FilterAbstract {
 	 * Add any hook dependencies.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\Decoda $decoda
-	 * @return \mjohnson\decoda\filters\CodeFilter
+	 * @param \Decoda\Decoda $decoda
+	 * @return \Decoda\Filter\CodeFilter
 	 */
 	public function setupHooks(Decoda $decoda) {
 		$decoda->addHook(new CodeHook());

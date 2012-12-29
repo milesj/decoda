@@ -6,9 +6,9 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\hooks;
+namespace Decoda\Hook;
 
-use mjohnson\decoda\Decoda;
+use Decoda\Decoda;
 
 /**
  * Defines the methods for all Hooks to implement.
@@ -57,7 +57,7 @@ interface Hook {
 	 * Return the Decoda parser.
 	 *
 	 * @access public
-	 * @return \mjohnson\decoda\Decoda
+	 * @return \Decoda\Decoda
 	 */
 	public function getParser();
 
@@ -75,8 +75,8 @@ interface Hook {
 	 * Set the Decoda parser.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\Decoda $parser
-	 * @return \mjohnson\decoda\hooks\Hook
+	 * @param \Decoda\Decoda $parser
+	 * @return \Decoda\Hook\Hook
 	 * @chainable
 	 */
 	public function setParser(Decoda $parser);
@@ -85,8 +85,8 @@ interface Hook {
 	 * Add any filter dependencies.
 	 *
 	 * @access public
-	 * @param \mjohnson\decoda\Decoda $decoda
-	 * @return \mjohnson\decoda\hooks\Hook
+	 * @param \Decoda\Decoda $decoda
+	 * @return \Decoda\Hook\Hook
 	 * @chainable
 	 */
 	public function setupFilters(Decoda $decoda);

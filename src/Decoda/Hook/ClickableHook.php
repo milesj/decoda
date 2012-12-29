@@ -6,10 +6,10 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-namespace mjohnson\decoda\hooks;
+namespace Decoda\Hook;
 
-use mjohnson\decoda\filters\EmailFilter;
-use mjohnson\decoda\hooks\HookAbstract;
+use Decoda\Filter\EmailFilter;
+use Decoda\Hook\HookAbstract;
 use \Exception;
 
 /**

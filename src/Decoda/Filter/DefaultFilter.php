@@ -9,7 +9,7 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\FilterAbstract;
+use Decoda\Filter\AbstractFilter;
 use \DateTime;
 
 /**
@@ -17,7 +17,7 @@ use \DateTime;
  *
  * @package	mjohnson.decoda.filters
  */
-class DefaultFilter extends FilterAbstract {
+class DefaultFilter extends AbstractFilter {
 
 	/**
 	 * Configuration.
@@ -71,7 +71,7 @@ class DefaultFilter extends FilterAbstract {
 			'displayType' => Decoda::TYPE_INLINE,
 			'allowedTypes' => Decoda::TYPE_INLINE,
 			'attributes' => array(
-				'default' => FilterAbstract::ALNUM
+				'default' => AbstractFilter::ALNUM
 			),
 			'mapAttributes' => array(
 				'default' => 'title'

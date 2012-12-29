@@ -8,13 +8,13 @@
 
 namespace Decoda\Filter;
 
-use Decoda\Filter\FilterAbstract;
+use Decoda\Filter\AbstractFilter;
 
 /**
  * An empty filter for no operation events.
  *
  * @package	mjohnson.decoda.filters
  */
-class EmptyFilter extends FilterAbstract {
+class EmptyFilter extends AbstractFilter {
 
 }

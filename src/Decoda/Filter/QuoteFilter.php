@@ -9,14 +9,14 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\FilterAbstract;
+use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides the tag for quoting users and blocks of texts.
  *
  * @package	mjohnson.decoda.filters
  */
-class QuoteFilter extends FilterAbstract {
+class QuoteFilter extends AbstractFilter {
 
 	/**
 	 * Configuration.

@@ -17,7 +17,7 @@ use Decoda\Engine\Engine;
  * @package	mjohnson.decoda.engines
  * @abstract
  */
-abstract class EngineAbstract implements Engine {
+abstract class AbstractEngine implements Engine {
 
 	/**
 	 * Current path.

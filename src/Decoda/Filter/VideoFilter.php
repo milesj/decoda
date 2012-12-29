@@ -9,14 +9,14 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\FilterAbstract;
+use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides the tag for videos. Only a few video services are supported.
  *
  * @package	mjohnson.decoda.filters
  */
-class VideoFilter extends FilterAbstract {
+class VideoFilter extends AbstractFilter {
 
 	/**
 	 * Regex pattern.

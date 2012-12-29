@@ -9,14 +9,14 @@
 namespace Decoda\Hook;
 
 use Decoda\Decoda;
-use Decoda\Hook\HookAbstract;
+use Decoda\Hook\AbstractHook;
 
 /**
  * Converts smiley faces into emoticon images.
  *
  * @package	mjohnson.decoda.hooks
  */
-class EmoticonHook extends HookAbstract {
+class EmoticonHook extends AbstractHook {
 
 	/**
 	 * Configuration.

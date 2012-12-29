@@ -9,14 +9,14 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\FilterAbstract;
+use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for text and font styling.
  *
  * @package	mjohnson.decoda.filters
  */
-class TextFilter extends FilterAbstract {
+class TextFilter extends AbstractFilter {
 
 	/**
 	 * Supported tags.

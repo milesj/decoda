@@ -9,14 +9,14 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\FilterAbstract;
+use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for images.
  *
  * @package	mjohnson.decoda.filters
  */
-class ImageFilter extends FilterAbstract {
+class ImageFilter extends AbstractFilter {
 
 	/**
 	 * Regex pattern.

@@ -8,14 +8,14 @@
 
 namespace Decoda\Engine;
 
-use Decoda\Engine\EngineAbstract;
+use Decoda\Engine\AbstractEngine;
 
 /**
  * Renders tags by using PHP as template engine.
  *
  * @package	mjohnson.decoda.engines
  */
-class PhpEngine extends EngineAbstract {
+class PhpEngine extends AbstractEngine {
 
 	/**
 	 * Renders the tag by using PHP templates.

@@ -9,14 +9,14 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\FilterAbstract;
+use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for block styled elements.
  *
  * @package	mjohnson.decoda.filters
  */
-class BlockFilter extends FilterAbstract {
+class BlockFilter extends AbstractFilter {
 
 	/**
 	 * Configuration.

@@ -9,7 +9,7 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\FilterAbstract;
+use Decoda\Filter\AbstractFilter;
 use Decoda\Hook\CodeHook;
 
 /**
@@ -17,7 +17,7 @@ use Decoda\Hook\CodeHook;
  *
  * @package	mjohnson.decoda.filters
  */
-class CodeFilter extends FilterAbstract {
+class CodeFilter extends AbstractFilter {
 
 	/**
 	 * Supported tags.

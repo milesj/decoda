@@ -17,7 +17,7 @@ use Decoda\Hook\Hook;
  * @package	mjohnson.decoda.hooks
  * @abstract
  */
-abstract class HookAbstract implements Hook {
+abstract class AbstractHook implements Hook {
 
 	/**
 	 * Configuration.
@@ -127,7 +127,7 @@ abstract class HookAbstract implements Hook {
 	 *
 	 * @access public
 	 * @param \Decoda\Decoda $parser
-	 * @return \Decoda\Hook\HookAbstract
+	 * @return \Decoda\Hook\AbstractHook
 	 * @chainable
 	 */
 	public function setParser(Decoda $parser) {
@@ -141,7 +141,7 @@ abstract class HookAbstract implements Hook {
 	 *
 	 * @access public
 	 * @param \Decoda\Decoda $decoda
-	 * @return \Decoda\Hook\HookAbstract
+	 * @return \Decoda\Hook\AbstractHook
 	 * @chainable
 	 */
 	public function setupFilters(Decoda $decoda) {

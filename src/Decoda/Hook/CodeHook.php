@@ -8,14 +8,14 @@
 
 namespace Decoda\Hook;
 
-use Decoda\Hook\HookAbstract;
+use Decoda\Hook\AbstractHook;
 
 /**
  * Encodes and decodes [code] blocks so that the inner content doesn't get processed.
  *
  * @package	mjohnson.decoda.hooks
  */
-class CodeHook extends HookAbstract {
+class CodeHook extends AbstractHook {
 
 	/**
 	 * Encode code blocks before parsing.

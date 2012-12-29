@@ -18,7 +18,7 @@ use Decoda\Filter\Filter;
  * @package	mjohnson.decoda.filters
  * @abstract
  */
-abstract class FilterAbstract implements Filter {
+abstract class AbstractFilter implements Filter {
 
 	/**
 	 * Regex patterns for attribute parsing.

@@ -9,14 +9,14 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\FilterAbstract;
+use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for ordered and unordered lists.
  *
  * @package	mjohnson.decoda.filters
  */
-class ListFilter extends FilterAbstract {
+class ListFilter extends AbstractFilter {
 
 	/**
 	 * Supported tags.

@@ -9,14 +9,14 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\FilterAbstract;
+use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for URLs.
  *
  * @package	mjohnson.decoda.filters
  */
-class UrlFilter extends FilterAbstract {
+class UrlFilter extends AbstractFilter {
 
 	/**
 	 * Configuration.

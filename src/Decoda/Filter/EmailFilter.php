@@ -9,14 +9,14 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\FilterAbstract;
+use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for emails. Will obfuscate emails against bots.
  *
  * @package	mjohnson.decoda.filters
  */
-class EmailFilter extends FilterAbstract {
+class EmailFilter extends AbstractFilter {
 
 	/**
 	 * Configuration.

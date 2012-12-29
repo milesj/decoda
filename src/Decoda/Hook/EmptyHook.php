@@ -8,13 +8,13 @@
 
 namespace Decoda\Hook;
 
-use Decoda\Hook\HookAbstract;
+use Decoda\Hook\AbstractHook;
 
 /**
  * An empty hook used for no operation events.
  *
  * @package	mjohnson.decoda.hooks
  */
-class EmptyHook extends HookAbstract {
+class EmptyHook extends AbstractHook {
 
 }

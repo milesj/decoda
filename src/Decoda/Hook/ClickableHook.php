@@ -9,7 +9,7 @@
 namespace Decoda\Hook;
 
 use Decoda\Filter\EmailFilter;
-use Decoda\Hook\HookAbstract;
+use Decoda\Hook\AbstractHook;
 use \Exception;
 
 /**
@@ -17,7 +17,7 @@ use \Exception;
  *
  * @package	mjohnson.decoda.hooks
  */
-class ClickableHook extends HookAbstract {
+class ClickableHook extends AbstractHook {
 
 	/**
 	 * Matches a link or an email, and converts it to an anchor tag.

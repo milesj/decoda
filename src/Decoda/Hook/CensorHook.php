@@ -9,14 +9,14 @@
 namespace Decoda\Hook;
 
 use Decoda\Decoda;
-use Decoda\Hook\HookAbstract;
+use Decoda\Hook\AbstractHook;
 
 /**
  * Censors words found within the censored.txt blacklist.
  *
  * @package	mjohnson.decoda.hooks
  */
-class CensorHook extends HookAbstract {
+class CensorHook extends AbstractHook {
 
 	/**
 	 * List of words to censor.

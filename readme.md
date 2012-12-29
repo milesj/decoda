@@ -1,11 +1,17 @@
-# Decoda v4.1.1 #
+# Decoda v5.0.0-alpha #
 
 A lightweight lexical string parser for BBCode styled markup.
 
+## Requirements ##
+
+* PHP 5.3
+* Composer
+
 ## Compatibility ##
 
-* PHP 5.3+ - v4.x - https://github.com/milesj/php-decoda
-* PHP 5.2+ - v3.x - https://github.com/milesj/php-decoda/tree/3.x
+* v3.x - PHP 5.2
+* v4.x - PHP 5.3
+* v5.x - PHP 5.3, Composer
 
 ## Contributors ##
 
@@ -18,7 +24,7 @@ A lightweight lexical string parser for BBCode styled markup.
 * Setting to make links and emails auto-clickable
 * Setting to use shorthand text for links and emails
 * Provides Filters to parse markup and custom code
-* Provides Hooks to execute during the parsing cycle
+* Provides Hooks to execute callbacks during the parsing cycle
 * Provides functionality to render complex markup using a template system
 * Can censor offensive words
 * Can convert smiley faces into images
@@ -31,7 +37,7 @@ A lightweight lexical string parser for BBCode styled markup.
 
 The following filters and supported tags are available.
 
-* Default: b, i, u, s, sup, sub, br, hr
+* Default: b, i, u, s, sup, sub, br, hr, abbr, time
 * Block: align, float, hide, alert, note, div, spoiler, left, right, center, justify
 * Code: code, var
 * Email: email, mail
@@ -40,7 +46,7 @@ The following filters and supported tags are available.
 * Quote: quote
 * Text: font, size, color, h1-h6
 * Url: url, link
-* Video: video
+* Video: video, youtube, vimeo, veoh, liveleak, dailymotion, myspace, wegame, collegehumor
 
 ## Hooks ##
 
@@ -58,3 +64,4 @@ The following hooks are available.
 ## Documentation ##
 
 Thorough documentation can be found here: http://milesj.me/code/php/decoda
+Make full use of the Mootools textarea editor as well: https://github.com/milesj/moo-decoda

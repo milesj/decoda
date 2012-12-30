@@ -9,14 +9,14 @@ error_reporting(E_ALL | E_STRICT);
 
 // Set constants
 define('TEST_DIR', __DIR__);
-define('VENDOR_DIR', dirname(TEST_DIR) . '/vendor');
+define('VENDOR_DIR', dirname(TEST_DIR) . '/vendor/');
 define('DECODA', dirname(TEST_DIR) . '/src/Decoda/');
 
 // Ensure that composer has installed all dependencies
-if (!file_exists(dirname(TEST_DIR) . '/composer.lock')) {
-	exit('Please install composer dependencies before running tests!');
+if (!file_exists(VENDOR_DIR . 'autoload.php')) {
+	exit('Please install composer before running tests!');
 }
 
 // Include the composer autoloader
-$loader = require VENDOR_DIR . '/autoload.php';
+$loader = require VENDOR_DIR . 'autoload.php';
 $loader->add('Decoda', TEST_DIR);

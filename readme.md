@@ -64,4 +64,5 @@ The following hooks are available.
 ## Documentation ##
 
 Thorough documentation can be found here: http://milesj.me/code/php/decoda
-Make full use of the Mootools textarea editor as well: https://github.com/milesj/moo-decoda
+
+A Mootools textarea editor is also available: https://github.com/milesj/moo-decoda

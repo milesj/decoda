@@ -505,6 +505,13 @@ class DecodaTest extends TestCase {
 	}
 
 	/**
+	 * Test that self closing tags can parse attributes.
+	 */
+	public function testSelfClosingAttributes() {
+		$this->assertEquals('Test <autoClose foo="bar" bar="foo"> Test', $this->object->reset('Test [autoClose foo="bar" bar="foo" /] Test')->parse());
+	}
+
+	/**
 	 * Test that uppercase tags are still recognized.
 	 */
 	public function testCapitalTags() {

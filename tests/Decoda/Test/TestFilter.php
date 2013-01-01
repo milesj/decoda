@@ -179,7 +179,7 @@ class TestFilter extends AbstractFilter {
 				'foo' => self::WILDCARD,
 				'bar' => self::WILDCARD
 			)
-		),
+		)
 	);
 
 }

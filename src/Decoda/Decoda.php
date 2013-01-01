@@ -911,6 +911,11 @@ class Decoda {
 			$tag['tag'] = trim(substr($string, 1, strlen($string) - 3));
 			$tag['type'] = self::TAG_SELF_CLOSE;
 
+			// Check if spaces or attributes exist
+			if ($pos = strpos($tag['tag'], ' ')) {
+				$tag['tag'] = substr($tag['tag'], 0, $pos);
+			}
+
 			if (!isset($this->_tags[$tag['tag']])) {
 				return false;
 			}
@@ -938,69 +943,69 @@ class Decoda {
 			if (!isset($this->_tags[$tag['tag']])) {
 				return false;
 			}
+		}
 
-			// Find attributes
-			if (!$disabled) {
-				$found = array();
+		// Find attributes
+		if (!$disabled) {
+			$found = array();
 
-				preg_match_all('/([a-z]+)=\"(.*?)\"/i', $string, $matches, PREG_SET_ORDER);
+			preg_match_all('/([a-z]+)=\"(.*?)\"/i', $string, $matches, PREG_SET_ORDER);
+
+			if ($matches) {
+				foreach ($matches as $match) {
+					$found[$match[1]] = $match[2];
+				}
+			}
+
+			// Find attributes that aren't surrounded by quotes
+			if (!$this->config('strictMode')) {
+				preg_match_all('/([a-z]+)=([^\s\]]+)/i', $string, $matches, PREG_SET_ORDER);
 
 				if ($matches) {
 					foreach ($matches as $match) {
-						$found[$match[1]] = $match[2];
-					}
-				}
-
-				// Find attributes that aren't surrounded by quotes
-				if (!$this->config('strictMode')) {
-					preg_match_all('/([a-z]+)=([^\s\]]+)/i', $string, $matches, PREG_SET_ORDER);
-
-					if ($matches) {
-						foreach ($matches as $match) {
-							if (!isset($found[$match[1]])) {
-								$found[$match[1]] = $match[2];
-							}
+						if (!isset($found[$match[1]])) {
+							$found[$match[1]] = $match[2];
 						}
 					}
 				}
+			}
 
-				if ($found) {
-					$source = $this->_tags[$tag['tag']];
+			if ($found) {
+				$source = $this->_tags[$tag['tag']];
 
-					foreach ($found as $key => $value) {
-						$key = strtolower($key);
-						$value = trim(trim($value), '"');
+				foreach ($found as $key => $value) {
+					$key = strtolower($key);
+					$value = trim(trim($value), '"');
 
-						if ($key === $tag['tag']) {
-							$key = 'default';
+					if ($key === $tag['tag']) {
+						$key = 'default';
+					}
+
+					if (isset($source['mapAttributes'][$key])) {
+						$finalKey = $source['mapAttributes'][$key];
+
+						// Allow for aliasing
+						if (isset($source['attributes'][$finalKey])) {
+							$key = $finalKey;
 						}
+					} else {
+						$finalKey = $key;
+					}
 
-						if (isset($source['mapAttributes'][$key])) {
-							$finalKey = $source['mapAttributes'][$key];
+					if (isset($source['attributes'][$key])) {
+						$pattern = $source['attributes'][$key];
 
-							// Allow for aliasing
-							if (isset($source['attributes'][$finalKey])) {
-								$key = $finalKey;
+						if ($pattern === true) {
+							$tag['attributes'][$finalKey] = $value;
+
+						} else if (is_array($pattern)) {
+							if (preg_match($pattern[0], $value)) {
+								$tag['attributes'][$finalKey] = str_replace('{' . $key . '}', $value, $pattern[1]);
 							}
+
 						} else {
-							$finalKey = $key;
-						}
-
-						if (isset($source['attributes'][$key])) {
-							$pattern = $source['attributes'][$key];
-
-							if ($pattern === true) {
+							if (preg_match($pattern, $value)) {
 								$tag['attributes'][$finalKey] = $value;
-
-							} else if (is_array($pattern)) {
-								if (preg_match($pattern[0], $value)) {
-									$tag['attributes'][$finalKey] = str_replace('{' . $key . '}', $value, $pattern[1]);
-								}
-
-							} else {
-								if (preg_match($pattern, $value)) {
-									$tag['attributes'][$finalKey] = $value;
-								}
 							}
 						}
 					}

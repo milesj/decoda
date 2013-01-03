@@ -1,4 +1,4 @@
-# Decoda v5.0.0-rc1 #
+# Decoda v5.0.0-rc2 #
 
 A lightweight lexical string parser for BBCode styled markup.
 
@@ -37,24 +37,24 @@ A lightweight lexical string parser for BBCode styled markup.
 
 The following filters and supported tags are available.
 
-* Default: b, i, u, s, sup, sub, br, hr, abbr, time
-* Block: align, float, hide, alert, note, div, spoiler, left, right, center, justify
-* Code: code, var
-* Email: email, mail
-* Image: image, img
-* List: list, olist, li
-* Quote: quote
-* Text: font, size, color, h1-h6
-* Url: url, link
-* Video: video, youtube, vimeo, veoh, liveleak, dailymotion, myspace, wegame, collegehumor
+* Default - b, i, u, s, sup, sub, br, hr, abbr, time
+* Block - align, float, hide, alert, note, div, spoiler, left, right, center, justify
+* Code - code, var
+* Email - email, mail
+* Image - image, img
+* List - list, olist, li
+* Quote - quote
+* Text - font, size, color, h1-h6
+* Url - url, link
+* Video - video, youtube, vimeo, veoh, liveleak, dailymotion, myspace, wegame, collegehumor
 
 ## Hooks ##
 
 The following hooks are available.
 
-* Censor: Censors all words found within config/censored.txt
-* Clickable: Converts all non-tag wrapped URLs and emails into clickable links
-* Emoticon: Converts all smilies found within config/emoticons.json into emoticon images
+* Censor - Censors all words found within config/censored.txt
+* Clickable - Converts all non-tag wrapped URLs and emails into clickable links
+* Emoticon - Converts all smilies found within config/emoticons.json into emoticon images
 
 ## Unsupported ##
 

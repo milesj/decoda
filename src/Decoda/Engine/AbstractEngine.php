@@ -61,7 +61,6 @@ abstract class AbstractEngine implements Engine {
 	 * @access public
 	 * @param \Decoda\Filter $filter
 	 * @return \Decoda\Engine
-	 * @chainable
 	 */
 	public function setFilter(Filter $filter) {
 		$this->_filter = $filter;
@@ -75,7 +74,6 @@ abstract class AbstractEngine implements Engine {
 	 * @access public
 	 * @param string $path
 	 * @return \Decoda\Engine
-	 * @chainable
 	 */
 	public function setPath($path) {
 		if (substr($path, -1) !== '/') {

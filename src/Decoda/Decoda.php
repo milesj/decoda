@@ -10,7 +10,8 @@ namespace Decoda;
 use Decoda\Engine;
 use Decoda\Filter;
 use Decoda\Hook;
-use \Exception;
+use \DomainException;
+use \InvalidArgumentException;
 
 // Set constant
 if (!defined('DECODA')) {
@@ -220,7 +221,6 @@ class Decoda {
 	 * @access public
 	 * @param \Decoda\Filter $filter
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function addFilter(Filter $filter) {
 		$filter->setParser($this);
@@ -248,7 +248,6 @@ class Decoda {
 	 * @access public
 	 * @param \Decoda\Hook $hook
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function addHook(Hook $hook) {
 		$hook->setParser($this);
@@ -271,7 +270,6 @@ class Decoda {
 	 * @access public
 	 * @param string $path
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function addPath($path) {
 		$this->_paths[] = $path;
@@ -284,7 +282,6 @@ class Decoda {
 	 *
 	 * @access public
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function blacklist() {
 		$args = func_get_args();
@@ -316,7 +313,6 @@ class Decoda {
 	 * @access public
 	 * @param array $config
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function configure(array $config = array()) {
 		if (!$config) {
@@ -366,7 +362,6 @@ class Decoda {
 	 *
 	 * @access public
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function defaults() {
 		$this->addFilter(new \Decoda\Filter\DefaultFilter());
@@ -392,7 +387,6 @@ class Decoda {
 	 * @access public
 	 * @param boolean $status
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function disable($status = true) {
 		$this->_config['disabled'] = (bool) $status;
@@ -437,14 +431,14 @@ class Decoda {
 	 * @access public
 	 * @param string $filter
 	 * @return \Decoda\Filter
-	 * @throws \Exception
+	 * @throws \InvalidArgumentException
 	 */
 	public function getFilter($filter) {
 		if (isset($this->_filters[$filter])) {
 			return $this->_filters[$filter];
 		}
 
-		throw new Exception(sprintf('Filter %s does not exist', $filter));
+		throw new InvalidArgumentException(sprintf('Filter %s does not exist', $filter));
 	}
 
 	/**
@@ -453,14 +447,14 @@ class Decoda {
 	 * @access public
 	 * @param string $tag
 	 * @return \Decoda\Filter
-	 * @throws \Exception
+	 * @throws \InvalidArgumentException
 	 */
 	public function getFilterByTag($tag) {
 		if (isset($this->_filterMap[$tag])){
 			return $this->getFilter($this->_filterMap[$tag]);
 		}
 
-		throw new Exception(sprintf('No filter could be located for tag %s', $tag));
+		throw new InvalidArgumentException(sprintf('No filter could be located for tag %s', $tag));
 	}
 
 	/**
@@ -479,14 +473,14 @@ class Decoda {
 	 * @access public
 	 * @param string $hook
 	 * @return \Decoda\Hook
-	 * @throws \Exception
+	 * @throws \InvalidArgumentException
 	 */
 	public function getHook($hook) {
 		if (isset($this->_hooks[$hook])) {
 			return $this->_hooks[$hook];
 		}
 
-		throw new Exception(sprintf('Hook %s does not exist', $hook));
+		throw new InvalidArgumentException(sprintf('Hook %s does not exist', $hook));
 	}
 
 	/**
@@ -600,7 +594,6 @@ class Decoda {
 	 * @access public
 	 * @param string|array $filters
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function removeFilter($filters) {
 		foreach ((array) $filters as $filter) {
@@ -622,7 +615,6 @@ class Decoda {
 	 * @access public
 	 * @param string|array $hooks
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function removeHook($hooks) {
 		foreach ((array) $hooks as $hook) {
@@ -639,7 +631,6 @@ class Decoda {
 	 * @param string $string
 	 * @param boolean $flush
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function reset($string, $flush = false) {
 		$this->_chunks = array();
@@ -664,7 +655,6 @@ class Decoda {
 	 *
 	 * @access public
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function resetFilters() {
 		$this->_filters = array();
@@ -681,7 +671,6 @@ class Decoda {
 	 *
 	 * @access public
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function resetHooks() {
 		$this->_hooks = array();
@@ -698,12 +687,11 @@ class Decoda {
 	 * @param string $open
 	 * @param string $close
 	 * @return \Decoda\Decoda
-	 * @throws \Exception
-	 * @chainable
+	 * @throws \InvalidArgumentException
 	 */
 	public function setBrackets($open, $close) {
 		if (!$open || !$close) {
-			throw new Exception('Both the open and close brackets are required');
+			throw new InvalidArgumentException('Both the open and close brackets are required');
 		}
 
 		$this->_config['open'] = (string) $open;
@@ -718,7 +706,6 @@ class Decoda {
 	 * @access public
 	 * @param boolean $status
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function setEscaping($status = true) {
 		$this->_config['escapeHtml'] = (bool) $status;
@@ -732,14 +719,13 @@ class Decoda {
 	 * @access public
 	 * @param string $locale
 	 * @return \Decoda\Decoda
-	 * @throws \Exception
-	 * @chainable
+	 * @throws \DomainException
 	 */
 	public function setLocale($locale) {
 		$this->message(null);
 
 		if (empty($this->_messages[$locale])) {
-			throw new Exception(sprintf('Localized strings for %s do not exist', $locale));
+			throw new DomainException(sprintf('Localized strings for %s do not exist', $locale));
 		}
 
 		$this->_config['locale'] = $locale;
@@ -753,7 +739,6 @@ class Decoda {
 	 * @access public
 	 * @param boolean $max
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function setMaxNewlines($max) {
 		$this->_config['maxNewlines'] = (int) $max;
@@ -767,7 +752,6 @@ class Decoda {
 	 * @access public
 	 * @param boolean $status
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function setShorthand($status = true) {
 		$this->_config['shorthandLinks'] = (bool) $status;
@@ -781,7 +765,6 @@ class Decoda {
 	 * @access public
 	 * @param boolean $strict
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function setStrict($strict = true) {
 		$this->_config['strictMode'] = (bool) $strict;
@@ -795,7 +778,6 @@ class Decoda {
 	 * @access public
 	 * @param \Decoda\Engine $engine
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function setEngine(Engine $engine) {
 		$this->_engine = $engine;
@@ -809,7 +791,6 @@ class Decoda {
 	 * @access public
 	 * @param boolean $status
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function setXhtml($status = true) {
 		$this->_config['xhtmlOutput'] = (bool) $status;
@@ -862,7 +843,6 @@ class Decoda {
 	 *
 	 * @access public
 	 * @return \Decoda\Decoda
-	 * @chainable
 	 */
 	public function whitelist() {
 		$args = func_get_args();

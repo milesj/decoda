@@ -15,6 +15,15 @@ use Decoda\Decoda;
 interface Filter {
 
 	/**
+	 * Return a specific configuration key value.
+	 *
+	 * @access public
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function config($key);
+
+	/**
 	 * Return the Decoda parser.
 	 *
 	 * @access public
@@ -48,7 +57,6 @@ interface Filter {
 	 * @access public
 	 * @param \Decoda\Decoda $parser
 	 * @return \Decoda\Filter
-	 * @chainable
 	 */
 	public function setParser(Decoda $parser);
 
@@ -58,7 +66,6 @@ interface Filter {
 	 * @access public
 	 * @param \Decoda\Decoda $decoda
 	 * @return \Decoda\Filter
-	 * @chainable
 	 */
 	public function setupHooks(Decoda $decoda);
 

@@ -38,7 +38,6 @@ interface Engine {
 	 * @param array $tag
 	 * @param string $content
 	 * @return string
-	 * @throws \Exception
 	 */
 	public function render(array $tag, $content);
 
@@ -48,7 +47,6 @@ interface Engine {
 	 * @access public
 	 * @param \Decoda\Filter $filter
 	 * @return \Decoda\Engine
-	 * @chainable
 	 */
 	public function setFilter(Filter $filter);
 
@@ -58,7 +56,6 @@ interface Engine {
 	 * @access public
 	 * @param string $path
 	 * @return \Decoda\Engine
-	 * @chainable
 	 */
 	public function setPath($path);
 

@@ -67,7 +67,6 @@ class EmoticonHook extends AbstractHook {
 	 * @access public
 	 * @param \Decoda\Decoda $parser
 	 * @return \Decoda\Hook\EmoticonHook
-	 * @chainable
 	 */
 	public function setParser(Decoda $parser) {
 		parent::setParser($parser);

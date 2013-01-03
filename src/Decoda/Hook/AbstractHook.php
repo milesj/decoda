@@ -123,8 +123,7 @@ abstract class AbstractHook implements Hook {
 	 *
 	 * @access public
 	 * @param \Decoda\Decoda $parser
-	 * @return \Decoda\Hook\AbstractHook
-	 * @chainable
+	 * @return \Decoda\Hook
 	 */
 	public function setParser(Decoda $parser) {
 		$this->_parser = $parser;
@@ -137,8 +136,7 @@ abstract class AbstractHook implements Hook {
 	 *
 	 * @access public
 	 * @param \Decoda\Decoda $decoda
-	 * @return \Decoda\Hook\AbstractHook
-	 * @chainable
+	 * @return \Decoda\Hook
 	 */
 	public function setupFilters(Decoda $decoda) {
 		return $this;

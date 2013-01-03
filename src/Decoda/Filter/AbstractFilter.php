@@ -262,7 +262,6 @@ abstract class AbstractFilter implements Filter {
 	 * @access public
 	 * @param \Decoda\Decoda $parser
 	 * @return \Decoda\Filter
-	 * @chainable
 	 */
 	public function setParser(Decoda $parser) {
 		$this->_parser = $parser;
@@ -276,7 +275,6 @@ abstract class AbstractFilter implements Filter {
 	 * @access public
 	 * @param \Decoda\Decoda $decoda
 	 * @return \Decoda\Filter
-	 * @chainable
 	 */
 	public function setupHooks(Decoda $decoda) {
 		return $this;

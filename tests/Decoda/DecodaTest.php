@@ -57,8 +57,8 @@ class DecodaTest extends TestCase {
 		// Empty, Test
 		$this->assertTrue(count($this->object->getFilters()) == 2);
 
-		$this->assertInstanceOf('\Decoda\Filter\Filter', $this->object->getFilter('Test'));
-		$this->assertInstanceOf('\Decoda\Filter\Filter', $this->object->getFilterByTag('example'));
+		$this->assertInstanceOf('\Decoda\Filter', $this->object->getFilter('Test'));
+		$this->assertInstanceOf('\Decoda\Filter', $this->object->getFilterByTag('example'));
 
 		$this->object->resetFilters();
 
@@ -86,7 +86,7 @@ class DecodaTest extends TestCase {
 		// Empty, Censor
 		$this->assertTrue(count($this->object->getHooks()) == 2);
 
-		$this->assertInstanceOf('\Decoda\Hook\Hook', $this->object->getHook('Test'));
+		$this->assertInstanceOf('\Decoda\Hook', $this->object->getHook('Test'));
 
 		$this->object->resetHooks();
 

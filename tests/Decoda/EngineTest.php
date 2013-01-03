@@ -5,7 +5,7 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace Decoda\Engine;
+namespace Decoda;
 
 use Decoda\Decoda;
 use Decoda\Test\TestCase;
@@ -40,7 +40,7 @@ class EngineTest extends TestCase {
 		$this->assertEquals(null, $this->object->getFilter());
 
 		$this->object->setFilter(new TestFilter());
-		$this->assertInstanceOf('Decoda\Filter\Filter', $this->object->getFilter());
+		$this->assertInstanceOf('Decoda\Filter', $this->object->getFilter());
 	}
 
 }

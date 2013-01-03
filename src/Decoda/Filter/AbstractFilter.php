@@ -8,7 +8,7 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\Filter;
+use Decoda\Filter;
 
 /**
  * A filter defines the list of tags and its associative markup to parse out of a string.
@@ -261,7 +261,7 @@ abstract class AbstractFilter implements Filter {
 	 *
 	 * @access public
 	 * @param \Decoda\Decoda $parser
-	 * @return \Decoda\Filter\Filter
+	 * @return \Decoda\Filter
 	 * @chainable
 	 */
 	public function setParser(Decoda $parser) {
@@ -275,7 +275,7 @@ abstract class AbstractFilter implements Filter {
 	 *
 	 * @access public
 	 * @param \Decoda\Decoda $decoda
-	 * @return \Decoda\Filter\Filter
+	 * @return \Decoda\Filter
 	 * @chainable
 	 */
 	public function setupHooks(Decoda $decoda) {

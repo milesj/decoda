@@ -5,7 +5,7 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace Decoda\Filter;
+namespace Decoda;
 
 use Decoda\Decoda;
 use Decoda\Test\TestCase;

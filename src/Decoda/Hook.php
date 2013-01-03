@@ -5,7 +5,7 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace Decoda\Hook;
+namespace Decoda;
 
 use Decoda\Decoda;
 
@@ -73,7 +73,7 @@ interface Hook {
 	 *
 	 * @access public
 	 * @param \Decoda\Decoda $parser
-	 * @return \Decoda\Hook\Hook
+	 * @return \Decoda\Hook
 	 * @chainable
 	 */
 	public function setParser(Decoda $parser);
@@ -83,7 +83,7 @@ interface Hook {
 	 *
 	 * @access public
 	 * @param \Decoda\Decoda $decoda
-	 * @return \Decoda\Hook\Hook
+	 * @return \Decoda\Hook
 	 * @chainable
 	 */
 	public function setupFilters(Decoda $decoda);

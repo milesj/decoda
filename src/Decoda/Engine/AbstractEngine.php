@@ -7,8 +7,8 @@
 
 namespace Decoda\Engine;
 
-use Decoda\Filter\Filter;
-use Decoda\Engine\Engine;
+use Decoda\Filter;
+use Decoda\Engine;
 
 /**
  * Provides default methods for engines.
@@ -27,7 +27,7 @@ abstract class AbstractEngine implements Engine {
 	 * Current filter.
 	 *
 	 * @access protected
-	 * @var \Decoda\Filter\Filter
+	 * @var \Decoda\Filter
 	 */
 	protected $_filter;
 
@@ -35,7 +35,7 @@ abstract class AbstractEngine implements Engine {
 	 * Return the current filter.
 	 *
 	 * @access public
-	 * @return \Decoda\Filter\Filter
+	 * @return \Decoda\Filter
 	 */
 	public function getFilter() {
 		return $this->_filter;
@@ -59,8 +59,8 @@ abstract class AbstractEngine implements Engine {
 	 * Sets the current filter.
 	 *
 	 * @access public
-	 * @param \Decoda\Filter\Filter $filter
-	 * @return \Decoda\Engine\Engine
+	 * @param \Decoda\Filter $filter
+	 * @return \Decoda\Engine
 	 * @chainable
 	 */
 	public function setFilter(Filter $filter) {
@@ -74,7 +74,7 @@ abstract class AbstractEngine implements Engine {
 	 *
 	 * @access public
 	 * @param string $path
-	 * @return \Decoda\Engine\Engine
+	 * @return \Decoda\Engine
 	 * @chainable
 	 */
 	public function setPath($path) {

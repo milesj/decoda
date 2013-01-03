@@ -5,9 +5,9 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace Decoda\Engine;
+namespace Decoda;
 
-use Decoda\Filter\Filter;
+use Decoda\Filter;
 
 /**
  * This interface represents the rendering engine for tags that use a template.
@@ -19,7 +19,7 @@ interface Engine {
 	 * Return the current filter.
 	 *
 	 * @access public
-	 * @return \Decoda\Filter\Filter
+	 * @return \Decoda\Filter
 	 */
 	public function getFilter();
 
@@ -46,8 +46,8 @@ interface Engine {
 	 * Sets the current used filter.
 	 *
 	 * @access public
-	 * @param \Decoda\Filter\Filter $filter
-	 * @return \Decoda\Engine\Engine
+	 * @param \Decoda\Filter $filter
+	 * @return \Decoda\Engine
 	 * @chainable
 	 */
 	public function setFilter(Filter $filter);
@@ -57,7 +57,7 @@ interface Engine {
 	 *
 	 * @access public
 	 * @param string $path
-	 * @return \Decoda\Engine\Engine
+	 * @return \Decoda\Engine
 	 * @chainable
 	 */
 	public function setPath($path);

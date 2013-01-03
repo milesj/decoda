@@ -8,7 +8,7 @@
 namespace Decoda\Hook;
 
 use Decoda\Decoda;
-use Decoda\Hook\Hook;
+use Decoda\Hook;
 
 /**
  * A hook allows you to inject functionality during certain events in the parsing cycle.

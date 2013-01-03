@@ -7,9 +7,9 @@
 
 namespace Decoda;
 
-use Decoda\Engine\Engine;
-use Decoda\Filter\Filter;
-use Decoda\Hook\Hook;
+use Decoda\Engine;
+use Decoda\Filter;
+use Decoda\Hook;
 use \Exception;
 
 // Set constant
@@ -189,7 +189,7 @@ class Decoda {
 	 * Template engine used for parsing.
 	 *
 	 * @access protected
-	 * @var \Decoda\Engine\Engine
+	 * @var \Decoda\Engine
 	 */
 	protected $_engine = null;
 
@@ -218,7 +218,7 @@ class Decoda {
 	 * Add additional filters.
 	 *
 	 * @access public
-	 * @param \Decoda\Filter\Filter $filter
+	 * @param \Decoda\Filter $filter
 	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
@@ -246,7 +246,7 @@ class Decoda {
 	 * Add hooks that are triggered at specific events.
 	 *
 	 * @access public
-	 * @param \Decoda\Hook\Hook $hook
+	 * @param \Decoda\Hook $hook
 	 * @return \Decoda\Decoda
 	 * @chainable
 	 */
@@ -436,7 +436,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $filter
-	 * @return \Decoda\Filter\Filter
+	 * @return \Decoda\Filter
 	 * @throws \Exception
 	 */
 	public function getFilter($filter) {
@@ -452,7 +452,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $tag
-	 * @return \Decoda\Filter\Filter
+	 * @return \Decoda\Filter
 	 * @throws \Exception
 	 */
 	public function getFilterByTag($tag) {
@@ -478,7 +478,7 @@ class Decoda {
 	 *
 	 * @access public
 	 * @param string $hook
-	 * @return \Decoda\Hook\Hook
+	 * @return \Decoda\Hook
 	 * @throws \Exception
 	 */
 	public function getHook($hook) {
@@ -504,7 +504,7 @@ class Decoda {
 	 * In case no engine is set the default php engine gonna be used.
 	 *
 	 * @access public
-	 * @return \Decoda\Engine\Engine
+	 * @return \Decoda\Engine
 	 */
 	public function getEngine() {
 		if (!$this->_engine) {
@@ -793,7 +793,7 @@ class Decoda {
 	 * Sets the template engine which gonna be used for all tags with templates.
 	 *
 	 * @access public
-	 * @param \Decoda\Engine\Engine $engine
+	 * @param \Decoda\Engine $engine
 	 * @return \Decoda\Decoda
 	 * @chainable
 	 */

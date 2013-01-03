@@ -5,10 +5,7 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-error_reporting(E_ALL | E_STRICT);
-
-// Include class
-require_once '../vendor/autoload.php';
+require_once '../tests/bootstrap.php';
 
 // Build menus
 $view = strtolower(isset($_GET['view']) ? $_GET['view'] : 'features');

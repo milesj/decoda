@@ -49,7 +49,7 @@ abstract class AbstractEngine implements Engine {
 	 */
 	public function getPath() {
 		if (!$this->_path) {
-			$this->setPath(DECODA . 'templates/');
+			$this->setPath(dirname(__DIR__) . '/templates/');
 		}
 
 		return $this->_path;

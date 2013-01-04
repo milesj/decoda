@@ -13,11 +13,6 @@ use Decoda\Hook;
 use \DomainException;
 use \InvalidArgumentException;
 
-// Set constant
-if (!defined('DECODA')) {
-	define('DECODA', __DIR__ . '/');
-}
-
 /**
  * A lightweight lexical string parser for simple markup syntax.
  * Provides a very powerful filter and hook system to extend the parsing cycle.
@@ -212,7 +207,7 @@ class Decoda {
 	public function __construct($string = '', array $config = array()) {
 		$this->configure($config);
 		$this->reset($string, true);
-		$this->addPath(DECODA . 'config/');
+		$this->addPath(__DIR__ . '/config/');
 	}
 
 	/**

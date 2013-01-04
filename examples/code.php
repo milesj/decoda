@@ -7,7 +7,7 @@ $code->addHook(new\Decoda\Hook\CensorHook()); ?>
 <h2>Code</h2>
 
 <?php $string = "[code]// Constants
-define('DECODA', __DIR__ .'/');
+define('DECODA', __DIR__ . '/');
 
 // Includes
 spl_autoload_register();

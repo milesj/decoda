@@ -527,8 +527,8 @@ class Decoda {
 
 			if ($paths = $this->getPaths()) {
 				foreach ($paths as $path) {
-					if (file_exists($path . 'messages.json')) {
-						$messages = array_merge($messages, json_decode(file_get_contents($path . 'messages.json'), true));
+					if (file_exists($path . '/messages.json')) {
+						$messages = array_merge($messages, json_decode(file_get_contents($path . '/messages.json'), true));
 					}
 				}
 			}
@@ -861,63 +861,40 @@ class Decoda {
 	 */
 	protected function _buildTag($string) {
 		$disabled = $this->config('disabled');
-		$tag = array(
-			'tag' => '',
-			'text' => $string,
-			'attributes' => array()
-		);
+		$oe = $this->config('open');
+		$ce = $this->config('close');
+		$tag = null;
+		$type = self::TAG_NONE;
+		$attributes = array();
 
 		// Closing tag
-		if (substr($string, 1, 1) === '/') {
-			$tag['tag'] = trim(substr($string, 2, strlen($string) - 3));
-			$tag['type'] = self::TAG_CLOSE;
-
-			// Check for lowercase tag in case they uppercased it: IMG, B, etc
-			if (isset($this->_tags[strtolower($tag['tag'])])) {
-				$tag['tag'] = strtolower($tag['tag']);
-			}
-
-			if (!isset($this->_tags[$tag['tag']])) {
-				return false;
-			}
+		if (substr($string, 0, 2) === $oe . '/') {
+			$tag = trim(substr($string, 2, strlen($string) - 3));
+			$type = self::TAG_CLOSE;
 
 		// Self closing tag
-		} else if (substr($string, -2) === '/]') {
-			$tag['tag'] = trim(substr($string, 1, strlen($string) - 3));
-			$tag['type'] = self::TAG_SELF_CLOSE;
+		} else if (substr($string, -2) === '/' . $ce) {
+			$tag = trim(substr($string, 1, strlen($string) - 3));
+			$type = self::TAG_SELF_CLOSE;
 
 			// Check if spaces or attributes exist
-			if ($pos = strpos($tag['tag'], ' ')) {
-				$tag['tag'] = substr($tag['tag'], 0, $pos);
-			}
-
-			if (!isset($this->_tags[$tag['tag']])) {
-				return false;
+			if ($pos = strpos($tag, ' ')) {
+				$tag = substr($tag, 0, $pos);
 			}
 
 		// Opening tag
-		} else {
-			if (strpos($string, ' ') && (strpos($string, '=') === false)) {
-				return false;
-			}
+		} else if (preg_match('/' . preg_quote($oe, '/') . '([a-z0-9]+)(.*?)' . preg_quote($ce, '/') . '/i', $string, $matches)) {
+			$tag = trim($matches[1]);
+			$type = self::TAG_OPEN;
+		}
 
-			// Find tag
-			$oe = preg_quote($this->config('open'));
-			$ce = preg_quote($this->config('close'));
+		// Check for lowercase tag in case they uppercased it: IMG, B, etc
+		if (isset($this->_tags[strtolower($tag)])) {
+			$tag = strtolower($tag);
+		}
 
-			if (preg_match('/' . $oe . '([a-z0-9]+)(.*?)' . $ce . '/i', $string, $matches)) {
-				$tag['type'] = self::TAG_OPEN;
-				$tag['tag'] = trim($matches[1]);
-			}
-
-			// Check for lowercase tag in case they uppercased it: IMG, B, etc
-			if (isset($this->_tags[strtolower($tag['tag'])])) {
-				$tag['tag'] = strtolower($tag['tag']);
-			}
-
-			if (!isset($this->_tags[$tag['tag']])) {
-				return false;
-			}
+		if (!isset($this->_tags[$tag])) {
+			return false;
 		}
 
 		// Find attributes
@@ -934,7 +911,7 @@ class Decoda {
 
 			// Find attributes that aren't surrounded by quotes
 			if (!$this->config('strictMode')) {
-				preg_match_all('/([a-z]+)=([^\s\]]+)/i', $string, $matches, PREG_SET_ORDER);
+				preg_match_all('/([a-z]+)=([^\s' . preg_quote($ce, '/') . ']+)/i', $string, $matches, PREG_SET_ORDER);
 
 				if ($matches) {
 					foreach ($matches as $match) {
@@ -946,13 +923,13 @@ class Decoda {
 			}
 
 			if ($found) {
-				$source = $this->_tags[$tag['tag']];
+				$source = $this->_tags[$tag];
 
 				foreach ($found as $key => $value) {
 					$key = strtolower($key);
 					$value = trim(trim($value), '"');
 
-					if ($key === $tag['tag']) {
+					if ($key === $tag) {
 						$key = 'default';
 					}
 
@@ -971,16 +948,16 @@ class Decoda {
 						$pattern = $source['attributes'][$key];
 
 						if ($pattern === true) {
-							$tag['attributes'][$finalKey] = $value;
+							$attributes[$finalKey] = $value;
 
 						} else if (is_array($pattern)) {
 							if (preg_match($pattern[0], $value)) {
-								$tag['attributes'][$finalKey] = str_replace('{' . $key . '}', $value, $pattern[1]);
+								$attributes[$finalKey] = str_replace('{' . $key . '}', $value, $pattern[1]);
 							}
 
 						} else {
 							if (preg_match($pattern, $value)) {
-								$tag['attributes'][$finalKey] = $value;
+								$attributes[$finalKey] = $value;
 							}
 						}
 					}
@@ -990,14 +967,19 @@ class Decoda {
 
 		if (
 			$disabled ||
-			($this->_whitelist && !in_array($tag['tag'], $this->_whitelist)) ||
-			($this->_blacklist && in_array($tag['tag'], $this->_blacklist))
+			($this->_whitelist && !in_array($tag, $this->_whitelist)) ||
+			($this->_blacklist && in_array($tag, $this->_blacklist))
 		) {
-			$tag['type'] = self::TAG_NONE;
-			$tag['text'] = '';
+			$type = self::TAG_NONE;
+			$string = '';
 		}
 
-		return $tag;
+		return array(
+			'tag' => $tag,
+			'type' => $type,
+			'text' => $string,
+			'attributes' => $attributes
+		);
 	}
 
 	/**

@@ -429,7 +429,7 @@ class Decoda {
 	 * @throws \InvalidArgumentException
 	 */
 	public function getFilter($filter) {
-		if (isset($this->_filters[$filter])) {
+		if ($this->hasFilter($filter)) {
 			return $this->_filters[$filter];
 		}
 
@@ -471,7 +471,7 @@ class Decoda {
 	 * @throws \InvalidArgumentException
 	 */
 	public function getHook($hook) {
-		if (isset($this->_hooks[$hook])) {
+		if ($this->hasHook($hook)) {
 			return $this->_hooks[$hook];
 		}
 
@@ -511,6 +511,26 @@ class Decoda {
 	 */
 	public function getPaths() {
 		return $this->_paths;
+	}
+
+	/**
+	 * Check if a filter exists.
+	 *
+	 * @param string $filter
+	 * @return boolean
+	 */
+	public function hasFilter($filter) {
+		return isset($this->_filters[$filter]);
+	}
+
+	/**
+	 * Check if a hook exists.
+	 *
+	 * @param string $hook
+	 * @return boolean
+	 */
+	public function hasHook($hook) {
+		return isset($this->_hooks[$hook]);
 	}
 
 	/**

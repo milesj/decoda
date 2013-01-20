@@ -23,33 +23,29 @@ class ClickableHook extends AbstractHook {
 	 * @return string
 	 */
 	public function afterParse($content) {
-		try {
-			if ($url = $this->getParser()->getFilter('Url')) {
-				$chars = preg_quote('-_=;:&?/[]%', '/');
-				$protocols = $url->config('protocols');
+		$parser = $this->getParser();
 
-				$pattern = implode('', array(
-					'(' . implode('|', $protocols) . ')s?:\/\/', // protocol
-					'([-a-z0-9\.\+]+:[-a-z0-9\.\+]+@)?', // login
-					'([-a-z0-9\.]{5,255}+)', // domain, tld
-					'(:[0-9]{0,6}+)?', // port
-					'([a-z0-9' . $chars . ']+)?', // query
-					'(#[a-z0-9' . $chars . ']+)?' // fragment
-				));
+		if ($parser->hasFilter('Url')) {
+			$protocols = $parser->getFilter('Url')->config('protocols');
+			$chars = preg_quote('-_=;:&?/[]%', '/');
 
-				$content = preg_replace_callback('/(^|\n|\s)' . $pattern . '/is', array($this, '_urlCallback'), $content);
-			}
-		} catch (Exception $e) {
+			$pattern = implode('', array(
+				'(' . implode('|', $protocols) . ')s?:\/\/', // protocol
+				'([-a-z0-9\.\+]+:[-a-z0-9\.\+]+@)?', // login
+				'([-a-z0-9\.]{5,255}+)', // domain, tld
+				'(:[0-9]{0,6}+)?', // port
+				'([a-z0-9' . $chars . ']+)?', // query
+				'(#[a-z0-9' . $chars . ']+)?' // fragment
+			));
+
+			$content = preg_replace_callback('/(^|\n|\s)' . $pattern . '/is', array($this, '_urlCallback'), $content);
 		}
 
 		// Based on schema: http://en.wikipedia.org/wiki/Email_address
-		try {
-			if ($email = $this->getParser()->getFilter('Email')) {
-				$pattern = '/(^|\n|\s)([-a-z0-9\.\+!]{1,64}+)@([-a-z0-9]+\.[a-z\.]+)/is';
+		if ($parser->hasFilter('Email')) {
+			$pattern = '/(^|\n|\s)([-a-z0-9\.\+!]{1,64}+)@([-a-z0-9]+\.[a-z\.]+)/is';
 
-				$content = preg_replace_callback($pattern, array($this, '_emailCallback'), $content);
-			}
-		} catch (Exception $e) {
+			$content = preg_replace_callback($pattern, array($this, '_emailCallback'), $content);
 		}
 
 		return $content;

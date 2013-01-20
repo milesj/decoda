@@ -37,9 +37,14 @@ class UrlFilterTest extends TestCase {
 		$this->assertEquals('<a href="ftps://user:pass@domain.com?query=string&amp;key=value">Link</a>', $this->object->reset('[url="ftps://user:pass@domain.com?query=string&key=value"]Link[/url]')->parse());
 		$this->assertEquals('<a href="http://domain.com:8080?query=string&amp;key=value">Link</a>', $this->object->reset('[url="http://domain.com:8080?query=string&key=value"]Link[/url]')->parse());
 
-		// invalid
+		// Invalid
 		$this->assertEquals('http:domain.com', $this->object->reset('[url]http:domain.com[/url]')->parse());
 		$this->assertEquals('file://image.png', $this->object->reset('[url]file://image.png[/url]')->parse());
+
+		// Test URLs with a trailing slash
+		$this->assertEquals('<a href="http://domain.com/">http://domain.com/</a>', $this->object->reset('[url]http://domain.com/[/url]')->parse());
+		$this->assertEquals('<a href="http://domain.com/">Test</a>', $this->object->reset('[url="http://domain.com/"]Test[/url]')->parse());
+		$this->assertEquals('<a href="http://domain.com/">Test</a>', $this->object->reset('[url=http://domain.com/]Test[/url]')->parse());
 	}
 
 }

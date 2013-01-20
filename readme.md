@@ -6,6 +6,7 @@ A lightweight lexical string parser for BBCode styled markup.
 
 * PHP 5.3
 * Composer
+* Multibyte
 
 ## Compatibility ##
 

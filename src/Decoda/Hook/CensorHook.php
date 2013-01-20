@@ -80,8 +80,8 @@ class CensorHook extends AbstractHook {
 		parent::setParser($parser);
 
 		foreach ($parser->getPaths() as $path) {
-			if (file_exists($path . 'censored.txt')) {
-				$this->blacklist(file($path . 'censored.txt'));
+			if (file_exists($path . '/censored.txt')) {
+				$this->blacklist(file($path . '/censored.txt'));
 			}
 		}
 

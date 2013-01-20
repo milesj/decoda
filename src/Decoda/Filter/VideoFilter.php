@@ -186,7 +186,7 @@ class VideoFilter extends AbstractFilter {
 	 */
 	public function parse(array $tag, $content) {
 		$provider = isset($tag['attributes']['default']) ? $tag['attributes']['default'] : $tag['tag'];
-		$size = strtolower(isset($tag['attributes']['size']) ? $tag['attributes']['size'] : 'medium');
+		$size = mb_strtolower(isset($tag['attributes']['size']) ? $tag['attributes']['size'] : 'medium');
 
 		if (empty($this->_formats[$provider])) {
 			return sprintf('(Invalid %s video code)', $provider);

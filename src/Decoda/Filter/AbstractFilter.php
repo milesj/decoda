@@ -203,7 +203,7 @@ abstract class AbstractFilter implements Filter {
 
 		if ($tag['attributes']) {
 			foreach ($tag['attributes'] as $key => $value) {
-				if ($key === 'default' || substr($value, 0, 11) === 'javascript:') {
+				if ($key === 'default' || mb_substr($value, 0, 11) === 'javascript:') {
 					continue;
 				}
 

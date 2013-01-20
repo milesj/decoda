@@ -72,11 +72,11 @@ class EmoticonHook extends AbstractHook {
 		parent::setParser($parser);
 
 		foreach ($parser->getPaths() as $path) {
-			if (!file_exists($path . 'emoticons.json')) {
+			if (!file_exists($path . '/emoticons.json')) {
 				continue;
 			}
 
-			if ($emoticons = json_decode(file_get_contents($path . 'emoticons.json'), true)) {
+			if ($emoticons = json_decode(file_get_contents($path . '/emoticons.json'), true)) {
 				foreach ($emoticons as $emoticon => $smilies) {
 					foreach ($smilies as $smile) {
 						$this->_map[$smile] = $emoticon;

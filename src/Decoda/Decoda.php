@@ -868,18 +868,18 @@ class Decoda {
 		$attributes = array();
 
 		// Closing tag
-		if (substr($string, 0, 2) === $oe . '/') {
-			$tag = trim(substr($string, 2, strlen($string) - 3));
+		if (mb_substr($string, 0, 2) === $oe . '/') {
+			$tag = trim(mb_substr($string, 2, mb_strlen($string) - 3));
 			$type = self::TAG_CLOSE;
 
 		// Self closing tag
-		} else if (substr($string, -2) === '/' . $ce) {
-			$tag = trim(substr($string, 1, strlen($string) - 3));
+		} else if (mb_substr($string, -2) === '/' . $ce) {
+			$tag = trim(mb_substr($string, 1, mb_strlen($string) - 3));
 			$type = self::TAG_SELF_CLOSE;
 
 			// Check if spaces or attributes exist
-			if ($pos = strpos($tag, ' ')) {
-				$tag = substr($tag, 0, $pos);
+			if ($pos = mb_strpos($tag, ' ')) {
+				$tag = mb_substr($tag, 0, $pos);
 			}
 
 		// Opening tag
@@ -889,8 +889,8 @@ class Decoda {
 		}
 
 		// Check for lowercase tag in case they uppercased it: IMG, B, etc
-		if (isset($this->_tags[strtolower($tag)])) {
-			$tag = strtolower($tag);
+		if (isset($this->_tags[mb_strtolower($tag)])) {
+			$tag = mb_strtolower($tag);
 		}
 
 		if (!isset($this->_tags[$tag])) {
@@ -926,7 +926,7 @@ class Decoda {
 				$source = $this->_tags[$tag];
 
 				foreach ($found as $key => $value) {
-					$key = strtolower($key);
+					$key = mb_strtolower($key);
 					$value = trim(trim($value), '"');
 
 					if ($key === $tag) {
@@ -1179,13 +1179,13 @@ class Decoda {
 	 */
 	protected function _extractChunks($string) {
 		$strPos = 0;
-		$strLength = strlen($string);
+		$strLength = mb_strlen($string);
 		$openBracket = $this->config('open');
 		$closeBracket = $this->config('close');
 
 		while ($strPos < $strLength) {
 			$tag = array();
-			$openPos = strpos($string, $openBracket, $strPos);
+			$openPos = mb_strpos($string, $openBracket, $strPos);
 
 			if ($openPos === false) {
 				$openPos = $strLength;
@@ -1195,14 +1195,14 @@ class Decoda {
 			if ($openPos + 1 > $strLength) {
 				$nextOpenPos = $strLength;
 			} else {
-				$nextOpenPos = strpos($string, $openBracket, $openPos + 1);
+				$nextOpenPos = mb_strpos($string, $openBracket, $openPos + 1);
 
 				if ($nextOpenPos === false) {
 					$nextOpenPos = $strLength;
 				}
 			}
 
-			$closePos = strpos($string, $closeBracket, $strPos);
+			$closePos = mb_strpos($string, $closeBracket, $strPos);
 
 			if ($closePos === false) {
 				$closePos = $strLength + 1;
@@ -1214,13 +1214,13 @@ class Decoda {
 				// Child open tag before closing tag
 				if ($nextOpenPos < $closePos) {
 					$newPos = $nextOpenPos;
-					$tag['text'] = substr($string, $strPos, ($nextOpenPos - $strPos));
+					$tag['text'] = mb_substr($string, $strPos, ($nextOpenPos - $strPos));
 					$tag['type'] = self::TAG_NONE;
 
 				// Tag?
 				} else {
 					$newPos = $closePos + 1;
-					$newTag = $this->_buildTag(substr($string, $strPos, (($closePos - $strPos) + 1)));
+					$newTag = $this->_buildTag(mb_substr($string, $strPos, (($closePos - $strPos) + 1)));
 
 					// Valid tag
 					if ($newTag) {
@@ -1228,7 +1228,7 @@ class Decoda {
 
 					// Not a valid tag
 					} else {
-						$tag['text'] = substr($string, $strPos, $closePos - $strPos + 1);
+						$tag['text'] = mb_substr($string, $strPos, $closePos - $strPos + 1);
 						$tag['type'] = self::TAG_NONE;
 					}
 				}
@@ -1237,7 +1237,7 @@ class Decoda {
 			} else {
 				$newPos = $openPos;
 
-				$tag['text'] = substr($string, $strPos, ($openPos - $strPos));
+				$tag['text'] = mb_substr($string, $strPos, ($openPos - $strPos));
 				$tag['type'] = self::TAG_NONE;
 			}
 
@@ -1402,8 +1402,8 @@ class Decoda {
 	 */
 	protected function _isParseable($string) {
 		return (
-			strpos($string, $this->config('open')) !== false &&
-			strpos($string, $this->config('close')) !== false &&
+			mb_strpos($string, $this->config('open')) !== false &&
+			mb_strpos($string, $this->config('close')) !== false &&
 			!$this->config('disabled')
 		);
 	}

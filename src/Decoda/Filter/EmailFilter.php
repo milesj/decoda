@@ -77,11 +77,11 @@ class EmailFilter extends AbstractFilter {
 		$encrypted = '';
 
 		if ($this->config('encrypt')) {
-			$length = strlen($email);
+			$length = mb_strlen($email);
 
 			if ($length > 0) {
 				for ($i = 0; $i < $length; ++$i) {
-					$encrypted .= '&#' . ord(substr($email, $i, 1)) . ';';
+					$encrypted .= '&#' . ord(mb_substr($email, $i, 1)) . ';';
 				}
 			}
 		} else {

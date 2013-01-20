@@ -65,7 +65,7 @@ class ImageFilter extends AbstractFilter {
 	public function parse(array $tag, $content) {
 
 		// If more than 1 http:// is found in the string, possible XSS attack
-		if ((substr_count($content, 'http://') + substr_count($content, 'https://')) > 1) {
+		if ((mb_substr_count($content, 'http://') + mb_substr_count($content, 'https://')) > 1) {
 			return null;
 		}
 

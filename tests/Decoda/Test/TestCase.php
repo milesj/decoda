@@ -14,7 +14,7 @@ class TestCase extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Decoda instance.
 	 *
-	 * @var object
+	 * @var \Decoda\Decoda
 	 */
 	protected $object;
 

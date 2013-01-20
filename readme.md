@@ -1,4 +1,4 @@
-# Decoda v5.0.0 #
+# Decoda v5.1.0 #
 
 A lightweight lexical string parser for BBCode styled markup.
 
@@ -40,7 +40,7 @@ The following filters and supported tags are available.
 
 * Default - b, i, u, s, sup, sub, br, hr, abbr, time
 * Block - align, float, hide, alert, note, div, spoiler, left, right, center, justify
-* Code - code, var
+* Code - code, source, var
 * Email - email, mail
 * Image - image, img
 * List - list, olist, li

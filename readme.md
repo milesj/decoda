@@ -1,4 +1,4 @@
-# Decoda v5.1.0 #
+# Decoda v5.1.1 #
 
 A lightweight lexical string parser for BBCode styled markup.
 

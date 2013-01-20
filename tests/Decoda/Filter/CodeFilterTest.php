@@ -25,22 +25,22 @@ class CodeFilterTest extends TestCase {
 	 * Test that [code] renders pre-formatted code blocks and doesn't render Decoda tags.
 	 */
 	public function testCode() {
-		$expected = '<pre class="decoda-code">$variable = "Code Block";</pre>';
+		$expected = '<pre class="decoda-code"><code>$variable = "Code Block";</code></pre>';
 		$this->assertEquals($expected, $this->object->reset('[code]$variable = "Code Block";[/code]')->parse());
 
-		$expected = '<pre class="decoda-code php">$variable = "Code Block";</pre>';
+		$expected = '<pre class="decoda-code php"><code>$variable = "Code Block";</code></pre>';
 		$this->assertEquals($expected, $this->object->reset('[code="php"]$variable = "Code Block";[/code]')->parse());
 
-		$expected = '<pre class="decoda-code" data-highlight="10,20">$variable = "Code Block";</pre>';
+		$expected = '<pre class="decoda-code" data-highlight="10,20"><code>$variable = "Code Block";</code></pre>';
 		$this->assertEquals($expected, $this->object->reset('[code hl="10,20"]$variable = "Code Block";[/code]')->parse());
 
-		$expected = '<pre class="decoda-code php" data-highlight="10,20">$variable = "Code Block";</pre>';
+		$expected = '<pre class="decoda-code php" data-highlight="10,20"><code>$variable = "Code Block";</code></pre>';
 		$this->assertEquals($expected, $this->object->reset('[code="php" hl="10,20"]$variable = "Code Block";[/code]')->parse());
 
-		$expected = '<pre class="decoda-code">Code block [b]with Decoda[/b] tags.</pre>';
+		$expected = '<pre class="decoda-code"><code>Code block [b]with Decoda[/b] tags.</code></pre>';
 		$this->assertEquals($expected, $this->object->reset('[code]Code block [b]with Decoda[/b] tags.[/code]')->parse());
 
-		$expected = '<pre class="decoda-code">Code block &lt;strong&gt;with HTML&lt;/strong&gt; tags.</pre>';
+		$expected = '<pre class="decoda-code"><code>Code block &lt;strong&gt;with HTML&lt;/strong&gt; tags.</code></pre>';
 		$this->assertEquals($expected, $this->object->reset('[code]Code block <strong>with HTML</strong> tags.[/code]')->parse());
 
 		$string = <<<'CODE'
@@ -68,7 +68,7 @@ abstract class FilterAbstract implements Filter {
 CODE;
 
 		$expected = <<<'CODE'
-<pre class="decoda-code" data-highlight="1,15">&lt;?php
+<pre class="decoda-code" data-highlight="1,15"><code>&lt;?php
 abstract class FilterAbstract implements Filter {
 
 	/**
@@ -88,17 +88,24 @@ abstract class FilterAbstract implements Filter {
 		return $defaults;
 	}
 
-} ?&gt;</pre>
+} ?&gt;</code></pre>
 CODE;
 
 		$this->assertEquals($this->nl($expected), $this->object->reset($string)->parse());
 	}
 
 	/**
+	 * Test [source] renders a code tag.
+	 */
+	public function testSource() {
+		$this->assertEquals('<code>Source</code>', $this->object->reset('[source]Source[/source]')->parse());
+	}
+
+	/**
 	 * Test [var] renders a variable tag.
 	 */
 	public function testVar() {
-		$this->assertEquals('<code>Variable</code>', $this->object->reset('[var]Variable[/var]')->parse());
+		$this->assertEquals('<var>Variable</var>', $this->object->reset('[var]Variable[/var]')->parse());
 	}
 
 }

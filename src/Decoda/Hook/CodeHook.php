@@ -31,7 +31,7 @@ class CodeHook extends AbstractHook {
 	 * @return mixed
 	 */
 	public function afterParse($string) {
-		return preg_replace_callback('/\<pre(.*?)>(.*?)\<\/pre>/is', array($this, '_decodeCallback'), $string);
+		return preg_replace_callback('/\<pre(.*?)><code>(.*?)<\/code>\<\/pre>/is', array($this, '_decodeCallback'), $string);
 	}
 
 	/**
@@ -51,7 +51,7 @@ class CodeHook extends AbstractHook {
 	 * @return string
 	 */
 	protected function _decodeCallback(array $matches) {
-		return '<pre' . $matches[1] . '>' . base64_decode($matches[2]) . '</pre>';
+		return '<pre' . $matches[1] . '><code>' . base64_decode($matches[2]) . '</code></pre>';
 	}
 
 }

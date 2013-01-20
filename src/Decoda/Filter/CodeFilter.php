@@ -37,8 +37,13 @@ class CodeFilter extends AbstractFilter {
 			),
 			'stripContent' => true
 		),
-		'var' => array(
+		'source' => array(
 			'htmlTag' => 'code',
+			'displayType' => Decoda::TYPE_INLINE,
+			'allowedTypes' => Decoda::TYPE_INLINE
+		),
+		'var' => array(
+			'htmlTag' => 'var',
 			'displayType' => Decoda::TYPE_INLINE,
 			'allowedTypes' => Decoda::TYPE_INLINE
 		)

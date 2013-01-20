@@ -66,7 +66,7 @@ function buildMenu($items, $view) {
 		dl a { background: aliceblue; color: slategray; display: inline-block; padding: 5px 10px; margin: 0 10px 10px 0; text-decoration: none; border-radius: 5px; }
 		dl a:hover,
 		dl a.active { background: skyblue; color: white; }
-		code { background: beige; padding: 2px 5px; border-radius: 5px; }
+		var { background: beige; padding: 2px 5px; border-radius: 5px; }
 		ul, ol { margin-left: 50px; }
 		.clear { clear: both; display: block; }
 		.float-right { float: right; }

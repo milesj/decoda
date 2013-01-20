@@ -24,7 +24,6 @@ class ImageFilter extends AbstractFilter {
 	/**
 	 * Supported tags.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = array(
@@ -57,7 +56,6 @@ class ImageFilter extends AbstractFilter {
 	/**
 	 * Use the content as the image source.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string

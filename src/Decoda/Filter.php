@@ -17,7 +17,6 @@ interface Filter {
 	/**
 	 * Return a specific configuration key value.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @return mixed
 	 */
@@ -26,7 +25,6 @@ interface Filter {
 	/**
 	 * Return the Decoda parser.
 	 *
-	 * @access public
 	 * @return \Decoda\Decoda
 	 */
 	public function getParser();
@@ -34,7 +32,6 @@ interface Filter {
 	/**
 	 * Return a message string from the parser.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @param array $vars
 	 * @return string
@@ -44,7 +41,6 @@ interface Filter {
 	/**
 	 * Parse the node and its content into an HTML tag.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string
@@ -54,7 +50,6 @@ interface Filter {
 	/**
 	 * Set the Decoda parser.
 	 *
-	 * @access public
 	 * @param \Decoda\Decoda $parser
 	 * @return \Decoda\Filter
 	 */
@@ -63,7 +58,6 @@ interface Filter {
 	/**
 	 * Add any hook dependencies.
 	 *
-	 * @access public
 	 * @param \Decoda\Decoda $decoda
 	 * @return \Decoda\Filter
 	 */
@@ -72,7 +66,6 @@ interface Filter {
 	/**
 	 * Strip a node and remove content dependent on settings.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string
@@ -82,7 +75,6 @@ interface Filter {
 	/**
 	 * Return a tag if it exists, and merge with defaults.
 	 *
-	 * @access public
 	 * @param string $tag
 	 * @return array
 	 */
@@ -91,7 +83,6 @@ interface Filter {
 	/**
 	 * Return all tags.
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function tags();

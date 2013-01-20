@@ -50,7 +50,6 @@ abstract class FilterAbstract implements Filter {
 	/**
 	 * Return a tag if it exists, and merge with defaults.
 	 *
-	 * @access public
 	 * @param string $tag
 	 * @return array
 	 */
@@ -75,7 +74,6 @@ abstract class FilterAbstract implements Filter {
 	/**
 	 * Return a tag if it exists, and merge with defaults.
 	 *
-	 * @access public
 	 * @param string $tag
 	 * @return array
 	 */

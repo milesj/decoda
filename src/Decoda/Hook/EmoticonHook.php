@@ -18,7 +18,6 @@ class EmoticonHook extends AbstractHook {
 	/**
 	 * Configuration.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_config = array(
@@ -29,7 +28,6 @@ class EmoticonHook extends AbstractHook {
 	/**
 	 * Mapping of emoticons and smilies.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_emoticons = array();
@@ -37,7 +35,6 @@ class EmoticonHook extends AbstractHook {
 	/**
 	 * Map of smilies to emoticons.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_map = array();
@@ -45,7 +42,6 @@ class EmoticonHook extends AbstractHook {
 	/**
 	 * Parse out the emoticons and replace with images.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -64,7 +60,6 @@ class EmoticonHook extends AbstractHook {
 	/**
 	 * Set the Decoda parser.
 	 *
-	 * @access public
 	 * @param \Decoda\Decoda $parser
 	 * @return \Decoda\Hook\EmoticonHook
 	 */
@@ -93,7 +88,6 @@ class EmoticonHook extends AbstractHook {
 	/**
 	 * Callback for smiley processing.
 	 *
-	 * @access protected
 	 * @param array $matches
 	 * @return string
 	 */

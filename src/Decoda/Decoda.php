@@ -62,7 +62,6 @@ class Decoda {
 	/**
 	 * Blacklist of tags not to parse.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_blacklist = array();
@@ -70,7 +69,6 @@ class Decoda {
 	/**
 	 * Extracted chunks of text and tags.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_chunks = array();
@@ -78,7 +76,6 @@ class Decoda {
 	/**
 	 * Configuration.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_config = array(
@@ -96,7 +93,6 @@ class Decoda {
 	/**
 	 * Logged errors for incorrectly nested nodes and types.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_errors = array();
@@ -104,7 +100,6 @@ class Decoda {
 	/**
 	 * List of all instantiated filter objects.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_filters = array();
@@ -112,7 +107,6 @@ class Decoda {
 	/**
 	 * Mapping of tags to its filter object.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_filterMap = array();
@@ -120,7 +114,6 @@ class Decoda {
 	/**
 	 * List of all instantiated hook objects.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_hooks = array();
@@ -128,7 +121,6 @@ class Decoda {
 	/**
 	 * Message strings for localization purposes.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_messages = array();
@@ -136,7 +128,6 @@ class Decoda {
 	/**
 	 * Children nodes.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_nodes = array();
@@ -144,7 +135,6 @@ class Decoda {
 	/**
 	 * The parsed string.
 	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_parsed = '';
@@ -152,7 +142,6 @@ class Decoda {
 	/**
 	 * Configuration folder paths.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_paths = array();
@@ -160,7 +149,6 @@ class Decoda {
 	/**
 	 * The raw string before parsing.
 	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_string = '';
@@ -168,7 +156,6 @@ class Decoda {
 	/**
 	 * The stripped string.
 	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_stripped = '';
@@ -176,7 +163,6 @@ class Decoda {
 	/**
 	 * List of tags from filters.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = array();
@@ -184,7 +170,6 @@ class Decoda {
 	/**
 	 * Template engine used for parsing.
 	 *
-	 * @access protected
 	 * @var \Decoda\Engine
 	 */
 	protected $_engine = null;
@@ -192,7 +177,6 @@ class Decoda {
 	/**
 	 * Whitelist of tags to parse.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_whitelist = array();
@@ -200,7 +184,6 @@ class Decoda {
 	/**
 	 * Store the text and single instance configuration.
 	 *
-	 * @access public
 	 * @param string $string
 	 * @param array $config
 	 */
@@ -213,7 +196,6 @@ class Decoda {
 	/**
 	 * Add additional filters.
 	 *
-	 * @access public
 	 * @param \Decoda\Filter $filter
 	 * @return \Decoda\Decoda
 	 */
@@ -240,7 +222,6 @@ class Decoda {
 	/**
 	 * Add hooks that are triggered at specific events.
 	 *
-	 * @access public
 	 * @param \Decoda\Hook $hook
 	 * @return \Decoda\Decoda
 	 */
@@ -262,7 +243,6 @@ class Decoda {
 	/**
 	 * Add a configuration lookup path.
 	 *
-	 * @access public
 	 * @param string $path
 	 * @return \Decoda\Decoda
 	 */
@@ -275,7 +255,6 @@ class Decoda {
 	/**
 	 * Add tags to the blacklist.
 	 *
-	 * @access public
 	 * @return \Decoda\Decoda
 	 */
 	public function blacklist() {
@@ -294,7 +273,6 @@ class Decoda {
 	/**
 	 * Return a specific configuration key value.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @return mixed
 	 */
@@ -305,7 +283,6 @@ class Decoda {
 	/**
 	 * Apply multiple configurations at once.
 	 *
-	 * @access public
 	 * @param array $config
 	 * @return \Decoda\Decoda
 	 */
@@ -355,7 +332,6 @@ class Decoda {
 	/**
 	 * Apply default filters and hooks if none are set.
 	 *
-	 * @access public
 	 * @return \Decoda\Decoda
 	 */
 	public function defaults() {
@@ -379,7 +355,6 @@ class Decoda {
 	/**
 	 * Toggle parsing.
 	 *
-	 * @access public
 	 * @param boolean $status
 	 * @return \Decoda\Decoda
 	 */
@@ -392,7 +367,6 @@ class Decoda {
 	/**
 	 * Return the parsing errors.
 	 *
-	 * @access public
 	 * @param int $type
 	 * @return array
 	 */
@@ -423,7 +397,6 @@ class Decoda {
 	/**
 	 * Return a specific filter based on class name.
 	 *
-	 * @access public
 	 * @param string $filter
 	 * @return \Decoda\Filter
 	 * @throws \InvalidArgumentException
@@ -439,7 +412,6 @@ class Decoda {
 	/**
 	 * Return a filter based on its supported tag.
 	 *
-	 * @access public
 	 * @param string $tag
 	 * @return \Decoda\Filter
 	 * @throws \InvalidArgumentException
@@ -455,7 +427,6 @@ class Decoda {
 	/**
 	 * Return all filters.
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getFilters() {
@@ -465,7 +436,6 @@ class Decoda {
 	/**
 	 * Return a specific hook based on class name.
 	 *
-	 * @access public
 	 * @param string $hook
 	 * @return \Decoda\Hook
 	 * @throws \InvalidArgumentException
@@ -481,7 +451,6 @@ class Decoda {
 	/**
 	 * Return all hooks.
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getHooks() {
@@ -492,7 +461,6 @@ class Decoda {
 	 * Returns the current used template engine.
 	 * In case no engine is set the default php engine gonna be used.
 	 *
-	 * @access public
 	 * @return \Decoda\Engine
 	 */
 	public function getEngine() {
@@ -506,7 +474,6 @@ class Decoda {
 	/**
 	 * Return the configuration folder paths.
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function getPaths() {
@@ -536,7 +503,6 @@ class Decoda {
 	/**
 	 * Return a message string if it exists.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @param array $vars
 	 * @return string
@@ -571,7 +537,6 @@ class Decoda {
 	/**
 	 * Parse the node list by looping through each one, validating, applying filters, building and finally concatenating the string.
 	 *
-	 * @access public
 	 * @param boolean $echo
 	 * @return string
 	 */
@@ -606,7 +571,6 @@ class Decoda {
 	/**
 	 * Remove filter(s).
 	 *
-	 * @access public
 	 * @param string|array $filters
 	 * @return \Decoda\Decoda
 	 */
@@ -627,7 +591,6 @@ class Decoda {
 	/**
 	 * Remove hook(s).
 	 *
-	 * @access public
 	 * @param string|array $hooks
 	 * @return \Decoda\Decoda
 	 */
@@ -642,7 +605,6 @@ class Decoda {
 	/**
 	 * Reset the parser to a new string.
 	 *
-	 * @access public
 	 * @param string $string
 	 * @param boolean $flush
 	 * @return \Decoda\Decoda
@@ -668,7 +630,6 @@ class Decoda {
 	/**
 	 * Reset all filters.
 	 *
-	 * @access public
 	 * @return \Decoda\Decoda
 	 */
 	public function resetFilters() {
@@ -684,7 +645,6 @@ class Decoda {
 	/**
 	 * Reset all hooks.
 	 *
-	 * @access public
 	 * @return \Decoda\Decoda
 	 */
 	public function resetHooks() {
@@ -698,7 +658,6 @@ class Decoda {
 	/**
 	 * Change the open/close markup brackets.
 	 *
-	 * @access public
 	 * @param string $open
 	 * @param string $close
 	 * @return \Decoda\Decoda
@@ -718,7 +677,6 @@ class Decoda {
 	/**
 	 * Toggle XSS escaping.
 	 *
-	 * @access public
 	 * @param boolean $status
 	 * @return \Decoda\Decoda
 	 */
@@ -731,7 +689,6 @@ class Decoda {
 	/**
 	 * Set the locale.
 	 *
-	 * @access public
 	 * @param string $locale
 	 * @return \Decoda\Decoda
 	 * @throws \DomainException
@@ -751,7 +708,6 @@ class Decoda {
 	/**
 	 * Set the max amount of newlines.
 	 *
-	 * @access public
 	 * @param boolean $max
 	 * @return \Decoda\Decoda
 	 */
@@ -764,7 +720,6 @@ class Decoda {
 	/**
 	 * Toggle shorthand syntax.
 	 *
-	 * @access public
 	 * @param boolean $status
 	 * @return \Decoda\Decoda
 	 */
@@ -777,7 +732,6 @@ class Decoda {
 	/**
 	 * Toggle strict parsing.
 	 *
-	 * @access public
 	 * @param boolean $strict
 	 * @return \Decoda\Decoda
 	 */
@@ -790,7 +744,6 @@ class Decoda {
 	/**
 	 * Sets the template engine which gonna be used for all tags with templates.
 	 *
-	 * @access public
 	 * @param \Decoda\Engine $engine
 	 * @return \Decoda\Decoda
 	 */
@@ -803,7 +756,6 @@ class Decoda {
 	/**
 	 * Toggle XHTML.
 	 *
-	 * @access public
 	 * @param boolean $status
 	 * @return \Decoda\Decoda
 	 */
@@ -816,7 +768,6 @@ class Decoda {
 	/**
 	 * Strip the node list by looping through all the nodes and stripping out tags and content.
 	 *
-	 * @access public
 	 * @param boolean $html
 	 * @param boolean $echo
 	 * @return string
@@ -856,7 +807,6 @@ class Decoda {
 	/**
 	 * Add tags to the whitelist.
 	 *
-	 * @access public
 	 * @return \Decoda\Decoda
 	 */
 	public function whitelist() {
@@ -875,7 +825,6 @@ class Decoda {
 	/**
 	 * Determine if the string is an open or closing tag. If so, parse out the attributes.
 	 *
-	 * @access protected
 	 * @param string $string
 	 * @return array
 	 */
@@ -1005,7 +954,6 @@ class Decoda {
 	/**
 	 * Clean the chunk list by verifying that open and closing tags are nested correctly.
 	 *
-	 * @access protected
 	 * @param array $chunks
 	 * @param array $wrapper
 	 * @return string
@@ -1158,7 +1106,6 @@ class Decoda {
 	/**
 	 * Remove any newlines above the max.
 	 *
-	 * @access protected
 	 * @param string $string
 	 * @return string
 	 */
@@ -1175,7 +1122,6 @@ class Decoda {
 	/**
 	 * Normalize line feeds and escape HTML characters.
 	 *
-	 * @access protected
 	 * @param string $string
 	 * @return string
 	 */
@@ -1193,7 +1139,6 @@ class Decoda {
 	/**
 	 * Scan the string stack and extract any tags and chunks of text that were detected.
 	 *
-	 * @access protected
 	 * @param string $string
 	 * @return array
 	 */
@@ -1280,7 +1225,6 @@ class Decoda {
 	/**
 	 * Convert the chunks into a child parent hierarchy of nodes.
 	 *
-	 * @access protected
 	 * @param array $chunks
 	 * @param array $wrapper
 	 * @return array
@@ -1343,7 +1287,6 @@ class Decoda {
 	/**
 	 * Validate that the following child can be nested within the parent.
 	 *
-	 * @access protected
 	 * @param array $parent
 	 * @param string $tag
 	 * @return boolean
@@ -1416,7 +1359,6 @@ class Decoda {
 	/**
 	 * Return true if the string is parseable.
 	 *
-	 * @access protected
 	 * @param string $string
 	 * @return boolean
 	 */
@@ -1431,7 +1373,6 @@ class Decoda {
 	/**
 	 * Cycle through the nodes and parse the string with the appropriate filter.
 	 *
-	 * @access protected
 	 * @param array $nodes
 	 * @param array $wrapper
 	 * @return string
@@ -1462,7 +1403,6 @@ class Decoda {
 	/**
 	 * Cycle through the nodes and strip out tags and content.
 	 *
-	 * @access protected
 	 * @param array $nodes
 	 * @param array $wrapper
 	 * @return string
@@ -1493,7 +1433,6 @@ class Decoda {
 	/**
 	 * Trigger all hooks at an event specified by the method name.
 	 *
-	 * @access protected
 	 * @param string $method
 	 * @param string $content
 	 * @return string

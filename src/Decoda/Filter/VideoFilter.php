@@ -23,7 +23,6 @@ class VideoFilter extends AbstractFilter {
 	/**
 	 * Supported tags.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = array(
@@ -114,7 +113,6 @@ class VideoFilter extends AbstractFilter {
 	/**
 	 * Video formats.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_formats = array(
@@ -179,7 +177,6 @@ class VideoFilter extends AbstractFilter {
 	/**
 	 * Custom build the HTML for videos.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string

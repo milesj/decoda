@@ -18,7 +18,6 @@ abstract class AbstractHook implements Hook {
 	/**
 	 * Configuration.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_config = array();
@@ -26,7 +25,6 @@ abstract class AbstractHook implements Hook {
 	/**
 	 * Decoda object.
 	 *
-	 * @access protected
 	 * @var \Decoda\Decoda
 	 */
 	protected $_parser;
@@ -34,7 +32,6 @@ abstract class AbstractHook implements Hook {
 	/**
 	 * Apply configuration.
 	 *
-	 * @access public
 	 * @param array $config
 	 */
 	public function __construct(array $config = array()) {
@@ -44,7 +41,6 @@ abstract class AbstractHook implements Hook {
 	/**
 	 * Return a specific configuration key value.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @return mixed
 	 */
@@ -55,7 +51,6 @@ abstract class AbstractHook implements Hook {
 	/**
 	 * Process the content after the parsing has finished.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -66,7 +61,6 @@ abstract class AbstractHook implements Hook {
 	/**
 	 * Process the content after the stripping has finished.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -77,7 +71,6 @@ abstract class AbstractHook implements Hook {
 	/**
 	 * Process the content before the parsing begins.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -88,7 +81,6 @@ abstract class AbstractHook implements Hook {
 	/**
 	 * Process the content before the stripping begins.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -99,7 +91,6 @@ abstract class AbstractHook implements Hook {
 	/**
 	 * Return the Decoda parser.
 	 *
-	 * @access public
 	 * @return \Decoda\Decoda
 	 */
 	public function getParser() {
@@ -109,7 +100,6 @@ abstract class AbstractHook implements Hook {
 	/**
 	 * Return a message string from the parser.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @param array $vars
 	 * @return string
@@ -121,7 +111,6 @@ abstract class AbstractHook implements Hook {
 	/**
 	 * Set the Decoda parser.
 	 *
-	 * @access public
 	 * @param \Decoda\Decoda $parser
 	 * @return \Decoda\Hook
 	 */
@@ -134,7 +123,6 @@ abstract class AbstractHook implements Hook {
 	/**
 	 * Add any filter dependencies.
 	 *
-	 * @access public
 	 * @param \Decoda\Decoda $decoda
 	 * @return \Decoda\Hook
 	 */

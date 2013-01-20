@@ -18,7 +18,6 @@ class ListFilter extends AbstractFilter {
 	/**
 	 * Supported tags.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = array(

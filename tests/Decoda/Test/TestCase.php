@@ -14,7 +14,6 @@ class TestCase extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Decoda instance.
 	 *
-	 * @access protected
 	 * @var object
 	 */
 	protected $object;
@@ -29,7 +28,6 @@ class TestCase extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Strip new lines and tabs to test template files easily.
 	 *
-	 * @access public
 	 * @param string $string
 	 * @return string
 	 */
@@ -40,7 +38,6 @@ class TestCase extends \PHPUnit_Framework_TestCase {
 	/**
 	 * Convert newlines to \n.
 	 *
-	 * @access public
 	 * @param string $string
 	 * @return string
 	 */

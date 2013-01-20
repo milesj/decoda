@@ -18,7 +18,6 @@ abstract class AbstractEngine implements Engine {
 	/**
 	 * Current path.
 	 *
-	 * @access protected
 	 * @var string
 	 */
 	protected $_path;
@@ -26,7 +25,6 @@ abstract class AbstractEngine implements Engine {
 	/**
 	 * Current filter.
 	 *
-	 * @access protected
 	 * @var \Decoda\Filter
 	 */
 	protected $_filter;
@@ -34,7 +32,6 @@ abstract class AbstractEngine implements Engine {
 	/**
 	 * Return the current filter.
 	 *
-	 * @access public
 	 * @return \Decoda\Filter
 	 */
 	public function getFilter() {
@@ -44,7 +41,6 @@ abstract class AbstractEngine implements Engine {
 	/**
 	 * Return the template path. If no path has been set, set it.
 	 *
-	 * @access public
 	 * @return string
 	 */
 	public function getPath() {
@@ -58,7 +54,6 @@ abstract class AbstractEngine implements Engine {
 	/**
 	 * Sets the current filter.
 	 *
-	 * @access public
 	 * @param \Decoda\Filter $filter
 	 * @return \Decoda\Engine
 	 */
@@ -71,7 +66,6 @@ abstract class AbstractEngine implements Engine {
 	/**
 	 * Sets the path to the tag templates.
 	 *
-	 * @access public
 	 * @param string $path
 	 * @return \Decoda\Engine
 	 */

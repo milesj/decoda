@@ -18,7 +18,6 @@ class EmailFilter extends AbstractFilter {
 	/**
 	 * Configuration.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_config = array(
@@ -28,7 +27,6 @@ class EmailFilter extends AbstractFilter {
 	/**
 	 * Supported tags.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = array(
@@ -55,7 +53,6 @@ class EmailFilter extends AbstractFilter {
 	/**
 	 * Encrypt the email before parsing it within tags.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string
@@ -106,7 +103,6 @@ class EmailFilter extends AbstractFilter {
 	/**
 	 * Strip a node but keep the email regardless of location.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string

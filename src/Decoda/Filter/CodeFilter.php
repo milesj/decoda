@@ -19,7 +19,6 @@ class CodeFilter extends AbstractFilter {
 	/**
 	 * Supported tags.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = array(
@@ -48,7 +47,6 @@ class CodeFilter extends AbstractFilter {
 	/**
 	 * Add any hook dependencies.
 	 *
-	 * @access public
 	 * @param \Decoda\Decoda $decoda
 	 * @return \Decoda\Filter\CodeFilter
 	 */

@@ -42,7 +42,6 @@ abstract class HookAbstract implements Hook {
 	/**
 	 * Return a message string from the parser.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @param array $vars
 	 * @return string
@@ -64,7 +63,6 @@ abstract class FilterAbstract implements Filter {
 	/**
 	 * Return a tag if it exists, and merge with defaults.
 	 *
-	 * @access public
 	 * @param string $tag
 	 * @return array
 	 */

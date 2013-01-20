@@ -27,7 +27,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Configuration.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_config = array();
@@ -35,7 +34,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Default tag configuration.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_defaults = array(
@@ -96,7 +94,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Decoda object.
 	 *
-	 * @access protected
 	 * @var \Decoda\Decoda
 	 */
 	protected $_parser;
@@ -104,7 +101,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Supported tags.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = array();
@@ -112,7 +108,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Apply configuration.
 	 *
-	 * @access public
 	 * @param array $config
 	 */
 	public function __construct(array $config = array()) {
@@ -122,7 +117,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Return a specific configuration key value.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @return mixed
 	 */
@@ -133,7 +127,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Return the Decoda parser.
 	 *
-	 * @access public
 	 * @return \Decoda\Decoda
 	 */
 	public function getParser() {
@@ -143,7 +136,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Return a message string from the parser.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @param array $vars
 	 * @return string
@@ -155,7 +147,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Parse the node and its content into an HTML tag.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string
@@ -259,7 +250,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Set the Decoda parser.
 	 *
-	 * @access public
 	 * @param \Decoda\Decoda $parser
 	 * @return \Decoda\Filter
 	 */
@@ -272,7 +262,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Add any hook dependencies.
 	 *
-	 * @access public
 	 * @param \Decoda\Decoda $decoda
 	 * @return \Decoda\Filter
 	 */
@@ -283,7 +272,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Strip a node and remove content dependent on settings.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string
@@ -301,7 +289,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Return a tag if it exists, and merge with defaults.
 	 *
-	 * @access public
 	 * @param string $tag
 	 * @return array
 	 */
@@ -319,7 +306,6 @@ abstract class AbstractFilter implements Filter {
 	/**
 	 * Return all tags.
 	 *
-	 * @access public
 	 * @return array
 	 */
 	public function tags() {

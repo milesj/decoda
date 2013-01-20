@@ -14,7 +14,6 @@ class TestEngine extends AbstractEngine {
 	/**
 	 * Render a template.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string

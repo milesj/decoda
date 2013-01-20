@@ -18,7 +18,6 @@ interface Engine {
 	/**
 	 * Return the current filter.
 	 *
-	 * @access public
 	 * @return \Decoda\Filter
 	 */
 	public function getFilter();
@@ -26,7 +25,6 @@ interface Engine {
 	/**
 	 * Returns the path of the tag templates.
 	 *
-	 * @access public
 	 * @return string
 	 */
 	public function getPath();
@@ -34,7 +32,6 @@ interface Engine {
 	/**
 	 * Renders the tag by using the defined templates.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string
@@ -44,7 +41,6 @@ interface Engine {
 	/**
 	 * Sets the current used filter.
 	 *
-	 * @access public
 	 * @param \Decoda\Filter $filter
 	 * @return \Decoda\Engine
 	 */
@@ -53,7 +49,6 @@ interface Engine {
 	/**
 	 * Sets the path to the tag templates.
 	 *
-	 * @access public
 	 * @param string $path
 	 * @return \Decoda\Engine
 	 */

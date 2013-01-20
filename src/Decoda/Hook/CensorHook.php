@@ -18,7 +18,6 @@ class CensorHook extends AbstractHook {
 	/**
 	 * List of words to censor.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_censored = array();
@@ -26,7 +25,6 @@ class CensorHook extends AbstractHook {
 	/**
 	 * Configuration.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_config = array(
@@ -36,7 +34,6 @@ class CensorHook extends AbstractHook {
 	/**
 	 * Parse the content by censoring blacklisted words.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -47,7 +44,6 @@ class CensorHook extends AbstractHook {
 	/**
 	 * Parse the content by censoring blacklisted words.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -58,7 +54,6 @@ class CensorHook extends AbstractHook {
 	/**
 	 * Add words to the blacklist.
 	 *
-	 * @access public
 	 * @param array $words
 	 * @return \Decoda\Hook\CensorHook
 	 */
@@ -72,7 +67,6 @@ class CensorHook extends AbstractHook {
 	/**
 	 * Set the Decoda parser.
 	 *
-	 * @access public
 	 * @param \Decoda\Decoda $parser
 	 * @return \Decoda\Hook\CensorHook
 	 */
@@ -91,7 +85,6 @@ class CensorHook extends AbstractHook {
 	/**
 	 * Censor a word if its only by itself.
 	 *
-	 * @access protected
 	 * @param array $matches
 	 * @return string
 	 */
@@ -125,7 +118,6 @@ class CensorHook extends AbstractHook {
 	/**
 	 * Trigger censoring.
 	 *
-	 * @access protected
 	 * @param string $content
 	 * @return string
 	 */
@@ -142,7 +134,6 @@ class CensorHook extends AbstractHook {
 	/**
 	 * Prepare the regex pattern for each word.
 	 *
-	 * @access protected
 	 * @param string $word
 	 * @return string
 	 */

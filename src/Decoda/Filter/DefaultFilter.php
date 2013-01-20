@@ -19,7 +19,6 @@ class DefaultFilter extends AbstractFilter {
 	/**
 	 * Configuration.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_config = array(
@@ -29,7 +28,6 @@ class DefaultFilter extends AbstractFilter {
 	/**
 	 * Supported tags.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = array(
@@ -96,7 +94,6 @@ class DefaultFilter extends AbstractFilter {
 	/**
 	 * Parse the timestamps for the time tag.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return array

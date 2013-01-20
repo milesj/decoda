@@ -18,7 +18,6 @@ class ClickableHook extends AbstractHook {
 	/**
 	 * Matches a link or an email, and converts it to an anchor tag.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -54,7 +53,6 @@ class ClickableHook extends AbstractHook {
 	/**
 	 * Callback for email processing.
 	 *
-	 * @access protected
 	 * @param array $matches
 	 * @return string
 	 */
@@ -68,7 +66,6 @@ class ClickableHook extends AbstractHook {
 	/**
 	 * Callback for URL processing.
 	 *
-	 * @access protected
 	 * @param array $matches
 	 * @return string
 	 */

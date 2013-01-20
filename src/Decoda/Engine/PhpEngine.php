@@ -18,7 +18,6 @@ class PhpEngine extends AbstractEngine {
 	/**
 	 * Renders the tag by using PHP templates.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string

@@ -18,7 +18,6 @@ class UrlFilter extends AbstractFilter {
 	/**
 	 * Configuration.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_config = array(
@@ -28,7 +27,6 @@ class UrlFilter extends AbstractFilter {
 	/**
 	 * Supported tags.
 	 *
-	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = array(
@@ -59,7 +57,6 @@ class UrlFilter extends AbstractFilter {
 	/**
 	 * Using shorthand variation if enabled.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string
@@ -87,7 +84,6 @@ class UrlFilter extends AbstractFilter {
 	/**
 	 * Strip a node but keep the URL regardless of location.
 	 *
-	 * @access public
 	 * @param array $tag
 	 * @param string $content
 	 * @return string

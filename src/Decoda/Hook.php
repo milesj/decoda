@@ -17,7 +17,6 @@ interface Hook {
 	/**
 	 * Return a specific configuration key value.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @return mixed
 	 */
@@ -26,7 +25,6 @@ interface Hook {
 	/**
 	 * Process the content after the parsing has finished.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -35,7 +33,6 @@ interface Hook {
 	/**
 	 * Process the content after the stripping has finished.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -44,7 +41,6 @@ interface Hook {
 	/**
 	 * Process the content before the parsing begins.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -53,7 +49,6 @@ interface Hook {
 	/**
 	 * Process the content before the stripping begins.
 	 *
-	 * @access public
 	 * @param string $content
 	 * @return string
 	 */
@@ -62,7 +57,6 @@ interface Hook {
 	/**
 	 * Return the Decoda parser.
 	 *
-	 * @access public
 	 * @return \Decoda\Decoda
 	 */
 	public function getParser();
@@ -70,7 +64,6 @@ interface Hook {
 	/**
 	 * Return a message string from the parser.
 	 *
-	 * @access public
 	 * @param string $key
 	 * @param array $vars
 	 * @return string
@@ -80,7 +73,6 @@ interface Hook {
 	/**
 	 * Set the Decoda parser.
 	 *
-	 * @access public
 	 * @param \Decoda\Decoda $parser
 	 * @return \Decoda\Hook
 	 */
@@ -89,7 +81,6 @@ interface Hook {
 	/**
 	 * Add any filter dependencies.
 	 *
-	 * @access public
 	 * @param \Decoda\Decoda $decoda
 	 * @return \Decoda\Hook
 	 */

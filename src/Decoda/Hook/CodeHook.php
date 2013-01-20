@@ -17,7 +17,6 @@ class CodeHook extends AbstractHook {
 	/**
 	 * Encode code blocks before parsing.
 	 *
-	 * @access public
 	 * @param string $string
 	 * @return mixed
 	 */
@@ -28,7 +27,6 @@ class CodeHook extends AbstractHook {
 	/**
 	 * Decode code blocks after parsing.
 	 *
-	 * @access public
 	 * @param string $string
 	 * @return mixed
 	 */
@@ -39,7 +37,6 @@ class CodeHook extends AbstractHook {
 	/**
 	 * Encode content using base64.
 	 *
-	 * @access protected
 	 * @param array $matches
 	 * @return string
 	 */
@@ -50,7 +47,6 @@ class CodeHook extends AbstractHook {
 	/**
 	 * Decode content using base64.
 	 *
-	 * @access protected
 	 * @param array $matches
 	 * @return string
 	 */

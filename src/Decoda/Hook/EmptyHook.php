@@ -17,7 +17,6 @@ class EmptyHook extends AbstractHook {
 	/**
 	 * Fix weird problems.
 	 *
-	 * @access public
 	 * @param string $string
 	 * @return mixed
 	 */

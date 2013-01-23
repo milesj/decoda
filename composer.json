@@ -16,7 +16,7 @@
 		"ext-mbstring": "*"
 	},
 	"support": {
-		"source": "https://github.com/milesj/php-decoda"
+		"source": "https://github.com/milesj/Decoda"
 	},
 	"autoload": {
 		"psr-0": { "Decoda": "src/" }

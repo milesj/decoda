@@ -18,7 +18,7 @@ class ImageFilter extends AbstractFilter {
 	/**
 	 * Regex pattern.
 	 */
-	const IMAGE_PATTERN = '/^(?:https?:)?\/\/(.*?)\.(?:jpg|jpeg|png|gif|bmp)$/is';
+	const IMAGE_PATTERN = '/^(?:https?:\/)?(?:.){0,2}\/(.*?)\.(?:jpg|jpeg|png|gif|bmp)$/is';
 	const DIMENSION = '/^[0-9%]{1,4}+$/';
 
 	/**

@@ -46,12 +46,8 @@ class EmoticonHook extends AbstractHook {
 	 * @return string
 	 */
 	public function beforeParse($content) {
-		if ($this->_emoticons) {
-			foreach ($this->_emoticons as $smilies) {
-				foreach ($smilies as $smile) {
-					$content = preg_replace_callback('/(^|\n|\s)?' . preg_quote($smile, '/') . '(\n|\s|$)?/is', array($this, '_emoticonCallback'), $content);
-				}
-			}
+		foreach ($this->getSmilies() as $smile) {
+			$content = preg_replace_callback('/(^|\n|\s)?' . preg_quote($smile, '/') . '(\n|\s|$)?/is', array($this, '_emoticonCallback'), $content);
 		}
 
 		return $content;
@@ -66,7 +62,31 @@ class EmoticonHook extends AbstractHook {
 	public function setParser(Decoda $parser) {
 		parent::setParser($parser);
 
-		foreach ($parser->getPaths() as $path) {
+		$this->_emoticons = array();
+		$this->getEmoticons();
+
+		return $this;
+	}
+
+	/**
+	 * Gets the mapping of emoticons and smilies.
+	 *
+	 * @return array An array of emoticons
+	 */
+	protected function getEmoticons()
+	{
+		if (!empty($this->_emoticons)) {
+			return $this->_emoticons;
+		}
+
+		$this->_map = array();
+		$this->_emoticons = array();
+
+		if (null === $this->_parser) {
+			return $this->_emoticons;
+		}
+
+		foreach ($this->_parser->getPaths() as $path) {
 			if (!file_exists($path . '/emoticons.json')) {
 				continue;
 			}
@@ -82,7 +102,83 @@ class EmoticonHook extends AbstractHook {
 			}
 		}
 
-		return $this;
+		return $this->_emoticons;
+	}
+
+	/**
+	 * Checks if a smiley is set for the given id.
+	 *
+	 * @param string $smiley  A smiley
+	 *
+	 * @return Boolean true if the smiley is set, false otherwise
+	 */
+	protected function hasSmiley($smiley)
+	{
+		return isset($this->_map[$smiley]);
+	}
+
+	/**
+	 * Returns all available smilies.
+	 *
+	 * @return string[] An array of smiley
+	 */
+	protected function getSmilies()
+	{
+		$res = array();
+
+		$emoticons = $this->getEmoticons();
+
+		if ($emoticons) {
+			foreach ($emoticons as $smilies) {
+				foreach ($smilies as $smiley) {
+					$res[] = $smiley;
+				}
+			}
+		}
+
+		return $res;
+	}
+
+	/**
+	 * Convert a smiley to html representation
+	 *
+	 * @param string $smiley  A smiley
+	 *
+	 * @return string
+	 */
+	protected function toHtml($smiley)
+	{
+		if (!isset($this->_map[$smiley])) {
+			return '';
+	    }
+
+		$path = sprintf('%s%s.%s',
+			$this->config('path'),
+			$this->_map[$smiley],
+			$this->config('extension'));
+
+		return sprintf('<img src="%s" alt="">', $path);
+	}
+
+	/**
+	 * Convert a smiley to xhtml representation
+	 *
+	 * @param string $smiley  A smiley
+	 *
+	 * @return string
+	 */
+	protected function toXhtml($smiley)
+	{
+		if (!isset($this->_map[$smiley])) {
+			return '';
+		}
+
+		$path = sprintf('%s%s.%s',
+			$this->config('path'),
+			$this->_map[$smiley],
+			$this->config('extension'));
+
+		return sprintf('<img src="%s" alt="" />', $path);
 	}
 
 	/**
@@ -94,25 +190,20 @@ class EmoticonHook extends AbstractHook {
 	protected function _emoticonCallback($matches) {
 		$smiley = trim($matches[0]);
 
-		if (count($matches) === 1 || !isset($this->_map[$smiley])) {
+		if (count($matches) === 1 || !$this->hasSmiley($smiley)) {
 			return $matches[0];
 		}
 
 		$l = isset($matches[1]) ? $matches[1] : '';
 		$r = isset($matches[2]) ? $matches[2] : '';
 
-		$path = sprintf('%s%s.%s',
-			$this->config('path'),
-			$this->_map[$smiley],
-			$this->config('extension'));
-
 		if ($this->getParser()->config('xhtmlOutput')) {
-			$image = '<img src="%s" alt="" />';
+			$image = $this->toXhtml($smiley);
 		} else {
-			$image = '<img src="%s" alt="">';
+			$image = $this->toHtml($smiley);
 		}
 
-		return $l . sprintf($image, $path) . $r;
+		return $l . $image . $r;
 	}
 
 }

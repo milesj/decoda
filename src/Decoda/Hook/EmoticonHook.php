@@ -73,8 +73,7 @@ class EmoticonHook extends AbstractHook {
 	 *
 	 * @return array An array of emoticons
 	 */
-	protected function getEmoticons()
-	{
+	protected function getEmoticons() {
 		if (!empty($this->_emoticons)) {
 			return $this->_emoticons;
 		}
@@ -109,11 +108,9 @@ class EmoticonHook extends AbstractHook {
 	 * Checks if a smiley is set for the given id.
 	 *
 	 * @param string $smiley  A smiley
-	 *
 	 * @return Boolean true if the smiley is set, false otherwise
 	 */
-	protected function hasSmiley($smiley)
-	{
+	protected function hasSmiley($smiley) {
 		return isset($this->_map[$smiley]);
 	}
 
@@ -122,8 +119,7 @@ class EmoticonHook extends AbstractHook {
 	 *
 	 * @return string[] An array of smiley
 	 */
-	protected function getSmilies()
-	{
+	protected function getSmilies() {
 		$res = array();
 
 		$emoticons = $this->getEmoticons();
@@ -143,14 +139,12 @@ class EmoticonHook extends AbstractHook {
 	 * Convert a smiley to html representation
 	 *
 	 * @param string $smiley  A smiley
-	 *
 	 * @return string
 	 */
-	protected function toHtml($smiley)
-	{
+	protected function toHtml($smiley) {
 		if (!isset($this->_map[$smiley])) {
 			return '';
-	    }
+		}
 
 		$path = sprintf('%s%s.%s',
 			$this->config('path'),
@@ -164,11 +158,9 @@ class EmoticonHook extends AbstractHook {
 	 * Convert a smiley to xhtml representation
 	 *
 	 * @param string $smiley  A smiley
-	 *
 	 * @return string
 	 */
-	protected function toXhtml($smiley)
-	{
+	protected function toXhtml($smiley) {
 		if (!isset($this->_map[$smiley])) {
 			return '';
 		}

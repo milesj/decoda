@@ -138,10 +138,11 @@ class EmoticonHook extends AbstractHook {
 	/**
 	 * Convert a smiley to html representation
 	 *
-	 * @param string $smiley  A smiley
+	 * @param string  $smiley   A smiley
+	 * @param Boolean $isXhtml  Ask for respected the xHtml standard code
 	 * @return string
 	 */
-	protected function toHtml($smiley) {
+	protected function render($smiley, $isXhtml = true) {
 		if (!isset($this->_map[$smiley])) {
 			return '';
 		}
@@ -151,26 +152,13 @@ class EmoticonHook extends AbstractHook {
 			$this->_map[$smiley],
 			$this->config('extension'));
 
-		return sprintf('<img src="%s" alt="">', $path);
-	}
-
-	/**
-	 * Convert a smiley to xhtml representation
-	 *
-	 * @param string $smiley  A smiley
-	 * @return string
-	 */
-	protected function toXhtml($smiley) {
-		if (!isset($this->_map[$smiley])) {
-			return '';
+		if ($isXhtml) {
+			$tpl = '<img src="%s" alt="" />';
+		} else {
+			$tpl = '<img src="%s" alt="">';
 		}
 
-		$path = sprintf('%s%s.%s',
-			$this->config('path'),
-			$this->_map[$smiley],
-			$this->config('extension'));
-
-		return sprintf('<img src="%s" alt="" />', $path);
+		return sprintf($tpl, $path);
 	}
 
 	/**
@@ -190,9 +178,9 @@ class EmoticonHook extends AbstractHook {
 		$r = isset($matches[2]) ? $matches[2] : '';
 
 		if ($this->getParser()->config('xhtmlOutput')) {
-			$image = $this->toXhtml($smiley);
+			$image = $this->render($smiley, true);
 		} else {
-			$image = $this->toHtml($smiley);
+			$image = $this->render($smiley, false);
 		}
 
 		return $l . $image . $r;

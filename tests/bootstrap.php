@@ -9,7 +9,7 @@ error_reporting(E_ALL | E_STRICT);
 
 // Set constants
 define('TEST_DIR', __DIR__);
-define('VENDOR_DIR', realpath(__DIR__ . '/../../../../vendor'));
+define('VENDOR_DIR', __DIR__ . '/../../../../vendor');
 define('DECODA', dirname(TEST_DIR) . DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR.'Decoda/');
 
 // Ensure that composer has installed all dependencies

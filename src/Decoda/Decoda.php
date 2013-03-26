@@ -1273,10 +1273,10 @@ class Decoda {
 					$node = $chunks[$openIndex];
 					$node['children'] = $this->_extractNodes(array_slice($chunks, ($openIndex + 1), $index), $chunks[$openIndex]);
 					$nodes[] = $node;
-                } elseif (empty($tag)) {
-                    // There is no opening or a broken opening tag, which means
-                    // $closeCount should not have been incremented before >> revert
-                    $closeCount--;
+				} elseif (empty($tag)) {
+					// There is no opening or a broken opening tag, which means
+					// $closeCount should not have been incremented before >> revert
+					$closeCount--;
 				}
 			}
 

@@ -104,10 +104,10 @@ class DefaultFilterTest extends TestCase {
 	 * Test [time] renders time tags following a format.
 	 */
 	public function testTime() {
-        $oldTZ = date_default_timezone_get();
-        date_default_timezone_set('UTC');
+		$oldTZ = date_default_timezone_get();
+		date_default_timezone_set('UTC');
 		$this->assertEquals('<time datetime="1988-02-26T20:34:13+0000">Fri, Feb 26th 1988, 20:34</time>', $this->object->reset('[time]2/26/1988 20:34:13[/time]')->parse());
-        date_default_timezone_set($oldTZ);
+		date_default_timezone_set($oldTZ);
 	}
 
 }

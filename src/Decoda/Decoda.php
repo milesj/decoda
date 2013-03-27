@@ -1235,7 +1235,6 @@ class Decoda {
 		$tag = array();
 		$openIndex = -1;
 		$openCount = -1;
-		$closeIndex = -1;
 		$closeCount = -1;
 		$count = count($chunks);
 		$i = 0;
@@ -1262,8 +1261,7 @@ class Decoda {
 				$closeCount++;
 
 				if ($openCount === $closeCount && $chunk['tag'] === $tag['tag']) {
-					$closeIndex = $i;
-					$index = ($closeIndex - $openIndex);
+                    $index = $i - $openIndex;
 					$tag = array();
 
 					// Only reduce if not last index
@@ -1275,6 +1273,10 @@ class Decoda {
 					$node = $chunks[$openIndex];
 					$node['children'] = $this->_extractNodes(array_slice($chunks, ($openIndex + 1), $index), $chunks[$openIndex]);
 					$nodes[] = $node;
+				} elseif (empty($tag)) {
+					// There is no opening or a broken opening tag, which means
+					// $closeCount should not have been incremented before >> revert
+					$closeCount--;
 				}
 			}
 

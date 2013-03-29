@@ -1,12 +1,12 @@
-# Decoda v5.1.2 #
+# Decoda v5.1.3 #
 
 A lightweight lexical string parser for BBCode styled markup.
 
 ## Requirements ##
 
-* PHP 5.3
+* PHP 5.3.0
+	* Multibyte
 * Composer
-* Multibyte
 
 ## Compatibility ##
 

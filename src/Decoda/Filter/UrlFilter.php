@@ -63,7 +63,7 @@ class UrlFilter extends AbstractFilter {
 	 */
 	public function parse(array $tag, $content) {
 		$url = isset($tag['attributes']['href']) ? $tag['attributes']['href'] : $content;
-		$protocols = $this->config('protocols');
+		$protocols = $this->getConfig('protocols');
 
 		// Return an invalid URL
 		if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/^(' . implode('|', $protocols) . ')/i', $url)) {
@@ -72,7 +72,7 @@ class UrlFilter extends AbstractFilter {
 
 		$tag['attributes']['href'] = $url;
 
-		if ($this->getParser()->config('shorthandLinks')) {
+		if ($this->getParser()->getConfig('shorthandLinks')) {
 			$tag['content'] = $this->message('link');
 
 			return '[' . parent::parse($tag, $content) . ']';

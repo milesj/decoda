@@ -12,31 +12,7 @@ use Decoda\Decoda;
 /**
  * Defines the methods for all Filters to implement.
  */
-interface Filter {
-
-	/**
-	 * Return a specific configuration key value.
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function config($key);
-
-	/**
-	 * Return the Decoda parser.
-	 *
-	 * @return \Decoda\Decoda
-	 */
-	public function getParser();
-
-	/**
-	 * Return a message string from the parser.
-	 *
-	 * @param string $key
-	 * @param array $vars
-	 * @return string
-	 */
-	public function message($key, array $vars = array());
+interface Filter extends Component {
 
 	/**
 	 * Parse the node and its content into an HTML tag.
@@ -46,14 +22,6 @@ interface Filter {
 	 * @return string
 	 */
 	public function parse(array $tag, $content);
-
-	/**
-	 * Set the Decoda parser.
-	 *
-	 * @param \Decoda\Decoda $parser
-	 * @return \Decoda\Filter
-	 */
-	public function setParser(Decoda $parser);
 
 	/**
 	 * Add any hook dependencies.

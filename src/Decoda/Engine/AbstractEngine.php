@@ -7,13 +7,15 @@
 
 namespace Decoda\Engine;
 
+use Decoda\Component;
+use Decoda\Component\AbstractComponent;
 use Decoda\Filter;
 use Decoda\Engine;
 
 /**
  * Provides default methods for engines.
  */
-abstract class AbstractEngine implements Engine {
+abstract class AbstractEngine extends AbstractComponent implements Engine {
 
 	/**
 	 * Current path.

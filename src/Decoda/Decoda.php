@@ -188,7 +188,7 @@ class Decoda {
 	 * @param array $config
 	 */
 	public function __construct($string = '', array $config = array()) {
-		$this->configure($config);
+		$this->setConfig($config);
 		$this->reset($string, true);
 		$this->addPath(__DIR__ . '/config/');
 	}
@@ -271,65 +271,6 @@ class Decoda {
 	}
 
 	/**
-	 * Return a specific configuration key value.
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function config($key) {
-		return isset($this->_config[$key]) ? $this->_config[$key] : null;
-	}
-
-	/**
-	 * Apply multiple configurations at once.
-	 *
-	 * @param array $config
-	 * @return \Decoda\Decoda
-	 */
-	public function configure(array $config = array()) {
-		if (!$config) {
-			return $this;
-		}
-
-		foreach ($config as $key => $value) {
-			switch ($key) {
-				case 'open':
-				case 'close':
-					$this->setBrackets($config['open'], $config['close']);
-				break;
-				case 'locale':
-					$this->setLocale($value);
-				break;
-				case 'disabled':
-					$this->disable($value);
-				break;
-				case 'shorthand':
-				case 'shorthandLinks':
-					$this->setShorthand($value);
-				break;
-				case 'xhtml':
-				case 'xhtmlOutput':
-					$this->setXhtml($value);
-				break;
-				case 'escape':
-				case 'escapeHtml':
-					$this->setEscaping($value);
-				break;
-				case 'strict':
-				case 'strictMode':
-					$this->setStrict($value);
-				break;
-				case 'newlines':
-				case 'maxNewlines':
-					$this->setMaxNewlines($value);
-				break;
-			}
-		}
-
-		return $this;
-	}
-
-	/**
 	 * Apply default filters and hooks if none are set.
 	 *
 	 * @return \Decoda\Decoda
@@ -362,6 +303,16 @@ class Decoda {
 		$this->_config['disabled'] = (bool) $status;
 
 		return $this;
+	}
+
+	/**
+	 * Return a specific configuration key value.
+	 *
+	 * @param string $key
+	 * @return mixed
+	 */
+	public function getConfig($key) {
+		return isset($this->_config[$key]) ? $this->_config[$key] : null;
 	}
 
 	/**
@@ -522,7 +473,7 @@ class Decoda {
 			$this->_messages = $messages;
 		}
 
-		$locale = $this->config('locale');
+		$locale = $this->getConfig('locale');
 		$string = isset($this->_messages[$locale][$key]) ? $this->_messages[$locale][$key] : '';
 
 		if ($string && $vars) {
@@ -554,7 +505,7 @@ class Decoda {
 		if ($this->_isParseable($string)) {
 			$string = $this->_parse($this->_extractChunks($string));
 		} else {
-			$string = nl2br($string, $this->config('xhtmlOutput'));
+			$string = nl2br($string, $this->getConfig('xhtmlOutput'));
 		}
 
 		$string = $this->_trigger('afterParse', $string);
@@ -656,6 +607,55 @@ class Decoda {
 	}
 
 	/**
+	 * Apply multiple configurations at once.
+	 *
+	 * @param array $config
+	 * @return \Decoda\Decoda
+	 */
+	public function setConfig(array $config = array()) {
+		if (!$config) {
+			return $this;
+		}
+
+		foreach ($config as $key => $value) {
+			switch ($key) {
+				case 'open':
+				case 'close':
+					$this->setBrackets($config['open'], $config['close']);
+				break;
+				case 'locale':
+					$this->setLocale($value);
+				break;
+				case 'disabled':
+					$this->disable($value);
+				break;
+				case 'shorthand':
+				case 'shorthandLinks':
+					$this->setShorthand($value);
+				break;
+				case 'xhtml':
+				case 'xhtmlOutput':
+					$this->setXhtml($value);
+				break;
+				case 'escape':
+				case 'escapeHtml':
+					$this->setEscaping($value);
+				break;
+				case 'strict':
+				case 'strictMode':
+					$this->setStrict($value);
+				break;
+				case 'newlines':
+				case 'maxNewlines':
+					$this->setMaxNewlines($value);
+				break;
+			}
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Change the open/close markup brackets.
 	 *
 	 * @param string $open
@@ -748,6 +748,8 @@ class Decoda {
 	 * @return \Decoda\Decoda
 	 */
 	public function setEngine(Engine $engine) {
+		$engine->setParser($this);
+
 		$this->_engine = $engine;
 
 		return $this;
@@ -786,7 +788,7 @@ class Decoda {
 		if ($this->_isParseable($string)) {
 			$string = $this->_strip($this->_extractChunks($string));
 		} else {
-			$string = nl2br($string, $this->config('xhtmlOutput'));
+			$string = nl2br($string, $this->getConfig('xhtmlOutput'));
 		}
 
 		$string = $this->_trigger('afterStrip', $string);
@@ -829,9 +831,9 @@ class Decoda {
 	 * @return array
 	 */
 	protected function _buildTag($string) {
-		$disabled = $this->config('disabled');
-		$oe = $this->config('open');
-		$ce = $this->config('close');
+		$disabled = $this->getConfig('disabled');
+		$oe = $this->getConfig('open');
+		$ce = $this->getConfig('close');
 		$tag = null;
 		$type = self::TAG_NONE;
 		$attributes = array();
@@ -879,7 +881,7 @@ class Decoda {
 			}
 
 			// Find attributes that aren't surrounded by quotes
-			if (!$this->config('strictMode')) {
+			if (!$this->getConfig('strictMode')) {
 				preg_match_all('/([a-z]+)=([^\s' . preg_quote($ce, '/') . ']+)/i', $string, $matches, PREG_SET_ORDER);
 
 				if ($matches) {
@@ -1112,7 +1114,7 @@ class Decoda {
 	protected function _cleanNewlines($string) {
 		$string = trim($string);
 
-		if ($max = $this->config('maxNewlines')) {
+		if ($max = $this->getConfig('maxNewlines')) {
 			$string = preg_replace('/\n{' . ($max + 1) . ',}/', str_repeat("\n", $max), $string);
 		}
 
@@ -1129,7 +1131,7 @@ class Decoda {
 		$string = str_replace("\r\n", "\n", $string);
 		$string = str_replace("\r", "\n", $string);
 
-		if ($this->config('escapeHtml')) {
+		if ($this->getConfig('escapeHtml')) {
 			$string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $string);
 		}
 
@@ -1145,8 +1147,8 @@ class Decoda {
 	protected function _extractChunks($string) {
 		$strPos = 0;
 		$strLength = mb_strlen($string);
-		$openBracket = $this->config('open');
-		$closeBracket = $this->config('close');
+		$openBracket = $this->getConfig('open');
+		$closeBracket = $this->getConfig('close');
 
 		while ($strPos < $strLength) {
 			$tag = array();
@@ -1367,9 +1369,9 @@ class Decoda {
 	 */
 	protected function _isParseable($string) {
 		return (
-			mb_strpos($string, $this->config('open')) !== false &&
-			mb_strpos($string, $this->config('close')) !== false &&
-			!$this->config('disabled')
+			mb_strpos($string, $this->getConfig('open')) !== false &&
+			mb_strpos($string, $this->getConfig('close')) !== false &&
+			!$this->getConfig('disabled')
 		);
 	}
 
@@ -1382,7 +1384,7 @@ class Decoda {
 	 */
 	protected function _parse(array $nodes, array $wrapper = array()) {
 		$parsed = '';
-		$xhtml = $this->config('xhtmlOutput');
+		$xhtml = $this->getConfig('xhtmlOutput');
 
 		if (!$nodes) {
 			return $parsed;
@@ -1412,7 +1414,7 @@ class Decoda {
 	 */
 	protected function _strip(array $nodes, array $wrapper = array()) {
 		$parsed = '';
-		$xhtml = $this->config('xhtmlOutput');
+		$xhtml = $this->getConfig('xhtmlOutput');
 
 		if (!$nodes) {
 			return $parsed;

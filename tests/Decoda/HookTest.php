@@ -26,8 +26,8 @@ class HookTest extends TestCase {
 	 * Test that config() returns a configuration value.
 	 */
 	public function testConfig() {
-		$this->assertEquals('value', $this->object->config('key'));
-		$this->assertEquals(null, $this->object->config('foobar'));
+		$this->assertEquals('value', $this->object->getConfig('key'));
+		$this->assertEquals(null, $this->object->getConfig('foobar'));
 	}
 
 	/**

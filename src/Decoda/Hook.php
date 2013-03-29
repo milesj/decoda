@@ -12,15 +12,7 @@ use Decoda\Decoda;
 /**
  * Defines the methods for all Hooks to implement.
  */
-interface Hook {
-
-	/**
-	 * Return a specific configuration key value.
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function config($key);
+interface Hook extends Component {
 
 	/**
 	 * Process the content after the parsing has finished.
@@ -53,30 +45,6 @@ interface Hook {
 	 * @return string
 	 */
 	public function beforeStrip($content);
-
-	/**
-	 * Return the Decoda parser.
-	 *
-	 * @return \Decoda\Decoda
-	 */
-	public function getParser();
-
-	/**
-	 * Return a message string from the parser.
-	 *
-	 * @param string $key
-	 * @param array $vars
-	 * @return string
-	 */
-	public function message($key, array $vars = array());
-
-	/**
-	 * Set the Decoda parser.
-	 *
-	 * @param \Decoda\Decoda $parser
-	 * @return \Decoda\Hook
-	 */
-	public function setParser(Decoda $parser);
 
 	/**
 	 * Add any filter dependencies.

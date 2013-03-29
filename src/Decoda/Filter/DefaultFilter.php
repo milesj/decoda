@@ -101,7 +101,7 @@ class DefaultFilter extends AbstractFilter {
 	public function time(array $tag, $content) {
 		$timestamp = is_numeric($content) ? $content : strtotime($content);
 
-		$content = date($this->config('timeFormat'), $timestamp);
+		$content = date($this->getConfig('timeFormat'), $timestamp);
 
 		$tag['attributes']['datetime'] = date(DateTime::ISO8601, $timestamp);
 

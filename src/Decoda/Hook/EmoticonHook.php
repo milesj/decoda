@@ -148,9 +148,9 @@ class EmoticonHook extends AbstractHook {
 		}
 
 		$path = sprintf('%s%s.%s',
-			$this->config('path'),
+			$this->getConfig('path'),
 			$this->_map[$smiley],
-			$this->config('extension'));
+			$this->getConfig('extension'));
 
 		if ($isXhtml) {
 			$tpl = '<img src="%s" alt="" />';
@@ -177,7 +177,7 @@ class EmoticonHook extends AbstractHook {
 		$l = isset($matches[1]) ? $matches[1] : '';
 		$r = isset($matches[2]) ? $matches[2] : '';
 
-		if ($this->getParser()->config('xhtmlOutput')) {
+		if ($this->getParser()->getConfig('xhtmlOutput')) {
 			$image = $this->render($smiley, true);
 		} else {
 			$image = $this->render($smiley, false);

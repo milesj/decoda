@@ -13,7 +13,7 @@ use Decoda\Filter;
  * This interface represents the rendering engine for tags that use a template.
  * It contains the path were the templates are located and the logic to render these templates.
  */
-interface Engine {
+interface Engine extends Component {
 
 	/**
 	 * Return the current filter.

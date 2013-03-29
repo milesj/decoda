@@ -8,13 +8,15 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
+use Decoda\Component;
+use Decoda\Component\AbstractComponent;
 use Decoda\Filter;
 
 /**
  * A filter defines the list of tags and its associative markup to parse out of a string.
  * Supports a wide range of parameters to customize the output of each tag.
  */
-abstract class AbstractFilter implements Filter {
+abstract class AbstractFilter extends AbstractComponent implements Filter {
 
 	/**
 	 * Regex patterns for attribute parsing.
@@ -23,13 +25,6 @@ abstract class AbstractFilter implements Filter {
 	const ALPHA = '/^[a-z_\-\s]+$/i';
 	const ALNUM = '/^[a-z0-9,_\s\.\-\+\/]+$/i';
 	const NUMERIC = '/^[0-9,\.\-\+\/]+$/';
-
-	/**
-	 * Configuration.
-	 *
-	 * @var array
-	 */
-	protected $_config = array();
 
 	/**
 	 * Default tag configuration.
@@ -92,57 +87,11 @@ abstract class AbstractFilter implements Filter {
 	);
 
 	/**
-	 * Decoda object.
-	 *
-	 * @var \Decoda\Decoda
-	 */
-	protected $_parser;
-
-	/**
 	 * Supported tags.
 	 *
 	 * @var array
 	 */
 	protected $_tags = array();
-
-	/**
-	 * Apply configuration.
-	 *
-	 * @param array $config
-	 */
-	public function __construct(array $config = array()) {
-		$this->_config = $config + $this->_config;
-	}
-
-	/**
-	 * Return a specific configuration key value.
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function config($key) {
-		return isset($this->_config[$key]) ? $this->_config[$key] : null;
-	}
-
-	/**
-	 * Return the Decoda parser.
-	 *
-	 * @return \Decoda\Decoda
-	 */
-	public function getParser() {
-		return $this->_parser;
-	}
-
-	/**
-	 * Return a message string from the parser.
-	 *
-	 * @param string $key
-	 * @param array $vars
-	 * @return string
-	 */
-	public function message($key, array $vars = array()) {
-		return $this->getParser()->message($key, $vars);
-	}
 
 	/**
 	 * Parse the node and its content into an HTML tag.
@@ -153,7 +102,7 @@ abstract class AbstractFilter implements Filter {
 	 */
 	public function parse(array $tag, $content) {
 		$setup = $this->tag($tag['tag']);
-		$xhtml = $this->getParser()->config('xhtmlOutput');
+		$xhtml = $this->getParser()->getConfig('xhtmlOutput');
 
 		if (!$setup) {
 			return null;
@@ -245,18 +194,6 @@ abstract class AbstractFilter implements Filter {
 		}
 
 		return $parsed;
-	}
-
-	/**
-	 * Set the Decoda parser.
-	 *
-	 * @param \Decoda\Decoda $parser
-	 * @return \Decoda\Filter
-	 */
-	public function setParser(Decoda $parser) {
-		$this->_parser = $parser;
-
-		return $this;
 	}
 
 	/**

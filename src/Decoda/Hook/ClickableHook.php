@@ -25,7 +25,7 @@ class ClickableHook extends AbstractHook {
 		$parser = $this->getParser();
 
 		if ($parser->hasFilter('Url')) {
-			$protocols = $parser->getFilter('Url')->config('protocols');
+			$protocols = $parser->getFilter('Url')->getConfig('protocols');
 			$chars = preg_quote('-_=+|\;:&?/[]%,.!@#$*(){}"\'', '/');
 
 			$pattern = implode('', array(

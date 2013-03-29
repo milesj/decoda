@@ -145,7 +145,7 @@ class CensorHook extends AbstractHook {
 			$regex .= preg_quote($letter, '/') . '+';
 		}
 
-		$suffix = $this->config('suffix');
+		$suffix = $this->getConfig('suffix');
 
 		if (is_array($suffix)) {
 			$suffix = implode('|', $suffix);

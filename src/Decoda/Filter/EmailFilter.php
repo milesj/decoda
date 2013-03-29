@@ -73,7 +73,7 @@ class EmailFilter extends AbstractFilter {
 
 		$encrypted = '';
 
-		if ($this->config('encrypt')) {
+		if ($this->getConfig('encrypt')) {
 			$length = mb_strlen($email);
 
 			if ($length > 0) {
@@ -87,7 +87,7 @@ class EmailFilter extends AbstractFilter {
 
 		$tag['attributes']['href'] = 'mailto:' . $encrypted;
 
-		if ($this->getParser()->config('shorthandLinks')) {
+		if ($this->getParser()->getConfig('shorthandLinks')) {
 			$tag['content'] = $this->message('mail');
 
 			return '[' . parent::parse($tag, $content) . ']';

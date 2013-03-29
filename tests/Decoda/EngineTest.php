@@ -27,7 +27,7 @@ class EngineTest extends TestCase {
 	 * Test setPath() sets a path, and getPath() returns it.
 	 */
 	public function testGetSetPath() {
-		$this->assertEquals(DECODA . 'templates/', $this->object->getPath());
+		$this->assertEquals(DECODA . 'templates/', str_replace('\\', '/', $this->object->getPath()));
 
 		$this->object->setPath(DECODA .'tpls');
 		$this->assertEquals(DECODA . 'tpls/', $this->object->getPath());

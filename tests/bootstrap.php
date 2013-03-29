@@ -9,7 +9,7 @@ error_reporting(E_ALL | E_STRICT);
 
 // Set constants
 define('TEST_DIR', __DIR__);
-define('DECODA', dirname(TEST_DIR) . '\src\Decoda/');
+define('DECODA', str_replace('\\', '/', dirname(TEST_DIR) . '/src/Decoda/'));
 
 // Ensure that composer has installed all dependencies
 $searchpaths = array(
@@ -22,8 +22,9 @@ foreach ($searchpaths as $searchpath) {
 		break;
 	}
 }
+
 if (empty($autoload)) {
-	exit('Please install composer before running tests!');
+	exit('Please install Composer in Decoda\'s root folder before running tests!');
 }
 
 // Include the composer autoloader

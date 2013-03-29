@@ -968,7 +968,6 @@ class Decoda {
 		$parents = array();
 		$depths = array();
 		$count = count($chunks);
-		$tag = '';
 		$i = 0;
 
 		if ($wrapper) {
@@ -1156,7 +1155,6 @@ class Decoda {
 
 			if ($openPos === false) {
 				$openPos = $strLength;
-				$nextOpenPos = $strLength;
 			}
 
 			if ($openPos + 1 > $strLength) {

@@ -8,7 +8,6 @@
 namespace Decoda\Hook;
 
 use Decoda\Hook\AbstractHook;
-use \Exception;
 
 /**
  * Converts URLs and emails (not wrapped in tags) into clickable links.

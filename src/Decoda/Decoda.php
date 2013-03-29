@@ -7,9 +7,6 @@
 
 namespace Decoda;
 
-use Decoda\Engine;
-use Decoda\Filter;
-use Decoda\Hook;
 use \DomainException;
 use \InvalidArgumentException;
 
@@ -464,8 +461,8 @@ class Decoda {
 
 			if ($paths = $this->getPaths()) {
 				foreach ($paths as $path) {
-					if (file_exists($path . '/messages.json')) {
-						$messages = array_merge($messages, json_decode(file_get_contents($path . '/messages.json'), true));
+					if (file_exists($path . '/messages.php')) {
+						$messages = include $path . '/messages.php';
 					}
 				}
 			}
@@ -500,7 +497,8 @@ class Decoda {
 			return $this->_parsed;
 		}
 
-		$string = $this->_trigger('beforeParse', $this->_string);
+		$this->_triggerHook('startup', null, false);
+		$string = $this->_triggerHook('beforeParse', $this->_string);
 
 		if ($this->_isParseable($string)) {
 			$string = $this->_parse($this->_extractChunks($string));
@@ -508,7 +506,7 @@ class Decoda {
 			$string = nl2br($string, $this->getConfig('xhtmlOutput'));
 		}
 
-		$string = $this->_trigger('afterParse', $string);
+		$string = $this->_triggerHook('afterParse', $string);
 
 		$this->_parsed = $this->_cleanNewlines($string);
 
@@ -783,7 +781,8 @@ class Decoda {
 			return $this->_stripped;
 		}
 
-		$string = $this->_trigger('beforeStrip', $this->_string);
+		$this->_triggerHook('startup', null, false);
+		$string = $this->_triggerHook('beforeStrip', $this->_string);
 
 		if ($this->_isParseable($string)) {
 			$string = $this->_strip($this->_extractChunks($string));
@@ -791,7 +790,7 @@ class Decoda {
 			$string = nl2br($string, $this->getConfig('xhtmlOutput'));
 		}
 
-		$string = $this->_trigger('afterStrip', $string);
+		$string = $this->_triggerHook('afterStrip', $string);
 
 		if (!$html) {
 			$string = strip_tags($string);
@@ -1438,13 +1437,18 @@ class Decoda {
 	 *
 	 * @param string $method
 	 * @param string $content
+	 * @param bool $parse
 	 * @return string
 	 */
-	protected function _trigger($method, $content) {
+	protected function _triggerHook($method, $content, $parse = true) {
 		if ($this->_hooks) {
 			foreach ($this->_hooks as $hook) {
 				if (method_exists($hook, $method)) {
-					$content = $hook->{$method}($content);
+					if ($parse) {
+						$content = $hook->{$method}($content);
+					} else {
+						$hook->{$method}();
+					}
 				}
 			}
 		}

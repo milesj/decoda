@@ -7,8 +7,6 @@
 
 namespace Decoda;
 
-use Decoda\Decoda;
-
 /**
  * Defines the methods for all Filters to implement.
  */

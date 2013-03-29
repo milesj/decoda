@@ -8,7 +8,6 @@
 namespace Decoda\Hook;
 
 use Decoda\Decoda;
-use Decoda\Component;
 use Decoda\Component\AbstractComponent;
 use Decoda\Hook;
 
@@ -55,6 +54,15 @@ abstract class AbstractHook extends AbstractComponent implements Hook {
 	 */
 	public function beforeStrip($content) {
 		return $content;
+	}
+
+	/**
+	 * Start up the Hook by initializing or loading any data before parsing begins.
+	 *
+	 * @return void
+	 */
+	public function startup() {
+		return;
 	}
 
 	/**

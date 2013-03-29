@@ -9,6 +9,7 @@ namespace Decoda\Hook;
 
 use Decoda\Decoda;
 use Decoda\Hook\AbstractHook;
+use Decoda\Loader\FileLoader;
 
 /**
  * Censors words found within the censored.txt blacklist.
@@ -20,7 +21,7 @@ class CensorHook extends AbstractHook {
 	 *
 	 * @var array
 	 */
-	protected $_censored = array();
+	protected $_blacklist = array();
 
 	/**
 	 * Configuration.
@@ -30,6 +31,23 @@ class CensorHook extends AbstractHook {
 	protected $_config = array(
 		'suffix' => array('ing', 'in', 'er', 'r', 'ed', 'd')
 	);
+
+	/**
+	 * Read the contents of the loaders into the emoticons list.
+	 */
+	public function startup() {
+		if ($this->_blacklist) {
+			return;
+		}
+
+		$this->addLoader(new FileLoader(dirname(__DIR__) . '/config/censored.php'));
+
+		foreach ($this->getLoaders() as $loader) {
+			if ($blacklist = $loader->read()) {
+				$this->blacklist($blacklist);
+			}
+		}
+	}
 
 	/**
 	 * Parse the content by censoring blacklisted words.
@@ -58,28 +76,33 @@ class CensorHook extends AbstractHook {
 	 * @return \Decoda\Hook\CensorHook
 	 */
 	public function blacklist(array $words) {
-		$this->_censored = array_map('trim', array_filter($words)) + $this->_censored;
-		$this->_censored = array_unique($this->_censored);
+		$this->_blacklist = array_map('trim', array_filter($words)) + $this->_blacklist;
+		$this->_blacklist = array_unique($this->_blacklist);
 
 		return $this;
 	}
 
 	/**
-	 * Set the Decoda parser.
+	 * Return the current blacklist.
 	 *
-	 * @param \Decoda\Decoda $parser
-	 * @return \Decoda\Hook\CensorHook
+	 * @return array
 	 */
-	public function setParser(Decoda $parser) {
-		parent::setParser($parser);
+	public function getBlacklist() {
+		return $this->_blacklist;
+	}
 
-		foreach ($parser->getPaths() as $path) {
-			if (file_exists($path . '/censored.txt')) {
-				$this->blacklist(file($path . '/censored.txt'));
-			}
+	/**
+	 * Trigger censoring.
+	 *
+	 * @param string $content
+	 * @return string
+	 */
+	protected function _censor($content) {
+		foreach ($this->getBlacklist() as $word) {
+			$content = preg_replace_callback('/(^|\s|\n|[^\w]){1,1}(?:' . $this->_prepareRegex($word) . ')([^\w]|\s|\n|$){1,1}/isS', array($this, '_censorCallback'), $content);
 		}
 
-		return $this;
+		return $content;
 	}
 
 	/**
@@ -88,7 +111,7 @@ class CensorHook extends AbstractHook {
 	 * @param array $matches
 	 * @return string
 	 */
-	protected function _callback($matches) {
+	protected function _censorCallback($matches) {
 		if (count($matches) === 1) {
 			return $matches[0];
 		}
@@ -116,28 +139,12 @@ class CensorHook extends AbstractHook {
 	}
 
 	/**
-	 * Trigger censoring.
-	 *
-	 * @param string $content
-	 * @return string
-	 */
-	protected function _censor($content) {
-		if ($this->_censored) {
-			foreach ($this->_censored as $word) {
-				$content = preg_replace_callback('/(^|\s|\n|[^\w]){1,1}(?:' . $this->_prepare($word) . ')([^\w]|\s|\n|$){1,1}/isS', array($this, '_callback'), $content);
-			}
-		}
-
-		return $content;
-	}
-
-	/**
 	 * Prepare the regex pattern for each word.
 	 *
 	 * @param string $word
 	 * @return string
 	 */
-	protected function _prepare($word) {
+	protected function _prepareRegex($word) {
 		$letters = str_split($word);
 		$regex = '';
 

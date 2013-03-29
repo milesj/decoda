@@ -21,6 +21,7 @@ class CensorHookTest extends TestCase {
 
 		$this->object = new CensorHook();
 		$this->object->setParser(new Decoda());
+		$this->object->startup();
 	}
 
 	/**

@@ -9,6 +9,7 @@ namespace Decoda\Component;
 
 use Decoda\Decoda;
 use Decoda\Component;
+use Decoda\Loader;
 
 /**
  * Provides default shared functionality for Filters, Hooks and Engines.
@@ -21,6 +22,13 @@ abstract class AbstractComponent implements Component {
 	 * @var array
 	 */
 	protected $_config = array();
+
+	/**
+	 * List of Loaders.
+	 *
+	 * @var \Decoda\Loader[]
+	 */
+	protected $_loaders = array();
 
 	/**
 	 * Decoda object.
@@ -36,6 +44,28 @@ abstract class AbstractComponent implements Component {
 	 */
 	public function __construct(array $config = array()) {
 		$this->setConfig($config);
+		$this->construct();
+	}
+
+	/**
+	 * Add a loader.
+	 *
+	 * @param \Decoda\Loader $loader
+	 * @return \Decoda\Component
+	 */
+	public function addLoader(Loader $loader) {
+		$this->_loaders[] = $loader;
+
+		return $this;
+	}
+
+	/**
+	 * Method called immediately after the constructor.
+	 *
+	 * @return void
+	 */
+	public function construct() {
+		return;
 	}
 
 	/**
@@ -46,6 +76,15 @@ abstract class AbstractComponent implements Component {
 	 */
 	public function getConfig($key) {
 		return isset($this->_config[$key]) ? $this->_config[$key] : null;
+	}
+
+	/**
+	 * Return all the Loaders.
+	 *
+	 * @return \Decoda\Loader[]
+	 */
+	public function getLoaders() {
+		return $this->_loaders;
 	}
 
 	/**

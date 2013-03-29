@@ -25,6 +25,7 @@ class EmoticonHookTest extends TestCase {
 
 		$this->object = new EmoticonHook();
 		$this->object->setParser($decoda);
+		$this->object->startup();
 	}
 
 	/**

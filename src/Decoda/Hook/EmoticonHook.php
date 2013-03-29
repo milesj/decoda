@@ -9,6 +9,7 @@ namespace Decoda\Hook;
 
 use Decoda\Decoda;
 use Decoda\Hook\AbstractHook;
+use Decoda\Loader\FileLoader;
 
 /**
  * Converts smiley faces into emoticon images.
@@ -37,7 +38,30 @@ class EmoticonHook extends AbstractHook {
 	 *
 	 * @var array
 	 */
-	protected $_map = array();
+	protected $_smilies = array();
+
+	/**
+	 * Read the contents of the loaders into the emoticons list.
+	 */
+	public function startup() {
+		if ($this->_emoticons) {
+			return;
+		}
+
+		$this->addLoader(new FileLoader(dirname(__DIR__) . '/config/emoticons.php'));
+
+		foreach ($this->getLoaders() as $loader) {
+			if ($emoticons = $loader->read()) {
+				foreach ($emoticons as $emoticon => $smilies) {
+					foreach ($smilies as $smile) {
+						$this->_smilies[$smile] = $emoticon;
+					}
+				}
+
+				$this->_emoticons = array_merge($this->_emoticons, $emoticons);
+			}
+		}
+	}
 
 	/**
 	 * Parse out the emoticons and replace with images.
@@ -54,102 +78,48 @@ class EmoticonHook extends AbstractHook {
 	}
 
 	/**
-	 * Set the Decoda parser.
-	 *
-	 * @param \Decoda\Decoda $parser
-	 * @return \Decoda\Hook\EmoticonHook
-	 */
-	public function setParser(Decoda $parser) {
-		parent::setParser($parser);
-
-		$this->_emoticons = array();
-		$this->getEmoticons();
-
-		return $this;
-	}
-
-	/**
 	 * Gets the mapping of emoticons and smilies.
 	 *
-	 * @return array An array of emoticons
+	 * @return array
 	 */
-	protected function getEmoticons() {
-		if (!empty($this->_emoticons)) {
-			return $this->_emoticons;
-		}
-
-		$this->_map = array();
-		$this->_emoticons = array();
-
-		if (null === $this->_parser) {
-			return $this->_emoticons;
-		}
-
-		foreach ($this->_parser->getPaths() as $path) {
-			if (!file_exists($path . '/emoticons.json')) {
-				continue;
-			}
-
-			if ($emoticons = json_decode(file_get_contents($path . '/emoticons.json'), true)) {
-				foreach ($emoticons as $emoticon => $smilies) {
-					foreach ($smilies as $smile) {
-						$this->_map[$smile] = $emoticon;
-					}
-				}
-
-				$this->_emoticons = array_merge($this->_emoticons, $emoticons);
-			}
-		}
-
+	public function getEmoticons() {
 		return $this->_emoticons;
-	}
-
-	/**
-	 * Checks if a smiley is set for the given id.
-	 *
-	 * @param string $smiley  A smiley
-	 * @return Boolean true if the smiley is set, false otherwise
-	 */
-	protected function hasSmiley($smiley) {
-		return isset($this->_map[$smiley]);
 	}
 
 	/**
 	 * Returns all available smilies.
 	 *
-	 * @return string[] An array of smiley
+	 * @return array
 	 */
-	protected function getSmilies() {
-		$res = array();
-
-		$emoticons = $this->getEmoticons();
-
-		if ($emoticons) {
-			foreach ($emoticons as $smilies) {
-				foreach ($smilies as $smiley) {
-					$res[] = $smiley;
-				}
-			}
-		}
-
-		return $res;
+	public function getSmilies() {
+		return array_keys($this->_smilies);
 	}
 
 	/**
-	 * Convert a smiley to html representation
+	 * Checks if a smiley is set for the given id.
 	 *
-	 * @param string  $smiley   A smiley
-	 * @param Boolean $isXhtml  Ask for respected the xHtml standard code
+	 * @param string $smiley
+	 * @return bool
+	 */
+	public function hasSmiley($smiley) {
+		return isset($this->_smilies[$smiley]);
+	}
+
+	/**
+	 * Convert a smiley to an HTML representation.
+	 *
+	 * @param string $smiley
+	 * @param bool $isXhtml
 	 * @return string
 	 */
-	protected function render($smiley, $isXhtml = true) {
-		if (!isset($this->_map[$smiley])) {
-			return '';
+	public function render($smiley, $isXhtml = true) {
+		if (!$this->hasSmiley($smiley)) {
+			return null;
 		}
 
 		$path = sprintf('%s%s.%s',
 			$this->getConfig('path'),
-			$this->_map[$smiley],
+			$this->_smilies[$smiley],
 			$this->getConfig('extension'));
 
 		if ($isXhtml) {
@@ -176,12 +146,7 @@ class EmoticonHook extends AbstractHook {
 
 		$l = isset($matches[1]) ? $matches[1] : '';
 		$r = isset($matches[2]) ? $matches[2] : '';
-
-		if ($this->getParser()->getConfig('xhtmlOutput')) {
-			$image = $this->render($smiley, true);
-		} else {
-			$image = $this->render($smiley, false);
-		}
+		$image = $this->render($smiley, $this->getParser()->getConfig('xhtmlOutput'));
 
 		return $l . $image . $r;
 	}

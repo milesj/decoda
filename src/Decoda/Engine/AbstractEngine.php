@@ -7,7 +7,6 @@
 
 namespace Decoda\Engine;
 
-use Decoda\Component;
 use Decoda\Component\AbstractComponent;
 use Decoda\Filter;
 use Decoda\Engine;

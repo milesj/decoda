@@ -7,12 +7,25 @@
 
 namespace Decoda;
 
-use Decoda\Decoda;
-
 /**
  * Defines the methods for all Components to implement.
  */
 interface Component {
+
+	/**
+	 * Add a loader.
+	 *
+	 * @param \Decoda\Loader $loader
+	 * @return \Decoda\Component
+	 */
+	public function addLoader(Loader $loader);
+
+	/**
+	 * Method called immediately after the constructor.
+	 *
+	 * @return void
+	 */
+	public function construct();
 
 	/**
 	 * Return a specific configuration key value.
@@ -21,6 +34,13 @@ interface Component {
 	 * @return mixed
 	 */
 	public function getConfig($key);
+
+	/**
+	 * Return all the Loaders.
+	 *
+	 * @return \Decoda\Loader[]
+	 */
+	public function getLoaders();
 
 	/**
 	 * Return the Decoda parser.
@@ -50,7 +70,7 @@ interface Component {
 	 * Set the Decoda parser.
 	 *
 	 * @param \Decoda\Decoda $parser
-	 * @return \Decoda\Filter
+	 * @return \Decoda\Component
 	 */
 	public function setParser(Decoda $parser);
 

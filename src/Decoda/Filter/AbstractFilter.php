@@ -8,7 +8,6 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Component;
 use Decoda\Component\AbstractComponent;
 use Decoda\Filter;
 

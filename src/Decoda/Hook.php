@@ -7,8 +7,6 @@
 
 namespace Decoda;
 
-use Decoda\Decoda;
-
 /**
  * Defines the methods for all Hooks to implement.
  */
@@ -45,6 +43,13 @@ interface Hook extends Component {
 	 * @return string
 	 */
 	public function beforeStrip($content);
+
+	/**
+	 * Start up the Hook by initializing or loading any data before parsing begins.
+	 *
+	 * @return void
+	 */
+	public function startup();
 
 	/**
 	 * Add any filter dependencies.

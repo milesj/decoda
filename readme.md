@@ -26,12 +26,15 @@ A lightweight lexical string parser for BBCode styled markup.
 * Setting to use shorthand text for links and emails
 * Provides Filters to parse markup and custom code
 * Provides Hooks to execute callbacks during the parsing cycle
-* Provides functionality to render complex markup using a template system
+* Provides Loaders to load resources and files for configuration
+* Provides Engines to render complex markup using a template system
 * Can censor offensive words
 * Can convert smiley faces into images
 * Basic support for localized messages
 * Supports a wide range of tags
+* Parent child node hierarchy
 * Fixes incorrectly nested tags by removing the broken/unclosed tags
+* Self closing tags
 * Logs errors for validation
 
 ## Filters ##
@@ -53,9 +56,9 @@ The following filters and supported tags are available.
 
 The following hooks are available.
 
-* Censor - Censors all words found within config/censored.txt
+* Censor - Censors all words found within config/censored
 * Clickable - Converts all non-tag wrapped URLs and emails into clickable links
-* Emoticon - Converts all smilies found within config/emoticons.json into emoticon images
+* Emoticon - Converts all smilies found within config/emoticons into emoticon images
 
 ## Unsupported ##
 

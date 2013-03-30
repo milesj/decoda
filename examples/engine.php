@@ -3,8 +3,9 @@
 class TestEngine extends \Decoda\Engine\AbstractEngine {
 
 	public function render(array $tag, $content) {
-		$setup = $this->getFilter()->tag($tag['tag']);
-		$path = $this->getPath() . $setup['template'] . '.tpl';
+		$setup = $this->getFilter()->getTag($tag['tag']);
+		$paths = $this->getPaths();
+		$path = $paths[0] . $setup['template'] . '.tpl';
 
 		if (!file_exists($path)) {
 			throw new Exception(sprintf('Template file %s does not exist', $setup['template']));
@@ -32,7 +33,7 @@ class TestEngine extends \Decoda\Engine\AbstractEngine {
 
 // Lets change the template path and the file extension.
 $engine = new TestEngine();
-$engine->setPath(__DIR__ . '/templates/');
+$engine->addPath(__DIR__ . '/templates/');
 
 $code = new \Decoda\Decoda();
 $code->addFilter(new \Decoda\Filter\QuoteFilter());

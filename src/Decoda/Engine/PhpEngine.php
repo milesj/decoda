@@ -7,7 +7,7 @@
 
 namespace Decoda\Engine;
 
-use \RuntimeException;
+use Decoda\Exception\IoException;
 
 /**
  * Renders tags by using PHP as template engine.
@@ -20,14 +20,14 @@ class PhpEngine extends AbstractEngine {
 	 * @param array $tag
 	 * @param string $content
 	 * @return string
-	 * @throws \RuntimeException
+	 * @throws \Decoda\Exception\IoException
 	 */
 	public function render(array $tag, $content) {
 		$setup = $this->getFilter()->getTag($tag['tag']);
 		$path = $this->getPath() . $setup['template'] . '.php';
 
 		if (!file_exists($path)) {
-			throw new RuntimeException(sprintf('Template file %s does not exist', $setup['template']));
+			throw new IoException(sprintf('Template file %s does not exist', $setup['template']));
 		}
 
 		extract($tag['attributes'], EXTR_SKIP);

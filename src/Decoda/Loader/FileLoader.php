@@ -7,8 +7,8 @@
 
 namespace Decoda\Loader;
 
-use \UnexpectedValueException;
-use \Exception;
+use \Decoda\Exception\IoException;
+use \Decoda\Exception\UnsupportedTypeException;
 
 /**
  * A resource loader for files on the local system.
@@ -26,11 +26,11 @@ class FileLoader extends AbstractLoader {
 	 * Store the path and validate the files existence.
 	 *
 	 * @param string $path
-	 * @throws \Exception
+	 * @throws \Decoda\Exception\IoException
 	 */
 	public function __construct($path) {
 		if (!file_exists($path)) {
-			throw new Exception(sprintf('File %s does not exist', $path));
+			throw new IoException(sprintf('File %s does not exist', $path));
 		}
 
 		$this->_path = $path;
@@ -40,7 +40,7 @@ class FileLoader extends AbstractLoader {
 	 * Read the resources contents.
 	 *
 	 * @return array
-	 * @throws \UnexpectedValueException
+	 * @throws \Decoda\Exception\UnsupportedTypeException
 	 */
 	public function read() {
 		$ext = mb_strtolower(pathinfo($this->_path, PATHINFO_EXTENSION));
@@ -60,7 +60,7 @@ class FileLoader extends AbstractLoader {
 			break;
 		}
 
-		throw new UnexpectedValueException(sprintf('Unsupported FileLoader file type %s', $ext));
+		throw new UnsupportedTypeException(sprintf('Unsupported FileLoader file type %s', $ext));
 	}
 
 }

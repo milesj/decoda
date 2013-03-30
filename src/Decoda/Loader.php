@@ -13,10 +13,10 @@ namespace Decoda;
 interface Loader extends Component {
 
 	/**
-	 * Read the resources contents.
+	 * Load the resources contents.
 	 *
 	 * @return array
 	 */
-	public function read();
+	public function load();
 
 }

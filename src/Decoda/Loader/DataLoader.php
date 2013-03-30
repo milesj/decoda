@@ -29,11 +29,11 @@ class DataLoader extends AbstractLoader {
 	}
 
 	/**
-	 * Read the data
+	 * Load the data.
 	 *
 	 * @return array
 	 */
-	public function read() {
+	public function load() {
 		return (array) $this->_data;
 	}
 

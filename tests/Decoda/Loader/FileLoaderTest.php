@@ -28,7 +28,7 @@ class FileLoaderTest extends TestCase {
 
 		try {
 			$object = new FileLoader(dirname(__DIR__) . '/config/test.xml');
-			$object->read();
+			$object->load();
 			$this->assertFalse(true);
 
 		} catch (Exception $e) {
@@ -41,7 +41,7 @@ class FileLoaderTest extends TestCase {
 	 */
 	public function testPhpRead() {
 		$object = new FileLoader(dirname(__DIR__) . '/config/test.php');
-		$this->assertEquals(array('foo' => 'bar'), $object->read());
+		$this->assertEquals(array('foo' => 'bar'), $object->load());
 	}
 
 	/**
@@ -49,7 +49,7 @@ class FileLoaderTest extends TestCase {
 	 */
 	public function testJsonRead() {
 		$object = new FileLoader(dirname(__DIR__) . '/config/test.json');
-		$this->assertEquals(array('foo' => 'bar'), $object->read());
+		$this->assertEquals(array('foo' => 'bar'), $object->load());
 	}
 
 	/**
@@ -57,7 +57,7 @@ class FileLoaderTest extends TestCase {
 	 */
 	public function testIniRead() {
 		$object = new FileLoader(dirname(__DIR__) . '/config/test.ini');
-		$this->assertEquals(array('foo' => 'bar'), $object->read());
+		$this->assertEquals(array('foo' => 'bar'), $object->load());
 	}
 
 	/**
@@ -65,7 +65,7 @@ class FileLoaderTest extends TestCase {
 	 */
 	public function testTxtRead() {
 		$object = new FileLoader(dirname(__DIR__) . '/config/test.txt');
-		$this->assertEquals(array('foo', 'bar'), $object->read());
+		$this->assertEquals(array('foo', 'bar'), $object->load());
 	}
 
 }

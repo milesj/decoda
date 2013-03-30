@@ -265,7 +265,7 @@ class Decoda {
 	public function addMessages(Loader $loader) {
 		$loader->setParser($this);
 
-		if ($messages = $loader->read()) {
+		if ($messages = $loader->load()) {
 			foreach ($messages as $locale => $strings) {
 				if (!empty($this->_messages[$locale])) {
 					$strings = array_merge($this->_messages[$locale], $strings);

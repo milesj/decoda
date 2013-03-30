@@ -44,7 +44,7 @@ class CensorHook extends AbstractHook {
 		foreach ($this->getLoaders() as $loader) {
 			$loader->setParser($this->getParser());
 
-			if ($blacklist = $loader->read()) {
+			if ($blacklist = $loader->load()) {
 				$this->blacklist($blacklist);
 			}
 		}

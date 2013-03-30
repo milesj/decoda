@@ -52,7 +52,7 @@ class EmoticonHook extends AbstractHook {
 		foreach ($this->getLoaders() as $loader) {
 			$loader->setParser($this->getParser());
 
-			if ($emoticons = $loader->read()) {
+			if ($emoticons = $loader->load()) {
 				foreach ($emoticons as $emoticon => $smilies) {
 					foreach ($smilies as $smile) {
 						$this->_smilies[$smile] = $emoticon;

@@ -37,12 +37,12 @@ class FileLoader extends AbstractLoader {
 	}
 
 	/**
-	 * Read the resources contents.
+	 * Load the resources contents.
 	 *
 	 * @return array
 	 * @throws \Decoda\Exception\UnsupportedTypeException
 	 */
-	public function read() {
+	public function load() {
 		$ext = mb_strtolower(pathinfo($this->_path, PATHINFO_EXTENSION));
 
 		switch ($ext) {

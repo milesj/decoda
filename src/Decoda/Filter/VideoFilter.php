@@ -8,7 +8,6 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides the tag for videos. Only a few video services are supported.

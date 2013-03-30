@@ -8,7 +8,6 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides the tag for quoting users and blocks of texts.

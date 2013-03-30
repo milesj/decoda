@@ -185,9 +185,10 @@ class Decoda {
 	 * @param array $config
 	 */
 	public function __construct($string = '', array $config = array()) {
-		$this->setConfig($config);
 		$this->reset($string, true);
 		$this->addPath(__DIR__ . '/config/');
+		$this->setConfig($config);
+		$this->setEngine(new \Decoda\Engine\PhpEngine());
 	}
 
 	/**
@@ -202,7 +203,7 @@ class Decoda {
 		$class = explode('\\', get_class($filter));
 		$class = str_replace('Filter', '', end($class));
 
-		$tags = $filter->tags();
+		$tags = $filter->getTags();
 
 		$this->_filters[$class] = $filter;
 		$this->_tags = $tags + $this->_tags;
@@ -412,10 +413,6 @@ class Decoda {
 	 * @return \Decoda\Engine
 	 */
 	public function getEngine() {
-		if (!$this->_engine) {
-			$this->_engine = new \Decoda\Engine\PhpEngine();
-		}
-
 		return $this->_engine;
 	}
 
@@ -497,7 +494,8 @@ class Decoda {
 			return $this->_parsed;
 		}
 
-		$this->_triggerHook('startup', null, false);
+		$this->_triggerHook('startup');
+
 		$string = $this->_triggerHook('beforeParse', $this->_string);
 
 		if ($this->_isParseable($string)) {
@@ -781,7 +779,8 @@ class Decoda {
 			return $this->_stripped;
 		}
 
-		$this->_triggerHook('startup', null, false);
+		$this->_triggerHook('startup');
+
 		$string = $this->_triggerHook('beforeStrip', $this->_string);
 
 		if ($this->_isParseable($string)) {
@@ -970,10 +969,10 @@ class Decoda {
 		$i = 0;
 
 		if ($wrapper) {
-			$parent = $this->getFilterByTag($wrapper['tag'])->tag($wrapper['tag']);
+			$parent = $this->getFilterByTag($wrapper['tag'])->getTag($wrapper['tag']);
 			$root = false;
 		} else {
-			$parent = $this->getFilter('Empty')->tag('root');
+			$parent = $this->getFilter('Empty')->getTag('root');
 			$root = true;
 		}
 
@@ -1010,7 +1009,7 @@ class Decoda {
 					if ($this->_isAllowed($parent, $tag)) {
 						$prevParent = $parent;
 						$parents[] = $parent;
-						$parent = $this->getFilterByTag($tag)->tag($tag);
+						$parent = $this->getFilterByTag($tag)->getTag($tag);
 
 						if ($prevParent['preserveTags']) {
 							$chunk['type'] = self::TAG_NONE;
@@ -1300,7 +1299,7 @@ class Decoda {
 			return false;
 		}
 
-		$child = $filter->tag($tag);
+		$child = $filter->getTag($tag);
 
 		// Remove children after a certain nested depth
 		if (isset($parent['currentDepth']) && $parent['currentDepth'] > $parent['maxChildDepth']) {
@@ -1437,14 +1436,13 @@ class Decoda {
 	 *
 	 * @param string $method
 	 * @param string $content
-	 * @param bool $parse
 	 * @return string
 	 */
-	protected function _triggerHook($method, $content, $parse = true) {
+	protected function _triggerHook($method, $content = null) {
 		if ($this->_hooks) {
 			foreach ($this->_hooks as $hook) {
 				if (method_exists($hook, $method)) {
-					if ($parse) {
+					if ($content !== null) {
 						$content = $hook->{$method}($content);
 					} else {
 						$hook->{$method}();

@@ -7,7 +7,6 @@
 
 namespace Decoda\Engine;
 
-use Decoda\Engine\AbstractEngine;
 use \RuntimeException;
 
 /**
@@ -24,7 +23,7 @@ class PhpEngine extends AbstractEngine {
 	 * @throws \RuntimeException
 	 */
 	public function render(array $tag, $content) {
-		$setup = $this->getFilter()->tag($tag['tag']);
+		$setup = $this->getFilter()->getTag($tag['tag']);
 		$path = $this->getPath() . $setup['template'] . '.php';
 
 		if (!file_exists($path)) {

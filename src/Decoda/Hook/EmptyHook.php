@@ -7,8 +7,6 @@
 
 namespace Decoda\Hook;
 
-use Decoda\Hook\AbstractHook;
-
 /**
  * An empty hook used for no operation events.
  */
@@ -18,11 +16,11 @@ class EmptyHook extends AbstractHook {
 	 * Fix weird problems.
 	 *
 	 * @param string $string
-	 * @return mixed
+	 * @return string
 	 */
 	public function beforeParse($string) {
 
-		// Fix URLs that end in trailing slash
+		// Fix URLs that end in trailing slash by wrapping them in double quotes
 		// This causes URLs to be triggered as self closing tags instead of opening tags
 		if ($this->getParser()->hasFilter('Url')) {
 			$string = preg_replace_callback('/\[url=(.*?)\]/i', function($matches) {

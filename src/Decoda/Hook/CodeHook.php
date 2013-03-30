@@ -7,8 +7,6 @@
 
 namespace Decoda\Hook;
 
-use Decoda\Hook\AbstractHook;
-
 /**
  * Encodes and decodes [code] blocks so that the inner content doesn't get processed.
  */

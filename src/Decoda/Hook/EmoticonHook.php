@@ -8,7 +8,6 @@
 namespace Decoda\Hook;
 
 use Decoda\Decoda;
-use Decoda\Hook\AbstractHook;
 use Decoda\Loader\FileLoader;
 
 /**
@@ -27,7 +26,7 @@ class EmoticonHook extends AbstractHook {
 	);
 
 	/**
-	 * Mapping of emoticons and smilies.
+	 * Mapping of emoticons to smilies.
 	 *
 	 * @var array
 	 */
@@ -51,6 +50,8 @@ class EmoticonHook extends AbstractHook {
 		$this->addLoader(new FileLoader(dirname(__DIR__) . '/config/emoticons.php'));
 
 		foreach ($this->getLoaders() as $loader) {
+			$loader->setParser($this->getParser());
+
 			if ($emoticons = $loader->read()) {
 				foreach ($emoticons as $emoticon => $smilies) {
 					foreach ($smilies as $smile) {
@@ -146,9 +147,8 @@ class EmoticonHook extends AbstractHook {
 
 		$l = isset($matches[1]) ? $matches[1] : '';
 		$r = isset($matches[2]) ? $matches[2] : '';
-		$image = $this->render($smiley, $this->getParser()->getConfig('xhtmlOutput'));
 
-		return $l . $image . $r;
+		return $l . $this->render($smiley, $this->getParser()->getConfig('xhtmlOutput')) . $r;
 	}
 
 }

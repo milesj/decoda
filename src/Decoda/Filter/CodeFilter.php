@@ -8,7 +8,6 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\AbstractFilter;
 use Decoda\Hook\CodeHook;
 
 /**

@@ -93,7 +93,7 @@ class FilterTest extends TestCase {
 			'lineBreaksConvert',
 			'pattern',
 			'autoClose'
-		), array_keys($this->object->tags()));
+		), array_keys($this->object->getTags()));
 	}
 
 	/**
@@ -122,12 +122,12 @@ class FilterTest extends TestCase {
 			'persistContent' => true
 		);
 
-		$this->assertEquals($expected, $this->object->tag('fakeTag'));
+		$this->assertEquals($expected, $this->object->getTag('fakeTag'));
 
 		$expected['tag'] = 'example';
 		$expected['htmlTag'] = 'example';
 
-		$this->assertEquals($expected, $this->object->tag('example'));
+		$this->assertEquals($expected, $this->object->getTag('example'));
 	}
 
 }

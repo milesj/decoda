@@ -8,7 +8,6 @@
 namespace Decoda\Hook;
 
 use Decoda\Decoda;
-use Decoda\Hook\AbstractHook;
 use Decoda\Loader\FileLoader;
 
 /**
@@ -43,6 +42,8 @@ class CensorHook extends AbstractHook {
 		$this->addLoader(new FileLoader(dirname(__DIR__) . '/config/censored.php'));
 
 		foreach ($this->getLoaders() as $loader) {
+			$loader->setParser($this->getParser());
+
 			if ($blacklist = $loader->read()) {
 				$this->blacklist($blacklist);
 			}

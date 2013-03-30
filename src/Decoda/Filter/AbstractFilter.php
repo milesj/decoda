@@ -93,6 +93,32 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
 	protected $_tags = array();
 
 	/**
+	 * Return a tag if it exists, and merge with defaults.
+	 *
+	 * @param string $tag
+	 * @return array
+	 */
+	public function getTag($tag) {
+		$defaults = $this->_defaults;
+		$defaults['tag'] = $tag;
+
+		if (isset($this->_tags[$tag])) {
+			return $this->_tags[$tag] + $defaults;
+		}
+
+		return $defaults;
+	}
+
+	/**
+	 * Return all tags.
+	 *
+	 * @return array
+	 */
+	public function getTags() {
+		return $this->_tags;
+	}
+
+	/**
 	 * Parse the node and its content into an HTML tag.
 	 *
 	 * @param array $tag
@@ -100,7 +126,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
 	 * @return string
 	 */
 	public function parse(array $tag, $content) {
-		$setup = $this->tag($tag['tag']);
+		$setup = $this->getTag($tag['tag']);
 		$xhtml = $this->getParser()->getConfig('xhtmlOutput');
 
 		if (!$setup) {
@@ -213,39 +239,13 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
 	 * @return string
 	 */
 	public function strip(array $tag, $content) {
-		$setup = $this->tag($tag['tag']);
+		$setup = $this->getTag($tag['tag']);
 
 		if (!$setup || $setup['stripContent']) {
 			return '';
 		}
 
 		return $content;
-	}
-
-	/**
-	 * Return a tag if it exists, and merge with defaults.
-	 *
-	 * @param string $tag
-	 * @return array
-	 */
-	public function tag($tag) {
-		$defaults = $this->_defaults;
-		$defaults['tag'] = $tag;
-
-		if (isset($this->_tags[$tag])) {
-			return $this->_tags[$tag] + $defaults;
-		}
-
-		return $defaults;
-	}
-
-	/**
-	 * Return all tags.
-	 *
-	 * @return array
-	 */
-	public function tags() {
-		return $this->_tags;
 	}
 
 }

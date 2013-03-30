@@ -5,6 +5,10 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
+/**
+ * Mapping of emoticons to a list of smilies that represents it.
+ * The smiley will be replaced with an image that uses the emoticon name.
+ */
 return array(
 	'angry' 	=> array('&gt;(', '&gt;:(', '&gt;[', '&gt;:[', ':angry:'),
 	'aw' 		=> array(':aw:'),

@@ -8,7 +8,6 @@
 namespace Decoda\Filter;
 
 use Decoda\Decoda;
-use Decoda\Filter\AbstractFilter;
 
 /**
  * Provides tags for ordered and unordered lists.

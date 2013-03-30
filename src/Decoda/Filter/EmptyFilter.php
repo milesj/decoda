@@ -7,8 +7,6 @@
 
 namespace Decoda\Filter;
 
-use Decoda\Filter\AbstractFilter;
-
 /**
  * An empty filter for no operation events.
  */

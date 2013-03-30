@@ -72,6 +72,6 @@ interface Component {
 	 * @param \Decoda\Decoda $parser
 	 * @return \Decoda\Component
 	 */
-	public function setParser(Decoda $parser);
+	public function setParser(Decoda $parser = null);
 
 }

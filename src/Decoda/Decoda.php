@@ -185,16 +185,9 @@ class Decoda {
 	 * @param array $config
 	 */
 	public function __construct($string = '', array $config = array()) {
-		$configPath = __DIR__ . '/config/';
-
 		$this->reset($string, true);
 		$this->setConfig($config);
-		$this->addPath($configPath);
-
-		// Load the default messages
-		$loader = new \Decoda\Loader\FileLoader($configPath . 'messages.php');
-
-		$this->addMessages($loader);
+		$this->addPath(__DIR__ . '/config/');
 
 		// Set the default engine
 		$engine = new \Decoda\Engine\PhpEngine();
@@ -516,6 +509,10 @@ class Decoda {
 	 * @throws \OutOfRangeException
 	 */
 	public function message($key, array $vars = array()) {
+		if (!$this->_messages) {
+			$this->_loadMessages();
+		}
+
 		$locale = $this->getConfig('locale');
 
 		if (empty($this->_messages[$locale])) {
@@ -1416,6 +1413,17 @@ class Decoda {
 			mb_strpos($string, $this->getConfig('close')) !== false &&
 			!$this->getConfig('disabled')
 		);
+	}
+
+	/**
+	 * Load in all message strings from the config paths.
+	 */
+	protected function _loadMessages() {
+		foreach ($this->getPaths() as $path) {
+			foreach (glob($path . 'messages.*') as $file) {
+				$this->addMessages(new \Decoda\Loader\FileLoader($file));
+			}
+		}
 	}
 
 	/**

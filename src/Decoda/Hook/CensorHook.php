@@ -39,8 +39,14 @@ class CensorHook extends AbstractHook {
 			return;
 		}
 
-		$this->addLoader(new FileLoader(dirname(__DIR__) . '/config/censored.php'));
+		// Load files from config paths
+		foreach ($this->getParser()->getPaths() as $path) {
+			foreach (glob($path . 'censored.*') as $file) {
+				$this->addLoader(new FileLoader($file));
+			}
+		}
 
+		// Load the contents into the blacklist
 		foreach ($this->getLoaders() as $loader) {
 			$loader->setParser($this->getParser());
 

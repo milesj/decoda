@@ -47,8 +47,14 @@ class EmoticonHook extends AbstractHook {
 			return;
 		}
 
-		$this->addLoader(new FileLoader(dirname(__DIR__) . '/config/emoticons.php'));
+		// Load files from config paths
+		foreach ($this->getParser()->getPaths() as $path) {
+			foreach (glob($path . 'emoticons.*') as $file) {
+				$this->addLoader(new FileLoader($file));
+			}
+		}
 
+		// Load the contents into the emoticon and smiley list
 		foreach ($this->getLoaders() as $loader) {
 			$loader->setParser($this->getParser());
 

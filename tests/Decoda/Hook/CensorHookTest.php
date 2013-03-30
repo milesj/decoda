@@ -20,7 +20,8 @@ class CensorHookTest extends TestCase {
 		parent::setUp();
 
 		$this->object = new CensorHook();
-		$this->object->setParser(new Decoda());
+		// This Hook don't depends from Decoda
+		// $this->object->setParser(new Decoda());
 		$this->object->startup();
 	}
 

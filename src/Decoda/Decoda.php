@@ -185,10 +185,13 @@ class Decoda {
 	 * @param array $config
 	 */
 	public function __construct($string = '', array $config = array()) {
+		$configPath = __DIR__ . '/config/';
+
 		$this->reset($string, true);
-		$this->addPath(__DIR__ . '/config/');
-		$this->setConfig($config);
+		$this->addPath($configPath);
+		$this->addMessages(new \Decoda\Loader\FileLoader($configPath . 'messages.php'));
 		$this->setEngine(new \Decoda\Engine\PhpEngine());
+		$this->setConfig($config);
 	}
 
 	/**
@@ -234,6 +237,28 @@ class Decoda {
 		$hook->setupFilters($this);
 
 		ksort($this->_hooks);
+
+		return $this;
+	}
+
+	/**
+	 * Add a loader that will generate localization messages.
+	 *
+	 * @param \Decoda\Loader $loader
+	 * @return \Decoda\Decoda
+	 */
+	public function addMessages(Loader $loader) {
+		$loader->setParser($this);
+
+		if ($messages = $loader->read()) {
+			foreach ($messages as $locale => $strings) {
+				if (!empty($this->_messages[$locale])) {
+					$strings = array_merge($this->_messages[$locale], $strings);
+				}
+
+				$this->_messages[$locale] = $strings;
+			}
+		}
 
 		return $this;
 	}
@@ -453,20 +478,6 @@ class Decoda {
 	 * @return string
 	 */
 	public function message($key, array $vars = array()) {
-		if (!$this->_messages) {
-			$messages = array();
-
-			if ($paths = $this->getPaths()) {
-				foreach ($paths as $path) {
-					if (file_exists($path . '/messages.php')) {
-						$messages = include $path . '/messages.php';
-					}
-				}
-			}
-
-			$this->_messages = $messages;
-		}
-
 		$locale = $this->getConfig('locale');
 		$string = isset($this->_messages[$locale][$key]) ? $this->_messages[$locale][$key] : '';
 
@@ -525,8 +536,8 @@ class Decoda {
 		foreach ((array) $filters as $filter) {
 			unset($this->_filters[$filter]);
 
-			foreach ($this->_filterMap as $tag => $fil) {
-				if ($fil === $filter) {
+			foreach ($this->_filterMap as $tag => $f) {
+				if ($f === $filter) {
 					unset($this->_filterMap[$tag]);
 				}
 			}
@@ -690,8 +701,6 @@ class Decoda {
 	 * @throws \DomainException
 	 */
 	public function setLocale($locale) {
-		$this->message(null);
-
 		if (empty($this->_messages[$locale])) {
 			throw new DomainException(sprintf('Localized strings for %s do not exist', $locale));
 		}

@@ -7,7 +7,6 @@
 
 namespace Decoda\Loader;
 
-use Decoda\Loader;
 use \UnexpectedValueException;
 use \Exception;
 

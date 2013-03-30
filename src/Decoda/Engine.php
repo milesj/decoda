@@ -14,6 +14,14 @@ namespace Decoda;
 interface Engine extends Component {
 
 	/**
+	 * Add a template lookup path.
+	 *
+	 * @param string $path
+	 * @return \Decoda\Engine
+	 */
+	public function addPath($path);
+
+	/**
 	 * Return the current filter.
 	 *
 	 * @return \Decoda\Filter
@@ -21,11 +29,11 @@ interface Engine extends Component {
 	public function getFilter();
 
 	/**
-	 * Returns the path of the tag templates.
+	 * Returns the paths to the templates.
 	 *
 	 * @return string
 	 */
-	public function getPath();
+	public function getPaths();
 
 	/**
 	 * Renders the tag by using the defined templates.
@@ -43,13 +51,5 @@ interface Engine extends Component {
 	 * @return \Decoda\Engine
 	 */
 	public function setFilter(Filter $filter);
-
-	/**
-	 * Sets the path to the tag templates.
-	 *
-	 * @param string $path
-	 * @return \Decoda\Engine
-	 */
-	public function setPath($path);
 
 }

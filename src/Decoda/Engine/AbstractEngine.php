@@ -17,11 +17,11 @@ use Decoda\Engine;
 abstract class AbstractEngine extends AbstractComponent implements Engine {
 
 	/**
-	 * Current path.
+	 * Lookup paths.
 	 *
-	 * @var string
+	 * @var array
 	 */
-	protected $_path;
+	protected $_paths = array();
 
 	/**
 	 * Current filter.
@@ -29,6 +29,22 @@ abstract class AbstractEngine extends AbstractComponent implements Engine {
 	 * @var \Decoda\Filter
 	 */
 	protected $_filter;
+
+	/**
+	 * Add a template lookup path.
+	 *
+	 * @param string $path
+	 * @return \Decoda\Engine
+	 */
+	public function addPath($path) {
+		if (substr($path, -1) !== '/') {
+			$path .= '/';
+		}
+
+		$this->_paths[] = $path;
+
+		return $this;
+	}
 
 	/**
 	 * Return the current filter.
@@ -40,16 +56,12 @@ abstract class AbstractEngine extends AbstractComponent implements Engine {
 	}
 
 	/**
-	 * Return the template path. If no path has been set, set it.
+	 * Returns the paths to the templates.
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public function getPath() {
-		if (!$this->_path) {
-			$this->setPath(dirname(__DIR__) . '/templates/');
-		}
-
-		return $this->_path;
+	public function getPaths() {
+		return $this->_paths;
 	}
 
 	/**
@@ -60,22 +72,6 @@ abstract class AbstractEngine extends AbstractComponent implements Engine {
 	 */
 	public function setFilter(Filter $filter) {
 		$this->_filter = $filter;
-
-		return $this;
-	}
-
-	/**
-	 * Sets the path to the tag templates.
-	 *
-	 * @param string $path
-	 * @return \Decoda\Engine
-	 */
-	public function setPath($path) {
-		if (substr($path, -1) !== '/') {
-			$path .= '/';
-		}
-
-		$this->_path = $path;
 
 		return $this;
 	}

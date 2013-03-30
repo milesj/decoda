@@ -24,18 +24,21 @@ class PhpEngine extends AbstractEngine {
 	 */
 	public function render(array $tag, $content) {
 		$setup = $this->getFilter()->getTag($tag['tag']);
-		$path = $this->getPath() . $setup['template'] . '.php';
 
-		if (!file_exists($path)) {
-			throw new IoException(sprintf('Template file %s does not exist', $setup['template']));
+		foreach ($this->getPaths() as $path) {
+			$template = sprintf('%s%s.php', $path, $setup['template']);
+
+			if (file_exists($template)) {
+				extract($tag['attributes'], EXTR_OVERWRITE);
+				ob_start();
+
+				include $template;
+
+				return trim(ob_get_clean());
+			}
 		}
 
-		extract($tag['attributes'], EXTR_SKIP);
-		ob_start();
-
-		include $path;
-
-		return trim(ob_get_clean());
+		throw new IoException(sprintf('Template file %s does not exist', $setup['template']));
 	}
 
 }

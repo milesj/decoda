@@ -188,10 +188,19 @@ class Decoda {
 		$configPath = __DIR__ . '/config/';
 
 		$this->reset($string, true);
-		$this->addPath($configPath);
-		$this->addMessages(new \Decoda\Loader\FileLoader($configPath . 'messages.php'));
-		$this->setEngine(new \Decoda\Engine\PhpEngine());
 		$this->setConfig($config);
+		$this->addPath($configPath);
+
+		// Load the default messages
+		$loader = new \Decoda\Loader\FileLoader($configPath . 'messages.php');
+
+		$this->addMessages($loader);
+
+		// Set the default engine
+		$engine = new \Decoda\Engine\PhpEngine();
+		$engine->addPath(__DIR__ . '/templates/');
+
+		$this->setEngine($engine);
 	}
 
 	/**

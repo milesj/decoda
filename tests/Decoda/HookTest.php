@@ -19,34 +19,21 @@ class HookTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->object = new TestHook(array('key' => 'value'));
+		$this->object = new TestHook();
 	}
 
 	/**
-	 * Test that config() returns a configuration value.
+	 * Test that beforeParse() alters the string.
 	 */
-	public function testConfig() {
-		$this->assertEquals('value', $this->object->getConfig('key'));
-		$this->assertEquals(null, $this->object->getConfig('foobar'));
+	public function testBeforeParse() {
+		$this->assertEquals('baa2e91e038e0742f98c9b0836dc0065', $this->object->beforeParse('beforeParse'));
 	}
 
 	/**
-	 * Test that setParser() sets Decoda and getParser() returns it.
+	 * Test that afterParse() alters the string.
 	 */
-	public function testGetSetParser() {
-		$this->assertEquals(null, $this->object->getParser());
-
-		$this->object->setParser(new Decoda());
-		$this->assertInstanceOf('Decoda\Decoda', $this->object->getParser());
-	}
-
-	/**
-	 * Test that message() returns a localized string.
-	 */
-	public function testMessage() {
-		$this->object->setParser(new Decoda());
-
-		$this->assertEquals('Quote by {author}', $this->object->message('quoteBy'));
+	public function testAfterParse() {
+		$this->assertEquals('b146230f63474e50b8eb9e232c2b6542', $this->object->afterParse('afterParse'));
 	}
 
 }

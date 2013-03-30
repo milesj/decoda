@@ -5,7 +5,7 @@
  * @link		http://milesj.me/code/php/decoda
  */
 
-namespace Decoda\Filter;
+namespace Decoda\Hook;
 
 use Decoda\Decoda;
 use Decoda\Filter\ImageFilter;

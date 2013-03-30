@@ -486,14 +486,13 @@ class DecodaTest extends TestCase {
 	}
 
 	/**
-     * Verifies that text following a broken opening tag is parsed and included in the output
-     */
-    public function testTextBehindABrokenTagIsRetained()
-    {
-        $this->object->addFilter(new DefaultFilter());
-        $actual = $this->object->reset("b]Hello world[/b], [i]expected text[/i]")->parse();
-        $this->assertEquals("b]Hello world, <i>expected text</i>", $actual);
-    }
+	 * Verifies that text following a broken opening tag is parsed and included in the output
+	 */
+	public function testTextBehindABrokenTagIsRetained() {
+		$this->object->addFilter(new DefaultFilter());
+
+		$this->assertEquals("b]Hello world, <i>expected text</i>", $this->object->reset("b]Hello world[/b], [i]expected text[/i]")->parse());
+	}
 
     /**
 	 * Test that self closing tags work.

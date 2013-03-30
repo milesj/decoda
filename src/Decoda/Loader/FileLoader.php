@@ -53,8 +53,11 @@ class FileLoader extends AbstractLoader {
 			case 'json':
 				return json_decode(file_get_contents($this->_path), true);
 			break;
+			case 'ini':
+				return parse_ini_file($this->_path, true);
+			break;
 			case 'txt':
-				return file($this->_path);
+				return file($this->_path, FILE_IGNORE_NEW_LINES);
 			break;
 		}
 

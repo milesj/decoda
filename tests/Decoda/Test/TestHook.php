@@ -11,4 +11,24 @@ use Decoda\Hook\AbstractHook;
 
 class TestHook extends AbstractHook {
 
+	/**
+	 * MD5 the string for testing.
+	 *
+	 * @param string $string
+	 * @return string
+	 */
+	public function beforeParse($string) {
+		return md5($string);
+	}
+
+	/**
+	 * MD5 the string for testing.
+	 *
+	 * @param string $string
+	 * @return string
+	 */
+	public function afterParse($string) {
+		return md5($string);
+	}
+
 }

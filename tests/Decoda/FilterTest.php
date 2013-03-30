@@ -19,34 +19,7 @@ class FilterTest extends TestCase {
 	protected function setUp() {
 		parent::setUp();
 
-		$this->object = new TestFilter(array('key' => 'value'));
-	}
-
-	/**
-	 * Test that config() returns a configuration value.
-	 */
-	public function testConfig() {
-		$this->assertEquals('value', $this->object->getConfig('key'));
-		$this->assertEquals(null, $this->object->getConfig('foobar'));
-	}
-
-	/**
-	 * Test that setParser() sets Decoda and getParser() returns it.
-	 */
-	public function testGetSetParser() {
-		$this->assertEquals(null, $this->object->getParser());
-
-		$this->object->setParser(new Decoda());
-		$this->assertInstanceOf('Decoda\Decoda', $this->object->getParser());
-	}
-
-	/**
-	 * Test that message() returns a localized string.
-	 */
-	public function testMessage() {
-		$this->object->setParser(new Decoda());
-
-		$this->assertEquals('Quote by {author}', $this->object->message('quoteBy'));
+		$this->object = new TestFilter();
 	}
 
 	/**
@@ -65,9 +38,9 @@ class FilterTest extends TestCase {
 	}
 
 	/**
-	 * Test that tags() returns all tags.
+	 * Test that getTags() returns all tags.
 	 */
-	public function testTags() {
+	public function testGetTags() {
 		$this->assertEquals(array(
 			'example',
 			'template',
@@ -97,9 +70,9 @@ class FilterTest extends TestCase {
 	}
 
 	/**
-	 * Test that tag() returns a tag settings and the defaults.
+	 * Test that getTag() returns a tag settings and the defaults.
 	 */
-	public function testTag() {
+	public function testGetTag() {
 		$expected = array(
 			'tag' => 'fakeTag',
 			'htmlTag' => '',

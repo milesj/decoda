@@ -198,21 +198,24 @@ class Decoda {
 	 * Add additional filters.
 	 *
 	 * @param \Decoda\Filter $filter
+	 * @param string $key
 	 * @return \Decoda\Decoda
 	 */
-	public function addFilter(Filter $filter) {
+	public function addFilter(Filter $filter, $key = null) {
 		$filter->setParser($this);
 
-		$class = explode('\\', get_class($filter));
-		$class = str_replace('Filter', '', end($class));
+		if (!$key) {
+			$key = explode('\\', get_class($filter));
+			$key = str_replace('Filter', '', end($key));
+		}
 
 		$tags = $filter->getTags();
 
-		$this->_filters[$class] = $filter;
+		$this->_filters[$key] = $filter;
 		$this->_tags = $tags + $this->_tags;
 
 		foreach ($tags as $tag => $options) {
-			$this->_filterMap[$tag] = $class;
+			$this->_filterMap[$tag] = $key;
 		}
 
 		$filter->setupHooks($this);
@@ -224,15 +227,18 @@ class Decoda {
 	 * Add hooks that are triggered at specific events.
 	 *
 	 * @param \Decoda\Hook $hook
+	 * @param string $key
 	 * @return \Decoda\Decoda
 	 */
-	public function addHook(Hook $hook) {
+	public function addHook(Hook $hook, $key = null) {
 		$hook->setParser($this);
 
-		$class = explode('\\', get_class($hook));
-		$class = str_replace('Hook', '', end($class));
+		if (!$key) {
+			$key = explode('\\', get_class($hook));
+			$key = str_replace('Hook', '', end($key));
+		}
 
-		$this->_hooks[$class] = $hook;
+		$this->_hooks[$key] = $hook;
 
 		$hook->setupFilters($this);
 
@@ -270,6 +276,10 @@ class Decoda {
 	 * @return \Decoda\Decoda
 	 */
 	public function addPath($path) {
+		if (substr($path, -1) !== '/') {
+			$path .= '/';
+		}
+
 		$this->_paths[] = $path;
 
 		return $this;
@@ -326,6 +336,15 @@ class Decoda {
 		$this->_config['disabled'] = (bool) $status;
 
 		return $this;
+	}
+
+	/**
+	 * Return the current blacklist.
+	 *
+	 * @return array
+	 */
+	public function getBlacklist() {
+		return $this->_blacklist;
 	}
 
 	/**
@@ -451,6 +470,15 @@ class Decoda {
 	}
 
 	/**
+	 * Return the current whitelist.
+	 *
+	 * @return array
+	 */
+	public function getWhitelist() {
+		return $this->_whitelist;
+	}
+
+	/**
 	 * Check if a filter exists.
 	 *
 	 * @param string $filter
@@ -476,9 +504,15 @@ class Decoda {
 	 * @param string $key
 	 * @param array $vars
 	 * @return string
+	 * @throws \OutOfRangeException
 	 */
 	public function message($key, array $vars = array()) {
 		$locale = $this->getConfig('locale');
+
+		if (empty($this->_messages[$locale])) {
+			throw new OutOfRangeException(sprintf('Localized messages for %s do not exist', $locale));
+		}
+
 		$string = isset($this->_messages[$locale][$key]) ? $this->_messages[$locale][$key] : '';
 
 		if ($string && $vars) {
@@ -698,13 +732,8 @@ class Decoda {
 	 *
 	 * @param string $locale
 	 * @return \Decoda\Decoda
-	 * @throws \OutOfRangeException
 	 */
 	public function setLocale($locale) {
-		if (empty($this->_messages[$locale])) {
-			throw new OutOfRangeException(sprintf('Localized strings for %s do not exist', $locale));
-		}
-
 		$this->_config['locale'] = $locale;
 
 		return $this;

@@ -24,10 +24,10 @@ A lightweight lexical string parser for BBCode styled markup.
 * Parses custom code to valid (X)HTML markup
 * Setting to make links and emails auto-clickable
 * Setting to use shorthand text for links and emails
-* Provides Filters to parse markup and custom code
-* Provides Hooks to execute callbacks during the parsing cycle
-* Provides Loaders to load resources and files for configuration
-* Provides Engines to render complex markup using a template system
+* Filters to parse markup and custom code
+* Hooks to execute callbacks during the parsing cycle
+* Loaders to load resources and files for configuration
+* Engines to render complex markup using a template system
 * Can censor offensive words
 * Can convert smiley faces into images
 * Basic support for localized messages
@@ -51,6 +51,7 @@ The following filters and supported tags are available.
 * Text - font, size, color, h1-h6
 * Url - url, link
 * Video - video, youtube, vimeo, veoh, liveleak, dailymotion, myspace, wegame, collegehumor
+* Table - table, thead, tbody, tfoot, tr, td, th
 
 ## Hooks ##
 
@@ -59,11 +60,6 @@ The following hooks are available.
 * Censor - Censors all words found within config/censored
 * Clickable - Converts all non-tag wrapped URLs and emails into clickable links
 * Emoticon - Converts all smilies found within config/emoticons into emoticon images
-
-## Unsupported ##
-
-* URLs that begin with www will not be converted (intentional)
-* Certain videos are not supported as their embed code does not match the URL in the address bar
 
 ## Documentation ##
 

@@ -26,6 +26,7 @@ class TableFilterTest extends TestCase {
 	 */
 	public function testTable() {
 		$this->assertEquals('<table class="decoda-table"></table>', $this->object->reset('[table]Table[/table]')->parse());
+		$this->assertEquals('<table class="decoda-table test"></table>', $this->object->reset('[table class="test"]Table[/table]')->parse());
 	}
 
 	/**

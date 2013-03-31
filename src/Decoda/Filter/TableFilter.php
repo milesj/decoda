@@ -26,6 +26,9 @@ class TableFilter extends AbstractFilter {
 			'allowedTypes' => Decoda::TYPE_BLOCK,
 			'lineBreaks' => Decoda::NL_REMOVE,
 			'childrenWhitelist' => array('tr', 'thead', 'tbody', 'tfoot'),
+			'attributes' => array(
+				'class' => self::ALNUM
+			),
 			'htmlAttributes' => array(
 				'class' => 'decoda-table'
 			)

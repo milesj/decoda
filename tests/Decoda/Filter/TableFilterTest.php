@@ -1,0 +1,151 @@
+<?php
+/**
+ * @copyright	Copyright 2006-2013, Miles Johnson - http://milesj.me
+ * @license		http://opensource.org/licenses/mit-license.php - Licensed under the MIT License
+ * @link		http://milesj.me/code/php/decoda
+ */
+
+namespace Decoda\Filter;
+
+use Decoda\Filter\TableFilter;
+use Decoda\Test\TestCase;
+
+class TableFilterTest extends TestCase {
+
+	/**
+	 * Set up Decoda.
+	 */
+	protected function setUp() {
+		parent::setUp();
+
+		$this->object->addFilter(new TableFilter());
+	}
+
+	/**
+	 * Test the [table] tag.
+	 */
+	public function testTable() {
+		$this->assertEquals('<table class="decoda-table"></table>', $this->object->reset('[table]Table[/table]')->parse());
+	}
+
+	/**
+	 * Test the [thead] tag.
+	 */
+	public function testThead() {
+		$this->assertEquals('<table class="decoda-table"><thead></thead></table>', $this->object->reset('[table][thead]Table[/thead][/table]')->parse());
+		$this->assertEquals('Table', $this->object->reset('[thead]Table[/thead]')->parse());
+	}
+
+	/**
+	 * Test the [tbody] tag.
+	 */
+	public function testTbody() {
+		$this->assertEquals('<table class="decoda-table"><tbody></tbody></table>', $this->object->reset('[table][tbody]Table[/tbody][/table]')->parse());
+		$this->assertEquals('Table', $this->object->reset('[tbody]Table[/tbody]')->parse());
+	}
+
+	/**
+	 * Test the [tfoot] tag.
+	 */
+	public function testTfoot() {
+		$this->assertEquals('<table class="decoda-table"><tfoot></tfoot></table>', $this->object->reset('[table][tfoot]Table[/tfoot][/table]')->parse());
+		$this->assertEquals('Table', $this->object->reset('[tfoot]Table[/tfoot]')->parse());
+	}
+
+	/**
+	 * Test the [tr] tag.
+	 */
+	public function testTr() {
+		$this->assertEquals('<table class="decoda-table"><tr></tr></table>', $this->object->reset('[table][tr]Table[/tr][/table]')->parse());
+		$this->assertEquals('Table', $this->object->reset('[tr]Table[/tr]')->parse());
+	}
+
+	/**
+	 * Test the [th] tag.
+	 */
+	public function testTh() {
+		$this->assertEquals('<table class="decoda-table"><tr><th>One</th><th>Two</th></tr></table>', $this->object->reset('[table][tr][th]One[/th][th]Two[/th][/tr][/table]')->parse());
+		$this->assertEquals('<table class="decoda-table"><tr><th>One</th><th>Two</th></tr><tr><td>One</td><td>Two</td></tr></table>', $this->object->reset('[table][tr][th]One[/th][th]Two[/th][/tr][tr][td]One[/td][td]Two[/td][/tr][/table]')->parse());
+		$this->assertEquals('Table', $this->object->reset('[th]Table[/th]')->parse());
+		$this->assertEquals('Table', $this->object->reset('[tr][th]Table[/th][/tr]')->parse());
+	}
+
+	/**
+	 * Test the [td] tag.
+	 */
+	public function testTd() {
+		$this->assertEquals('<table class="decoda-table"><tr><td>One</td><td>Two</td></tr></table>', $this->object->reset('[table][tr][td]One[/td][td]Two[/td][/tr][/table]')->parse());
+		$this->assertEquals('<table class="decoda-table"><tr><td>One</td><td>Two</td></tr><tr><td>One</td><td>Two</td></tr></table>', $this->object->reset('[table][tr][td]One[/td][td]Two[/td][/tr][tr][td]One[/td][td]Two[/td][/tr][/table]')->parse());
+		$this->assertEquals('Table', $this->object->reset('[td]Table[/td]')->parse());
+		$this->assertEquals('Table', $this->object->reset('[tr][td]Table[/td][/tr]')->parse());
+
+		// colspan
+		$this->assertEquals('<table class="decoda-table"><tr><td colspan="2">Two</td></tr></table>', $this->object->reset('[table][tr][td="2"]Two[/td][/tr][/table]')->parse());
+		$this->assertEquals('<table class="decoda-table"><tr><td>Two</td></tr></table>', $this->object->reset('[table][tr][td="abc"]Two[/td][/tr][/table]')->parse());
+	}
+
+	/**
+	 * Test larger examples.
+	 */
+	public function testFullExamples() {
+		$string = <<<TABLE
+[table]
+	[tbody]
+		[tr]
+			[td]One[/td]
+			[td]Two[/td]
+		[/tr]
+		[tr]
+			[td]One[/td]
+			[td]Two[/td]
+		[/tr]
+	[/tbody]
+[/table]
+TABLE;
+
+		$expected = '<table class="decoda-table"><tbody><tr><td>One</td><td>Two</td></tr><tr><td>One</td><td>Two</td></tr></tbody></table>';
+		$this->assertEquals($expected, $this->object->reset($string)->parse());
+
+		$string = <<<TABLE
+[table]
+	[thead]
+		[tr]
+			[th]One[/th]
+			[th]Two[/th]
+		[/tr]
+	[/thead]
+	[tbody]
+		[tr]
+			[td]One[/td]
+			[td]Two[/td]
+		[/tr]
+		[tr]
+			[td]One[/td]
+			[td]Two[/td]
+		[/tr]
+	[/tbody]
+[/table]
+TABLE;
+
+		$expected = '<table class="decoda-table"><thead><tr><th>One</th><th>Two</th></tr></thead><tbody><tr><td>One</td><td>Two</td></tr><tr><td>One</td><td>Two</td></tr></tbody></table>';
+		$this->assertEquals($expected, $this->object->reset($string)->parse());
+
+		// Invalid nesting
+		$string = <<<TABLE
+[table]
+	[tbody]
+		[tr]
+			[td]One[/td]
+			[td]Two[/td]
+		[/tr]
+		[td]One[/td]
+		[td]Two[/td]
+	[/tbody]
+[/table]
+TABLE;
+
+		$expected = '<table class="decoda-table"><tbody><tr><td>One</td><td>Two</td></tr></tbody></table>';
+		$this->assertEquals($expected, $this->object->reset($string)->parse());
+	}
+
+}

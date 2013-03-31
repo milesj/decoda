@@ -63,4 +63,12 @@ class ListFilterTest extends TestCase {
 		$this->assertEquals('[b]List item[/b]', $this->object->reset('[b][li]List item[/li][/b]')->parse());
 	}
 
+	/**
+	 * Test that list types can be defined through the default attribute.
+	 */
+	public function testListDefault() {
+		$this->assertEquals('<ul class="decoda-list type-square"></ul>', $this->object->reset('[list="square"][/list]')->parse());
+		$this->assertEquals('<ul class="decoda-list type-upper-roman"></ul>', $this->object->reset('[list="upper-roman"][/list]')->parse());
+	}
+
 }

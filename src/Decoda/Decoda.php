@@ -896,7 +896,7 @@ class Decoda {
 			}
 
 		// Opening tag
-		} else if (preg_match('/' . preg_quote($oe, '/') . '([a-z0-9]+)(.*?)' . preg_quote($ce, '/') . '/i', $string, $matches)) {
+		} else if (preg_match('/' . preg_quote($oe, '/') . '([-a-z0-9]+)(.*?)' . preg_quote($ce, '/') . '/i', $string, $matches)) {
 			$tag = trim($matches[1]);
 			$type = self::TAG_OPEN;
 		}

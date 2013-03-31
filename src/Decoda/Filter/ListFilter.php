@@ -14,6 +14,8 @@ use Decoda\Decoda;
  */
 class ListFilter extends AbstractFilter {
 
+	const LIST_TYPE = '/^[-a-z]+$/i';
+
 	/**
 	 * Supported tags.
 	 *
@@ -26,6 +28,12 @@ class ListFilter extends AbstractFilter {
 			'allowedTypes' => Decoda::TYPE_BOTH,
 			'lineBreaks' => Decoda::NL_REMOVE,
 			'childrenWhitelist' => array('li'),
+			'attributes' => array(
+				'default' => array(self::LIST_TYPE, 'type-{default}')
+			),
+			'mapAttributes' => array(
+				'default' => 'class'
+			),
 			'htmlAttributes' => array(
 				'class' => 'decoda-olist'
 			)
@@ -36,6 +44,12 @@ class ListFilter extends AbstractFilter {
 			'allowedTypes' => Decoda::TYPE_BOTH,
 			'lineBreaks' => Decoda::NL_REMOVE,
 			'childrenWhitelist' => array('li'),
+			'attributes' => array(
+				'default' => array(self::LIST_TYPE, 'type-{default}')
+			),
+			'mapAttributes' => array(
+				'default' => 'class'
+			),
 			'htmlAttributes' => array(
 				'class' => 'decoda-list'
 			)

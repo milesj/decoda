@@ -1,4 +1,4 @@
-# Decoda v6.0.0-rc3 #
+# Decoda v6.0.0 #
 
 A lightweight lexical string parser for BBCode styled markup.
 

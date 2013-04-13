@@ -12,23 +12,4 @@ namespace Decoda\Hook;
  */
 class EmptyHook extends AbstractHook {
 
-	/**
-	 * Fix weird problems.
-	 *
-	 * @param string $string
-	 * @return string
-	 */
-	public function beforeParse($string) {
-
-		// Fix URLs that end in trailing slash by wrapping them in double quotes
-		// This causes URLs to be triggered as self closing tags instead of opening tags
-		if ($this->getParser()->hasFilter('Url')) {
-			$string = preg_replace_callback('/\[url=(.*?)\]/i', function($matches) {
-				return sprintf('[url="%s"]', trim($matches[1], '"'));
-			}, $string);
-		}
-
-		return $string;
-	}
-
 }

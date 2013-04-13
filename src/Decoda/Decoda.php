@@ -885,16 +885,6 @@ class Decoda {
 			$tag = trim(mb_substr($string, 2, mb_strlen($string) - 3));
 			$type = self::TAG_CLOSE;
 
-		// Self closing tag
-		} else if (mb_substr($string, -2) === '/' . $ce) {
-			$tag = trim(mb_substr($string, 1, mb_strlen($string) - 3));
-			$type = self::TAG_SELF_CLOSE;
-
-			// Check if spaces or attributes exist
-			if ($pos = mb_strpos($tag, ' ')) {
-				$tag = mb_substr($tag, 0, $pos);
-			}
-
 		// Opening tag
 		} else if (preg_match('/' . preg_quote($oe, '/') . '([-a-z0-9]+)(.*?)' . preg_quote($ce, '/') . '/i', $string, $matches)) {
 			$tag = trim($matches[1]);
@@ -908,6 +898,17 @@ class Decoda {
 
 		if (!isset($this->_tags[$tag])) {
 			return false;
+		}
+
+		if (self::TAG_OPEN === $type) {
+			// Check if is a self closing tag
+			if (
+				isset($this->_tags[$tag]['autoClose']) &&
+				$this->_tags[$tag]['autoClose'] === true &&
+				mb_substr($string, -2) === '/' . $ce
+			) {
+				$type = self::TAG_SELF_CLOSE;
+			}
 		}
 
 		// Find attributes

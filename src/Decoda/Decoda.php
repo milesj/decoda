@@ -900,11 +900,11 @@ class Decoda {
 			return false;
 		}
 
+		// Check if is a self closing tag
 		if (self::TAG_OPEN === $type) {
-			// Check if is a self closing tag
 			if (
 				isset($this->_tags[$tag]['autoClose']) &&
-				$this->_tags[$tag]['autoClose'] === true &&
+				$this->_tags[$tag]['autoClose'] &&
 				mb_substr($string, -2) === '/' . $ce
 			) {
 				$type = self::TAG_SELF_CLOSE;

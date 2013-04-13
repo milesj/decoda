@@ -47,10 +47,11 @@ class UrlFilterTest extends TestCase {
 
 	}
 
+	/**
+	 * Test URLs with a trailing slash.
+	 */
 	public function testUrlWhenStrictIsFalse() {
 		$this->object->setStrict(false);
-
-		// Test URLs with a trailing slash
 		$this->assertEquals('<a href="http://domain.com/">Test</a>', $this->object->reset('[url=http://domain.com/]Test[/url]')->parse());
 	}
 

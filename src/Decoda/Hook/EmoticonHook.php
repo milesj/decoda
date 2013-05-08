@@ -90,11 +90,12 @@ class EmoticonHook extends AbstractHook {
 			return ($aLen > $bLen) ? -1 : 1;
 		});
 
-		foreach ($smiles as $smile) {
-			$content = preg_replace_callback('/(^|\n|\s)?' . preg_quote($smile, '/') . '(\n|\s|$)?/is', array($this, '_emoticonCallback'), $content);
-		}
+		// build the smilies regex part
+		$smiliesRegex = implode('|', array_map(function ($smile) {
+			return preg_quote($smile, '/');
+		}, $smiles));
 
-		return $content;
+		return preg_replace_callback('/(^|\n|\s)?(?:' . $smiliesRegex . ')(\n|\s|$)?/is', array($this, '_emoticonCallback'), $content);
 	}
 
 	/**

@@ -77,7 +77,17 @@ class EmoticonHook extends AbstractHook {
 	 * @return string
 	 */
 	public function beforeParse($content) {
-		foreach ($this->getSmilies() as $smile) {
+		$smiles = $this->getSmilies();
+
+		// sort smilies from longest to smallest
+		usort($smiles, function ($a, $b) {
+			if ($a == $b) {
+				return 0;
+			}
+			return (mb_strlen($a) > mb_strlen($b)) ? -1 : 1;
+		});
+
+		foreach ($smiles as $smile) {
 			$content = preg_replace_callback('/(^|\n|\s)?' . preg_quote($smile, '/') . '(\n|\s|$)?/is', array($this, '_emoticonCallback'), $content);
 		}
 

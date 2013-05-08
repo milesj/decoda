@@ -81,10 +81,13 @@ class EmoticonHook extends AbstractHook {
 
 		// sort smilies from longest to smallest
 		usort($smiles, function ($a, $b) {
-			if ($a == $b) {
+			// mb_strlen is not used here because the regex don't use UTF-8 mode
+			$aLen = strlen($a);
+			$bLen = strlen($b);
+			if ($aLen == $bLen) {
 				return 0;
 			}
-			return (mb_strlen($a) > mb_strlen($b)) ? -1 : 1;
+			return ($aLen > $bLen) ? -1 : 1;
 		});
 
 		foreach ($smiles as $smile) {

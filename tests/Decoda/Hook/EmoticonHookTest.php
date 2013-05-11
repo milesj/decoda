@@ -47,6 +47,12 @@ class EmoticonHookTest extends TestCase {
 			array('At the mid:)dle of the word', 'At the mid:)dle of the word'),
 			array('At the end:) of the word', 'At the end:) of the word'),
 			array('http://', 'http://'),
+			array('With a :/'."\n". ' linefeed', 'With a <img src="/images/hm.png" alt="">'."\n". ' linefeed'),
+			array('With a :/'."\r". ' carriage return', 'With a <img src="/images/hm.png" alt="">'."\r". ' carriage return'),
+			array('With a :/'."\t". ' tab', 'With a <img src="/images/hm.png" alt="">'."\t". ' tab'),
+			array(':/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
+			array(' :/ :/ ', ' <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> '),
+			array(' :/ :/ :/ ', ' <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> '),
 		);
 	}
 

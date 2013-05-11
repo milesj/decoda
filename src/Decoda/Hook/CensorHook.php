@@ -105,9 +105,16 @@ class CensorHook extends AbstractHook {
 	 * @return string
 	 */
 	protected function _censor($content) {
-		foreach ($this->getBlacklist() as $word) {
-			$content = preg_replace_callback('/(^|\s|\n|[^\w]){1,1}(?:' . $this->_prepareRegex($word) . ')([^\w]|\s|\n|$){1,1}/isS', array($this, '_censorCallback'), $content);
-		}
+		$words = $this->getBlacklist();
+
+		// Build the words regex
+		$wordsRegex = implode('|', array_map(array($this, '_prepareRegex'), $words));
+
+		$pattern = sprintf('/(^|\s|\n|[^\w]){1,1}(?:%s)([^\w]|\s|\n|$){1,1}/isS', $wordsRegex);
+
+		// Make two passes to accept that one delimiter can use two words
+		$content = preg_replace_callback($pattern, array($this, '_censorCallback'), $content);
+		$content = preg_replace_callback($pattern, array($this, '_censorCallback'), $content);
 
 		return $content;
 	}

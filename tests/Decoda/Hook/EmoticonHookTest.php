@@ -29,20 +29,53 @@ class EmoticonHookTest extends TestCase {
 	}
 
 	/**
-	 * Test that smiley faces are converted to emoticon images.
+	 * Test smiley detection according to the positioning.
+	 *
+	 * @dataProvider getSmileyDetectionData
 	 */
-	public function testConversion() {
-		$this->assertEquals('<img src="/images/happy.png" alt="">', $this->object->beforeParse(':)'));
-		$this->assertEquals('<img src="/images/sad.png" alt="">', $this->object->beforeParse(':('));
-		$this->assertEquals('<img src="/images/kiss.png" alt="">', $this->object->beforeParse(':3'));
-		$this->assertEquals('<img src="/images/meh.png" alt="">', $this->object->beforeParse('&lt;_&lt;'));
-		$this->assertEquals('<img src="/images/heart.png" alt="">', $this->object->beforeParse(':heart:'));
-		$this->assertEquals('<img src="/images/wink.png" alt="">', $this->object->beforeParse(';D'));
-
-		// positioning
-		$this->assertEquals('<img src="/images/hm.png" alt=""> at the beginning', $this->object->beforeParse(':/ at the beginning'));
-		$this->assertEquals('Smiley at the end <img src="/images/gah.png" alt="">', $this->object->beforeParse('Smiley at the end :O'));
-		$this->assertEquals('Smiley in the middle <img src="/images/tongue.png" alt=""> of a string', $this->object->beforeParse('Smiley in the middle :P of a string'));
+	public function testSmileyDetection($value, $expected) {
+		$this->assertEquals($expected, $this->object->beforeParse($value));
 	}
 
+	public function getSmileyDetectionData() {
+		return array(
+			array(':/ at the beginning', '<img src="/images/hm.png" alt=""> at the beginning'),
+			array('Smiley at the end :O', 'Smiley at the end <img src="/images/gah.png" alt="">'),
+			array('Smiley in the middle :P of a string', 'Smiley in the middle <img src="/images/tongue.png" alt=""> of a string'),
+			array(':):):)', ':):):)'),
+			array('At the :)start of the word', 'At the :)start of the word'),
+			array('At the mid:)dle of the word', 'At the mid:)dle of the word'),
+			array('At the end:) of the word', 'At the end:) of the word'),
+			array('http://', 'http://'),
+			array('With a :/'."\n". ' linefeed', 'With a <img src="/images/hm.png" alt="">'."\n". ' linefeed'),
+			array('With a :/'."\r". ' carriage return', 'With a <img src="/images/hm.png" alt="">'."\r". ' carriage return'),
+			array('With a :/'."\t". ' tab', 'With a <img src="/images/hm.png" alt="">'."\t". ' tab'),
+			array(':/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
+			array(' :/ :/ ', ' <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> '),
+			array(' :/ :/ :/ ', ' <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> '),
+		);
+	}
+
+	/**
+	 * Test that smiley faces are converted to emoticon images.
+	 *
+	 * @dataProvider getSmileyConversionData
+	 */
+	public function testSmileyConversion($value, $expected) {
+		$this->assertEquals($expected, $this->object->beforeParse($value));
+	}
+
+	public function getSmileyConversionData() {
+		$decoda = new Decoda();
+		$hook = new EmoticonHook();
+		$hook->setParser($decoda);
+		$hook->startup();
+
+		$datas = array();
+		foreach ($hook->getSmilies() as $smile) {
+			$datas[] = array($smile, $hook->render($smile, $decoda->getConfig('xhtmlOutput')));
+		}
+
+		return $datas;
+	}
 }

@@ -77,9 +77,18 @@ class EmoticonHook extends AbstractHook {
 	 * @return string
 	 */
 	public function beforeParse($content) {
-		foreach ($this->getSmilies() as $smile) {
-			$content = preg_replace_callback('/(^|\n|\s)?' . preg_quote($smile, '/') . '(\n|\s|$)?/is', array($this, '_emoticonCallback'), $content);
-		}
+		$smilies = $this->getSmilies();
+
+		// build the smilies regex part
+		$smiliesRegex = implode('|', array_map(function ($smile) {
+			return preg_quote($smile, '/');
+		}, $smilies));
+
+		$pattern = sprintf('/(?P<left>^|\n|\s)(?:%s)(?P<right>\n|\s|$)/is', $smiliesRegex);
+
+		// make two passes to accept that one delimiter can use by two smilies
+		$content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
+		$content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
 
 		return $content;
 	}
@@ -151,8 +160,8 @@ class EmoticonHook extends AbstractHook {
 			return $matches[0];
 		}
 
-		$l = isset($matches[1]) ? $matches[1] : '';
-		$r = isset($matches[2]) ? $matches[2] : '';
+		$l = isset($matches['left']) ? $matches['left'] : '';
+		$r = isset($matches['right']) ? $matches['right'] : '';
 
 		return $l . $this->render($smiley, $this->getParser()->getConfig('xhtmlOutput')) . $r;
 	}

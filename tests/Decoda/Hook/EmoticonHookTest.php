@@ -42,7 +42,7 @@ class EmoticonHookTest extends TestCase {
 			array(':/ at the beginning', '<img src="/images/hm.png" alt=""> at the beginning'),
 			array('Smiley at the end :O', 'Smiley at the end <img src="/images/gah.png" alt="">'),
 			array('Smiley in the middle :P of a string', 'Smiley in the middle <img src="/images/tongue.png" alt=""> of a string'),
-			array(':):):)', '<img src="/images/happy.png" alt=""><img src="/images/happy.png" alt=""><img src="/images/happy.png" alt="">'),
+			array(':):):)', ':):):)'),
 			array('At the :)start of the word', 'At the :)start of the word'),
 			array('At the mid:)dle of the word', 'At the mid:)dle of the word'),
 			array('At the end:) of the word', 'At the end:) of the word'),

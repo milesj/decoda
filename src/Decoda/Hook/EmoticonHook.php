@@ -86,7 +86,11 @@ class EmoticonHook extends AbstractHook {
 
 		$pattern = sprintf('/(?P<left>^|\n|\s)(?:%s)(?P<right>\n|\s|$)/is', $smiliesRegex);
 
-		return preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
+		// make two passes to accept that one delimiter can use by two smilies
+		$content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
+		$content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
+
+		return $content;
 	}
 
 	/**

@@ -37,6 +37,11 @@ class EmoticonHookTest extends TestCase {
 		$this->assertEquals($expected, $this->object->beforeParse($value));
 	}
 
+	/**
+	 * Provide all smiley patterns.
+	 *
+	 * @return array
+	 */
 	public function getSmileyDetectionData() {
 		return array(
 			array(':/ at the beginning', '<img src="/images/hm.png" alt=""> at the beginning'),
@@ -47,9 +52,9 @@ class EmoticonHookTest extends TestCase {
 			array('At the mid:)dle of the word', 'At the mid:)dle of the word'),
 			array('At the end:) of the word', 'At the end:) of the word'),
 			array('http://', 'http://'),
-			array('With a :/'."\n". ' linefeed', 'With a <img src="/images/hm.png" alt="">'."\n". ' linefeed'),
-			array('With a :/'."\r". ' carriage return', 'With a <img src="/images/hm.png" alt="">'."\r". ' carriage return'),
-			array('With a :/'."\t". ' tab', 'With a <img src="/images/hm.png" alt="">'."\t". ' tab'),
+			array("With a :/\n linefeed", 'With a <img src="/images/hm.png" alt="">' . "\n" . ' linefeed'),
+			array("With a :/\r carriage return", 'With a <img src="/images/hm.png" alt="">' . "\r" . ' carriage return'),
+			array("With a :/\t tab", 'With a <img src="/images/hm.png" alt="">' . "\t" . ' tab'),
 			array(':/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
 			array(' :/ :/ ', ' <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> '),
 			array(' :/ :/ :/ ', ' <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> '),
@@ -65,17 +70,23 @@ class EmoticonHookTest extends TestCase {
 		$this->assertEquals($expected, $this->object->beforeParse($value));
 	}
 
+	/**
+	 * Provide a mapping of smiley and rendered form.
+	 *
+	 * @return array
+	 */
 	public function getSmileyConversionData() {
 		$decoda = new Decoda();
 		$hook = new EmoticonHook();
 		$hook->setParser($decoda);
 		$hook->startup();
 
-		$datas = array();
+		$data = array();
+
 		foreach ($hook->getSmilies() as $smile) {
-			$datas[] = array($smile, $hook->render($smile, $decoda->getConfig('xhtmlOutput')));
+			$data[] = array($smile, $hook->render($smile, $decoda->getConfig('xhtmlOutput')));
 		}
 
-		return $datas;
+		return $data;
 	}
 }

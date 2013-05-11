@@ -79,17 +79,6 @@ class EmoticonHook extends AbstractHook {
 	public function beforeParse($content) {
 		$smilies = $this->getSmilies();
 
-		// sort smilies from longest to smallest
-		usort($smilies, function ($a, $b) {
-			// mb_strlen is not used here because the regex don't use UTF-8 mode
-			$aLen = strlen($a);
-			$bLen = strlen($b);
-			if ($aLen == $bLen) {
-				return 0;
-			}
-			return ($aLen > $bLen) ? -1 : 1;
-		});
-
 		// build the smilies regex part
 		$smiliesRegex = implode('|', array_map(function ($smile) {
 			return preg_quote($smile, '/');

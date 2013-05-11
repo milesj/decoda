@@ -95,7 +95,7 @@ class EmoticonHook extends AbstractHook {
 			return preg_quote($smile, '/');
 		}, $smilies));
 
-		$pattern = sprintf('/(?P<left>^|\n|\s)(?P<smile>%s)(?P<right>\n|\s|$)/is', $smiliesRegex);
+		$pattern = sprintf('/(?P<left>^|\n|\s)(?:%s)(?P<right>\n|\s|$)/is', $smiliesRegex);
 
 		return preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
 	}
@@ -161,7 +161,7 @@ class EmoticonHook extends AbstractHook {
 	 * @return string
 	 */
 	protected function _emoticonCallback($matches) {
-		$smiley = $matches['smile'];
+		$smiley = trim($matches[0]);
 
 		if (count($matches) === 1 || !$this->hasSmiley($smiley)) {
 			return $matches[0];

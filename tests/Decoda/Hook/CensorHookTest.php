@@ -28,15 +28,15 @@ class CensorHookTest extends TestCase {
 	 * Test that beforeParse() will convert curse words to a censored equivalent. Will also take into account mulitple characters.
 	 */
 	public function testParse() {
-		$this->assertNotEquals('fuck', $this->object->beforeParse('fuck'));
-		$this->assertNotEquals('fuck fuck fuck', $this->object->beforeParse('fuck fuck fuck'));
-		$this->assertNotEquals('fuuuccckkkkk', $this->object->beforeParse('fuuuccckkkkk'));
-		$this->assertNotEquals('fffUUUcccKKKkk', $this->object->beforeParse('fffUUUcccKKKkk'));
-		$this->assertNotEquals('Hey, fuck you buddy!', $this->object->beforeParse('Hey, fuck you buddy!'));
+		$this->assertRegExp('/[@#\$\*!\?%]{4}/', $this->object->beforeParse('fuck'));
+		$this->assertRegExp('/[@#\$\*!\?%]{4} [@#\$\*!\?%]{4} [@#\$\*!\?%]{4}/', $this->object->beforeParse('fuck fuck fuck'));
+		$this->assertRegExp('/[@#\$\*!\?%]{12}/', $this->object->beforeParse('fuuuccckkkkk'));
+		$this->assertRegExp('/[@#\$\*!\?%]{14}/', $this->object->beforeParse('fffUUUcccKKKkk'));
+		$this->assertRegExp('/Hey, [@#\$\*!\?%]{4} you buddy!/', $this->object->beforeParse('Hey, fuck you buddy!'));
 
 		// Don't censor words that share a blacklist
-		$this->assertNotEquals('nig', $this->object->beforeParse('nig'));
-		$this->assertNotEquals('nigger', $this->object->beforeParse('nigger'));
+		$this->assertRegExp('/[@#\$\*!\?%]{3}/', $this->object->beforeParse('nig'));
+		$this->assertRegExp('/[@#\$\*!\?%]{6}/', $this->object->beforeParse('nigger'));
 		$this->assertEquals('Night', $this->object->beforeParse('Night'));
 	}
 
@@ -47,8 +47,8 @@ class CensorHookTest extends TestCase {
 		$this->assertEquals('word', $this->object->beforeParse('word'));
 
 		$this->object->blacklist(array('word'));
-		$this->assertNotEquals('word', $this->object->beforeParse('word'));
-		$this->assertNotEquals('wooRrrDdd', $this->object->beforeParse('wooRrrDdd'));
+		$this->assertRegExp('/[@#\$\*!\?%]{4}/', $this->object->beforeParse('word'));
+		$this->assertRegExp('/[@#\$\*!\?%]{9}/', $this->object->beforeParse('wooRrrDdd'));
 	}
 
 }

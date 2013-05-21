@@ -105,9 +105,8 @@ class CensorHook extends AbstractHook {
 	 * @return string
 	 */
 	protected function _censor($content) {
-		foreach ($this->getBlacklist() as $word) {
-			$content = preg_replace_callback('/(^|\s|\n|[^\w]){1,1}(?:' . $this->_prepareRegex($word) . ')([^\w]|\s|\n|$){1,1}/isS', array($this, '_censorCallback'), $content);
-		}
+		$pattern = implode('|', array_map(array($this, '_prepareRegex'), $this->getBlacklist()));
+		$content = preg_replace_callback('/(?:^|\b)(?:' . $pattern . ')(?:\b|$)/is', array($this, '_censorCallback'), $content);
 
 		return $content;
 	}
@@ -119,17 +118,15 @@ class CensorHook extends AbstractHook {
 	 * @return string
 	 */
 	protected function _censorCallback($matches) {
-		if (count($matches) === 1) {
-			return $matches[0];
-		}
-
 		$length = mb_strlen(trim($matches[0]));
 		$censored = '';
 		$symbols = str_shuffle('*@#$*!?%');
-		$l = isset($matches[1]) ? $matches[1] : '';
-		$r = isset($matches[2]) ? $matches[2] : '';
 		$i = 0;
 		$s = 0;
+
+		if ($length > 10) {
+			$length = 10;
+		}
 
 		while ($i < $length) {
 			$censored .= $symbols[$s];
@@ -142,7 +139,7 @@ class CensorHook extends AbstractHook {
 			}
 		}
 
-		return $l . $censored . $r;
+		return $censored;
 	}
 
 	/**

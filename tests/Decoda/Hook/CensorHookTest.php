@@ -29,6 +29,7 @@ class CensorHookTest extends TestCase {
 	 */
 	public function testParse() {
 		$this->assertNotEquals('fuck', $this->object->beforeParse('fuck'));
+		$this->assertNotEquals('fuck fuckk fucckk', $this->object->beforeParse('fuck fuckk fucckk'));
 		$this->assertNotEquals('fuuuccckkkkk', $this->object->beforeParse('fuuuccckkkkk'));
 		$this->assertNotEquals('fffUUUcccKKKkk', $this->object->beforeParse('fffUUUcccKKKkk'));
 		$this->assertNotEquals('Hey, fuck you buddy!', $this->object->beforeParse('Hey, fuck you buddy!'));

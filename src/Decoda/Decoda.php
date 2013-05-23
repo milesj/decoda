@@ -1027,6 +1027,7 @@ class Decoda {
 
 			switch ($chunk['type']) {
 				case self::TAG_NONE:
+					// Disregard deeply nested text nodes if persist is disabled
 					if ($disallowed && !$parent['persistContent']) {
 						continue;
 					}
@@ -1056,6 +1057,7 @@ class Decoda {
 						$parents[] = $parent;
 						$parent = $this->getFilterByTag($tag)->getTag($tag);
 
+						// Don't parse Decoda tags if preserve is disabled
 						if ($prevParent['preserveTags']) {
 							$chunk['type'] = self::TAG_NONE;
 							$parent['preserveTags'] = true;
@@ -1347,7 +1349,7 @@ class Decoda {
 		$child = $filter->getTag($tag);
 
 		// Remove children after a certain nested depth
-		if (isset($parent['currentDepth']) && $parent['currentDepth'] > $parent['maxChildDepth']) {
+		if (isset($parent['currentDepth']) && $parent['maxChildDepth'] >= 0 && $parent['currentDepth'] > $parent['maxChildDepth']) {
 			return false;
 
 		// Children that can only be within a certain parent

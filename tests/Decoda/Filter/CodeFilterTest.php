@@ -108,4 +108,25 @@ CODE;
 		$this->assertEquals('<var>Variable</var>', $this->object->reset('[var]Variable[/var]')->parse());
 	}
 
+	/**
+	 * Test code blocks within quote blocks.
+	 */
+	public function testCodeInQuote() {
+		$this->object->addFilter(new QuoteFilter());
+
+$string = <<<'CODE'
+[quote][code="php"]doSomething();[/code][/quote]
+
+[code="php"]doSomethingElse();[/code]
+CODE;
+
+		$expected = <<<'CODE'
+<blockquote class="decoda-quote">		<div class="decoda-quote-body">		<pre class="decoda-code lang-php"><code>doSomething();</code></pre>	</div></blockquote><br>
+<br>
+<pre class="decoda-code lang-php"><code>doSomethingElse();</code></pre>
+CODE;
+
+		$this->assertEquals($this->nl($expected), $this->object->reset($string)->parse());
+	}
+
 }

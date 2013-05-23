@@ -16,6 +16,16 @@ use Decoda\Hook\CodeHook;
 class CodeFilter extends AbstractFilter {
 
 	/**
+	 * Configuration.
+	 *
+	 * @var array
+	 */
+	protected $_config = array(
+		'classPrefix' => 'lang-',
+		'highlightAttribute' => 'data-line'
+	);
+
+	/**
 	 * Supported tags.
 	 *
 	 * @var array

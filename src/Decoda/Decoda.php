@@ -187,13 +187,7 @@ class Decoda {
 	public function __construct($string = '', array $config = array()) {
 		$this->reset($string, true);
 		$this->setConfig($config);
-		$this->addPath(__DIR__ . '/config/');
-
-		// Set the default engine
-		$engine = new \Decoda\Engine\PhpEngine();
-		$engine->addPath(__DIR__ . '/templates/');
-
-		$this->setEngine($engine);
+		$this->addPath(dirname(__DIR__) . '/config/');
 	}
 
 	/**
@@ -459,6 +453,13 @@ class Decoda {
 	 * @return \Decoda\Engine
 	 */
 	public function getEngine() {
+		if (!$this->_engine) {
+			$engine = new \Decoda\Engine\PhpEngine();
+			$engine->addPath(dirname(__DIR__) . '/templates/');
+
+			$this->setEngine($engine);
+		}
+
 		return $this->_engine;
 	}
 

@@ -1,4 +1,4 @@
-# Decoda v6.0.5 [![Build Status](https://travis-ci.org/milesj/Decoda.png?branch=master)](https://travis-ci.org/milesj/Decoda) #
+# Decoda v6.1.0 [![Build Status](https://travis-ci.org/milesj/Decoda.png?branch=master)](https://travis-ci.org/milesj/Decoda) #
 
 A lightweight lexical string parser for BBCode styled markup.
 

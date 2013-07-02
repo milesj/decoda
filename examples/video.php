@@ -11,7 +11,9 @@ $code->addFilter(new \Decoda\Filter\VideoFilter()); ?>
 [dailymotion]xklaf6_gamescom-2011_videogames[/dailymotion]
 [myspace]108061717[/myspace]
 [wegame]World_of_Workcraft[/wegame]
-[collegehumor]6450423[/collegehumor]';
+[collegehumor]6450423[/collegehumor]
+[vevo]USUV71301250[/vevo]
+[funnyordie]d182501dfe[/funnyordie]';
 
 $code->reset($string);
 echo $code->parse(); ?>

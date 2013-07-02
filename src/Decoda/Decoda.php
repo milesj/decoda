@@ -7,6 +7,9 @@
 
 namespace Decoda;
 
+use Decoda\Exception\MissingFilterException;
+use Decoda\Exception\MissingHookException;
+use Decoda\Exception\MissingLocaleException;
 use \OutOfRangeException;
 use \InvalidArgumentException;
 
@@ -388,14 +391,14 @@ class Decoda {
 	 *
 	 * @param string $filter
 	 * @return \Decoda\Filter
-	 * @throws \OutOfRangeException
+	 * @throws \Decoda\Exception\MissingFilterException
 	 */
 	public function getFilter($filter) {
 		if ($this->hasFilter($filter)) {
 			return $this->_filters[$filter];
 		}
 
-		throw new OutOfRangeException(sprintf('Filter %s does not exist', $filter));
+		throw new MissingFilterException(sprintf('Filter %s does not exist', $filter));
 	}
 
 	/**
@@ -403,14 +406,14 @@ class Decoda {
 	 *
 	 * @param string $tag
 	 * @return \Decoda\Filter
-	 * @throws \OutOfRangeException
+	 * @throws \Decoda\Exception\MissingFilterException
 	 */
 	public function getFilterByTag($tag) {
 		if (isset($this->_filterMap[$tag])){
 			return $this->getFilter($this->_filterMap[$tag]);
 		}
 
-		throw new OutOfRangeException(sprintf('No filter could be located for tag %s', $tag));
+		throw new MissingFilterException(sprintf('No filter could be located for tag %s', $tag));
 	}
 
 	/**
@@ -427,14 +430,14 @@ class Decoda {
 	 *
 	 * @param string $hook
 	 * @return \Decoda\Hook
-	 * @throws \OutOfRangeException
+	 * @throws \Decoda\Exception\MissingHookException
 	 */
 	public function getHook($hook) {
 		if ($this->hasHook($hook)) {
 			return $this->_hooks[$hook];
 		}
 
-		throw new OutOfRangeException(sprintf('Hook %s does not exist', $hook));
+		throw new MissingHookException(sprintf('Hook %s does not exist', $hook));
 	}
 
 	/**
@@ -507,7 +510,7 @@ class Decoda {
 	 * @param string $key
 	 * @param array $vars
 	 * @return string
-	 * @throws \OutOfRangeException
+	 * @throws \Decoda\Exception\MissingLocaleException
 	 */
 	public function message($key, array $vars = array()) {
 		if (!$this->_messages) {
@@ -517,7 +520,7 @@ class Decoda {
 		$locale = $this->getConfig('locale');
 
 		if (empty($this->_messages[$locale])) {
-			throw new OutOfRangeException(sprintf('Localized messages for %s do not exist', $locale));
+			throw new MissingLocaleException(sprintf('Localized messages for %s do not exist', $locale));
 		}
 
 		$string = isset($this->_messages[$locale][$key]) ? $this->_messages[$locale][$key] : '';

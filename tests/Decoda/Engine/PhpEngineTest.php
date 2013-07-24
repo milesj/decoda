@@ -22,7 +22,7 @@ class PhpEngineTest extends TestCase {
 		parent::setUp();
 
 		$this->object = new PhpEngine();
-		$this->object->addPath(TEST_DIR . '/Decoda/templates/');
+		$this->object->addPath(TEST_DIR . '/templates/');
 		$this->object->setFilter(new TestFilter());
 	}
 

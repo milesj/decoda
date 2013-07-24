@@ -29,7 +29,7 @@ class ComponentTest extends TestCase {
 	public function testAddGetLoaders() {
 		$this->assertEquals(0, count($this->object->getLoaders()));
 
-		$this->object->addLoader(new FileLoader(__DIR__ . '/config/test.php'));
+		$this->object->addLoader(new FileLoader(TEST_DIR . '/config/test.php'));
 		$this->assertEquals(1, count($this->object->getLoaders()));
 	}
 

@@ -19,7 +19,7 @@ class FileLoaderTest extends TestCase {
 	 */
 	public function testExceptions() {
 		try {
-			$object = new FileLoader(dirname(__DIR__) . '/config/test.tmp');
+			$object = new FileLoader(TEST_DIR . '/config/test.tmp');
 			$this->assertFalse(true);
 
 		} catch (Exception $e) {
@@ -27,7 +27,7 @@ class FileLoaderTest extends TestCase {
 		}
 
 		try {
-			$object = new FileLoader(dirname(__DIR__) . '/config/test.xml');
+			$object = new FileLoader(TEST_DIR . '/config/test.xml');
 			$object->load();
 			$this->assertFalse(true);
 
@@ -40,7 +40,7 @@ class FileLoaderTest extends TestCase {
 	 * Test that PHP files can be read.
 	 */
 	public function testPhpRead() {
-		$object = new FileLoader(dirname(__DIR__) . '/config/test.php');
+		$object = new FileLoader(TEST_DIR . '/config/test.php');
 		$this->assertEquals(array('foo' => 'bar'), $object->load());
 	}
 
@@ -48,7 +48,7 @@ class FileLoaderTest extends TestCase {
 	 * Test that JSON files can be read.
 	 */
 	public function testJsonRead() {
-		$object = new FileLoader(dirname(__DIR__) . '/config/test.json');
+		$object = new FileLoader(TEST_DIR . '/config/test.json');
 		$this->assertEquals(array('foo' => 'bar'), $object->load());
 	}
 
@@ -56,7 +56,7 @@ class FileLoaderTest extends TestCase {
 	 * Test that INI files can be read.
 	 */
 	public function testIniRead() {
-		$object = new FileLoader(dirname(__DIR__) . '/config/test.ini');
+		$object = new FileLoader(TEST_DIR . '/config/test.ini');
 		$this->assertEquals(array('foo' => 'bar'), $object->load());
 	}
 
@@ -64,7 +64,7 @@ class FileLoaderTest extends TestCase {
 	 * Test that TXT files can be read.
 	 */
 	public function testTxtRead() {
-		$object = new FileLoader(dirname(__DIR__) . '/config/test.txt');
+		$object = new FileLoader(TEST_DIR . '/config/test.txt');
 		$this->assertEquals(array('foo', 'bar'), $object->load());
 	}
 

@@ -127,7 +127,8 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
 	 */
 	public function parse(array $tag, $content) {
 		$setup = $this->getTag($tag['tag']);
-		$xhtml = $this->getParser()->getConfig('xhtmlOutput');
+		$parser = $this->getParser();
+		$xhtml = $parser->getConfig('xhtmlOutput');
 
 		if (!$setup) {
 			return null;
@@ -154,10 +155,10 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
 			// Process line breaks
 			switch ($setup['lineBreaks']) {
 				case Decoda::NL_CONVERT:
-					$content = nl2br($content, $xhtml);
+					$content = $parser->convertLineBreaks($content);
 				// Fall-through
 				case Decoda::NL_REMOVE:
-					$content = str_replace("\n", "", $content);
+					$content = str_replace(array("\r", "\n"), "", $content);
 				break;
 			}
 		}
@@ -192,7 +193,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
 		if ($setup['template']) {
 			$tag['attributes'] = $attributes + $this->_config;
 
-			$engine = $this->getParser()->getEngine();
+			$engine = $parser->getEngine();
 			$engine->setFilter($this);
 
 			$parsed = $engine->render($tag, $content);
@@ -202,8 +203,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
 
 			// Normalize
 			} else {
-				$parsed = str_replace("\r\n", "\n", $parsed);
-				$parsed = str_replace("\r", "\n", $parsed);
+				$parsed = $parser->convertNewlines($parsed);
 			}
 
 			return $parsed;

@@ -430,6 +430,17 @@ class DecodaTest extends TestCase {
 	}
 
 	/**
+	 * Test linebreaks can be toggled.
+	 */
+	public function testLineBreakConversion() {
+		$string = "This has\r\nnew lines.";
+		$this->assertEquals("This has<br>\nnew lines.", $this->object->reset($string)->parse());
+
+		$this->object->setLineBreaks(false);
+		$this->assertEquals("This has\nnew lines.", $this->object->reset($string)->parse());
+	}
+
+	/**
 	 * Test that the content of the tag passes a regex pattern.
 	 */
 	public function testContentPatternMatching() {
@@ -609,6 +620,27 @@ EXP;
 
 		// Replace new lines for the test
 		$this->assertEquals($this->nl($expected), $this->object->reset($string)->strip());
+	}
+
+	/**
+	 * Test the same string being passed through the parser.
+	 */
+	public function testMultipleParsingSameString() {
+		$this->object->addFilter(new DefaultFilter());
+
+		$string = "This [b]bold[/b] will be converted.\r\nThis [url=\"http://domain.com\"]URL[/url] will not.";
+		$string = $this->object->reset($string)->parse();
+
+		$this->assertEquals("This <b>bold</b> will be converted.<br>\nThis [url=\"http://domain.com\"]URL[/url] will not.", $string);
+
+		// Try parsing again
+		$this->object->addFilter(new UrlFilter());
+
+		$stringEscaped = $this->object->reset($string)->parse();
+		$stringNotEscaped = $this->object->setEscaping(false)->setLineBreaks(false)->reset($string)->parse();
+
+		$this->assertEquals("This &lt;b&gt;bold&lt;/b&gt; will be converted.&lt;br&gt;<br>\nThis <a href=\"http://domain.com\">URL</a> will not.", $stringEscaped);
+		$this->assertEquals("This <b>bold</b> will be converted.<br>\nThis <a href=\"http://domain.com\">URL</a> will not.", $stringNotEscaped);
 	}
 
 }

@@ -1,4 +1,4 @@
-# Decoda v6.1.0 [![Build Status](https://travis-ci.org/milesj/Decoda.png?branch=master)](https://travis-ci.org/milesj/Decoda) #
+# Decoda v6.2.0 [![Build Status](https://travis-ci.org/milesj/Decoda.png?branch=master)](https://travis-ci.org/milesj/Decoda) #
 
 A lightweight lexical string parser for BBCode styled markup.
 
@@ -46,7 +46,7 @@ The following filters and supported tags are available.
 * Code - code, source, var
 * Email - email, mail
 * Image - image, img
-* List - list, olist, li
+* List - list, olist, li, *
 * Quote - quote
 * Text - font, size, color, h1-h6
 * Url - url, link

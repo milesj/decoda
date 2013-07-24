@@ -59,10 +59,12 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
 		 * lineBreaks		- (boolean) Convert line breaks within the content body
 		 * autoClose		- (boolean) HTML tag is self closing
 		 * preserveTags		- (boolean) Will not convert nested Decoda markup within this tag
+		 * onlyTags			- (boolean) Only Decoda tags are allowed within this tag, no text nodes
 		 */
 		'lineBreaks' => Decoda::NL_CONVERT,
 		'autoClose' => false,
 		'preserveTags' => false,
+		'onlyTags' => false,
 
 		/**
 		 * contentPattern	- (string) Regex pattern that the content or default attribute must pass

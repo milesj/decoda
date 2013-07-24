@@ -71,4 +71,23 @@ class ListFilterTest extends TestCase {
 		$this->assertEquals('<ul class="decoda-list type-upper-roman"></ul>', $this->object->reset('[list="upper-roman"][/list]')->parse());
 	}
 
+	/**
+	 * Test star list items [*].
+	 */
+	public function testListStar() {
+		$this->assertEquals('<ul class="decoda-list"><li>Item 1</li><li>Item 2</li></ul>', $this->object->reset("[list][*]Item 1[*]Item 2[/list]")->parse());
+		$this->assertEquals('<ul class="decoda-list"><li>Item 1</li><li>Item 2</li></ul>', $this->object->reset("[list][*]Item 1[/*][*]Item 2[/list]")->parse());
+		$this->assertEquals('<ul class="decoda-list"><li>Item 1</li><li>Item 2</li></ul>', $this->object->reset("[list][*]Item 1[*]Item 2[/*][/list]")->parse());
+		$this->assertEquals('<ul class="decoda-list"><li>Item 1</li><li>Item 2</li></ul>', $this->object->reset("[list][*]Item 1[/*][*]Item 2[/*][/list]")->parse());
+
+		// With other tags
+		$this->object->addFilter(new DefaultFilter())->addFilter(new TextFilter());
+
+		$this->assertEquals('<ul class="decoda-list"><li>Item <b>1</b></li><li>Item <span style="font-size: 15px">2</span></li></ul>', $this->object->reset("[list][*]Item [b]1[/b][*]Item [size=\"15\"]2[/size][/list]")->parse());
+
+		// Empty values
+		$this->assertEquals('<ul class="decoda-list"><li></li><li>Item 2</li></ul>', $this->object->reset("[list][*][*]Item 2[/list]")->parse());
+		$this->assertEquals('Item 1', $this->object->reset("[*]Item 1")->parse());
+	}
+
 }

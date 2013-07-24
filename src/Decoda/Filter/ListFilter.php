@@ -27,7 +27,8 @@ class ListFilter extends AbstractFilter {
 			'displayType' => Decoda::TYPE_BLOCK,
 			'allowedTypes' => Decoda::TYPE_BOTH,
 			'lineBreaks' => Decoda::NL_REMOVE,
-			'childrenWhitelist' => array('li'),
+			'childrenWhitelist' => array('li', '*'),
+			'onlyTags' => true,
 			'attributes' => array(
 				'default' => array(self::LIST_TYPE, 'type-{default}')
 			),
@@ -43,7 +44,8 @@ class ListFilter extends AbstractFilter {
 			'displayType' => Decoda::TYPE_BLOCK,
 			'allowedTypes' => Decoda::TYPE_BOTH,
 			'lineBreaks' => Decoda::NL_REMOVE,
-			'childrenWhitelist' => array('li'),
+			'childrenWhitelist' => array('li', '*'),
+			'onlyTags' => true,
 			'attributes' => array(
 				'default' => array(self::LIST_TYPE, 'type-{default}')
 			),
@@ -58,6 +60,13 @@ class ListFilter extends AbstractFilter {
 			'htmlTag' => 'li',
 			'displayType' => Decoda::TYPE_BLOCK,
 			'allowedTypes' => Decoda::TYPE_BOTH,
+			'parent' => array('olist', 'list')
+		),
+		'*' => array(
+			'htmlTag' => 'li',
+			'displayType' => Decoda::TYPE_BLOCK,
+			'allowedTypes' => Decoda::TYPE_BOTH,
+			'childrenBlacklist' => array('olist', 'list', 'li'),
 			'parent' => array('olist', 'list')
 		)
 	);

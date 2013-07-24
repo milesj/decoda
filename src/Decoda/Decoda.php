@@ -964,7 +964,7 @@ class Decoda {
 			$type = self::TAG_CLOSE;
 
 		// Opening tag
-		} else if (preg_match('/' . preg_quote($oe, '/') . '([-a-z0-9]+)(.*?)' . preg_quote($ce, '/') . '/i', $string, $matches)) {
+		} else if (preg_match('/' . preg_quote($oe, '/') . '([-a-z0-9\*]+)(.*?)' . preg_quote($ce, '/') . '/i', $string, $matches)) {
 			$tag = trim($matches[1]);
 			$type = self::TAG_OPEN;
 		}
@@ -1110,7 +1110,7 @@ class Decoda {
 						continue;
 					}
 
-					if (!$parent['childrenWhitelist'] && !$parent['childrenBlacklist']) {
+					if (!$parent['onlyTags']) {
 						if (!empty($prevChunk) && $prevChunk['type'] === self::TAG_NONE) {
 							$chunk['text'] = $prevChunk['text'] . $chunk['text'];
 							array_pop($clean);
@@ -1238,6 +1238,8 @@ class Decoda {
 		$strLength = mb_strlen($string);
 		$openBracket = $this->getConfig('open');
 		$closeBracket = $this->getConfig('close');
+		$hasList = isset($this->_filters['List']);
+		$starOpen = false;
 
 		while ($strPos < $strLength) {
 			$tag = array();
@@ -1280,6 +1282,40 @@ class Decoda {
 					// Valid tag
 					if ($newTag) {
 						$tag = $newTag;
+
+						// Special handling for star list items
+						if ($hasList) {
+							if ($tag['type'] === self::TAG_OPEN) {
+
+								// A new star item opened
+								if ($tag['tag'] === '*' && !$starOpen) {
+									$starOpen = true;
+
+								// Another star item appeared, so close the previous
+								} else if ($starOpen && $tag['tag'] === '*') {
+									$this->_chunks[] = array(
+										'tag' => '*',
+										'type' => self::TAG_CLOSE,
+										'text' => '[/*]',
+										'attributes' => array()
+									);
+								}
+
+							} else if ($tag['type'] === self::TAG_CLOSE) {
+								if ($starOpen && in_array($tag['tag'], array('list', 'olist'))) {
+									$starOpen = false;
+
+									$this->_chunks[] = array(
+										'tag' => '*',
+										'type' => self::TAG_CLOSE,
+										'text' => '[/*]',
+										'attributes' => array()
+									);
+								} else if ($tag['tag'] === '*') {
+									$starOpen = false;
+								}
+							}
+						}
 
 					// Not a valid tag
 					} else {

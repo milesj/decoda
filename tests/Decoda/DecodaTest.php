@@ -422,7 +422,7 @@ class DecodaTest extends TestCase {
 
 		// Convert CRLF to <br>
 		$string = "[lineBreaksConvert]Line\nBreak\rTests[/lineBreaksConvert]";
-		$this->assertEquals("<lineBreaksConvert>Line<br>Break<br>Tests</lineBreaksConvert>", $this->object->reset($string)->parse());
+		$this->assertEquals("<lineBreaksConvert>Line<br>\nBreak<br>\nTests</lineBreaksConvert>", $this->object->reset($string)->parse());
 
 		// Test nested
 		$string = "[lineBreaksRemove]Line\nBreak\rTests[lineBreaksConvert]Line\nBreak\rTests[/lineBreaksConvert][/lineBreaksRemove]";

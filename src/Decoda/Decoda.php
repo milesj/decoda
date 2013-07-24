@@ -10,7 +10,6 @@ namespace Decoda;
 use Decoda\Exception\MissingFilterException;
 use Decoda\Exception\MissingHookException;
 use Decoda\Exception\MissingLocaleException;
-use \OutOfRangeException;
 use \InvalidArgumentException;
 
 /**

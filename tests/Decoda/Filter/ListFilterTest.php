@@ -90,4 +90,11 @@ class ListFilterTest extends TestCase {
 		$this->assertEquals('Item 1', $this->object->reset("[*]Item 1")->parse());
 	}
 
+	/**
+	 * Stars do not allow nesting.
+	 */
+	public function testNestedStars() {
+		$this->assertEquals('<ul class="decoda-list"><li>Item 1</li><li>Item 1</li><li>Item 2</li><li>Item 2</li></ul>', $this->object->reset("[list][*]Item 1[olist][*]Item 1[*]Item 2[/olist][*]Item 2[/list]")->parse());
+	}
+
 }

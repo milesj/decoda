@@ -309,13 +309,11 @@ class Decoda {
 	 * @return string
 	 */
 	public function cleanNewlines($string) {
-		$string = trim($string);
-
 		if ($max = $this->getConfig('maxNewlines')) {
 			$string = preg_replace('/\n{' . ($max + 1) . ',}/', str_repeat("\n", $max), $string);
 		}
 
-		return $string;
+		return trim($string);
 	}
 
 	/**
@@ -342,7 +340,7 @@ class Decoda {
 		$string = str_replace("\r\n", "\n", $string);
 		$string = str_replace("\r", "\n", $string);
 
-		return $string;
+		return $this->cleanNewlines($string);
 	}
 
 	/**
@@ -1536,7 +1534,7 @@ class Decoda {
 			}
 		}
 
-		return $parsed;
+		return trim($parsed);
 	}
 
 	/**
@@ -1565,7 +1563,7 @@ class Decoda {
 			}
 		}
 
-		return $parsed;
+		return trim($parsed);
 	}
 
 	/**

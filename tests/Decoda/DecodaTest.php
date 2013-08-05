@@ -405,7 +405,7 @@ class DecodaTest extends TestCase {
 
 		// 3 nested - over the max so remove
 		$string = '[depth]1 [depth]2 [depth]3 [depth]4[/depth][/depth][/depth][/depth]';
-		$this->assertEquals('<depth>1 <depth>2 <depth>3 </depth></depth></depth>', $this->object->reset($string)->parse());
+		$this->assertEquals('<depth>1 <depth>2 <depth>3</depth></depth></depth>', $this->object->reset($string)->parse());
 	}
 
 	/**
@@ -567,6 +567,11 @@ Sub[sub]script[/sub]
 Super[sup]script[/sup]
 [abbr="Na Aa Sa Aa"]NASA[/abbr]
 [hr/]
+
+
+
+
+
 [font="Arial"]Arial[/font]
 [font="Courier"]Courier[/font]
 [size="18"]Medium[/size]
@@ -598,6 +603,7 @@ Underline
 Subscript
 Superscript
 NASA
+
 
 Arial
 Courier

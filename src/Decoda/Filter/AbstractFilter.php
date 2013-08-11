@@ -157,7 +157,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
 			// Process line breaks
 			switch ($setup['lineBreaks']) {
 				case Decoda::NL_CONVERT:
-					$content = str_replace("\r", "", $parser->convertLineBreaks($content));
+					$content = str_replace(array("\r", "\n"), "", $parser->convertLineBreaks($content));
 				break;
 				case Decoda::NL_REMOVE:
 					$content = str_replace(array("\r", "\n"), "", $content);

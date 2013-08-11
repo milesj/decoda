@@ -23,25 +23,29 @@ class ClickableHook extends AbstractHook {
 	public function afterParse($content) {
 		$parser = $this->getParser();
 
+		// Janky way of detecting if a link is wrapped in an anchor tag
+		// We have to check the values before the link and validate them
+		// If quotes or a closing carrot exist, do not wrap
+		// <br> is acceptable since \n are completely removed
 		if ($parser->hasFilter('Url')) {
 			$protocols = $parser->getFilter('Url')->getConfig('protocols');
 			$chars = preg_quote('-_=+|\;:&?/[]%,.!@#$*(){}"\'', '/');
 
 			$pattern = implode('', array(
 				'(' . implode('|', $protocols) . ')s?:\/\/', // protocol
-				'([-a-z0-9\.\+]+:[-a-z0-9\.\+]+@)?', // login
-				'([-a-z0-9\.]{5,255}+)', // domain, tld
+				'([\w\.\+]+:[\w\.\+]+@)?', // login
+				'([\w\.]{5,255}+)', // domain, tld
 				'(:[0-9]{0,6}+)?', // port
 				'([a-z0-9' . $chars . ']+)?', // query
 				'(#[a-z0-9' . $chars . ']+)?' // fragment
 			));
 
-			$content = preg_replace_callback('/(^|\n|\s)' . $pattern . '/is', array($this, '_urlCallback'), $content);
+			$content = preg_replace_callback('/("|\'|>|<br>|<br\/>)?(' . $pattern . ')/is', array($this, '_urlCallback'), $content);
 		}
 
 		// Based on schema: http://en.wikipedia.org/wiki/Email_address
 		if ($parser->hasFilter('Email')) {
-			$pattern = '/(^|\n|\s)([-a-z0-9\.\+!]{1,64}+)@([-a-z0-9]+\.[a-z\.]+)/is';
+			$pattern = '/("|\'|>|:|<br>|<br\/>)?(([-a-z0-9\.\+!]{1,64}+)@([-a-z0-9]+\.[a-z\.]+))/is';
 
 			$content = preg_replace_callback($pattern, array($this, '_emailCallback'), $content);
 		}
@@ -56,6 +60,13 @@ class ClickableHook extends AbstractHook {
 	 * @return string
 	 */
 	protected function _emailCallback($matches) {
+		if ($matches[1] === '<br>' || $matches[1] === '<br/>') {
+			$matches[0] = $matches[2];
+
+		} else if ($matches[1] !== '') {
+			return $matches[0];
+		}
+
 		return $matches[1] . $this->getParser()->getFilter('Email')->parse(array(
 			'tag' => 'email',
 			'attributes' => array()
@@ -69,6 +80,13 @@ class ClickableHook extends AbstractHook {
 	 * @return string
 	 */
 	protected function _urlCallback($matches) {
+		if ($matches[1] === '<br>' || $matches[1] === '<br/>') {
+			$matches[0] = $matches[2];
+
+		} else if ($matches[1] !== '') {
+			return $matches[0];
+		}
+
 		return $matches[1] . $this->getParser()->getFilter('Url')->parse(array(
 			'tag' => 'url',
 			'attributes' => array()

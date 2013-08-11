@@ -235,11 +235,11 @@ class DecodaTest extends TestCase {
 	public function testXhtml() {
 		$this->object->addFilter(new DefaultFilter());
 
-		$this->assertEquals("<b>Bold</b><br>\n<i>Italics</i>", $this->object->reset("[b]Bold[/b]\n[i]Italics[/i]")->parse());
+		$this->assertEquals("<b>Bold</b><br><i>Italics</i>", $this->object->reset("[b]Bold[/b]\n[i]Italics[/i]")->parse());
 
 		$this->object->setXhtml(true);
 
-		$this->assertEquals("<strong>Bold</strong><br />\n<em>Italics</em>", $this->object->reset("[b]Bold[/b]\n[i]Italics[/i]")->parse());
+		$this->assertEquals("<strong>Bold</strong><br/><em>Italics</em>", $this->object->reset("[b]Bold[/b]\n[i]Italics[/i]")->parse());
 	}
 
 	/**
@@ -422,7 +422,7 @@ class DecodaTest extends TestCase {
 
 		// Convert CRLF to <br>
 		$string = "[lineBreaksConvert]Line\nBreak\rTests[/lineBreaksConvert]";
-		$this->assertEquals("<lineBreaksConvert>Line<br>\nBreak<br>\nTests</lineBreaksConvert>", $this->object->reset($string)->parse());
+		$this->assertEquals("<lineBreaksConvert>Line<br>Break<br>Tests</lineBreaksConvert>", $this->object->reset($string)->parse());
 
 		// Test nested
 		$string = "[lineBreaksRemove]Line\nBreak\rTests[lineBreaksConvert]Line\nBreak\rTests[/lineBreaksConvert][/lineBreaksRemove]";
@@ -434,7 +434,7 @@ class DecodaTest extends TestCase {
 	 */
 	public function testLineBreakConversion() {
 		$string = "This has\r\nnew lines.";
-		$this->assertEquals("This has<br>\nnew lines.", $this->object->reset($string)->parse());
+		$this->assertEquals("This has<br>new lines.", $this->object->reset($string)->parse());
 
 		$this->object->setLineBreaks(false);
 		$this->assertEquals("This has\nnew lines.", $this->object->reset($string)->parse());
@@ -548,7 +548,7 @@ class DecodaTest extends TestCase {
 
 		$string = 'Test that [b]Bold[/b] [i]Italics[/i] leave the inner content.' . PHP_EOL . 'While certain tags like [quote]quote does not[/quote] keep content.';
 		$this->assertEquals("Test that Bold Italics leave the inner content.\nWhile certain tags like  keep content.", $this->object->reset($string)->strip());
-		$this->assertEquals("Test that Bold Italics leave the inner content.<br>\nWhile certain tags like  keep content.", $this->object->reset($string)->strip(true));
+		$this->assertEquals("Test that Bold Italics leave the inner content.<br>While certain tags like  keep content.", $this->object->reset($string)->strip(true));
 
 		// Test weird scenarios like email, url and image
 		$this->assertEquals('Test http://domain.com/image.jpg', $this->object->reset('Test [img]http://domain.com/image.jpg[/img]')->strip());
@@ -637,7 +637,7 @@ EXP;
 		$string = "This [b]bold[/b] will be converted.\r\nThis [url=\"http://domain.com\"]URL[/url] will not.";
 		$string = $this->object->reset($string)->parse();
 
-		$this->assertEquals("This <b>bold</b> will be converted.<br>\nThis [url=\"http://domain.com\"]URL[/url] will not.", $string);
+		$this->assertEquals("This <b>bold</b> will be converted.<br>This [url=\"http://domain.com\"]URL[/url] will not.", $string);
 
 		// Try parsing again
 		$this->object->addFilter(new UrlFilter());
@@ -645,8 +645,29 @@ EXP;
 		$stringEscaped = $this->object->reset($string)->parse();
 		$stringNotEscaped = $this->object->setEscaping(false)->setLineBreaks(false)->reset($string)->parse();
 
-		$this->assertEquals("This &lt;b&gt;bold&lt;/b&gt; will be converted.&lt;br&gt;<br>\nThis <a href=\"http://domain.com\">URL</a> will not.", $stringEscaped);
-		$this->assertEquals("This <b>bold</b> will be converted.<br>\nThis <a href=\"http://domain.com\">URL</a> will not.", $stringNotEscaped);
+		$this->assertEquals("This &lt;b&gt;bold&lt;/b&gt; will be converted.&lt;br&gt;This <a href=\"http://domain.com\">URL</a> will not.", $stringEscaped);
+		$this->assertEquals("This <b>bold</b> will be converted.<br>This <a href=\"http://domain.com\">URL</a> will not.", $stringNotEscaped);
+	}
+
+	public function testMultipleNewlineParsing() {
+		$this->object->defaults();
+
+		$string = <<<'TEST'
+[center][color="#DB1702"][b][size=4]Information[/size][/b][/color]
+[color="#14496b"]
+[b]
+string 1
+string 2
+string 3
+[/b][/color]
+[/center]
+TEST;
+
+		$expected = <<<'EXP'
+<div class="align-center"><span style="color: #DB1702"><b><span>Information</span></b></span><br><span style="color: #14496b"><b>string 1<br>string 2<br>string 3</b></span></div>
+EXP;
+
+		$this->assertEquals($this->nl($expected), $this->object->reset($string)->parse());
 	}
 
 }

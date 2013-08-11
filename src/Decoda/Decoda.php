@@ -324,7 +324,13 @@ class Decoda {
 	 */
 	public function convertLineBreaks($string) {
 		if ($this->getConfig('lineBreaks')) {
-			return nl2br($string, $this->getConfig('xhtmlOutput'));
+
+			// Don't use nl2br() since it leaves a \n
+			if ($this->getConfig('xhtmlOutput')) {
+				$string = str_replace("\n", '<br/>', $string);
+			} else {
+				$string = str_replace("\n", '<br>', $string);
+			}
 		}
 
 		return $string;
@@ -912,6 +918,7 @@ class Decoda {
 		$string = $this->_triggerHook('afterStrip', $string);
 
 		if (!$html) {
+			$string = preg_replace('/<br\/?>/', "\n", $string); // convert back
 			$string = strip_tags($string);
 		}
 

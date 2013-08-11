@@ -121,9 +121,7 @@ $string = <<<'CODE'
 CODE;
 
 		$expected = <<<'CODE'
-<blockquote class="decoda-quote">		<div class="decoda-quote-body">		<pre class="decoda-code lang-php"><code>doSomething();</code></pre>	</div></blockquote><br>
-<br>
-<pre class="decoda-code lang-php"><code>doSomethingElse();</code></pre>
+<blockquote class="decoda-quote">		<div class="decoda-quote-body">		<pre class="decoda-code lang-php"><code>doSomething();</code></pre>	</div></blockquote><br><br><pre class="decoda-code lang-php"><code>doSomethingElse();</code></pre>
 CODE;
 
 		$this->assertEquals($this->nl($expected), $this->object->reset($string)->parse());

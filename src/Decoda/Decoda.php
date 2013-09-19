@@ -1373,43 +1373,64 @@ class Decoda {
 		while ($i < $count) {
 			$chunk = $chunks[$i];
 
-			if ($chunk['type'] === self::TAG_NONE && empty($tag)) {
-				$nodes[] = $chunk['text'];
-
-			} else if ($chunk['type'] === self::TAG_SELF_CLOSE) {
-				$chunk['children'] = array();
-				$nodes[] = $chunk;
-
-			} else if ($chunk['type'] === self::TAG_OPEN) {
-				$openCount++;
-
-				if (empty($tag)) {
-					$openIndex = $i;
-					$tag = $chunk;
-				}
-
-			} else if ($chunk['type'] === self::TAG_CLOSE) {
-				$closeCount++;
-
-				if ($openCount === $closeCount && $chunk['tag'] === $tag['tag']) {
-					$index = $i - $openIndex;
-					$tag = array();
-
-					// Only reduce if not last index
-					if ($index !== $count) {
-						$index = $index - 1;
+			switch ($chunk['type']) {
+				case self::TAG_NONE:
+					if (empty($tag)) {
+						$nodes[] = $chunk['text'];
 					}
+					break;
 
-					// Slice a section of the array if the correct closing tag is found
-					$node = $chunks[$openIndex];
-					$node['children'] = $this->_extractNodes(array_slice($chunks, ($openIndex + 1), $index), $chunks[$openIndex]);
-					$nodes[] = $node;
+				case self::TAG_SELF_CLOSE:
+					$chunks[$i]['type'] = self::TAG_OPEN;
 
-				// There is no opening or a broken opening tag, which means
-				// $closeCount should not have been incremented before >> revert
-				} else if (empty($tag)) {
-					$closeCount--;
-				}
+					// inject close tag after this chunk
+					$chunks = array_merge(
+						array_slice($chunks, 0, $i + 1),
+						array(
+							array(
+								'type' => self::TAG_CLOSE,
+								'tag' => $chunk['tag'],
+								'text' => $chunk['text'],
+								'attributes' => $chunk['attributes']
+							)
+						),
+						array_slice($chunks, $i + 1)
+					);
+
+					$count++;
+
+				case self::TAG_OPEN:
+					$openCount++;
+
+					if (empty($tag)) {
+						$openIndex = $i;
+						$tag = $chunk;
+					}
+					break;
+
+				case self::TAG_CLOSE:
+					$closeCount++;
+
+					if ($openCount === $closeCount && $chunk['tag'] === $tag['tag']) {
+						$index = $i - $openIndex;
+						$tag = array();
+
+						// Only reduce if not last index
+						if ($index !== $count) {
+							$index = $index - 1;
+						}
+
+						// Slice a section of the array if the correct closing tag is found
+						$node = $chunks[$openIndex];
+						$node['children'] = $this->_extractNodes(array_slice($chunks, ($openIndex + 1), $index), $chunks[$openIndex]);
+						$nodes[] = $node;
+
+					// There is no opening or a broken opening tag, which means
+					// $closeCount should not have been incremented before >> revert
+					} else if (empty($tag)) {
+						$closeCount--;
+					}
+					break;
 			}
 
 			$i++;

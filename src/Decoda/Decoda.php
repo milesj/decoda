@@ -1390,7 +1390,7 @@ class Decoda {
 							array(
 								'type' => self::TAG_CLOSE,
 								'tag' => $chunk['tag'],
-								'text' => $chunk['text'],
+								'text' => $this->getConfig('open') . '/' . $chunk['tag'] . $this->getConfig('close'),
 								'attributes' => $chunk['attributes']
 							)
 						),

@@ -10,6 +10,7 @@ namespace Decoda;
 use Decoda\Filter\DefaultFilter;
 use Decoda\Filter\EmailFilter;
 use Decoda\Filter\UrlFilter;
+use Decoda\Filter\BlockFilter;
 use Decoda\Test\TestCase;
 use Decoda\Test\TestEngine;
 use Decoda\Test\TestFilter;
@@ -522,6 +523,11 @@ class DecodaTest extends TestCase {
 		$this->assertEquals('Text <br /> and <hr />', $this->object->reset('Text [br /] and [hr /]')->parse());
 		$this->assertEquals('<br /><br />', $this->object->reset('[br/][br][br /]')->parse());
 		$this->assertEquals('<br />', $this->object->reset('[br]Content[/br]')->parse());
+
+		$this->object->addFilter(new BlockFilter());
+
+		$this->assertEquals('<div>some<br />text with<hr /></div>', $this->object->reset('[div]some[br/]text with[hr/][/div]')->parse());
+		$this->assertEquals('<div>some<br />text with<hr /></div>', $this->object->reset('[div]some[br /]text with[hr /][/div]')->parse());
 	}
 
 	/**

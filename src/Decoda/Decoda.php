@@ -188,8 +188,8 @@ class Decoda {
 	 * @param array $config
 	 */
 	public function __construct($string = '', array $config = array()) {
-		$this->reset($string, true);
 		$this->setConfig($config);
+		$this->reset($string, true);
 		$this->addPath(dirname(__DIR__) . '/config/');
 	}
 

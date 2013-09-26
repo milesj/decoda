@@ -1,8 +1,8 @@
 <?php
 /**
- * @copyright	Copyright 2006-2013, Miles Johnson - http://milesj.me
- * @license		http://opensource.org/licenses/mit-license.php - Licensed under the MIT License
- * @link		http://milesj.me/code/php/decoda
+ * @copyright   2006-2013, Miles Johnson - http://milesj.me
+ * @license     https://github.com/milesj/decoda/blob/master/license.md
+ * @link        http://milesj.me/code/php/decoda
  */
 
 namespace Decoda;
@@ -13,27 +13,27 @@ use Decoda\Test\TestHook;
 
 class HookTest extends TestCase {
 
-	/**
-	 * Set up Decoda.
-	 */
-	protected function setUp() {
-		parent::setUp();
+    /**
+     * Set up Decoda.
+     */
+    protected function setUp() {
+        parent::setUp();
 
-		$this->object = new TestHook();
-	}
+        $this->object = new TestHook();
+    }
 
-	/**
-	 * Test that beforeParse() alters the string.
-	 */
-	public function testBeforeParse() {
-		$this->assertEquals('baa2e91e038e0742f98c9b0836dc0065', $this->object->beforeParse('beforeParse'));
-	}
+    /**
+     * Test that beforeParse() alters the string.
+     */
+    public function testBeforeParse() {
+        $this->assertEquals('baa2e91e038e0742f98c9b0836dc0065', $this->object->beforeParse('beforeParse'));
+    }
 
-	/**
-	 * Test that afterParse() alters the string.
-	 */
-	public function testAfterParse() {
-		$this->assertEquals('b146230f63474e50b8eb9e232c2b6542', $this->object->afterParse('afterParse'));
-	}
+    /**
+     * Test that afterParse() alters the string.
+     */
+    public function testAfterParse() {
+        $this->assertEquals('b146230f63474e50b8eb9e232c2b6542', $this->object->afterParse('afterParse'));
+    }
 
 }

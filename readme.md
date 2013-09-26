@@ -5,7 +5,7 @@ A lightweight lexical string parser for BBCode styled markup.
 ## Requirements ##
 
 * PHP 5.3.0
-	* Multibyte
+    * Multibyte
 * Composer
 
 ## Compatibility ##

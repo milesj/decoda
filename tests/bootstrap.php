@@ -1,8 +1,8 @@
 <?php
 /**
- * @copyright	Copyright 2006-2013, Miles Johnson - http://milesj.me
- * @license		http://opensource.org/licenses/mit-license.php - Licensed under the MIT License
- * @link		http://milesj.me/code/php/decoda
+ * @copyright   2006-2013, Miles Johnson - http://milesj.me
+ * @license     https://github.com/milesj/decoda/blob/master/license.md
+ * @link        http://milesj.me/code/php/decoda
  */
 
 error_reporting(E_ALL | E_STRICT);
@@ -14,7 +14,7 @@ define('DECODA', str_replace('\\', '/', dirname(TEST_DIR) . '/src/Decoda/'));
 
 // Ensure that composer has installed all dependencies
 if (!file_exists(VENDOR_DIR . '/autoload.php')) {
-	exit('Please install Composer in Decoda\'s root folder before running tests!');
+    exit('Please install Composer in Decoda\'s root folder before running tests!');
 }
 
 // Include the composer autoloader

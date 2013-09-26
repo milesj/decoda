@@ -1,8 +1,8 @@
 <?php
 /**
- * @copyright	Copyright 2006-2013, Miles Johnson - http://milesj.me
- * @license		http://opensource.org/licenses/mit-license.php - Licensed under the MIT License
- * @link		http://milesj.me/code/php/decoda
+ * @copyright   2006-2013, Miles Johnson - http://milesj.me
+ * @license     https://github.com/milesj/decoda/blob/master/license.md
+ * @link        http://milesj.me/code/php/decoda
  */
 
 namespace Decoda;
@@ -13,43 +13,43 @@ namespace Decoda;
  */
 interface Engine extends Component {
 
-	/**
-	 * Add a template lookup path.
-	 *
-	 * @param string $path
-	 * @return \Decoda\Engine
-	 */
-	public function addPath($path);
+    /**
+     * Add a template lookup path.
+     *
+     * @param string $path
+     * @return \Decoda\Engine
+     */
+    public function addPath($path);
 
-	/**
-	 * Return the current filter.
-	 *
-	 * @return \Decoda\Filter
-	 */
-	public function getFilter();
+    /**
+     * Return the current filter.
+     *
+     * @return \Decoda\Filter
+     */
+    public function getFilter();
 
-	/**
-	 * Returns the paths to the templates.
-	 *
-	 * @return string
-	 */
-	public function getPaths();
+    /**
+     * Returns the paths to the templates.
+     *
+     * @return string
+     */
+    public function getPaths();
 
-	/**
-	 * Renders the tag by using the defined templates.
-	 *
-	 * @param array $tag
-	 * @param string $content
-	 * @return string
-	 */
-	public function render(array $tag, $content);
+    /**
+     * Renders the tag by using the defined templates.
+     *
+     * @param array $tag
+     * @param string $content
+     * @return string
+     */
+    public function render(array $tag, $content);
 
-	/**
-	 * Sets the current used filter.
-	 *
-	 * @param \Decoda\Filter $filter
-	 * @return \Decoda\Engine
-	 */
-	public function setFilter(Filter $filter);
+    /**
+     * Sets the current used filter.
+     *
+     * @param \Decoda\Filter $filter
+     * @return \Decoda\Engine
+     */
+    public function setFilter(Filter $filter);
 
 }

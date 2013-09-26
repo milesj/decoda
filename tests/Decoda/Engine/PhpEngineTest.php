@@ -1,8 +1,8 @@
 <?php
 /**
- * @copyright	Copyright 2006-2013, Miles Johnson - http://milesj.me
- * @license		http://opensource.org/licenses/mit-license.php - Licensed under the MIT License
- * @link		http://milesj.me/code/php/decoda
+ * @copyright   2006-2013, Miles Johnson - http://milesj.me
+ * @license     https://github.com/milesj/decoda/blob/master/license.md
+ * @link        http://milesj.me/code/php/decoda
  */
 
 namespace Decoda\Engine;
@@ -15,42 +15,42 @@ use \Exception;
 
 class PhpEngineTest extends TestCase {
 
-	/**
-	 * Set up Decoda.
-	 */
-	protected function setUp() {
-		parent::setUp();
+    /**
+     * Set up Decoda.
+     */
+    protected function setUp() {
+        parent::setUp();
 
-		$this->object = new PhpEngine();
-		$this->object->addPath(TEST_DIR . '/templates/');
-		$this->object->setFilter(new TestFilter());
-	}
+        $this->object = new PhpEngine();
+        $this->object->addPath(TEST_DIR . '/templates/');
+        $this->object->setFilter(new TestFilter());
+    }
 
-	/**
-	 * Test that render() renders a template and extracts attribute variables.
-	 */
-	public function testRender() {
-		$this->assertEquals('foobar', $this->object->render(array(
-			'tag' => 'template',
-			'attributes' => array('var' => 'foobar')
-		), null));
+    /**
+     * Test that render() renders a template and extracts attribute variables.
+     */
+    public function testRender() {
+        $this->assertEquals('foobar', $this->object->render(array(
+            'tag' => 'template',
+            'attributes' => array('var' => 'foobar')
+        ), null));
 
-		$this->assertEquals('', $this->object->render(array(
-			'tag' => 'template',
-			'attributes' => array('var' => '')
-		), null));
+        $this->assertEquals('', $this->object->render(array(
+            'tag' => 'template',
+            'attributes' => array('var' => '')
+        ), null));
 
-		try {
-			$this->object->render(array(
-				'tag' => 'templateMissing',
-				'attributes' => array('var' => '')
-			), null);
+        try {
+            $this->object->render(array(
+                'tag' => 'templateMissing',
+                'attributes' => array('var' => '')
+            ), null);
 
-			$this->assertTrue(false);
+            $this->assertTrue(false);
 
-		} catch (Exception $e) {
-			$this->assertTrue(true);
-		}
-	}
+        } catch (Exception $e) {
+            $this->assertTrue(true);
+        }
+    }
 
 }

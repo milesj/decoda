@@ -12,8 +12,8 @@ define('DECODA', __DIR__ . '/');
 // Includes
 spl_autoload_register();
 set_include_path(implode(PATH_SEPARATOR, array(
-	get_include_path(),
-	DECODA
+    get_include_path(),
+    DECODA
 )));[/code]";
 
 $code->reset($string);
@@ -39,16 +39,16 @@ echo $code->parse(); ?>
 <?php $string = '[code="php"]<?php
 abstract class HookAbstract implements Hook {
 
-	/**
-	 * Return a message string from the parser.
-	 *
-	 * @param string $key
-	 * @param array $vars
-	 * @return string
-	 */
-	public function message($key, array $vars = array()) {
-		return $this->getParser()->message($key, $vars);
-	}
+    /**
+     * Return a message string from the parser.
+     *
+     * @param string $key
+     * @param array $vars
+     * @return string
+     */
+    public function message($key, array $vars = array()) {
+        return $this->getParser()->message($key, $vars);
+    }
 
 } ?>[/code]';
 
@@ -60,22 +60,22 @@ echo $code->parse(); ?>
 <?php $string = '[code hl="1,15"]<?php
 abstract class FilterAbstract implements Filter {
 
-	/**
-	 * Return a tag if it exists, and merge with defaults.
-	 *
-	 * @param string $tag
-	 * @return array
-	 */
-	public function tag($tag) {
-		$defaults = $this->_defaults;
-		$defaults[\'key\'] = $tag;
+    /**
+     * Return a tag if it exists, and merge with defaults.
+     *
+     * @param string $tag
+     * @return array
+     */
+    public function tag($tag) {
+        $defaults = $this->_defaults;
+        $defaults[\'key\'] = $tag;
 
-		if (isset($this->_tags[$tag])) {
-			return $this->_tags[$tag] + $defaults;
-		}
+        if (isset($this->_tags[$tag])) {
+            return $this->_tags[$tag] + $defaults;
+        }
 
-		return $defaults;
-	}
+        return $defaults;
+    }
 
 } ?>[/code]';
 

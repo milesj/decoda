@@ -61,21 +61,21 @@ class Decoda {
     /**
      * Blacklist of tags not to parse.
      *
-     * @var array
+     * @type array
      */
     protected $_blacklist = array();
 
     /**
      * Extracted chunks of text and tags.
      *
-     * @var array
+     * @type array
      */
     protected $_chunks = array();
 
     /**
      * Configuration.
      *
-     * @var array
+     * @type array
      */
     protected $_config = array(
         'open' => '[',
@@ -93,91 +93,91 @@ class Decoda {
     /**
      * Logged errors for incorrectly nested nodes and types.
      *
-     * @var array
+     * @type array
      */
     protected $_errors = array();
 
     /**
      * List of all instantiated filter objects.
      *
-     * @var array
+     * @type array
      */
     protected $_filters = array();
 
     /**
      * Mapping of tags to its filter object.
      *
-     * @var array
+     * @type array
      */
     protected $_filterMap = array();
 
     /**
      * List of all instantiated hook objects.
      *
-     * @var array
+     * @type array
      */
     protected $_hooks = array();
 
     /**
      * Message strings for localization purposes.
      *
-     * @var array
+     * @type array
      */
     protected $_messages = array();
 
     /**
      * Children nodes.
      *
-     * @var array
+     * @type array
      */
     protected $_nodes = array();
 
     /**
      * The parsed string.
      *
-     * @var string
+     * @type string
      */
     protected $_parsed = '';
 
     /**
      * Configuration folder paths.
      *
-     * @var array
+     * @type array
      */
     protected $_paths = array();
 
     /**
      * The raw string before parsing.
      *
-     * @var string
+     * @type string
      */
     protected $_string = '';
 
     /**
      * The stripped string.
      *
-     * @var string
+     * @type string
      */
     protected $_stripped = '';
 
     /**
      * List of tags from filters.
      *
-     * @var array
+     * @type array
      */
     protected $_tags = array();
 
     /**
      * Template engine used for parsing.
      *
-     * @var \Decoda\Engine
+     * @type \Decoda\Engine
      */
     protected $_engine = null;
 
     /**
      * Whitelist of tags to parse.
      *
-     * @var array
+     * @type array
      */
     protected $_whitelist = array();
 

@@ -17,7 +17,7 @@ class QuoteFilter extends AbstractFilter {
     /**
      * Configuration.
      *
-     * @var array
+     * @type array
      */
     protected $_config = array(
         'dateFormat' => 'M jS Y, H:i:s'
@@ -26,7 +26,7 @@ class QuoteFilter extends AbstractFilter {
     /**
      * Supported tags.
      *
-     * @var array
+     * @type array
      */
     protected $_tags = array(
         'quote' => array(

@@ -17,7 +17,7 @@ class BlockFilter extends AbstractFilter {
     /**
      * Configuration.
      *
-     * @var array
+     * @type array
      */
     protected $_config = array(
         'spoilerToggle' => "$('#spoiler-content-{id}').toggle();"
@@ -26,7 +26,7 @@ class BlockFilter extends AbstractFilter {
     /**
      * Supported tags.
      *
-     * @var array
+     * @type array
      */
     protected $_tags = array(
         'align' => array(

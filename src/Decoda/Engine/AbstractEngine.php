@@ -19,14 +19,14 @@ abstract class AbstractEngine extends AbstractComponent implements Engine {
     /**
      * Lookup paths.
      *
-     * @var array
+     * @type array
      */
     protected $_paths = array();
 
     /**
      * Current filter.
      *
-     * @var \Decoda\Filter
+     * @type \Decoda\Filter
      */
     protected $_filter;
 

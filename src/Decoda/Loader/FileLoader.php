@@ -18,7 +18,7 @@ class FileLoader extends AbstractLoader {
     /**
      * Path to file.
      *
-     * @var string
+     * @type string
      */
     protected $_path;
 

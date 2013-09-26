@@ -18,7 +18,7 @@ class CodeFilter extends AbstractFilter {
     /**
      * Configuration.
      *
-     * @var array
+     * @type array
      */
     protected $_config = array(
         'classPrefix' => 'lang-',
@@ -28,7 +28,7 @@ class CodeFilter extends AbstractFilter {
     /**
      * Supported tags.
      *
-     * @var array
+     * @type array
      */
     protected $_tags = array(
         'code' => array(

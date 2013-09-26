@@ -18,14 +18,14 @@ class CensorHook extends AbstractHook {
     /**
      * List of words to censor.
      *
-     * @var array
+     * @type array
      */
     protected $_blacklist = array();
 
     /**
      * Configuration.
      *
-     * @var array
+     * @type array
      */
     protected $_config = array(
         'suffix' => array('ing', 'in', 'er', 'r', 'ed', 'd')

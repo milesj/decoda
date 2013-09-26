@@ -18,7 +18,7 @@ class EmoticonHook extends AbstractHook {
     /**
      * Configuration.
      *
-     * @var array
+     * @type array
      */
     protected $_config = array(
         'path' => '/images/',
@@ -28,14 +28,14 @@ class EmoticonHook extends AbstractHook {
     /**
      * Mapping of emoticons to smilies.
      *
-     * @var array
+     * @type array
      */
     protected $_emoticons = array();
 
     /**
      * Map of smilies to emoticons.
      *
-     * @var array
+     * @type array
      */
     protected $_smilies = array();
 

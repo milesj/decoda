@@ -18,7 +18,7 @@ class DefaultFilter extends AbstractFilter {
     /**
      * Configuration.
      *
-     * @var array
+     * @type array
      */
     protected $_config = array(
         'timeFormat' => 'D, M jS Y, H:i'
@@ -27,7 +27,7 @@ class DefaultFilter extends AbstractFilter {
     /**
      * Supported tags.
      *
-     * @var array
+     * @type array
      */
     protected $_tags = array(
         'b' => array(

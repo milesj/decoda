@@ -28,7 +28,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
     /**
      * Default tag configuration.
      *
-     * @var array
+     * @type array
      */
     protected $_defaults = array(
         /**
@@ -90,7 +90,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
     /**
      * Supported tags.
      *
-     * @var array
+     * @type array
      */
     protected $_tags = array();
 

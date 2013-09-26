@@ -19,7 +19,7 @@ class ListFilter extends AbstractFilter {
     /**
      * Supported tags.
      *
-     * @var array
+     * @type array
      */
     protected $_tags = array(
         'olist' => array(

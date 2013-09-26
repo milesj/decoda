@@ -7,6 +7,7 @@
 
 namespace Decoda;
 
+use Decoda\Filter\BlockFilter;
 use Decoda\Filter\DefaultFilter;
 use Decoda\Filter\EmailFilter;
 use Decoda\Filter\UrlFilter;
@@ -509,8 +510,9 @@ class DecodaTest extends TestCase {
 	 * Test that self closing tags work.
 	 */
 	public function testSelfClosingTags() {
-		$this->object->addFilter(new DefaultFilter());
+		$this->object->addFilter(new DefaultFilter())->addFilter(new BlockFilter());
 
+		$this->assertEquals('<div class="align-center">Text <br> and <hr></div>', $this->object->reset('[center]Text [br/] and [hr/][/center]')->parse());
 		$this->assertEquals('Text <br> and <hr>', $this->object->reset('Text [br/] and [hr/]')->parse());
 		$this->assertEquals('Text <br> and <hr>', $this->object->reset('Text [br /] and [hr /]')->parse());
 		$this->assertEquals('<br><br>', $this->object->reset('[br/][br][br /]')->parse());
@@ -518,6 +520,7 @@ class DecodaTest extends TestCase {
 
 		$this->object->setXhtml(true);
 
+		$this->assertEquals('<div class="align-center">Text <br /> and <hr /></div>', $this->object->reset('[center]Text [br/] and [hr/][/center]')->parse());
 		$this->assertEquals('Text <br /> and <hr />', $this->object->reset('Text [br/] and [hr/]')->parse());
 		$this->assertEquals('Text <br /> and <hr />', $this->object->reset('Text [br /] and [hr /]')->parse());
 		$this->assertEquals('<br /><br />', $this->object->reset('[br/][br][br /]')->parse());

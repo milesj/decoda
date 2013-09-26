@@ -1373,12 +1373,14 @@ class Decoda {
 		while ($i < $count) {
 			$chunk = $chunks[$i];
 
+            // Check for an empty tag as we only need to match the open and closing tags
+            // The inner chunks will be extracted once a match is found
 			if ($chunk['type'] === self::TAG_NONE && empty($tag)) {
 				$nodes[] = $chunk['text'];
 
-			} else if ($chunk['type'] === self::TAG_SELF_CLOSE) {
+			} else if ($chunk['type'] === self::TAG_SELF_CLOSE && empty($tag)) {
 				$chunk['children'] = array();
-				$nodes[] = $chunk;
+                $nodes[] = $chunk;
 
 			} else if ($chunk['type'] === self::TAG_OPEN) {
 				$openCount++;

@@ -29,7 +29,8 @@ class ImageFilterTest extends TestCase {
 
         // variations
         $this->assertEquals('<img src="https://domain.com/image.jpg" alt="">', $this->object->reset('[img]https://domain.com/image.jpg[/img]')->parse()); // https, jpg
-        $this->assertEquals('<img src="//domain.com/image.PNG" alt="">', $this->object->reset('[img]//domain.com/image.PNG[/img]')->parse()); // no protocol, png
+        $this->assertEquals('<img src="//domain.com/image.PNG" alt="">', $this->object->reset('[img]//domain.com/image.PNG[/img]')->parse()); // no protocol, absolute png
+        $this->assertEquals('<img src="../images/image.PNG" alt="">', $this->object->reset('[img]../images/image.PNG[/img]')->parse()); // no protocol, relative png
 
         // security
         $this->assertEquals('(Invalid img)', $this->object->reset('[img]http://domain.com[/img]')->parse());
@@ -68,6 +69,15 @@ class ImageFilterTest extends TestCase {
     public function testAlt() {
         $this->assertEquals('<img alt="This is text!" src="http://domain.com/image.gif">', $this->object->reset('[img alt="This is text!"]http://domain.com/image.gif[/img]')->parse());
         $this->assertEquals('<img alt="Alt with characters: !@)(#^!)&amp; and 12375-439830." src="http://domain.com/image.gif">', $this->object->reset('[img alt="Alt with characters: !@)(#^!)& and 12375-439830."]http://domain.com/image.gif[/img]')->parse());
+    }
+
+    /**
+     * Test that query and fragment are allowed.
+     */
+    public function testQueryFragment() {
+        $this->assertEquals('<img src="http://domain.com/image.gif?size=600" alt="">', $this->object->reset('[img]http://domain.com/image.gif?size=600[/img]')->parse());
+        $this->assertEquals('<img src="http://domain.com/image.gif#fragment" alt="">', $this->object->reset('[img]http://domain.com/image.gif#fragment[/img]')->parse());
+        $this->assertEquals('<img src="http://domain.com/image.gif?size=600&amp;rating=r#fragment" alt="">', $this->object->reset('[img]http://domain.com/image.gif?size=600&rating=r#fragment[/img]')->parse());
     }
 
 }

@@ -376,7 +376,7 @@ class Decoda {
     /**
      * Toggle parsing.
      *
-     * @param boolean $status
+     * @param bool $status
      * @return \Decoda\Decoda
      */
     public function disable($status = true) {
@@ -601,7 +601,7 @@ class Decoda {
     /**
      * Parse the node list by looping through each one, validating, applying filters, building and finally concatenating the string.
      *
-     * @param boolean $echo
+     * @param bool $echo
      * @return string
      */
     public function parse($echo = false) {
@@ -672,7 +672,7 @@ class Decoda {
      * Reset the parser to a new string.
      *
      * @param string $string
-     * @param boolean $flush
+     * @param bool $flush
      * @return \Decoda\Decoda
      */
     public function reset($string, $flush = false) {
@@ -798,7 +798,7 @@ class Decoda {
     /**
      * Toggle XSS escaping.
      *
-     * @param boolean $status
+     * @param bool $status
      * @return \Decoda\Decoda
      */
     public function setEscaping($status) {
@@ -834,7 +834,7 @@ class Decoda {
     /**
      * Set the max amount of newlines.
      *
-     * @param boolean $max
+     * @param bool $max
      * @return \Decoda\Decoda
      */
     public function setMaxNewlines($max) {
@@ -858,7 +858,7 @@ class Decoda {
     /**
      * Toggle shorthand syntax.
      *
-     * @param boolean $status
+     * @param bool $status
      * @return \Decoda\Decoda
      */
     public function setShorthand($status) {
@@ -870,7 +870,7 @@ class Decoda {
     /**
      * Toggle strict parsing.
      *
-     * @param boolean $strict
+     * @param bool $strict
      * @return \Decoda\Decoda
      */
     public function setStrict($strict) {
@@ -896,7 +896,7 @@ class Decoda {
     /**
      * Toggle XHTML.
      *
-     * @param boolean $status
+     * @param bool $status
      * @return \Decoda\Decoda
      */
     public function setXhtml($status) {
@@ -908,8 +908,8 @@ class Decoda {
     /**
      * Strip the node list by looping through all the nodes and stripping out tags and content.
      *
-     * @param boolean $html
-     * @param boolean $echo
+     * @param bool $html
+     * @param bool $echo
      * @return string
      */
     public function strip($html = false, $echo = false) {

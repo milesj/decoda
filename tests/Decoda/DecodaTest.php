@@ -652,6 +652,9 @@ EXP;
         $this->assertEquals("This <b>bold</b> will be converted.<br>This <a href=\"http://domain.com\">URL</a> will not.", $stringNotEscaped);
     }
 
+    /**
+     * Test that multiple new lines between tags are removed.
+     */
     public function testMultipleNewlineParsing() {
         $this->object->defaults();
 
@@ -671,6 +674,18 @@ TEST;
 EXP;
 
         $this->assertEquals($this->nl($expected), $this->object->reset($string)->parse());
+    }
+
+    /**
+     * Test that empty tags are removed.
+     */
+    public function testEmptyTagRemoval() {
+        $this->object->defaults();
+
+        $this->assertEquals('Foo <b></b> bar', $this->object->reset('Foo [b][/b] bar')->parse());
+
+        $this->object->setRemoveEmptyTags(true);
+        $this->assertEquals('Foo  bar', $this->object->reset('Foo [b][/b] bar')->parse());
     }
 
 }

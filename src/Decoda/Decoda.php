@@ -87,7 +87,8 @@ class Decoda {
         'escapeHtml' => true,
         'strictMode' => true,
         'maxNewlines' => 3,
-        'lineBreaks' => true
+        'lineBreaks' => true,
+        'removeEmpty' => false
     );
 
     /**
@@ -726,7 +727,7 @@ class Decoda {
      * @param array $config
      * @return \Decoda\Decoda
      */
-    public function setConfig(array $config = array()) {
+    public function setConfig(array $config) {
         if (!$config) {
             return $this;
         }
@@ -766,6 +767,9 @@ class Decoda {
                 case 'lineBreaks':
                     $this->setLineBreaks($value);
                 break;
+                case 'removeEmpty':
+                    $this->setRemoveEmptyTags($value);
+                break;
             }
         }
 
@@ -797,7 +801,7 @@ class Decoda {
      * @param boolean $status
      * @return \Decoda\Decoda
      */
-    public function setEscaping($status = true) {
+    public function setEscaping($status) {
         $this->_config['escapeHtml'] = (bool) $status;
 
         return $this;
@@ -809,7 +813,7 @@ class Decoda {
      * @param bool $status
      * @return \Decoda\Decoda
      */
-    public function setLineBreaks($status = true) {
+    public function setLineBreaks($status) {
         $this->_config['lineBreaks'] = (bool) $status;
 
         return $this;
@@ -840,12 +844,24 @@ class Decoda {
     }
 
     /**
+     * Set empty tag removal.
+     *
+     * @param bool $status
+     * @return \Decoda\Decoda
+     */
+    public function setRemoveEmptyTags($status) {
+        $this->_config['removeEmpty'] = (bool) $status;
+
+        return $this;
+    }
+
+    /**
      * Toggle shorthand syntax.
      *
      * @param boolean $status
      * @return \Decoda\Decoda
      */
-    public function setShorthand($status = true) {
+    public function setShorthand($status) {
         $this->_config['shorthandLinks'] = (bool) $status;
 
         return $this;
@@ -857,7 +873,7 @@ class Decoda {
      * @param boolean $strict
      * @return \Decoda\Decoda
      */
-    public function setStrict($strict = true) {
+    public function setStrict($strict) {
         $this->_config['strictMode'] = (bool) $strict;
 
         return $this;
@@ -883,7 +899,7 @@ class Decoda {
      * @param boolean $status
      * @return \Decoda\Decoda
      */
-    public function setXhtml($status = true) {
+    public function setXhtml($status) {
         $this->_config['xhtmlOutput'] = (bool) $status;
 
         return $this;

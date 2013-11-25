@@ -131,8 +131,10 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
         $setup = $this->getTag($tag['tag']);
         $parser = $this->getParser();
         $xhtml = $parser->getConfig('xhtmlOutput');
+        $content = !empty($tag['content']) ? $tag['content'] : $content;
 
-        if (!$setup) {
+        // Test for an empty filter or empty tag
+        if (!$setup || (!$content && $parser->getConfig('removeEmpty'))) {
             return null;
         }
 
@@ -221,7 +223,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
         if ($setup['autoClose']) {
             $parsed = '<' . $html . $attr . ($xhtml ? ' /' : '') . '>';
         } else {
-            $parsed = '<' . $html . $attr . '>' . (!empty($tag['content']) ? $tag['content'] : $content) . '</' . $html . '>';
+            $parsed = '<' . $html . $attr . '>' . $content . '</' . $html . '>';
         }
 
         return $parsed;

@@ -110,4 +110,12 @@ return array(
         'mail' => 'email',
         'quoteBy' => 'Quote by {author}',
     ),
+    'hu-hu' => array(
+        'spoiler' => 'Spoiler',
+        'hide' => 'Rejt',
+        'show' => 'Mutat',
+        'link' => 'link',
+        'mail' => 'mail',
+        'quoteBy' => 'Idézve {author}',
+    ),
 );

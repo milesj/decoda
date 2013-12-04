@@ -13,6 +13,11 @@ use Decoda\Decoda;
  * Provides tags for URLs.
  */
 class UrlFilter extends AbstractFilter {
+    
+    /**
+     * Regex pattern
+     */
+    const LINK_HREF = '#^(https?|ftp|irc|telnet)://(\w+){2,}/?#i';
 
     /**
      * Configuration.
@@ -20,7 +25,7 @@ class UrlFilter extends AbstractFilter {
      * @type array
      */
     protected $_config = array(
-        'protocols' => array('http', 'ftp', 'irc', 'telnet')
+        'protocols' => array('http', 'https', 'ftp', 'irc', 'telnet')
     );
 
     /**
@@ -34,7 +39,7 @@ class UrlFilter extends AbstractFilter {
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE,
             'attributes' => array(
-                'default' => true
+                'default' => self::LINK_HREF
             ),
             'mapAttributes' => array(
                 'default' => 'href'
@@ -45,7 +50,7 @@ class UrlFilter extends AbstractFilter {
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE,
             'attributes' => array(
-                'default' => true
+                'default' => self::LINK_HREF
             ),
             'mapAttributes' => array(
                 'default' => 'href'
@@ -64,8 +69,16 @@ class UrlFilter extends AbstractFilter {
         $url = isset($tag['attributes']['href']) ? $tag['attributes']['href'] : $content;
         $protocols = $this->getConfig('protocols');
 
+        $hasProtocol = preg_match('/^(' . implode('|', $protocols) . ')/i', $url);
+        
+        //Missing protocol? test with the prefix 'http://'
+        if(!$hasProtocol && filter_var('http://'.$url, FILTER_VALIDATE_URL))
+        {
+            $url = 'http://'.$url;
+        }
+
         // Return an invalid URL
-        if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/^(' . implode('|', $protocols) . ')/i', $url)) {
+        if (!filter_var($url, FILTER_VALIDATE_URL) || !$hasProtocol) {
             return $url;
         }
 

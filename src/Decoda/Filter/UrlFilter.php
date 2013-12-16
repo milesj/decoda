@@ -86,13 +86,13 @@ class UrlFilter extends AbstractFilter {
         $url = isset($tag['attributes']['href']) ? $tag['attributes']['href'] : $content;
         $protocols = $this->getConfig('protocols');
 
-        $url = filter_var($this->_defaultProtocol.'://'.$url, FILTER_VALIDATE_URL)?
+        $hasProtocol = preg_match('/^(' . implode('|', $protocols) . ')/i', $url);
+        $url = (!$hasProtocol && filter_var($this->_defaultProtocol.'://'.$url, FILTER_VALIDATE_URL))?
                 $this->_defaultProtocol.'://'.$url :
                 $url;
-        $hasProtocol = preg_match('/^(' . implode('|', $protocols) . ')/i', $url);
 
         // Return an invalid URL
-        if (!filter_var($url, FILTER_VALIDATE_URL) || !$hasProtocol) {
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
             return $url;
         }
 

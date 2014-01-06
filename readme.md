@@ -1,4 +1,4 @@
-# Decoda v6.3.1 [![Build Status](https://travis-ci.org/milesj/decoda.png?branch=master)](https://travis-ci.org/milesj/decoda) #
+# Decoda v6.4.0 [![Build Status](https://travis-ci.org/milesj/decoda.png?branch=master)](https://travis-ci.org/milesj/decoda) #
 
 A lightweight lexical string parser for BBCode styled markup.
 
@@ -65,4 +65,4 @@ The following hooks are available.
 
 Thorough documentation can be found here: http://milesj.me/code/php/decoda
 
-A Mootools textarea editor is also available: https://github.com/milesj/decoda.js
+A MooTools textarea editor is also available: https://github.com/milesj/decoda.js

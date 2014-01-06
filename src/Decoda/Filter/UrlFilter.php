@@ -20,8 +20,13 @@ class UrlFilter extends AbstractFilter {
      * @type array
      */
     protected $_config = array(
-        'protocols' => array('http', 'ftp', 'irc', 'telnet')
+        'protocols' => array('http', 'https', 'ftp', 'irc', 'telnet')
     );
+    
+    /**
+     * Default protocol
+     */
+    protected $_defaultProtocol = 'http';
 
     /**
      * Supported tags.
@@ -52,6 +57,23 @@ class UrlFilter extends AbstractFilter {
             )
         )
     );
+    
+    /**
+     * Set default protocol 
+     *
+     * @param string $protocol
+     * @return boolean
+     */
+    public function setDefaultProtocol($protocol)
+    {
+        if(!preg_match('/^(' . implode('|', $this->getConfig('protocols')) . ')/i', $protocol ))
+        {
+            return false;
+        }
+        
+        $this->_defaultProtocol = strtolower($protocol);
+        return true;
+    }
 
     /**
      * Using shorthand variation if enabled.
@@ -64,8 +86,13 @@ class UrlFilter extends AbstractFilter {
         $url = isset($tag['attributes']['href']) ? $tag['attributes']['href'] : $content;
         $protocols = $this->getConfig('protocols');
 
+        $hasProtocol = preg_match('/^(' . implode('|', $protocols) . ')/i', $url);
+        $url = (!$hasProtocol && filter_var($this->_defaultProtocol.'://'.$url, FILTER_VALIDATE_URL))?
+                $this->_defaultProtocol.'://'.$url :
+                $url;
+
         // Return an invalid URL
-        if (!filter_var($url, FILTER_VALIDATE_URL) || !preg_match('/^(' . implode('|', $protocols) . ')/i', $url)) {
+        if (!filter_var($url, FILTER_VALIDATE_URL)) {
             return $url;
         }
 

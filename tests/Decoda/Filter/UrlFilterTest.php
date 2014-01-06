@@ -40,11 +40,15 @@ class UrlFilterTest extends TestCase {
         // Invalid
         $this->assertEquals('http:domain.com', $this->object->reset('[url]http:domain.com[/url]')->parse());
         $this->assertEquals('file://image.png', $this->object->reset('[url]file://image.png[/url]')->parse());
+        $this->assertEquals('ssh://domain.com/some/url', $this->object->reset('[url="ssh://domain.com/some/url"]SSH[/url]')->parse());
 
         // Test URLs with a trailing slash
         $this->assertEquals('<a href="http://domain.com/">http://domain.com/</a>', $this->object->reset('[url]http://domain.com/[/url]')->parse());
         $this->assertEquals('<a href="http://domain.com/">Test</a>', $this->object->reset('[url="http://domain.com/"]Test[/url]')->parse());
 
+        // Allow URLs with missing protocol
+        $this->assertEquals('<a href="http://domain.com">domain.com</a>', $this->object->reset('[url]domain.com[/url]')->parse());
+        $this->assertEquals('<a href="http://www.domain.com">www.domain.com</a>', $this->object->reset('[url]www.domain.com[/url]')->parse());
     }
 
     /**

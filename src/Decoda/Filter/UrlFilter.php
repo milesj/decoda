@@ -20,13 +20,9 @@ class UrlFilter extends AbstractFilter {
      * @type array
      */
     protected $_config = array(
-        'protocols' => array('http', 'https', 'ftp', 'irc', 'telnet')
+        'protocols' => array('http', 'https', 'ftp', 'irc', 'telnet'),
+        'defaultProtocol' => 'http'
     );
-    
-    /**
-     * Default protocol
-     */
-    protected $_defaultProtocol = 'http';
 
     /**
      * Supported tags.
@@ -57,23 +53,6 @@ class UrlFilter extends AbstractFilter {
             )
         )
     );
-    
-    /**
-     * Set default protocol 
-     *
-     * @param string $protocol
-     * @return boolean
-     */
-    public function setDefaultProtocol($protocol)
-    {
-        if(!preg_match('/^(' . implode('|', $this->getConfig('protocols')) . ')/i', $protocol ))
-        {
-            return false;
-        }
-        
-        $this->_defaultProtocol = strtolower($protocol);
-        return true;
-    }
 
     /**
      * Using shorthand variation if enabled.
@@ -85,11 +64,21 @@ class UrlFilter extends AbstractFilter {
     public function parse(array $tag, $content) {
         $url = isset($tag['attributes']['href']) ? $tag['attributes']['href'] : $content;
         $protocols = $this->getConfig('protocols');
-
+        $defaultProtocol = $this->getConfig('defaultProtocol');
         $hasProtocol = preg_match('/^(' . implode('|', $protocols) . ')/i', $url);
-        $url = (!$hasProtocol && filter_var($this->_defaultProtocol.'://'.$url, FILTER_VALIDATE_URL))?
-                $this->_defaultProtocol.'://'.$url :
-                $url;
+
+        if (!in_array($defaultProtocol, $protocols)) {
+            $defaultProtocol = 'http';
+        }
+
+        if (!$hasProtocol) {
+            // Only allow if no protocol exists, just not the ones not in the list
+            if (preg_match('/^(?![a-z]+:\/\/)/', $url) && filter_var($defaultProtocol . '://' . $url, FILTER_VALIDATE_URL)) {
+                $url = $defaultProtocol . '://' . $url;
+            } else {
+                return $url;
+            }
+        }
 
         // Return an invalid URL
         if (!filter_var($url, FILTER_VALIDATE_URL)) {

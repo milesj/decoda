@@ -71,18 +71,21 @@ class UrlFilter extends AbstractFilter {
             $defaultProtocol = 'http';
         }
 
-        if (!$hasProtocol) {
-            // Only allow if no protocol exists, just not the ones not in the list
-            if (preg_match('/^(?![a-z]+:\/\/)/', $url) && filter_var($defaultProtocol . '://' . $url, FILTER_VALIDATE_URL)) {
-                $url = $defaultProtocol . '://' . $url;
-            } else {
+        // Allow relative and absolute paths, else check protocols
+        if (!preg_match('/^(\.\.?)?\//', $url)) {
+            if (!$hasProtocol) {
+                // Only allow if no protocol exists, just not the ones not in the list
+                if (preg_match('/^(?![a-z]+:\/\/)/', $url) && filter_var($defaultProtocol . '://' . $url, FILTER_VALIDATE_URL)) {
+                    $url = $defaultProtocol . '://' . $url;
+                } else {
+                    return $url;
+                }
+            }
+
+            // Return an invalid URL
+            if (!filter_var($url, FILTER_VALIDATE_URL)) {
                 return $url;
             }
-        }
-
-        // Return an invalid URL
-        if (!filter_var($url, FILTER_VALIDATE_URL)) {
-            return $url;
         }
 
         $tag['attributes']['href'] = $url;

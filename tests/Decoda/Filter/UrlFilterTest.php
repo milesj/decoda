@@ -49,6 +49,13 @@ class UrlFilterTest extends TestCase {
         // Allow URLs with missing protocol
         $this->assertEquals('<a href="http://domain.com">domain.com</a>', $this->object->reset('[url]domain.com[/url]')->parse());
         $this->assertEquals('<a href="http://www.domain.com">www.domain.com</a>', $this->object->reset('[url]www.domain.com[/url]')->parse());
+
+        // Allow relative and absolute paths
+        $this->assertEquals('<a href="/absolute/directory">/absolute/directory</a>', $this->object->reset('[url]/absolute/directory[/url]')->parse());
+        $this->assertEquals('<a href="./same/directory">./same/directory</a>', $this->object->reset('[url]./same/directory[/url]')->parse());
+        $this->assertEquals('<a href="../relative/directory">../relative/directory</a>', $this->object->reset('[url]../relative/directory[/url]')->parse());
+        $this->assertEquals('<a href="../../relative/again">../../relative/again</a>', $this->object->reset('[url]../../relative/again[/url]')->parse());
+        $this->assertEquals('.../invalid/relative', $this->object->reset('[url].../invalid/relative[/url]')->parse());
     }
 
     /**

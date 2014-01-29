@@ -193,6 +193,14 @@ class DecodaTest extends TestCase {
     }
 
     /**
+     * Test that a whitespace is inserted if it trails a tag
+     */
+    public function testInsertsWhitespaceInsideTag() {
+        $this->object->addFilter(new DefaultFilter());
+        $this->assertEquals(substr_count($this->object->reset('[b]Bold [/b]String')->parse(), ' '), 1);
+    }
+
+    /**
      * Test that setShorthand() applies short hand variations for URL and email.
      */
     public function testShorthand() {

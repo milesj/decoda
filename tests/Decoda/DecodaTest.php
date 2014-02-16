@@ -406,7 +406,7 @@ class DecodaTest extends TestCase {
 
         // 3 nested - over the max so remove
         $string = '[depth]1 [depth]2 [depth]3 [depth]4[/depth][/depth][/depth][/depth]';
-        $this->assertEquals('<depth>1 <depth>2 <depth>3</depth></depth></depth>', $this->object->reset($string)->parse());
+        $this->assertEquals('<depth>1 <depth>2 <depth>3 </depth></depth></depth>', $this->object->reset($string)->parse());
     }
 
     /**
@@ -686,6 +686,15 @@ EXP;
 
         $this->object->setRemoveEmptyTags(true);
         $this->assertEquals('Foo  bar', $this->object->reset('Foo [b][/b] bar')->parse());
+    }
+
+    /**
+     * Test that a whitespace is inserted if it trails a tag
+     */
+    public function testInsertsWhitespaceInsideTag() {
+        $this->object->addFilter(new DefaultFilter());
+        $this->assertEquals('<b>Bold </b>String', $this->object->reset('[b]Bold [/b]String')->parse());
+        $this->assertEquals('<b> Bold</b> String', $this->object->reset('[b] Bold[/b] String')->parse());
     }
 
 }

@@ -1559,7 +1559,7 @@ class Decoda {
             }
         }
 
-        return trim($parsed);
+        return $this->_trim($parsed);
     }
 
     /**
@@ -1588,7 +1588,7 @@ class Decoda {
             }
         }
 
-        return trim($parsed);
+        return $this->_trim($parsed);
     }
 
     /**
@@ -1612,6 +1612,16 @@ class Decoda {
         }
 
         return $content;
+    }
+
+    /**
+     * Trim line breaks and not spaces.
+     *
+     * @param string $string
+     * @return string
+     */
+    protected function _trim($string) {
+        return trim($string, "\t\n\r\0\x0B");
     }
 
 }

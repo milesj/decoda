@@ -677,6 +677,7 @@ class Decoda {
      */
     public function reset($string, $flush = false) {
         $this->_chunks = array();
+        $this->_errors = array();
         $this->_nodes = array();
         $this->_blacklist = array();
         $this->_whitelist = array();

@@ -82,6 +82,9 @@ class TableFilterTest extends TestCase {
 
         // colspan
         $this->assertEquals('<table class="decoda-table"><tr><td colspan="2">Two</td></tr></table>', $this->object->reset('[table][tr][td="2"]Two[/td][/tr][/table]')->parse());
+        $this->assertEquals('<table class="decoda-table"><tr><td colspan="3">Three</td></tr></table>', $this->object->reset('[table][tr][td colspan="3"]Three[/td][/tr][/table]')->parse());
+        $this->assertEquals('<table class="decoda-table"><tr><td colspan="3" rowspan="4">Four</td></tr></table>', $this->object->reset('[table][tr][td colspan="3" rowspan="4"]Four[/td][/tr][/table]')->parse());
+        $this->assertEquals('<table class="decoda-table"><tr><td rowspan="5">Five</td></tr></table>', $this->object->reset('[table][tr][td rowspan="5"]Five[/td][/tr][/table]')->parse());
         $this->assertEquals('<table class="decoda-table"><tr><td>Two</td></tr></table>', $this->object->reset('[table][tr][td="abc"]Two[/td][/tr][/table]')->parse());
     }
 

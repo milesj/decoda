@@ -90,7 +90,9 @@ class TableFilter extends AbstractFilter {
             'allowedTypes' => Decoda::TYPE_BOTH,
             'parent' => array('tr'),
             'attributes' => array(
-                'default' => self::NUMERIC
+                'default' => self::NUMERIC,
+                'colspan' => self::NUMERIC,
+                'rowspan' => self::NUMERIC
             ),
             'mapAttributes' => array(
                 'default' => 'colspan'

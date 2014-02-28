@@ -77,11 +77,13 @@ class TableFilter extends AbstractFilter {
             'parent' => array('tr'),
             'attributes' => array(
                 'default' => self::NUMERIC,
-                'colspan' => self::NUMERIC,
-                'rowspan' => self::NUMERIC
+                'cols' => self::NUMERIC,
+                'rows' => self::NUMERIC
             ),
             'mapAttributes' => array(
-                'default' => 'colspan'
+                'default' => 'colspan',
+                'cols' => 'colspan',
+                'rows' => 'rowspan'
             )
         ),
         'th' => array(
@@ -91,11 +93,13 @@ class TableFilter extends AbstractFilter {
             'parent' => array('tr'),
             'attributes' => array(
                 'default' => self::NUMERIC,
-                'colspan' => self::NUMERIC,
-                'rowspan' => self::NUMERIC
+                'cols' => self::NUMERIC,
+                'rows' => self::NUMERIC
             ),
             'mapAttributes' => array(
-                'default' => 'colspan'
+                'default' => 'colspan',
+                'cols' => 'colspan',
+                'rows' => 'rowspan'
             )
         )
     );

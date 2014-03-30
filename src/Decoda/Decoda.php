@@ -742,6 +742,7 @@ class Decoda {
                 case 'locale':
                     $this->setLocale($value);
                 break;
+                case 'disable':
                 case 'disabled':
                     $this->disable($value);
                 break;

@@ -11,6 +11,7 @@ use Decoda\Filter\BlockFilter;
 use Decoda\Filter\DefaultFilter;
 use Decoda\Filter\EmailFilter;
 use Decoda\Filter\UrlFilter;
+use Decoda\Hook\CensorHook;
 use Decoda\Test\TestCase;
 use Decoda\Test\TestEngine;
 use Decoda\Test\TestFilter;
@@ -61,9 +62,20 @@ class DecodaTest extends TestCase {
         $this->assertInstanceOf('\Decoda\Filter', $this->object->getFilter('Test'));
         $this->assertInstanceOf('\Decoda\Filter', $this->object->getFilterByTag('example'));
 
-        $this->object->resetFilters();
+        // Test removal
+        $this->assertFalse($this->object->hasFilter('Default'));
+
+        $this->object->addFilter(new DefaultFilter());
+
+        $this->assertTrue($this->object->hasFilter('Default'));
+
+        $this->object->removeFilter('Default');
+
+        $this->assertFalse($this->object->hasFilter('Default'));
 
         // Empty
+        $this->object->resetFilters();
+
         $this->assertTrue(count($this->object->getFilters()) == 1);
     }
 
@@ -89,9 +101,20 @@ class DecodaTest extends TestCase {
 
         $this->assertInstanceOf('\Decoda\Hook', $this->object->getHook('Test'));
 
-        $this->object->resetHooks();
+        // Test removal
+        $this->assertFalse($this->object->hasHook('Censor'));
+
+        $this->object->addHook(new CensorHook());
+
+        $this->assertTrue($this->object->hasHook('Censor'));
+
+        $this->object->removeHook('Censor');
+
+        $this->assertFalse($this->object->hasHook('Censor'));
 
         // Empty
+        $this->object->resetHooks();
+
         $this->assertTrue(count($this->object->getHooks()) == 1);
     }
 
@@ -104,6 +127,50 @@ class DecodaTest extends TestCase {
         $this->object->setEngine(new TestEngine());
 
         $this->assertInstanceOf('\Decoda\Test\TestEngine', $this->object->getEngine());
+    }
+
+    /**
+     * Test paths.
+     */
+    public function testPaths() {
+        $this->object->addPath('/some/folder')->addPath('/another/folder/');
+
+        $this->assertEquals(array(
+            dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'src/config/',
+            '/some/folder/',
+            '/another/folder/'
+        ), $this->object->getPaths());
+    }
+
+    /**
+     * Test config setting.
+     */
+    public function testConfig() {
+        $this->object->setConfig(array(
+            'open' => '{',
+            'close' => '}',
+            'locale' => 'de',
+            'disable' => false,
+            'shorthand' => true,
+            'xhtmlOutput' => false,
+            'escape' => true,
+            'strict' => true,
+            'newlines' => 5,
+            'lineBreaks' => false,
+            'removeEmpty' => true
+        ));
+
+        $this->assertEquals('{', $this->object->getConfig('open'));
+        $this->assertEquals('}', $this->object->getConfig('close'));
+        $this->assertEquals('de', $this->object->getConfig('locale'));
+        $this->assertEquals(false, $this->object->getConfig('disabled'));
+        $this->assertEquals(true, $this->object->getConfig('shorthandLinks'));
+        $this->assertEquals(false, $this->object->getConfig('xhtmlOutput'));
+        $this->assertEquals(true, $this->object->getConfig('escapeHtml'));
+        $this->assertEquals(true, $this->object->getConfig('strictMode'));
+        $this->assertEquals(5, $this->object->getConfig('maxNewlines'));
+        $this->assertEquals(false, $this->object->getConfig('lineBreaks'));
+        $this->assertEquals(true, $this->object->getConfig('removeEmpty'));
     }
 
     /**
@@ -249,9 +316,13 @@ class DecodaTest extends TestCase {
     public function testBlacklist() {
         $this->object->addFilter(new DefaultFilter());
 
-        $this->assertEquals('<b>Bold</b> <i>Italics</i>', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->parse());
+        $this->assertEquals('<b>Bold</b> <i>Italics</i> <u>Underline</u>', $this->object->reset('[b]Bold[/b] [i]Italics[/i] [u]Underline[/u]')->parse());
 
-        $this->assertEquals('<b>Bold</b> Italics', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->blacklist('i')->parse());
+        $this->assertEquals('<b>Bold</b> Italics <u>Underline</u>', $this->object->reset('[b]Bold[/b] [i]Italics[/i] [u]Underline[/u]')->blacklist('i')->parse());
+
+        $this->assertEquals('Bold <i>Italics</i> Underline', $this->object->reset('[b]Bold[/b] [i]Italics[/i] [u]Underline[/u]')->blacklist(array('b', 'u'))->parse());
+
+        $this->assertEquals(array('b', 'u'), $this->object->getBlacklist());
     }
 
     /**
@@ -263,6 +334,8 @@ class DecodaTest extends TestCase {
         $this->assertEquals('<b>Bold</b> <i>Italics</i>', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->parse());
 
         $this->assertEquals('<b>Bold</b> Italics', $this->object->reset('[b]Bold[/b] [i]Italics[/i]')->whitelist('b')->parse());
+
+        $this->assertEquals(array('b'), $this->object->getWhitelist());
     }
 
     /**
@@ -480,9 +553,26 @@ class DecodaTest extends TestCase {
         $this->object->addFilter(new DefaultFilter());
 
         $this->assertEquals('Bold', $this->object->reset('[b]Bold')->parse());
+
+        $this->assertEquals(array(
+            array('type' => Decoda::ERROR_CLOSING, 'tag' => 'b')
+        ), $this->object->getErrors());
+
         $this->assertEquals('Italics', $this->object->reset('Italics[/i]')->parse());
+
+        $this->assertEquals(array(), $this->object->getErrors());
+
         $this->assertEquals('Bold <i>Italics</i>', $this->object->reset('[b]Bold [i]Italics[/i]')->parse());
+
+        $this->assertEquals(array(
+            array('type' => Decoda::ERROR_CLOSING, 'tag' => 'b')
+        ), $this->object->getErrors());
+
         $this->assertEquals('<b>Bold <i>Italics</i> Underline</b>', $this->object->reset('[b]Bold [i]Italics[/i] [u]Underline[/b]')->parse());
+
+        $this->assertEquals(array(
+            array('type' => Decoda::ERROR_NESTING, 'tag' => 'u')
+        ), $this->object->getErrors());
     }
 
     /**

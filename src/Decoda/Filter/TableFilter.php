@@ -76,10 +76,14 @@ class TableFilter extends AbstractFilter {
             'allowedTypes' => Decoda::TYPE_BOTH,
             'parent' => array('tr'),
             'attributes' => array(
-                'default' => self::NUMERIC
+                'default' => self::NUMERIC,
+                'cols' => self::NUMERIC,
+                'rows' => self::NUMERIC
             ),
             'mapAttributes' => array(
-                'default' => 'colspan'
+                'default' => 'colspan',
+                'cols' => 'colspan',
+                'rows' => 'rowspan'
             )
         ),
         'th' => array(
@@ -88,10 +92,14 @@ class TableFilter extends AbstractFilter {
             'allowedTypes' => Decoda::TYPE_BOTH,
             'parent' => array('tr'),
             'attributes' => array(
-                'default' => self::NUMERIC
+                'default' => self::NUMERIC,
+                'cols' => self::NUMERIC,
+                'rows' => self::NUMERIC
             ),
             'mapAttributes' => array(
-                'default' => 'colspan'
+                'default' => 'colspan',
+                'cols' => 'colspan',
+                'rows' => 'rowspan'
             )
         )
     );

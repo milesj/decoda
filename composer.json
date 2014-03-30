@@ -2,7 +2,7 @@
     "name": "mjohnson/decoda",
     "type": "library",
     "description": "A lightweight lexical string parser for BBCode styled markup.",
-    "keywords": ["bbcode", "markup", "decoda", "parser", "filter", "hook"],
+    "keywords": ["bbcode", "markup", "decoda", "parser", "lexer", "filter", "hook"],
     "homepage": "http://milesj.me/code/php/decoda",
     "license": "MIT",
     "authors": [

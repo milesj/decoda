@@ -1,4 +1,4 @@
-# Decoda v6.4.3 [![Build Status](https://travis-ci.org/milesj/decoda.png?branch=master)](https://travis-ci.org/milesj/decoda) #
+# Decoda v6.5.0 [![Build Status](https://travis-ci.org/milesj/decoda.png?branch=master)](https://travis-ci.org/milesj/decoda) #
 
 A lightweight lexical string parser for BBCode styled markup.
 
@@ -36,6 +36,7 @@ A lightweight lexical string parser for BBCode styled markup.
 * Fixes incorrectly nested tags by removing the broken/unclosed tags
 * Self closing tags
 * Logs errors for validation
+* Tag and attribute aliasing
 
 ## Filters ##
 
@@ -51,7 +52,7 @@ The following filters and supported tags are available.
 * Text - font, size, color, h1-h6
 * Url - url, link
 * Video - video, youtube, vimeo, veoh, liveleak, dailymotion, myspace, wegame, collegehumor
-* Table - table, thead, tbody, tfoot, tr, td, th
+* Table - table, thead, tbody, tfoot, tr, td, th, row, col
 
 ## Hooks ##
 

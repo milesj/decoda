@@ -41,17 +41,7 @@ class ImageFilter extends AbstractFilter {
             )
         ),
         'image' => array(
-            'htmlTag' => 'img',
-            'displayType' => Decoda::TYPE_INLINE,
-            'allowedTypes' => Decoda::TYPE_NONE,
-            'contentPattern' => self::IMAGE_PATTERN,
-            'autoClose' => true,
-            'attributes' => array(
-                'default' => self::WIDTH_HEIGHT,
-                'width' => self::DIMENSION,
-                'height' => self::DIMENSION,
-                'alt' => self::WILDCARD
-            )
+            'aliasFor' => 'img'
         )
     );
 

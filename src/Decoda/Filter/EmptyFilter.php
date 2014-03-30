@@ -12,4 +12,13 @@ namespace Decoda\Filter;
  */
 class EmptyFilter extends AbstractFilter {
 
+    /**
+     * Supported tags.
+     *
+     * @type array
+     */
+    protected $_tags = array(
+        'root' => array()
+    );
+
 }

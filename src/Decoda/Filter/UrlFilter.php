@@ -42,15 +42,7 @@ class UrlFilter extends AbstractFilter {
             )
         ),
         'link' => array(
-            'htmlTag' => 'a',
-            'displayType' => Decoda::TYPE_INLINE,
-            'allowedTypes' => Decoda::TYPE_INLINE,
-            'attributes' => array(
-                'default' => true
-            ),
-            'mapAttributes' => array(
-                'default' => 'href'
-            )
+            'aliasFor' => 'url'
         )
     );
 

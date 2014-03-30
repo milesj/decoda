@@ -180,6 +180,22 @@ class TestFilter extends AbstractFilter {
                 'foo' => self::WILDCARD,
                 'bar' => self::WILDCARD
             )
+        ),
+
+        // Aliasing
+        'aliasBase' => array(
+            'htmlTag' => 'aliasBase',
+            'displayType' => Decoda::TYPE_BLOCK,
+            'attributes' => array(
+                'foo' => self::WILDCARD,
+                'bar' => self::WILDCARD
+            )
+        ),
+        'aliased' => array(
+            'aliasFor' => 'aliasBase',
+            'attributes' => array(
+                'baz' => self::NUMERIC
+            )
         )
     );
 

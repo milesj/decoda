@@ -9,6 +9,7 @@ namespace Decoda\Filter;
 
 use Decoda\Decoda;
 use Decoda\Component\AbstractComponent;
+use Decoda\Exception\MissingFilterException;
 use Decoda\Filter;
 
 /**
@@ -16,14 +17,6 @@ use Decoda\Filter;
  * Supports a wide range of parameters to customize the output of each tag.
  */
 abstract class AbstractFilter extends AbstractComponent implements Filter {
-
-    /**
-     * Regex patterns for attribute parsing.
-     */
-    const WILDCARD = '/(.*?)/';
-    const ALPHA = '/^[a-z_\-\s]+$/i';
-    const ALNUM = '/^[a-z0-9,_\s\.\-\+\/]+$/i';
-    const NUMERIC = '/^[0-9,\.\-\+\/]+$/';
 
     /**
      * Default tag configuration.
@@ -37,12 +30,14 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
          * template         - (string) Template file to use for rendering
          * displayType      - (constant) Type of HTML element: block or inline
          * allowedTypes     - (constant) What types of elements are allowed to be nested
+         * aliasFor         - (string) Inherits settings from another filter
          */
         'tag' => '',
         'htmlTag' => '',
         'template' => '',
         'displayType' => Decoda::TYPE_BLOCK,
         'allowedTypes' => Decoda::TYPE_BOTH,
+        'aliasFor' => '',
 
         /**
          * attributes       - (array) Custom attributes to parse out of the Decoda tag
@@ -95,20 +90,50 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
     protected $_tags = array();
 
     /**
+     * Generate all the tags on construction.
+     */
+    public function construct() {
+        $tags = array();
+        $defaults = $this->_defaults;
+
+        foreach ($this->_tags as $tag => $settings) {
+            $filter = $settings + $defaults;
+            $filter['tag'] = $tag;
+
+            // Inherit from another tag and merge recursively
+            if ($filter['aliasFor']) {
+                $base = $tags[$filter['aliasFor']];
+
+                foreach ($filter as $key => $value) {
+                    if (is_array($value)) {
+                        $base[$key] = $value + $base[$key];
+                    } else if ($value !== '') {
+                        $base[$key] = $value;
+                    }
+                }
+
+                $filter = $base;
+            }
+
+            $tags[$tag] = $filter;
+        }
+
+        $this->_tags = $tags;
+    }
+
+    /**
      * Return a tag if it exists, and merge with defaults.
      *
      * @param string $tag
      * @return array
+     * @throws \Decoda\Exception\MissingFilterException
      */
     public function getTag($tag) {
-        $defaults = $this->_defaults;
-        $defaults['tag'] = $tag;
-
         if (isset($this->_tags[$tag])) {
-            return $this->_tags[$tag] + $defaults;
+            return $this->_tags[$tag];
         }
 
-        return $defaults;
+        throw new MissingFilterException(sprintf('No filter can be found with $s tag', $tag));
     }
 
     /**

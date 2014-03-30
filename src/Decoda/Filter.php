@@ -13,6 +13,14 @@ namespace Decoda;
 interface Filter extends Component {
 
     /**
+     * Regex patterns for attribute parsing.
+     */
+    const WILDCARD = '/(.*?)/';
+    const ALPHA = '/^[a-z_\-\s]+$/i';
+    const ALNUM = '/^[a-z0-9,_\s\.\-\+\/]+$/i';
+    const NUMERIC = '/^[0-9,\.\-\+\/]+$/';
+
+    /**
      * Return a tag if it exists, and merge with defaults.
      *
      * @param string $tag

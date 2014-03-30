@@ -39,13 +39,7 @@ class EmailFilter extends AbstractFilter {
             )
         ),
         'mail' => array(
-            'htmlTag' => 'a',
-            'displayType' => Decoda::TYPE_INLINE,
-            'allowedTypes' => Decoda::TYPE_NONE,
-            'escapeAttributes' => false,
-            'attributes' => array(
-                'default' => true
-            )
+            'aliasFor' => 'email'
         )
     );
 

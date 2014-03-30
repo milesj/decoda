@@ -96,6 +96,14 @@ class TableFilterTest extends TestCase {
     }
 
     /**
+     * Test tag aliasing.
+     */
+    public function testAliases() {
+        $this->assertEquals('<table class="decoda-table"><tr><td>One</td><td>Two</td></tr></table>', $this->object->reset('[table][row][col]One[/col][col]Two[/col][/row][/table]')->parse());
+        $this->assertEquals('<table class="decoda-table"><tr><td>One</td><td>Two</td></tr><tr><td>One</td><td>Two</td></tr></table>', $this->object->reset('[table][row][col]One[/col][col]Two[/col][/row][row][col]One[/col][col]Two[/col][/row][/table]')->parse());
+    }
+
+    /**
      * Test larger examples.
      */
     public function testFullExamples() {

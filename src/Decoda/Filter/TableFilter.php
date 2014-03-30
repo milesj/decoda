@@ -83,6 +83,10 @@ class TableFilter extends AbstractFilter {
                 'cols' => self::NUMERIC,
                 'rows' => self::NUMERIC
             ),
+            'aliasAttributes' => array(
+                'colspan' => 'cols',
+                'rowspan' => 'rows'
+            ),
             'mapAttributes' => array(
                 'default' => 'colspan',
                 'cols' => 'colspan',
@@ -101,6 +105,10 @@ class TableFilter extends AbstractFilter {
                 'default' => self::NUMERIC,
                 'cols' => self::NUMERIC,
                 'rows' => self::NUMERIC
+            ),
+            'aliasAttributes' => array(
+                'colspan' => 'cols',
+                'rowspan' => 'rows'
             ),
             'mapAttributes' => array(
                 'default' => 'colspan',

@@ -101,6 +101,13 @@ class TableFilterTest extends TestCase {
     public function testAliases() {
         $this->assertEquals('<table class="decoda-table"><tr><td>One</td><td>Two</td></tr></table>', $this->object->reset('[table][row][col]One[/col][col]Two[/col][/row][/table]')->parse());
         $this->assertEquals('<table class="decoda-table"><tr><td>One</td><td>Two</td></tr><tr><td>One</td><td>Two</td></tr></table>', $this->object->reset('[table][row][col]One[/col][col]Two[/col][/row][row][col]One[/col][col]Two[/col][/row][/table]')->parse());
+
+        // colspan & rowspan
+        $this->assertEquals('<table class="decoda-table"><tr><td colspan="2">Two</td></tr></table>', $this->object->reset('[table][tr][td="2"]Two[/td][/tr][/table]')->parse());
+        $this->assertEquals('<table class="decoda-table"><tr><td colspan="3">Three</td></tr></table>', $this->object->reset('[table][row][col colspan="3"]Three[/col][/row][/table]')->parse());
+        $this->assertEquals('<table class="decoda-table"><tr><td colspan="3" rowspan="4">Four</td></tr></table>', $this->object->reset('[table][row][td cols="3" rowspan="4"]Four[/td][/row][/table]')->parse());
+        $this->assertEquals('<table class="decoda-table"><tr><td rowspan="5">Five</td></tr></table>', $this->object->reset('[table][tr][col rows="5"]Five[/col][/tr][/table]')->parse());
+        $this->assertEquals('<table class="decoda-table"><tr><td>Two</td></tr></table>', $this->object->reset('[table][tr][col="abc"]Two[/col][/tr][/table]')->parse());
     }
 
     /**

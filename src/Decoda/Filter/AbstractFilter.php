@@ -41,13 +41,15 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
 
         /**
          * attributes       - (array) Custom attributes to parse out of the Decoda tag
-         * mapAttributes    - (array) Map parsed and custom attributes to different names, as well as aliasing attributes
+         * mapAttributes    - (array) Map parsed and custom attributes to HTML equivalent attribute names
          * htmlAttributes   - (array) Custom HTML attributes to append to the parsed tag
+         * aliasAttributes  - (array) Custom attributes to alias to another attribute
          * escapeAttributes - (boolean) Escape HTML entities within the parsed attributes
          */
         'attributes' => array(),
         'mapAttributes' => array(),
         'htmlAttributes' => array(),
+        'aliasAttributes' => array(),
         'escapeAttributes' => true,
 
         /**
@@ -100,7 +102,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
             $filter = $settings + $defaults;
             $filter['tag'] = $tag;
 
-            // Inherit from another tag and merge recursively
+            // Alias tags and inherit from another tag and merge recursively
             if ($filter['aliasFor']) {
                 $base = $tags[$filter['aliasFor']];
 
@@ -113,6 +115,13 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
                 }
 
                 $filter = $base;
+            }
+
+            // Alias attributes
+            if ($filter['aliasAttributes']) {
+                foreach ($filter['aliasAttributes'] as $attr => $alias) {
+                    $filter['attributes'][$attr] = $filter['attributes'][$alias];
+                }
             }
 
             $tags[$tag] = $filter;

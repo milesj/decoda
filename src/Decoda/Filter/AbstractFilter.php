@@ -99,11 +99,11 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
         $defaults = $this->_defaults;
 
         foreach ($this->_tags as $tag => $settings) {
-            $filter = $settings + $defaults;
+            $filter = $settings;
             $filter['tag'] = $tag;
 
-            // Alias tags and inherit from another tag and merge recursively
-            if ($filter['aliasFor']) {
+            // Inherit from another tag and merge recursively
+            if (!empty($filter['aliasFor'])) {
                 $base = $tags[$filter['aliasFor']];
 
                 foreach ($filter as $key => $value) {
@@ -115,6 +115,10 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
                 }
 
                 $filter = $base;
+
+            // Or inherit from defaults
+            } else {
+                $filter = array_merge($defaults, $filter);
             }
 
             // Alias attributes

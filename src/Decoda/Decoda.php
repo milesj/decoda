@@ -975,41 +975,37 @@ class Decoda {
      */
     protected function _buildTag($string) {
         $disabled = $this->getConfig('disabled');
-        $oe = $this->getConfig('open');
-        $ce = $this->getConfig('close');
+        $oe = preg_quote($this->getConfig('open'), '/');
+        $ce = preg_quote($this->getConfig('close'), '/');
         $tag = null;
         $type = self::TAG_NONE;
         $attributes = array();
 
         // Closing tag
-        if (mb_substr($string, 0, 2) === $oe . '/') {
-            $tag = trim(mb_substr($string, 2, mb_strlen($string) - 3));
+        if (preg_match('/^' . $oe . '\s*\/\s*([-a-z0-9\*]+)\s*' . $ce . '/i', $string, $matches)) {
+            $tag = trim($matches[1]);
             $type = self::TAG_CLOSE;
 
         // Opening tag
-        } else if (preg_match('/' . preg_quote($oe, '/') . '([-a-z0-9\*]+)(.*?)' . preg_quote($ce, '/') . '/i', $string, $matches)) {
+        } else if (preg_match('/^' . $oe . '\s*([-a-z0-9\*]+)(.*?)\s*' . $ce . '/i', $string, $matches)) {
             $tag = trim($matches[1]);
             $type = self::TAG_OPEN;
         }
 
         // Check for lowercase tag in case they uppercased it: IMG, B, etc
-        if (isset($this->_tags[mb_strtolower($tag)])) {
-            $tag = mb_strtolower($tag);
+        if (isset($this->_tags[strtolower($tag)])) {
+            $tag = strtolower($tag);
         }
 
         if (!isset($this->_tags[$tag])) {
             return false;
         }
 
+        $source = $this->_tags[$tag];
+
         // Check if is a self closing tag
-        if (self::TAG_OPEN === $type) {
-            if (
-                isset($this->_tags[$tag]['autoClose']) &&
-                $this->_tags[$tag]['autoClose'] &&
-                mb_substr($string, -2) === '/' . $ce
-            ) {
-                $type = self::TAG_SELF_CLOSE;
-            }
+        if ($type === self::TAG_OPEN && $source['autoClose'] && preg_match('/\/\s*' . $ce . '$/', $string)) {
+            $type = self::TAG_SELF_CLOSE;
         }
 
         // Find attributes
@@ -1026,7 +1022,7 @@ class Decoda {
 
             // Find attributes that aren't surrounded by quotes
             if (!$this->getConfig('strictMode')) {
-                preg_match_all('/([a-z]+)=([^\s' . preg_quote($ce, '/') . ']+)/i', $string, $matches, PREG_SET_ORDER);
+                preg_match_all('/([a-z]+)=([^\s' . $ce . ']+)/i', $string, $matches, PREG_SET_ORDER);
 
                 if ($matches) {
                     foreach ($matches as $match) {
@@ -1038,8 +1034,6 @@ class Decoda {
             }
 
             if ($found) {
-                $source = $this->_tags[$tag];
-
                 foreach ($found as $key => $value) {
                     $key = mb_strtolower($key);
                     $value = trim(trim($value), '"');

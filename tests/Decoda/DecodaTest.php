@@ -787,4 +787,15 @@ EXP;
         $this->assertEquals('<b> Bold</b> String', $this->object->reset('[b] Bold[/b] String')->parse());
     }
 
+    /**
+     * Test that whitespace within a filter tag is ignored.
+     */
+    public function testWhitespaceInsideFilterTag() {
+        $this->object->addFilter(new DefaultFilter());
+        $this->assertEquals('<b>Bold</b>', $this->object->reset('[b ]Bold[/b]')->parse());
+        $this->assertEquals('<b>Bold</b>', $this->object->reset('[b ]Bold[/b  ]')->parse());
+        $this->assertEquals('<b>Bold</b>', $this->object->reset('[   b ]Bold[ /b]')->parse());
+        $this->assertEquals('<b>Bold</b>', $this->object->reset('[b' . PHP_EOL . ']Bold[' . PHP_EOL . '/b]')->parse());
+    }
+
 }

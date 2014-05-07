@@ -17,7 +17,7 @@ class EmailFilter extends AbstractFilter {
     /**
      * Configuration.
      *
-     * @type array
+     * @var array
      */
     protected $_config = array(
         'encrypt' => true
@@ -26,7 +26,7 @@ class EmailFilter extends AbstractFilter {
     /**
      * Supported tags.
      *
-     * @type array
+     * @var array
      */
     protected $_tags = array(
         'email' => array(

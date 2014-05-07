@@ -17,7 +17,7 @@ class UrlFilter extends AbstractFilter {
     /**
      * Configuration.
      *
-     * @type array
+     * @var array
      */
     protected $_config = array(
         'protocols' => array('http', 'https', 'ftp', 'irc', 'telnet'),
@@ -27,7 +27,7 @@ class UrlFilter extends AbstractFilter {
     /**
      * Supported tags.
      *
-     * @type array
+     * @var array
      */
     protected $_tags = array(
         'url' => array(

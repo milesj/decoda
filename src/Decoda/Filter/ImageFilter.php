@@ -24,7 +24,7 @@ class ImageFilter extends AbstractFilter {
     /**
      * Supported tags.
      *
-     * @type array
+     * @var array
      */
     protected $_tags = array(
         'img' => array(

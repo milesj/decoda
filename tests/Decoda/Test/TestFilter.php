@@ -15,7 +15,7 @@ class TestFilter extends AbstractFilter {
     /**
      * Example tags.
      *
-     * @type array
+     * @var array
      */
     protected $_tags = array(
         'example' => array(

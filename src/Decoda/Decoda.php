@@ -1372,7 +1372,7 @@ class Decoda {
      * @param array $wrapper
      * @return array
      */
-    protected function _extractNodes(array $chunks, array $wrapper = array()) {
+    protected function _extractNodes(array $chunks, array $wrapper = array(), $depth = 0) {
         $chunks = $this->_cleanChunks($chunks, $wrapper);
         $nodes = array();
         $tag = array();
@@ -1416,7 +1416,8 @@ class Decoda {
 
                     // Slice a section of the array if the correct closing tag is found
                     $node = $chunks[$openIndex];
-                    $node['children'] = $this->_extractNodes(array_slice($chunks, ($openIndex + 1), $index), $chunks[$openIndex]);
+                    $node['depth'] = $depth;
+                    $node['children'] = $this->_extractNodes(array_slice($chunks, ($openIndex + 1), $index), $chunks[$openIndex], $depth + 1);
                     $nodes[] = $node;
 
                 // There is no opening or a broken opening tag, which means

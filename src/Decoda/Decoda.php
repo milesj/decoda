@@ -1370,6 +1370,7 @@ class Decoda {
      *
      * @param array $chunks
      * @param array $wrapper
+     * @param int $depth
      * @return array
      */
     protected function _extractNodes(array $chunks, array $wrapper = array(), $depth = 0) {

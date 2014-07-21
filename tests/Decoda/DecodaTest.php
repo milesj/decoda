@@ -228,6 +228,25 @@ class DecodaTest extends TestCase {
     }
 
     /**
+     * @dataProvider getEscapeData
+     */
+    public function testEscape($expected, $string, $message = '') {
+        $this->assertEquals($expected, $this->object->escape($string), $message);
+        $this->assertEquals($expected, $this->object->reset($string)->parse(), $message);
+    }
+
+    public function getEscapeData() {
+        return array(
+            array('&lt;', '<', 'escape lower than'),
+            array('&gt;', '>', 'escape greater than'),
+            array('&amp;', '&', 'escape ampersands'),
+            array('&amp;', '&amp;', 'Do not double encode ampersands'),
+            array('"', '"', 'not escape double quote'),
+            array('\'', '\'', 'not escape single quote'),
+        );
+    }
+
+    /**
      * Test that setLocale() changes the locale for messages.
      */
     public function testLocale() {

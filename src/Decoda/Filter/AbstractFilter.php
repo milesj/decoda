@@ -216,7 +216,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
                 }
 
                 if ($setup['escapeAttributes']) {
-                    $value = htmlentities($value, ENT_QUOTES, 'UTF-8');
+                    $value = htmlentities($value, ENT_QUOTES, 'UTF-8', false);
                 }
 
                 if (!empty($attributes[$key])) {

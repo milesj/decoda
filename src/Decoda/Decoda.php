@@ -395,7 +395,7 @@ class Decoda {
         $string = $this->convertNewlines($string);
 
         if ($this->getConfig('escapeHtml')) {
-            $string = str_replace(array('<', '>'), array('&lt;', '&gt;'), $string);
+            $string = htmlspecialchars($string, ENT_NOQUOTES, 'UTF-8', false);
         }
 
         return $string;

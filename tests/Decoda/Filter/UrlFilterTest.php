@@ -66,4 +66,11 @@ class UrlFilterTest extends TestCase {
         $this->assertEquals('<a href="http://domain.com/">Test</a>', $this->object->reset('[url=http://domain.com/]Test[/url]')->parse());
     }
 
+    /**
+     * Test that ampersands are escaped.
+     */
+    public function testUrlQueryParamsAreEscaped() {
+        $this->assertEquals('<a href="http://domain.com/?foo=bar&amp;key=value">http://domain.com/?foo=bar&amp;key=value</a>', $this->object->reset('[url]http://domain.com/?foo=bar&key=value[/url]')->parse());
+    }
+
 }

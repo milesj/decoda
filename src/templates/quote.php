@@ -10,7 +10,7 @@
             if (!empty($author)) { ?>
                 <span class="decoda-quote-author">
                     <?php echo $this->getFilter()->message('quoteBy', array(
-                        'author' => htmlentities($author, ENT_NOQUOTES, 'UTF-8')
+                        'author' => $this->getParser()->escape($author)
                     )); ?>
                 </span>
             <?php } ?>

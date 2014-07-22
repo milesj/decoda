@@ -47,6 +47,16 @@ abstract class AbstractEngine extends AbstractComponent implements Engine {
     }
 
     /**
+     * Escape HTML characters and entities.
+     *
+     * @param string $string
+     * @return string
+     */
+    public function escape($string) {
+        return $this->getParser()->escape($string);
+    }
+
+    /**
      * Return the current filter.
      *
      * @return \Decoda\Filter

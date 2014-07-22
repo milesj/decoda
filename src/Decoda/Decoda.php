@@ -390,16 +390,31 @@ class Decoda {
     }
 
     /**
+     * Escape HTML characters amd entities.
+     *
+     * @param string $string
+     * @param int $flags
+     * @return string
+     */
+    public function escape($string, $flags = null) {
+        if ($flags === null) {
+            $flags = ENT_QUOTES | ENT_SUBSTITUTE;
+        }
+
+        return htmlentities($string, $flags, 'UTF-8', false);
+    }
+
+    /**
      * Normalize line feeds and escape HTML characters.
      *
      * @param string $string
      * @return string
      */
-    public function escape($string) {
+    public function escapeHtml($string) {
         $string = $this->convertNewlines($string);
 
         if ($this->getConfig('escapeHtml')) {
-            $string = htmlspecialchars($string, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
+            $string = $this->escape($string, ENT_NOQUOTES | ENT_SUBSTITUTE);
         }
 
         return $string;
@@ -687,7 +702,7 @@ class Decoda {
         $this->_whitelist = array();
         $this->_parsed = '';
         $this->_stripped = '';
-        $this->_string = $this->escape($string);
+        $this->_string = $this->escapeHtml($string);
 
         if ($flush) {
             $this->resetFilters();

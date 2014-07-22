@@ -230,8 +230,8 @@ class DecodaTest extends TestCase {
     /**
      * @dataProvider getEscapeData
      */
-    public function testEscape($expected, $string, $message = '') {
-        $this->assertEquals($expected, $this->object->escape($string), $message);
+    public function escapeHtml($expected, $string, $message = '') {
+        $this->assertEquals($expected, $this->object->escapeHtml($string), $message);
         $this->assertEquals($expected, $this->object->reset($string)->parse(), $message);
     }
 

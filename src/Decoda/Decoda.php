@@ -12,6 +12,10 @@ use Decoda\Exception\MissingHookException;
 use Decoda\Exception\MissingLocaleException;
 use \InvalidArgumentException;
 
+if (!defined('ENT_SUBSTITUTE')) {
+    define('ENT_SUBSTITUTE', 8);
+}
+
 /**
  * A lightweight lexical string parser for simple markup syntax.
  * Provides a very powerful filter and hook system to extend the parsing cycle.
@@ -395,7 +399,7 @@ class Decoda {
         $string = $this->convertNewlines($string);
 
         if ($this->getConfig('escapeHtml')) {
-            $string = htmlspecialchars($string, ENT_NOQUOTES, 'UTF-8', false);
+            $string = htmlspecialchars($string, ENT_NOQUOTES | ENT_SUBSTITUTE, 'UTF-8', false);
         }
 
         return $string;

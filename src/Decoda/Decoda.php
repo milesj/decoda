@@ -92,7 +92,8 @@ class Decoda {
         'strictMode' => true,
         'maxNewlines' => 3,
         'lineBreaks' => true,
-        'removeEmpty' => false
+        'removeEmpty' => false,
+        'configPath' => '../config/'
     );
 
     /**
@@ -195,7 +196,10 @@ class Decoda {
     public function __construct($string = '', array $config = array()) {
         $this->setConfig($config);
         $this->reset($string, true);
-        $this->addPath(dirname(__DIR__) . '/config/');
+
+        if ($path = $this->getConfig('configPath')) {
+            $this->addPath($path);
+        }
     }
 
     /**
@@ -280,6 +284,10 @@ class Decoda {
      * @return \Decoda\Decoda
      */
     public function addPath($path) {
+        if (substr($path, 0, 3) === '../') {
+            $path = realpath(__DIR__ . '/' . $path);
+        }
+
         if (substr($path, -1) !== '/') {
             $path .= '/';
         }
@@ -790,6 +798,11 @@ class Decoda {
                 break;
                 case 'removeEmpty':
                     $this->setRemoveEmptyTags($value);
+                break;
+
+                // Doesn't need a setter as it's only used in the constructor
+                case 'configPath':
+                    $this->_config['configPath'] = $value;
                 break;
             }
         }

@@ -136,7 +136,7 @@ class DecodaTest extends TestCase {
         $this->object->addPath('/some/folder')->addPath('/another/folder/');
 
         $this->assertEquals(array(
-            dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'src/config/',
+            dirname(dirname(__DIR__)) . '\src\config/',
             '/some/folder/',
             '/another/folder/'
         ), $this->object->getPaths());
@@ -230,7 +230,7 @@ class DecodaTest extends TestCase {
     /**
      * @dataProvider getEscapeData
      */
-    public function escapeHtml($expected, $string, $message = '') {
+    public function testEscapeHtml($expected, $string, $message = '') {
         $this->assertEquals($expected, $this->object->escapeHtml($string), $message);
         $this->assertEquals($expected, $this->object->reset($string)->parse(), $message);
     }
@@ -815,6 +815,15 @@ EXP;
         $this->assertEquals('<b>Bold</b>', $this->object->reset('[b ]Bold[/b  ]')->parse());
         $this->assertEquals('<b>Bold</b>', $this->object->reset('[   b ]Bold[ /b]')->parse());
         $this->assertEquals('<b>Bold</b>', $this->object->reset('[b' . PHP_EOL . ']Bold[' . PHP_EOL . '/b]')->parse());
+    }
+
+    /**
+     * @expectedException \Decoda\Exception\MissingLocaleException
+     */
+    public function testCustomConfigPath() {
+        $decoda = new Decoda('', array('configPath' => '/some/fake/path'));
+
+        $this->assertEquals('Spoiler', $decoda->message('spoiler'));
     }
 
 }

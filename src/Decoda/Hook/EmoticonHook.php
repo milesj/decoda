@@ -85,6 +85,18 @@ class EmoticonHook extends AbstractHook {
         }, $smilies));
 
         // Build the tag regex
+        //
+        // tag: It is a complete tag. Where `<tag content>` should not contain
+        // the start character.
+        //     (ex: `[<tag content>]`)
+        //
+        // openTag: It is an incomplete tag. Where it lacks the end character.
+        // Where `<tag content>` should not contain the end character.
+        //     (ex: `[<tag content>`)
+        //
+        // closeTag: It is an incomplete tag. Where it lacks the start character.
+        // Where `<tag content>` should not contain the start character.
+        //     (ex: `<tag content>]`)
         $openBracket = preg_quote($this->getParser()->getConfig('open'), '/');
         $closeBracket = preg_quote($this->getParser()->getConfig('close'), '/');
 
@@ -93,9 +105,23 @@ class EmoticonHook extends AbstractHook {
         $tagRegex = sprintf('(?:%s%s)', $openBracket, $closeTagRegex);
 
         // Build the regex before the smiley
+        //
+        // With following delimiters:
+        //   * start of string
+        //   * space
+        //   * newline
+        //   * tab
+        //   * complete tag
         $beforeRegex = sprintf('^|(?!%s)(?:\n|\s)|%s', $openTagRegex, $tagRegex);
 
         // Build the regex after the smiley
+        //
+        // With following delimiters:
+        //   * end of string
+        //   * space
+        //   * newline
+        //   * tab
+        //   * complete tag
         $afterRegex = sprintf('%s|(?:\n|\s)(?!%s)|$', $tagRegex, $closeTagRegex);
 
         // Build the complete regex
@@ -105,6 +131,7 @@ class EmoticonHook extends AbstractHook {
             $afterRegex
         );
 
+        // Skipping tags
         $pattern2 = sprintf('/%s|(?P<left>%s)(?P<smiley>%s)(?P<right>%s)/is',
             $tagRegex,
             $beforeRegex,

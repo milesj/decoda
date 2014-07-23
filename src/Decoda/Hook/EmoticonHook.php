@@ -125,8 +125,12 @@ class EmoticonHook extends AbstractHook {
         $afterRegex = sprintf('%s|(?:\n|\s)(?!%s)|$', $tagRegex, $closeTagRegex);
 
         // Build the complete regex
-        $pattern = sprintf('/(?P<left>%s)(?P<smiley>%s)(?P<right>%s)/is',
+        //
+        // <left> ( <smiley> <right> ) {1,2} should be {1,}
+        $pattern = sprintf('/(?P<left>%s)(?P<smiley>%s)(?P<right>%s)(?:(?P<smiley2>%s)(?P<right2>%s))?/is',
             $beforeRegex,
+            $smiliesRegex,
+            $afterRegex,
             $smiliesRegex,
             $afterRegex
         );
@@ -205,6 +209,15 @@ class EmoticonHook extends AbstractHook {
 
         $l = isset($matches['left']) ? $matches['left'] : '';
         $r = isset($matches['right']) ? $matches['right'] : '';
+
+        if (isset($matches['smiley2'])) {
+            $smiley2 = $matches['smiley2'];
+
+            if ($this->hasSmiley($smiley2)) {
+                $r .= $this->render($smiley2, $this->getParser()->getConfig('xhtmlOutput'));
+            }
+        }
+        $r .= isset($matches['right2']) ? $matches['right2'] : '';
 
         return $l . $this->render($smiley, $this->getParser()->getConfig('xhtmlOutput')) . $r;
     }

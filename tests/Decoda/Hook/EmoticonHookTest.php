@@ -89,6 +89,9 @@ class EmoticonHookTest extends TestCase {
             array(sprintf('foo%s:/%sbar%s', $closeBracket, $openBracket, $closeBracket), sprintf('foo%s:/%sbar%s', $closeBracket, $openBracket, $closeBracket)),
             array(sprintf('%s  foo  %s:/%s  bar  %s', $openBracket, $closeBracket, $openBracket, $closeBracket), sprintf('%s  foo  %s<img src="/images/hm.png" alt="">%s  bar  %s', $openBracket, $closeBracket, $openBracket, $closeBracket)),
 
+            // With a smiley glue to the left and right of a tag
+            array(sprintf(':/%s  foo  %s:/', $openBracket, $closeBracket), sprintf('<img src="/images/hm.png" alt="">%s  foo  %s<img src="/images/hm.png" alt="">', $openBracket, $closeBracket)),
+
             // Within brackets
             array('[quote=milesj]Hello, my name is [b]Miles Johnson[/b] :)[/quote] [b]Hello[/b] ;)', '[quote=milesj]Hello, my name is [b]Miles Johnson[/b] <img src="/images/happy.png" alt="">[/quote] [b]Hello[/b] <img src="/images/wink.png" alt="">'),
             array('[b]:)[/b]', '[b]<img src="/images/happy.png" alt="">[/b]'),

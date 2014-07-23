@@ -85,11 +85,8 @@ class EmoticonHook extends AbstractHook {
         }, $smilies));
 
         // Build the tag regex
-        $openBracket = $this->getParser()->getConfig('open');
-        $closeBracket = $this->getParser()->getConfig('close');
-
-        $openBracket = preg_quote($openBracket, '/');
-        $closeBracket = preg_quote($closeBracket, '/');
+        $openBracket = preg_quote($this->getParser()->getConfig('open'), '/');
+        $closeBracket = preg_quote($this->getParser()->getConfig('close'), '/');
 
         $openTagRegex = sprintf('(?:%s[^%s]+)', $openBracket, $closeBracket);
         $closeTagRegex = sprintf('(?:[^%s]+%s)', $openBracket, $closeBracket);

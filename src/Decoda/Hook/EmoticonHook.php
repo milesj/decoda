@@ -84,11 +84,40 @@ class EmoticonHook extends AbstractHook {
             return preg_quote($smile, '/');
         }, $smilies));
 
-        $pattern = sprintf('/(?P<left>^|\n|\s)(?:%s)(?P<right>\n|\s|$)/is', $smiliesRegex);
+        // Build the tag regex
+        $openBracket = $this->getParser()->getConfig('open');
+        $closeBracket = $this->getParser()->getConfig('close');
+
+        $openBracket = preg_quote($openBracket, '/');
+        $closeBracket = preg_quote($closeBracket, '/');
+
+        $openTagRegex = sprintf('(?:%s[^%s]+)', $openBracket, $closeBracket);
+        $closeTagRegex = sprintf('(?:[^%s]+%s)', $openBracket, $closeBracket);
+        $tagRegex = sprintf('(?:%s%s)', $openBracket, $closeTagRegex);
+
+        // Build the regex before the smiley
+        $beforeRegex = sprintf('^|(?!%s)(?:\n|\s)|%s', $openTagRegex, $tagRegex);
+
+        // Build the regex after the smiley
+        $afterRegex = sprintf('%s|(?:\n|\s)(?!%s)|$', $tagRegex, $closeTagRegex);
+
+        // Build the complete regex
+        $pattern = sprintf('/(?P<left>%s)(?P<smiley>%s)(?P<right>%s)/is',
+            $beforeRegex,
+            $smiliesRegex,
+            $afterRegex
+        );
+
+        $pattern2 = sprintf('/%s|(?P<left>%s)(?P<smiley>%s)(?P<right>%s)/is',
+            $tagRegex,
+            $beforeRegex,
+            $smiliesRegex,
+            $afterRegex
+        );
 
         // Make two passes to accept that one delimiter can use two smilies
         $content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
-        $content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
+        $content = preg_replace_callback($pattern2, array($this, '_emoticonCallback'), $content);
 
         return $content;
     }
@@ -154,7 +183,11 @@ class EmoticonHook extends AbstractHook {
      * @return string
      */
     protected function _emoticonCallback($matches) {
-        $smiley = trim($matches[0]);
+        if (!isset($matches['smiley'])) {
+            return $matches[0];
+        }
+
+        $smiley = trim($matches['smiley']);
 
         if (count($matches) === 1 || !$this->hasSmiley($smiley)) {
             return $matches[0];

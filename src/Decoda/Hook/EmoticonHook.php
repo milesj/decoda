@@ -131,17 +131,7 @@ class EmoticonHook extends AbstractHook {
             $afterRegex
         );
 
-        // Skipping tags
-        $pattern2 = sprintf('/%s|(?P<left>%s)(?P<smiley>%s)(?P<right>%s)/is',
-            $tagRegex,
-            $beforeRegex,
-            $smiliesRegex,
-            $afterRegex
-        );
-
-        // Make two passes to accept that one delimiter can use two smilies
         $content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
-        $content = preg_replace_callback($pattern2, array($this, '_emoticonCallback'), $content);
 
         return $content;
     }
@@ -207,10 +197,6 @@ class EmoticonHook extends AbstractHook {
      * @return string
      */
     protected function _emoticonCallback($matches) {
-        if (!isset($matches['smiley'])) {
-            return $matches[0];
-        }
-
         $smiley = trim($matches['smiley']);
 
         if (count($matches) === 1 || !$this->hasSmiley($smiley)) {

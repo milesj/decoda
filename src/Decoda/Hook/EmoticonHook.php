@@ -39,6 +39,8 @@ class EmoticonHook extends AbstractHook {
      */
     protected $_smilies = array();
 
+    private $pattern;
+
     /**
      * Read the contents of the loaders into the emoticons list.
      */
@@ -126,14 +128,14 @@ class EmoticonHook extends AbstractHook {
 
         // Build the complete regex
         //
-        // <left> ( <smiley> <right> ) {1,2} should be {1,}
-        $pattern = sprintf('/(?P<left>%s)(?P<smiley>%s)(?P<right>%s)(?:(?P<smiley2>%s)(?P<right2>%s))?/is',
+        // <left> ( <smiley> <right> ) {1,}
+        $pattern = sprintf('/(?P<left>%s)(?P<repeat>(?:(?:%s)(?:%s))+)/is',
             $beforeRegex,
-            $smiliesRegex,
-            $afterRegex,
             $smiliesRegex,
             $afterRegex
         );
+
+        $this->pattern = sprintf('/(%s)/is', $afterRegex);
 
         $content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
 
@@ -201,25 +203,28 @@ class EmoticonHook extends AbstractHook {
      * @return string
      */
     protected function _emoticonCallback($matches) {
-        $smiley = trim($matches['smiley']);
-
-        if (count($matches) === 1 || !$this->hasSmiley($smiley)) {
+        if (count($matches) === 1) {
             return $matches[0];
         }
 
         $l = isset($matches['left']) ? $matches['left'] : '';
-        $r = isset($matches['right']) ? $matches['right'] : '';
+        $r = '';
 
-        if (isset($matches['smiley2'])) {
-            $smiley2 = $matches['smiley2'];
+        $parts = preg_split($this->pattern, $matches['repeat'], null, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
 
-            if ($this->hasSmiley($smiley2)) {
-                $r .= $this->render($smiley2, $this->getParser()->getConfig('xhtmlOutput'));
+        $isXhtmlOutput = $this->getParser()->getConfig('xhtmlOutput');
+        $numberOfParts = count($parts);
+        for ($i = 0; $numberOfParts > $i; $i++) {
+            $content = $parts[$i];
+
+            if ($this->hasSmiley($content)) {
+                $r .= $this->render($content, $isXhtmlOutput);
+            } else {
+                $r .= $content;
             }
         }
-        $r .= isset($matches['right2']) ? $matches['right2'] : '';
 
-        return $l . $this->render($smiley, $this->getParser()->getConfig('xhtmlOutput')) . $r;
+        return $l . $r;
     }
 
 }

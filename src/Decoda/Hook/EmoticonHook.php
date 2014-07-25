@@ -160,7 +160,7 @@ class EmoticonHook extends AbstractHook {
             );
         };
 
-        $content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
+        $content = preg_replace_callback($pattern, array($this, '_emoticonCallbackBC'), $content);
 
         return $content;
     }
@@ -222,14 +222,19 @@ class EmoticonHook extends AbstractHook {
     /**
      * Callback for smiley processing.
      *
+     * This method is just for keep BC.
+     * Will be removed on the version 7.
+     *
      * @param array $matches
      * @return string
      */
-    protected function _emoticonCallback($matches) {
+    private function _emoticonCallbackBC($matches) {
         $parts = $this->_computeParts->__invoke($matches);
 
         $l = $parts['left'];
         $repeatPart = $parts['repeat'];
+        $smiley = array_shift($repeatPart);
+        $r = array_shift($repeatPart);
 
         $isXhtmlOutput = $this->getParser()->getConfig('xhtmlOutput');
         foreach ($repeatPart as $key => $part) {
@@ -243,7 +248,34 @@ class EmoticonHook extends AbstractHook {
             }
         }
 
-        return $l . implode($repeatPart);
+        $r .= implode($repeatPart);
+
+        return $this->_emoticonCallback(array(
+            0       => $smiley,
+            'left'  => $l,
+            1       => $l,
+            'right' => $r,
+            2       => $r,
+        ));
+    }
+
+    /**
+     * Callback for smiley processing.
+     *
+     * @param array $matches
+     * @return string
+     */
+    protected function _emoticonCallback($matches) {
+        $smiley = trim($matches[0]);
+
+        if (count($matches) === 1 || !$this->hasSmiley($smiley)) {
+            return $matches[0];
+        }
+
+        $l = isset($matches[1]) ? $matches[1] : '';
+        $r = isset($matches[2]) ? $matches[2] : '';
+
+        return $l . $this->render($smiley, $this->getParser()->getConfig('xhtmlOutput')) . $r;
     }
 
 }

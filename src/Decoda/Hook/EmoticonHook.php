@@ -39,7 +39,18 @@ class EmoticonHook extends AbstractHook {
      */
     protected $_smilies = array();
 
-    private $pattern;
+    /**
+     * Computes differents catches parts into an array.
+     *
+     * Generate:
+     *     array(
+     *         'left'   => 'catches string',  // The catch string starts with it
+     *         'repeat' => array(smiley, right, ...), // A repeating sequence
+     *     )
+     *
+     * @type \Closure|NULL
+     */
+    private $_computeParts;
 
     /**
      * Read the contents of the loaders into the emoticons list.
@@ -85,6 +96,7 @@ class EmoticonHook extends AbstractHook {
         $smiliesRegex = implode('|', array_map(function ($smile) {
             return preg_quote($smile, '/');
         }, $smilies));
+        $smiliesRegex = sprintf('(?:%s)', $smiliesRegex);
 
         // Build the tag regex
         //
@@ -114,7 +126,7 @@ class EmoticonHook extends AbstractHook {
         //   * newline
         //   * tab
         //   * complete tag
-        $beforeRegex = sprintf('^|(?!%s)(?:\n|\s)|%s', $openTagRegex, $tagRegex);
+        $leftRegex = sprintf('(?:^|(?!%s)(?:\n|\s)|%s)', $openTagRegex, $tagRegex);
 
         // Build the regex after the smiley
         //
@@ -124,18 +136,29 @@ class EmoticonHook extends AbstractHook {
         //   * newline
         //   * tab
         //   * complete tag
-        $afterRegex = sprintf('%s|(?:\n|\s)(?!%s)|$', $tagRegex, $closeTagRegex);
+        $rightRegex = sprintf('(?:%s|(?:\n|\s)(?!%s)|$)', $tagRegex, $closeTagRegex);
 
         // Build the complete regex
         //
         // <left> ( <smiley> <right> ) {1,}
-        $pattern = sprintf('/(?P<left>%s)(?P<repeat>(?:(?:%s)(?:%s))+)/is',
-            $beforeRegex,
+        // The <right> capture is only to keep back compatibility.
+        $pattern = sprintf('/(?P<left>%s)(?P<repeat>(?:%s(?<right>%s))+)/is',
+            $leftRegex,
             $smiliesRegex,
-            $afterRegex
+            $rightRegex
         );
 
-        $this->pattern = sprintf('/(%s)/is', $afterRegex);
+        $this->_computeParts = function ($matches) use ($smiliesRegex, $rightRegex) {
+            $pattern = sprintf('/(%s)(%s)/is', $smiliesRegex, $rightRegex);
+            $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE;
+
+            $repeat = preg_split($pattern, $matches['repeat'], null, $flags);
+
+            return array(
+                'left'   => $matches['left'],
+                'repeat' => $repeat,
+            );
+        };
 
         $content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
 
@@ -203,28 +226,24 @@ class EmoticonHook extends AbstractHook {
      * @return string
      */
     protected function _emoticonCallback($matches) {
-        if (count($matches) === 1) {
-            return $matches[0];
-        }
+        $parts = $this->_computeParts->__invoke($matches);
 
-        $l = isset($matches['left']) ? $matches['left'] : '';
-        $r = '';
-
-        $parts = preg_split($this->pattern, $matches['repeat'], null, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        $l = $parts['left'];
+        $repeatPart = $parts['repeat'];
 
         $isXhtmlOutput = $this->getParser()->getConfig('xhtmlOutput');
-        $numberOfParts = count($parts);
-        for ($i = 0; $numberOfParts > $i; $i++) {
-            $content = $parts[$i];
-
-            if ($this->hasSmiley($content)) {
-                $r .= $this->render($content, $isXhtmlOutput);
+        foreach ($repeatPart as $key => $part) {
+            if (0 === $key % 2) {
+                // Part of a smiley.
+                // If the smiley regex was validated so it exists.
+                $repeatPart[$key] = $this->render($part, $isXhtmlOutput);
             } else {
-                $r .= $content;
+                // Part after a smiley.
+                // no-op
             }
         }
 
-        return $l . $r;
+        return $l . implode($repeatPart);
     }
 
 }

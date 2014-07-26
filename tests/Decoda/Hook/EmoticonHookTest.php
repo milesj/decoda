@@ -13,7 +13,6 @@ use Decoda\Filter\ImageFilter;
 use Decoda\Hook\EmoticonHook;
 use Decoda\Test\TestCase;
 use Decoda\Loader\DataLoader;
-use Decoda\Test\Hook\EmoticonHookBC;
 
 class EmoticonHookTest extends TestCase {
 
@@ -133,21 +132,5 @@ class EmoticonHookTest extends TestCase {
         }
 
         return $data;
-    }
-
-    /**
-     * Test callback back compatibility.
-     *
-     * @dataProvider getSmileyDetectionData
-     */
-    public function testEmoticonCallbackBackCompatibility($value, $expected) {
-        $hook = new EmoticonHookBC();
-        $hook->setParser($this->object->getParser());
-        foreach ($this->object->getLoaders() as $loader) {
-            $hook->addLoader($loader);
-        }
-        $hook->startup();
-
-        $this->assertEquals($expected, $hook->beforeParse($value));
     }
 }

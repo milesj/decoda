@@ -40,19 +40,6 @@ class EmoticonHook extends AbstractHook {
     protected $_smilies = array();
 
     /**
-     * Computes differents catches parts into an array.
-     *
-     * Generate:
-     *     array(
-     *         'left'   => 'catches string',  // The catch string starts with it
-     *         'repeat' => array(smiley, right, ...), // A repeating sequence
-     *     )
-     *
-     * @type \Closure|NULL
-     */
-    private $_computeParts;
-
-    /**
      * Read the contents of the loaders into the emoticons list.
      */
     public function startup() {
@@ -96,71 +83,37 @@ class EmoticonHook extends AbstractHook {
         $smiliesRegex = implode('|', array_map(function ($smile) {
             return preg_quote($smile, '/');
         }, $smilies));
-        $smiliesRegex = sprintf('(?:%s)', $smiliesRegex);
 
         // Build the tag regex
         //
         // tag: It is a complete tag. Where `<tag content>` should not contain
-        // the start character.
+        // the start and end character.
         //     (ex: `[<tag content>]`)
-        //
-        // openTag: It is an incomplete tag. Where it lacks the end character.
-        // Where `<tag content>` should not contain the end character.
-        //     (ex: `[<tag content>`)
-        //
-        // closeTag: It is an incomplete tag. Where it lacks the start character.
-        // Where `<tag content>` should not contain the start character.
-        //     (ex: `<tag content>]`)
         $openBracket = preg_quote($this->getParser()->getConfig('open'), '/');
         $closeBracket = preg_quote($this->getParser()->getConfig('close'), '/');
-
-        $openTagRegex = sprintf('(?:%s[^%s]+)', $openBracket, $closeBracket);
-        $closeTagRegex = sprintf('(?:[^%s]+%s)', $openBracket, $closeBracket);
-        $tagRegex = sprintf('(?:%s%s)', $openBracket, $closeTagRegex);
-
-        // Build the regex before the smiley
-        //
-        // With following delimiters:
-        //   * start of string
-        //   * space
-        //   * newline
-        //   * tab
-        //   * complete tag
-        $leftRegex = sprintf('(?:^|(?!%s)(?:\n|\s)|%s)', $openTagRegex, $tagRegex);
-
-        // Build the regex after the smiley
-        //
-        // With following delimiters:
-        //   * end of string
-        //   * space
-        //   * newline
-        //   * tab
-        //   * complete tag
-        $rightRegex = sprintf('(?:%s|(?:\n|\s)(?!%s)|$)', $tagRegex, $closeTagRegex);
-
-        // Build the complete regex
-        //
-        // <left> ( <smiley> <right> ) {1,}
-        // The <right> capture is only to keep back compatibility.
-        $pattern = sprintf('/(?P<left>%s)(?P<repeat>(?:%s(?<right>%s))+)/is',
-            $leftRegex,
-            $smiliesRegex,
-            $rightRegex
+        $tagRegex = sprintf('(?:%s[^%s%s]+%s)',
+            $openBracket,
+            $openBracket,
+            $closeBracket,
+            $closeBracket
         );
 
-        $this->_computeParts = function ($matches) use ($smiliesRegex, $rightRegex) {
-            $pattern = sprintf('/(%s)(%s)/is', $smiliesRegex, $rightRegex);
-            $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE;
+        $splitPattern = sprintf('/(%s)/s', $tagRegex);
+        $splitFlags = PREG_SPLIT_DELIM_CAPTURE;
+        $parts = preg_split($splitPattern, $content, null, $splitFlags);
 
-            $repeat = preg_split($pattern, $matches['repeat'], null, $flags);
+        // Build the complete regex
+        $pattern = sprintf('/(?<=^|\s)(?P<smiley>%s)(?=\s|$)/is',
+            $smiliesRegex
+        );
 
-            return array(
-                'left'   => $matches['left'],
-                'repeat' => $repeat,
-            );
-        };
+        foreach ($parts as $key => $part) {
+            if (0 === $key % 2) {
+                $parts[$key] = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $part);
+            }
+        }
 
-        $content = preg_replace_callback($pattern, array($this, '_emoticonCallbackBC'), $content);
+        $content = implode($parts);
 
         return $content;
     }
@@ -222,46 +175,6 @@ class EmoticonHook extends AbstractHook {
     /**
      * Callback for smiley processing.
      *
-     * This method is just for keep BC.
-     * Will be removed on the version 7.
-     *
-     * @param array $matches
-     * @return string
-     */
-    private function _emoticonCallbackBC($matches) {
-        $parts = $this->_computeParts->__invoke($matches);
-
-        $l = $parts['left'];
-        $repeatPart = $parts['repeat'];
-        $smiley = array_shift($repeatPart);
-        $r = array_shift($repeatPart);
-
-        $isXhtmlOutput = $this->getParser()->getConfig('xhtmlOutput');
-        foreach ($repeatPart as $key => $part) {
-            if (0 === $key % 2) {
-                // Part of a smiley.
-                // If the smiley regex was validated so it exists.
-                $repeatPart[$key] = $this->render($part, $isXhtmlOutput);
-            } else {
-                // Part after a smiley.
-                // no-op
-            }
-        }
-
-        $r .= implode($repeatPart);
-
-        return $this->_emoticonCallback(array(
-            0       => $smiley,
-            'left'  => $l,
-            1       => $l,
-            'right' => $r,
-            2       => $r,
-        ));
-    }
-
-    /**
-     * Callback for smiley processing.
-     *
      * @param array $matches
      * @return string
      */
@@ -272,8 +185,8 @@ class EmoticonHook extends AbstractHook {
             return $matches[0];
         }
 
-        $l = isset($matches[1]) ? $matches[1] : '';
-        $r = isset($matches[2]) ? $matches[2] : '';
+        $l = isset($matches['left']) ? $matches['left'] : '';
+        $r = isset($matches['right']) ? $matches['right'] : '';
 
         return $l . $this->render($smiley, $this->getParser()->getConfig('xhtmlOutput')) . $r;
     }

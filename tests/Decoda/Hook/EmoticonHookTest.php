@@ -34,6 +34,7 @@ class EmoticonHookTest extends TestCase {
         $this->object->addLoader(new DataLoader(array(
             'test/tag/open' => array($openTag),
             'test/tag/close' => array($closeTag),
+            'test/tag'       => array('[o]_[o]'),
         )));
         $this->object->startup();
     }
@@ -121,8 +122,16 @@ class EmoticonHookTest extends TestCase {
      */
     public function getSmileyConversionData() {
         $decoda = new Decoda();
+        $openTag = $decoda->getConfig('open');
+        $closeTag = $decoda->getConfig('close');
         $hook = new EmoticonHook();
         $hook->setParser($decoda);
+        $hook->addLoader(new DataLoader(array(
+            'test/tag/open'  => array($openTag),
+            'test/tag/close' => array($closeTag),
+            'test/tag'       => array('[o]_[o]'),
+            'test/unicode'   => array("\342\230\272"),
+        )));
         $hook->startup();
 
         $data = array();

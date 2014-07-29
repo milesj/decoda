@@ -8,8 +8,10 @@
 namespace Decoda\Hook;
 
 use Decoda\Decoda;
+use Decoda\Filter\DefaultFilter;
 use Decoda\Hook\EmoticonHook;
 use Decoda\Test\TestCase;
+use Decoda\Loader\DataLoader;
 
 class EmoticonHookTest extends TestCase {
 
@@ -19,11 +21,20 @@ class EmoticonHookTest extends TestCase {
     protected function setUp() {
         parent::setUp();
 
+        $this->object->setBrackets('[', ']');
         $this->object->setLineBreaks(true);
         $this->object->setXhtml(false);
 
+        $this->object->addFilter(new DefaultFilter());
+
         $hook = new EmoticonHook();
         $this->object->addHook($hook);
+
+        $hook->addLoader(new DataLoader(array(
+            'test/tag/open'   => array('['),
+            'test/tag/close'  => array(']'),
+            'test/tag/within' => array('[o]_[o]'),
+        )));
     }
 
     /**
@@ -56,6 +67,14 @@ class EmoticonHookTest extends TestCase {
             array(':/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
             array(':/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
             array(':/ :/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
+            array('[ b ] :/[ / b ]', '<b> <img src="/images/hm.png" alt=""></b>'),
+            array('[ b ]:/ [ / b ]', '<b><img src="/images/hm.png" alt=""> </b>'),
+            array('[ b ]:/[ / b ]', '<b><img src="/images/hm.png" alt=""></b>'),
+            array('[ b ][[ / b ]', '<b><img src="/images/test/tag/open.png" alt=""></b>'),
+            array('[ b ]][ / b ]', '<b><img src="/images/test/tag/close.png" alt=""></b>'),
+            array('[ b ][o]_[o][ / b ]', '<b><img src="/images/test/tag/within.png" alt=""></b>'),
+            array(':/[ b ]:/[ / b ]:/', '<img src="/images/hm.png" alt=""><b><img src="/images/hm.png" alt=""></b><img src="/images/hm.png" alt="">'),
+            array('[ b ]:/[ b ]:/[ / b ]:/[ / b ]', '<b><img src="/images/hm.png" alt=""><b><img src="/images/hm.png" alt=""></b><img src="/images/hm.png" alt=""></b>'),
         );
     }
 

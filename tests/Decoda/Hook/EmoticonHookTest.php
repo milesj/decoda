@@ -8,11 +8,9 @@
 namespace Decoda\Hook;
 
 use Decoda\Decoda;
-use Decoda\Filter\DefaultFilter;
 use Decoda\Filter\ImageFilter;
 use Decoda\Hook\EmoticonHook;
 use Decoda\Test\TestCase;
-use Decoda\Loader\DataLoader;
 
 class EmoticonHookTest extends TestCase {
 
@@ -23,18 +21,10 @@ class EmoticonHookTest extends TestCase {
         parent::setUp();
 
         $decoda = new Decoda();
-        $decoda->addFilter(new DefaultFilter());
         $decoda->addFilter(new ImageFilter());
-
-        $openTag = $decoda->getConfig('open');
-        $closeTag = $decoda->getConfig('close');
 
         $this->object = new EmoticonHook();
         $this->object->setParser($decoda);
-        $this->object->addLoader(new DataLoader(array(
-            'test/tag/open' => array($openTag),
-            'test/tag/close' => array($closeTag),
-        )));
         $this->object->startup();
     }
 
@@ -53,10 +43,6 @@ class EmoticonHookTest extends TestCase {
      * @return array
      */
     public function getSmileyDetectionData() {
-        $decoda = new Decoda();
-        $openBracket = $decoda->getConfig('open');
-        $closeBracket = $decoda->getConfig('close');
-
         return array(
             array(':/ at the beginning', '<img src="/images/hm.png" alt=""> at the beginning'),
             array('Smiley at the end :O', 'Smiley at the end <img src="/images/gah.png" alt="">'),
@@ -72,33 +58,6 @@ class EmoticonHookTest extends TestCase {
             array(':/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
             array(' :/ :/ ', ' <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> '),
             array(' :/ :/ :/ ', ' <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> '),
-
-            // With a tag glue to the left of a smiley
-            array(sprintf('%s', $closeBracket), '<img src="/images/test/tag/close.png" alt="">'),
-            array(sprintf('foo%s:/', $closeBracket), sprintf('foo%s:/', $closeBracket)),
-            array(sprintf('%s  bar  %s:/', $openBracket, $closeBracket), sprintf('%s  bar  %s<img src="/images/hm.png" alt="">', $openBracket, $closeBracket)),
-
-            // With a tag glue to the right of a smiley
-            array(sprintf('%s', $openBracket), '<img src="/images/test/tag/open.png" alt="">'),
-            array(sprintf(':/%sfoo', $openBracket), sprintf(':/%sfoo', $openBracket)),
-            array(sprintf(':/%s  bar  %s', $openBracket, $closeBracket), sprintf('<img src="/images/hm.png" alt="">%s  bar  %s', $openBracket, $closeBracket)),
-
-            // With a tag glue to the left and right of a smiley
-            array(sprintf('foo%s:/%sbar', $closeBracket, $openBracket), sprintf('foo%s:/%sbar', $closeBracket, $openBracket)),
-            array(sprintf('%sfoo%s:/%sbar', $openBracket, $closeBracket, $openBracket), sprintf('%sfoo%s:/%sbar', $openBracket, $closeBracket, $openBracket)),
-            array(sprintf('foo%s:/%sbar%s', $closeBracket, $openBracket, $closeBracket), sprintf('foo%s:/%sbar%s', $closeBracket, $openBracket, $closeBracket)),
-            array(sprintf('%s  foo  %s:/%s  bar  %s', $openBracket, $closeBracket, $openBracket, $closeBracket), sprintf('%s  foo  %s<img src="/images/hm.png" alt="">%s  bar  %s', $openBracket, $closeBracket, $openBracket, $closeBracket)),
-
-            // Within brackets
-            array('[quote=milesj]Hello, my name is [b]Miles Johnson[/b] :)[/quote] [b]Hello[/b] ;)', '[quote=milesj]Hello, my name is [b]Miles Johnson[/b] <img src="/images/happy.png" alt="">[/quote] [b]Hello[/b] <img src="/images/wink.png" alt="">'),
-            array('[b]:)[/b]', '[b]<img src="/images/happy.png" alt="">[/b]'),
-            array('[b] :)[/b]', '[b] <img src="/images/happy.png" alt="">[/b]'),
-            array('[b]:) [/b]', '[b]<img src="/images/happy.png" alt=""> [/b]'),
-            array('[b] :) [/b]', '[b] <img src="/images/happy.png" alt=""> [/b]'),
-            array('[b] :][/b]', '[b] <img src="/images/happy.png" alt="">[/b]'),
-            array('[b] :[[/b]', '[b] <img src="/images/sad.png" alt="">[/b]'),
-            array('[b]:[ [/b]', '[b]<img src="/images/sad.png" alt=""> [/b]'),
-            array('[b]:wink:[/b]', '[b]<img src="/images/wink.png" alt="">[/b]')
         );
     }
 

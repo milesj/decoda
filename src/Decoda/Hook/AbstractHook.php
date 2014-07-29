@@ -37,6 +37,19 @@ abstract class AbstractHook extends AbstractComponent implements Hook {
     }
 
     /**
+     * Process for each elements content.
+     *
+     * Allows you to edit only the elements content while leaving untouched
+     * all tags.
+     *
+     * @param string $content
+     * @return string
+     */
+    public function filterPlaintext($content) {
+        return $content;
+    }
+
+    /**
      * Process the content before the parsing begins.
      *
      * @param string $content

@@ -8,7 +8,6 @@
 namespace Decoda\Hook;
 
 use Decoda\Decoda;
-use Decoda\Filter\ImageFilter;
 use Decoda\Hook\EmoticonHook;
 use Decoda\Test\TestCase;
 
@@ -20,12 +19,11 @@ class EmoticonHookTest extends TestCase {
     protected function setUp() {
         parent::setUp();
 
-        $decoda = new Decoda();
-        $decoda->addFilter(new ImageFilter());
+        $this->object->setLineBreaks(true);
+        $this->object->setXhtml(false);
 
-        $this->object = new EmoticonHook();
-        $this->object->setParser($decoda);
-        $this->object->startup();
+        $hook = new EmoticonHook();
+        $this->object->addHook($hook);
     }
 
     /**
@@ -34,7 +32,7 @@ class EmoticonHookTest extends TestCase {
      * @dataProvider getSmileyDetectionData
      */
     public function testSmileyDetection($value, $expected) {
-        $this->assertEquals($expected, $this->object->beforeParse($value));
+        $this->assertEquals($expected, $this->object->reset($value)->parse());
     }
 
     /**
@@ -52,12 +50,12 @@ class EmoticonHookTest extends TestCase {
             array('At the mid:)dle of the word', 'At the mid:)dle of the word'),
             array('At the end:) of the word', 'At the end:) of the word'),
             array('http://', 'http://'),
-            array("With a :/\n linefeed", 'With a <img src="/images/hm.png" alt="">' . "\n" . ' linefeed'),
-            array("With a :/\r carriage return", 'With a <img src="/images/hm.png" alt="">' . "\r" . ' carriage return'),
+            array("With a :/\n linefeed", 'With a <img src="/images/hm.png" alt=""><br> linefeed'),
+            array("With a :/\r carriage return", 'With a <img src="/images/hm.png" alt=""><br> carriage return'),
             array("With a :/\t tab", 'With a <img src="/images/hm.png" alt="">' . "\t" . ' tab'),
             array(':/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
-            array(' :/ :/ ', ' <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> '),
-            array(' :/ :/ :/ ', ' <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> '),
+            array(':/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
+            array(':/ :/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
         );
     }
 
@@ -67,7 +65,7 @@ class EmoticonHookTest extends TestCase {
      * @dataProvider getSmileyConversionData
      */
     public function testSmileyConversion($value, $expected) {
-        $this->assertEquals($expected, $this->object->beforeParse($value));
+        $this->assertEquals($expected, $this->object->reset($value)->parse());
     }
 
     /**
@@ -76,15 +74,14 @@ class EmoticonHookTest extends TestCase {
      * @return array
      */
     public function getSmileyConversionData() {
-        $decoda = new Decoda();
-        $hook = new EmoticonHook();
-        $hook->setParser($decoda);
+        $this->setUp();
+        $hook = $this->object->getHook('Emoticon');
         $hook->startup();
 
         $data = array();
 
         foreach ($hook->getSmilies() as $smile) {
-            $data[] = array($smile, $hook->render($smile, $decoda->getConfig('xhtmlOutput')));
+            $data[] = array($smile, $hook->render($smile, $this->object->getConfig('xhtmlOutput')));
         }
 
         return $data;

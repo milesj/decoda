@@ -247,6 +247,39 @@ class DecodaTest extends TestCase {
     }
 
     /**
+     * Test that escape() supports invalid multibyte sequences
+     *
+     * @dataProvider getEscapeStringWithInvalidMultibyteSequencesData
+     *
+     * @link https://github.com/php/php-src/blob/php-5.4.0/ext/standard/tests/strings/htmlentities19.phpt
+     *
+     * @param string       $expected
+     * @param string       $string
+     * @param integer|NULL $flags
+     */
+    public function testEscapeStringWithInvalidMultibyteSequences($expected, $string, $flags) {
+        if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+            $this->markTestSkipped('PHP 5.4.0 (or later) is required.');
+        }
+
+        $this->assertEquals($expected, bin2hex($this->object->escape($string, $flags)));
+    }
+
+    public function getEscapeStringWithInvalidMultibyteSequencesData() {
+        return array(
+            array('41efbfbd2667743b42', "\x41\xC2\x3E\x42", null),
+            array('41efbfbd2667743b42', "\x41\xC2\x3E\x42", ENT_NOQUOTES),
+            array('41efbfbd2667743b42', "\x41\xC2\x3E\x42", ENT_QUOTES),
+            array('efbfbd2671756f743b', "\xE3\x80\x22", null),
+            array('efbfbd22', "\xE3\x80\x22", ENT_NOQUOTES),
+            array('efbfbd2671756f743b', "\xE3\x80\x22", ENT_QUOTES),
+            array('41efbfbdefbfbd42efbfbd43e298baefbfbd', "\x41\x98\xBA\x42\xE2\x98\x43\xE2\x98\xBA\xE2\x98", null),
+            array('41efbfbdefbfbd42efbfbd43e298baefbfbd', "\x41\x98\xBA\x42\xE2\x98\x43\xE2\x98\xBA\xE2\x98", ENT_NOQUOTES),
+            array('41efbfbdefbfbd42efbfbd43e298baefbfbd', "\x41\x98\xBA\x42\xE2\x98\x43\xE2\x98\xBA\xE2\x98", ENT_QUOTES),
+        );
+    }
+
+    /**
      * Test that setLocale() changes the locale for messages.
      */
     public function testLocale() {

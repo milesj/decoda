@@ -136,7 +136,7 @@ class DecodaTest extends TestCase {
         $this->object->addPath('/some/folder')->addPath('/another/folder/');
 
         $this->assertEquals(array(
-            dirname(dirname(__DIR__)) . '\src\config/',
+            dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . 'config/',
             '/some/folder/',
             '/another/folder/'
         ), $this->object->getPaths());

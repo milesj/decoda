@@ -31,10 +31,7 @@ abstract class AbstractEngine extends AbstractComponent implements Engine {
     protected $_filter;
 
     /**
-     * Add a template lookup path.
-     *
-     * @param string $path
-     * @return \Decoda\Engine
+     * {@inheritdoc}
      */
     public function addPath($path) {
         if (substr($path, -1) !== '/') {
@@ -57,28 +54,21 @@ abstract class AbstractEngine extends AbstractComponent implements Engine {
     }
 
     /**
-     * Return the current filter.
-     *
-     * @return \Decoda\Filter
+     * {@inheritdoc}
      */
     public function getFilter() {
         return $this->_filter;
     }
 
     /**
-     * Returns the paths to the templates.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getPaths() {
         return $this->_paths;
     }
 
     /**
-     * Sets the current filter.
-     *
-     * @param \Decoda\Filter $filter
-     * @return \Decoda\Engine
+     * {@inheritdoc}
      */
     public function setFilter(Filter $filter) {
         $this->_filter = $filter;

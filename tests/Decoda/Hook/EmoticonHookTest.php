@@ -28,13 +28,13 @@ class EmoticonHookTest extends TestCase {
         $this->object->addFilter(new DefaultFilter());
 
         $hook = new EmoticonHook();
-        $this->object->addHook($hook);
-
         $hook->addLoader(new DataLoader(array(
             'test/tag/open'   => array('['),
             'test/tag/close'  => array(']'),
             'test/tag/within' => array('[o]_[o]'),
         )));
+
+        $this->object->addHook($hook);
     }
 
     /**

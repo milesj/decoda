@@ -13,6 +13,14 @@ namespace Decoda;
 interface Hook extends Component {
 
     /**
+     * Process the node's inner content after the filters have finished.
+     *
+     * @param string $content
+     * @return string
+     */
+    public function afterContent($content);
+
+    /**
      * Process the content after the parsing has finished.
      *
      * @param string $content
@@ -27,6 +35,14 @@ interface Hook extends Component {
      * @return string
      */
     public function afterStrip($content);
+
+    /**
+     * Process the node's inner content before the filters are applied.
+     *
+     * @param string $content
+     * @return string
+     */
+    public function beforeContent($content);
 
     /**
      * Process the content before the parsing begins.

@@ -48,10 +48,7 @@ abstract class AbstractComponent implements Component {
     }
 
     /**
-     * Add a loader.
-     *
-     * @param \Decoda\Loader $loader
-     * @return \Decoda\Component
+     * {@inheritdoc}
      */
     public function addLoader(Loader $loader) {
         $this->_loaders[] = $loader;
@@ -60,58 +57,42 @@ abstract class AbstractComponent implements Component {
     }
 
     /**
-     * Method called immediately after the constructor.
-     *
-     * @return void
+     * {@inheritdoc}
      */
     public function construct() {
         return;
     }
 
     /**
-     * Return a specific configuration key value.
-     *
-     * @param string $key
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getConfig($key) {
         return isset($this->_config[$key]) ? $this->_config[$key] : null;
     }
 
     /**
-     * Return all the Loaders.
-     *
-     * @return \Decoda\Loader[]
+     * {@inheritdoc}
      */
     public function getLoaders() {
         return $this->_loaders;
     }
 
     /**
-     * Return the Decoda parser.
-     *
-     * @return \Decoda\Decoda
+     * {@inheritdoc}
      */
     public function getParser() {
         return $this->_parser;
     }
 
     /**
-     * Return a message string from the parser.
-     *
-     * @param string $key
-     * @param array $vars
-     * @return string
+     * {@inheritdoc}
      */
     public function message($key, array $vars = array()) {
         return $this->getParser()->message($key, $vars);
     }
 
     /**
-     * Modify configuration.
-     *
-     * @param array $config
-     * @return \Decoda\Component
+     * {@inheritdoc}
      */
     public function setConfig(array $config) {
         $this->_config = $config + $this->_config;
@@ -120,10 +101,7 @@ abstract class AbstractComponent implements Component {
     }
 
     /**
-     * Set the Decoda parser.
-     *
-     * @param \Decoda\Decoda $parser
-     * @return \Decoda\Component
+     * {@inheritdoc}
      */
     public function setParser(Decoda $parser) {
         $this->_parser = $parser;

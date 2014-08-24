@@ -648,9 +648,11 @@ class Decoda {
 
         if ($this->_isParseable($string)) {
             $string = $this->_parse($this->_extractChunks($string));
+
         } else {
-            $string = $this->_triggerHook('filterPlaintext', $string);
+            $string = $this->_triggerHook('beforeContent', $string);
             $string = $this->convertLineBreaks($string);
+            $string = $this->_triggerHook('afterContent', $string);
         }
 
         $string = $this->_triggerHook('afterParse', $string);
@@ -1582,16 +1584,19 @@ class Decoda {
 
         foreach ($nodes as $node) {
             if (is_string($node)) {
-                $node = $this->_triggerHook('filterPlaintext', $node);
+                $string = $this->_triggerHook('beforeContent', $node);
 
                 if (!$wrapper) {
-                    $parsed .= $this->convertLineBreaks($node);
-                } else {
-                    $parsed .= $node;
+                    $string = $this->convertLineBreaks($string);
                 }
+
+                $string = $this->_triggerHook('afterContent', $string);
+
             } else {
-                $parsed .= $this->getFilterByTag($node['tag'])->parse($node, $this->_parse($node['children'], $node));
+                $string = $this->getFilterByTag($node['tag'])->parse($node, $this->_parse($node['children'], $node));
             }
+
+            $parsed .= $string;
         }
 
         return $this->_trim($parsed);

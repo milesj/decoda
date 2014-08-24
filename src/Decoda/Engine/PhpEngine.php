@@ -15,11 +15,8 @@ use Decoda\Exception\IoException;
 class PhpEngine extends AbstractEngine {
 
     /**
-     * Renders the tag by using PHP templates.
+     * {@inheritdoc}
      *
-     * @param array $tag
-     * @param string $content
-     * @return string
      * @throws \Decoda\Exception\IoException
      */
     public function render(array $tag, $content) {

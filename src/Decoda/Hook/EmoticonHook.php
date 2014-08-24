@@ -76,7 +76,7 @@ class EmoticonHook extends AbstractHook {
      * @param string $content
      * @return string
      */
-    public function filterPlaintext($content) {
+    public function beforeContent($content) {
         $smilies = $this->getSmilies();
 
         // Build the smilies regex

@@ -32,6 +32,7 @@ class EmoticonHookTest extends TestCase {
             'test/tag/open'   => array('['),
             'test/tag/close'  => array(']'),
             'test/tag/within' => array('[o]_[o]'),
+            'test/unicode'    => array("\342\230\272"),
         )));
 
         $this->object->addHook($hook);

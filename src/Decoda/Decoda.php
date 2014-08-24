@@ -649,6 +649,7 @@ class Decoda {
         if ($this->_isParseable($string)) {
             $string = $this->_parse($this->_extractChunks($string));
         } else {
+            $string = $this->_triggerHook('filterPlaintext', $string);
             $string = $this->convertLineBreaks($string);
         }
 
@@ -1581,6 +1582,8 @@ class Decoda {
 
         foreach ($nodes as $node) {
             if (is_string($node)) {
+                $node = $this->_triggerHook('filterPlaintext', $node);
+
                 if (!$wrapper) {
                     $parsed .= $this->convertLineBreaks($node);
                 } else {

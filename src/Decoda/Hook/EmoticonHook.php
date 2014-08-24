@@ -85,36 +85,35 @@ class EmoticonHook extends AbstractHook {
         }, $smilies));
 
         // Build the tag regex
+        //
+        // tag: It is a complete tag. Where `<tag content>` should not contain
+        // the start and end character.
+        //     (ex: `[<tag content>]`)
         $openBracket = preg_quote($this->getParser()->getConfig('open'), '/');
         $closeBracket = preg_quote($this->getParser()->getConfig('close'), '/');
+        $tagRegex = sprintf('(?:%s[^%s%s]+%s)',
+            $openBracket,
+            $openBracket,
+            $closeBracket,
+            $closeBracket
+        );
 
-        $openTagRegex = sprintf('(?:%s[^%s]+)', $openBracket, $closeBracket);
-        $closeTagRegex = sprintf('(?:[^%s]+%s)', $openBracket, $closeBracket);
-        $tagRegex = sprintf('(?:%s%s)', $openBracket, $closeTagRegex);
-
-        // Build the regex before the smiley
-        $beforeRegex = sprintf('^|(?!%s)(?:\n|\s)|%s', $openTagRegex, $tagRegex);
-
-        // Build the regex after the smiley
-        $afterRegex = sprintf('%s|(?:\n|\s)(?!%s)|$', $tagRegex, $closeTagRegex);
+        $splitPattern = sprintf('/(%s)/s', $tagRegex);
+        $splitFlags = PREG_SPLIT_DELIM_CAPTURE;
+        $parts = preg_split($splitPattern, $content, null, $splitFlags);
 
         // Build the complete regex
-        $pattern = sprintf('/(?P<left>%s)(?P<smiley>%s)(?P<right>%s)/is',
-            $beforeRegex,
-            $smiliesRegex,
-            $afterRegex
+        $pattern = sprintf('/(?<=^|\s)(?P<smiley>%s)(?=\s|$)/is',
+            $smiliesRegex
         );
 
-        $pattern2 = sprintf('/%s|(?P<left>%s)(?P<smiley>%s)(?P<right>%s)/is',
-            $tagRegex,
-            $beforeRegex,
-            $smiliesRegex,
-            $afterRegex
-        );
+        foreach ($parts as $key => $part) {
+            if (0 === $key % 2) {
+                $parts[$key] = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $part);
+            }
+        }
 
-        // Make two passes to accept that one delimiter can use two smilies
-        $content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
-        $content = preg_replace_callback($pattern2, array($this, '_emoticonCallback'), $content);
+        $content = implode($parts);
 
         return $content;
     }
@@ -180,11 +179,7 @@ class EmoticonHook extends AbstractHook {
      * @return string
      */
     protected function _emoticonCallback($matches) {
-        if (!isset($matches['smiley'])) {
-            return $matches[0];
-        }
-
-        $smiley = trim($matches['smiley']);
+        $smiley = trim($matches[0]);
 
         if (count($matches) === 1 || !$this->hasSmiley($smiley)) {
             return $matches[0];

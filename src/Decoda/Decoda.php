@@ -406,8 +406,10 @@ class Decoda {
      */
     public function escape($string, $flags = null) {
         if ($flags === null) {
-            $flags = ENT_QUOTES | ENT_SUBSTITUTE;
+            $flags = ENT_QUOTES;
         }
+
+        $flags |= ENT_SUBSTITUTE;
 
         return htmlentities($string, $flags, 'UTF-8', false);
     }

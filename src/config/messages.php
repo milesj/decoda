@@ -38,6 +38,14 @@ return array(
         'mail' => 'posta',
         'quoteBy' => 'Quote da {author}',
     ),
+    'nl-nl' => array(
+        'spoiler' => 'Spoiler',
+        'hide' => 'Verberg',
+        'show' => 'Toon',
+        'link' => 'link',
+        'mail' => 'mail',
+        'quoteBy' => 'Quote door {author}',
+    ),
     'de-de' => array(
         'spoiler' => 'Spoiler',
         'hide' => 'Verstecke',

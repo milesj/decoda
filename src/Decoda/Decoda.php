@@ -424,7 +424,7 @@ class Decoda {
         $string = $this->convertNewlines($string);
 
         if ($this->getConfig('escapeHtml')) {
-            $string = $this->escape($string, ENT_NOQUOTES | ENT_SUBSTITUTE);
+            $string = $this->escape($string, ENT_NOQUOTES);
         }
 
         return $string;

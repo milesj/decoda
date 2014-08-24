@@ -247,15 +247,7 @@ class DecodaTest extends TestCase {
     }
 
     /**
-     * Test that escape() supports invalid multibyte sequences
-     *
      * @dataProvider getEscapeStringWithInvalidMultibyteSequencesData
-     *
-     * @link https://github.com/php/php-src/blob/php-5.4.0/ext/standard/tests/strings/htmlentities19.phpt
-     *
-     * @param string       $expected
-     * @param string       $string
-     * @param integer|NULL $flags
      */
     public function testEscapeStringWithInvalidMultibyteSequences($expected, $string, $flags) {
         if (version_compare(PHP_VERSION, '5.4.0', '<')) {

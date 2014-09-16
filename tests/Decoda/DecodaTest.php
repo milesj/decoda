@@ -465,6 +465,10 @@ class DecodaTest extends TestCase {
         $string = '[attributes numeric="Decoda"]Attributes[/attributes]';
         $this->assertEquals('<attributes id="custom-html">Attributes</attributes>', $this->object->reset($string)->parse());
 
+        // Wildcard attribute with underline, uses wildcard pattern
+        $string = '[attributes wild_card="Decoda"]Attributes[/attributes]';
+        $this->assertEquals('<attributes id="custom-html" wild_card="Decoda">Attributes</attributes>', $this->object->reset($string)->parse());
+
         // Attribute aliasing
         $string = '[attributes n="1337"]Attributes[/attributes]';
         $this->assertEquals('<attributes id="custom-html" numeric="1337">Attributes</attributes>', $this->object->reset($string)->parse());
@@ -472,9 +476,12 @@ class DecodaTest extends TestCase {
         $string = '[attributes a="Decoda Parser"]Attributes[/attributes]';
         $this->assertEquals('<attributes id="custom-html" alpha="Decoda Parser">Attributes</attributes>', $this->object->reset($string)->parse());
 
+        $string = '[attributes w_c="Decoda Parser"]Attributes[/attributes]';
+        $this->assertEquals('<attributes id="custom-html" wild_card="Decoda Parser">Attributes</attributes>', $this->object->reset($string)->parse());
+
         // All attributes and escaping
-        $string = '[attributes="Decoda & Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337"]Attributes[/attributes]';
-        $this->assertEquals('<attributes id="custom-html" wildcard="Decoda &amp; Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337">Attributes</attributes>', $this->object->reset($string)->parse());
+        $string = '[attributes="Decoda & Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337" wild_card="Decoda Parser"]Attributes[/attributes]';
+        $this->assertEquals('<attributes id="custom-html" wildcard="Decoda &amp; Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337" wild_card="Decoda Parser">Attributes</attributes>', $this->object->reset($string)->parse());
     }
 
     /**

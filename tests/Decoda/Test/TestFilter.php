@@ -77,12 +77,14 @@ class TestFilter extends AbstractFilter {
                 'default' => self::WILDCARD,
                 'alpha' => self::ALPHA,
                 'alnum' => self::ALNUM,
-                'numeric' => self::NUMERIC
+                'numeric' => self::NUMERIC,
+                'wild_card' => self::WILDCARD
             ),
             'mapAttributes' => array(
                 'default' => 'wildcard',
                 'a' => 'alpha',
-                'n' => 'numeric'
+                'n' => 'numeric',
+                'w_c' => 'wild_card'
             ),
             'htmlAttributes' => array(
                 'id' => 'custom-html'

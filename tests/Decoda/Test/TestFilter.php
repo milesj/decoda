@@ -78,13 +78,15 @@ class TestFilter extends AbstractFilter {
                 'alpha' => self::ALPHA,
                 'alnum' => self::ALNUM,
                 'numeric' => self::NUMERIC,
-                'wild_card' => self::WILDCARD
+                'under_score' => self::WILDCARD,
+                'dash-ed' => self::WILDCARD
             ),
             'mapAttributes' => array(
                 'default' => 'wildcard',
                 'a' => 'alpha',
                 'n' => 'numeric',
-                'w_c' => 'wild_card'
+                'u_s' => 'under_score',
+                'd-e' => 'dash-ed'
             ),
             'htmlAttributes' => array(
                 'id' => 'custom-html'

@@ -466,8 +466,11 @@ class DecodaTest extends TestCase {
         $this->assertEquals('<attributes id="custom-html">Attributes</attributes>', $this->object->reset($string)->parse());
 
         // Wildcard attribute with underline, uses wildcard pattern
-        $string = '[attributes wild_card="Decoda"]Attributes[/attributes]';
-        $this->assertEquals('<attributes id="custom-html" wild_card="Decoda">Attributes</attributes>', $this->object->reset($string)->parse());
+        $string = '[attributes under_score="Decoda"]Attributes[/attributes]';
+        $this->assertEquals('<attributes id="custom-html" under_score="Decoda">Attributes</attributes>', $this->object->reset($string)->parse());
+
+        $string = '[attributes dash-ed="Decoda"]Attributes[/attributes]';
+        $this->assertEquals('<attributes id="custom-html" dash-ed="Decoda">Attributes</attributes>', $this->object->reset($string)->parse());
 
         // Attribute aliasing
         $string = '[attributes n="1337"]Attributes[/attributes]';
@@ -476,12 +479,15 @@ class DecodaTest extends TestCase {
         $string = '[attributes a="Decoda Parser"]Attributes[/attributes]';
         $this->assertEquals('<attributes id="custom-html" alpha="Decoda Parser">Attributes</attributes>', $this->object->reset($string)->parse());
 
-        $string = '[attributes w_c="Decoda Parser"]Attributes[/attributes]';
-        $this->assertEquals('<attributes id="custom-html" wild_card="Decoda Parser">Attributes</attributes>', $this->object->reset($string)->parse());
+        $string = '[attributes u_s="Decoda Parser"]Attributes[/attributes]';
+        $this->assertEquals('<attributes id="custom-html" under_score="Decoda Parser">Attributes</attributes>', $this->object->reset($string)->parse());
+
+        $string = '[attributes d-e="Decoda Parser"]Attributes[/attributes]';
+        $this->assertEquals('<attributes id="custom-html" dash-ed="Decoda Parser">Attributes</attributes>', $this->object->reset($string)->parse());
 
         // All attributes and escaping
-        $string = '[attributes="Decoda & Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337" wild_card="Decoda Parser"]Attributes[/attributes]';
-        $this->assertEquals('<attributes id="custom-html" wildcard="Decoda &amp; Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337" wild_card="Decoda Parser">Attributes</attributes>', $this->object->reset($string)->parse());
+        $string = '[attributes="Decoda & Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337" under_score="Underscore" dash-ed="Dashed"]Attributes[/attributes]';
+        $this->assertEquals('<attributes id="custom-html" wildcard="Decoda &amp; Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337" under_score="Underscore" dash-ed="Dashed">Attributes</attributes>', $this->object->reset($string)->parse());
     }
 
     /**

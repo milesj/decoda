@@ -21,12 +21,18 @@ class PhpEngine extends AbstractEngine {
      */
     public function render(array $tag, $content) {
         $setup = $this->getFilter()->getTag($tag['tag']);
+        $attributes = $tag['attributes'];
+
+        // Dashes aren't allowed in variables, so change to underscores
+        foreach ($attributes as $key => $value) {
+            $attributes[str_replace('-', '_', $key)] = $value;
+        }
 
         foreach ($this->getPaths() as $path) {
             $template = sprintf('%s%s.php', $path, $setup['template']);
 
             if (file_exists($template)) {
-                extract($tag['attributes'], EXTR_OVERWRITE);
+                extract($attributes, EXTR_OVERWRITE);
                 ob_start();
 
                 include $template;

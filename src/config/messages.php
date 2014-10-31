@@ -23,9 +23,9 @@ return array(
         'quoteBy' => '{author} escribió:',
     ),
     'fr-fr' => array(
-        'spoiler' => 'becquet',
+        'spoiler' => 'Spoiler',
         'hide' => 'Cacher',
-        'show' => 'Montrent',
+        'show' => 'Afficher',
         'link' => 'lien',
         'mail' => 'email',
         'quoteBy' => 'Citation de {author}',

@@ -126,4 +126,12 @@ return array(
         'mail' => 'mail',
         'quoteBy' => 'Idézve {author}',
     ),
+    'tr-tr' => array(
+        'spoiler' => 'Spoiler',
+        'hide' => 'Gizle',
+        'show' => 'Göster',
+        'link' => 'link',
+        'mail' => 'mail',
+        'quoteBy' => '{author} tarafından yazılan',
+    ),
 );

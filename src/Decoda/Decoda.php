@@ -1599,7 +1599,7 @@ class Decoda {
             $parsed .= $string;
         }
 
-        return $this->_trim($parsed);
+        return $parsed;
     }
 
     /**
@@ -1628,7 +1628,7 @@ class Decoda {
             }
         }
 
-        return $this->_trim($parsed);
+        return $parsed;
     }
 
     /**
@@ -1657,6 +1657,7 @@ class Decoda {
     /**
      * Trim line breaks and not spaces.
      *
+     * @deprecated
      * @param string $string
      * @return string
      */

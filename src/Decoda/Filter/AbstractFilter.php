@@ -144,7 +144,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
             return $this->_tags[$tag];
         }
 
-        throw new MissingFilterException(sprintf('No filter can be found with $s tag', $tag));
+        throw new MissingFilterException(sprintf('No filter can be found with %s tag', $tag));
     }
 
     /**

@@ -1072,7 +1072,6 @@ class Decoda {
 
             if ($found) {
                 foreach ($found as $key => $value) {
-                    $key = mb_strtolower($key);
                     $value = trim(trim($value), '"');
 
                     if ($key === $tag) {

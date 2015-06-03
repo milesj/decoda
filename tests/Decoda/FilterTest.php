@@ -55,6 +55,7 @@ class FilterTest extends TestCase {
             'blockAllowBlock',
             'blockAllowBoth',
             'attributes',
+            'fooBar',
             'parent',
             'parentNoPersist',
             'parentWhitelist',

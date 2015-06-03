@@ -488,6 +488,10 @@ class DecodaTest extends TestCase {
         // All attributes and escaping
         $string = '[attributes="Decoda & Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337" under_score="Underscore" dash-ed="Dashed"]Attributes[/attributes]';
         $this->assertEquals('<attributes id="custom-html" wildcard="Decoda &amp; Escaping" alpha="Decoda" alnum="Version 1.2.3" numeric="1337" under_score="Underscore" dash-ed="Dashed">Attributes</attributes>', $this->object->reset($string)->parse());
+
+        // attributes in cameCase tag must be parsed
+        $string = '[fooBar="hello"]example[/fooBar]';
+        $this->assertEquals('<span class="hello">example</span>', $this->object->reset($string)->parse());
     }
 
     /**

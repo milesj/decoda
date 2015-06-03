@@ -94,6 +94,18 @@ class TestFilter extends AbstractFilter {
             'escapeAttributes' => true
         ),
 
+        //CamelCase Tag with attributes testing
+        'fooBar' => array(
+            'htmlTag' => 'span',
+            'displayType' => Decoda::TYPE_INLINE,
+            'attributes' => array(
+                'default' => self::WILDCARD,
+            ),
+            'mapAttributes' => array(
+                'default' => 'class'
+            )
+        ),
+
         // Parent child hierarchy
         'parent' => array(
             'htmlTag' => 'parent',

@@ -1356,7 +1356,7 @@ class Decoda {
                                 }
 
                             } else if ($tag['type'] === self::TAG_CLOSE) {
-                                if ($starOpen && in_array($tag['tag'], array('list', 'olist'))) {
+                                if ($starOpen && in_array($tag['tag'], array('list', 'olist', 'ol', 'ul'))) {
                                     $starOpen = false;
 
                                     $this->_chunks[] = array(

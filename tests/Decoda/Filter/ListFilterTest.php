@@ -34,6 +34,9 @@ class ListFilterTest extends TestCase {
 
         // whitelist
         $this->assertEquals('<ul class="decoda-list"></ul>', $this->object->reset("[list][b]Not a list item[/b][/list]")->parse());
+
+        // variant
+        $this->assertEquals('<ul class="decoda-list"></ul>', $this->object->reset('[ul][/ul]')->parse());
     }
 
     /**
@@ -49,6 +52,9 @@ class ListFilterTest extends TestCase {
 
         // whitelist
         $this->assertEquals('<ol class="decoda-olist"></ol>', $this->object->reset("[olist][b]Not a list item[/b][/olist]")->parse());
+
+        // variant
+        $this->assertEquals('<ol class="decoda-olist"></ol>', $this->object->reset('[ol][/ol]')->parse());
     }
 
     /**
@@ -57,6 +63,8 @@ class ListFilterTest extends TestCase {
     public function testLi() {
         $this->assertEquals('<ul class="decoda-list"><li>List item</li></ul>', $this->object->reset("[list][li]List item[/li][/list]")->parse());
         $this->assertEquals('<ol class="decoda-olist"><li>List item</li></ol>', $this->object->reset("[olist][li]List item[/li][/olist]")->parse());
+        $this->assertEquals('<ul class="decoda-list"><li>List item</li></ul>', $this->object->reset("[ul][li]List item[/li][/ul]")->parse());
+        $this->assertEquals('<ol class="decoda-olist"><li>List item</li></ol>', $this->object->reset("[ol][li]List item[/li][/ol]")->parse());
 
         // must be within list or olist
         $this->assertEquals('List item', $this->object->reset('[li]List item[/li]')->parse());
@@ -79,6 +87,8 @@ class ListFilterTest extends TestCase {
         $this->assertEquals('<ul class="decoda-list"><li>Item 1</li><li>Item 2</li></ul>', $this->object->reset("[list][*]Item 1[/*][*]Item 2[/list]")->parse());
         $this->assertEquals('<ul class="decoda-list"><li>Item 1</li><li>Item 2</li></ul>', $this->object->reset("[list][*]Item 1[*]Item 2[/*][/list]")->parse());
         $this->assertEquals('<ul class="decoda-list"><li>Item 1</li><li>Item 2</li></ul>', $this->object->reset("[list][*]Item 1[/*][*]Item 2[/*][/list]")->parse());
+        $this->assertEquals('<ul class="decoda-list"><li>Item 1</li><li>Item 2</li></ul>', $this->object->reset("[ul][*]Item 1[*]Item 2[/ul]")->parse());
+        $this->assertEquals('<ol class="decoda-olist"><li>Item 1</li><li>Item 2</li></ol>', $this->object->reset("[ol][*]Item 1[*]Item 2[/ol]")->parse());
 
         // With other tags
         $this->object->addFilter(new DefaultFilter())->addFilter(new TextFilter());
@@ -95,6 +105,7 @@ class ListFilterTest extends TestCase {
      */
     public function testNestedStars() {
         $this->assertEquals('<ul class="decoda-list"><li>Item 1</li><li>Item 1</li><li>Item 2</li><li>Item 2</li></ul>', $this->object->reset("[list][*]Item 1[olist][*]Item 1[*]Item 2[/olist][*]Item 2[/list]")->parse());
+        $this->assertEquals('<ul class="decoda-list"><li>Item 1</li><li>Item 1</li><li>Item 2</li><li>Item 2</li></ul>', $this->object->reset("[ul][*]Item 1[ol][*]Item 1[*]Item 2[/ol][*]Item 2[/ul]")->parse());
     }
 
 }

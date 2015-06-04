@@ -39,6 +39,9 @@ class ListFilter extends AbstractFilter {
                 'class' => 'decoda-olist'
             )
         ),
+        'ol' => array(
+            'aliasFor' => 'olist'
+        ),
         'list' => array(
             'htmlTag' => 'ul',
             'displayType' => Decoda::TYPE_BLOCK,
@@ -56,18 +59,21 @@ class ListFilter extends AbstractFilter {
                 'class' => 'decoda-list'
             )
         ),
+        'ul' => array(
+            'aliasFor' => 'list'
+        ),
         'li' => array(
             'htmlTag' => 'li',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'parent' => array('olist', 'list')
+            'parent' => array('olist', 'list', 'ol', 'ul')
         ),
         '*' => array(
             'htmlTag' => 'li',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'childrenBlacklist' => array('olist', 'list', 'li'),
-            'parent' => array('olist', 'list')
+            'childrenBlacklist' => array('olist', 'list', 'ol', 'ul', 'li'),
+            'parent' => array('olist', 'list', 'ol', 'ul')
         )
     );
 

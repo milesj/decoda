@@ -378,6 +378,7 @@ class Decoda {
         $this->addFilter(new \Decoda\Filter\CodeFilter());
         $this->addFilter(new \Decoda\Filter\QuoteFilter());
         $this->addFilter(new \Decoda\Filter\ListFilter());
+        $this->addFilter(new \Decoda\Filter\TableFilter());
 
         $this->addHook(new \Decoda\Hook\CensorHook());
         $this->addHook(new \Decoda\Hook\ClickableHook());

@@ -61,9 +61,3 @@ The following hooks are available.
 * Censor - Censors all words found within config/censored
 * Clickable - Converts all non-tag wrapped URLs and emails into clickable links
 * Emoticon - Converts all smilies found within config/emoticons into emoticon images
-
-## Documentation ##
-
-Thorough documentation can be found here: http://milesj.me/code/php/decoda
-
-A MooTools textarea editor is also available: https://github.com/milesj/decoda.js

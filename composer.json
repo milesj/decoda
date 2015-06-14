@@ -16,7 +16,7 @@
         "ext-mbstring": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.6"
+        "phpunit/phpunit": "~4.7"
     },
     "support": {
         "source": "https://github.com/milesj/decoda"

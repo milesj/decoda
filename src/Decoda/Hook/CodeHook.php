@@ -13,13 +13,14 @@ namespace Decoda\Hook;
 class CodeHook extends AbstractHook {
 
     /**
-     * Encode code blocks before parsing.
+     * Encode code blocks before parsing. It use regexp (?R) recursivity mask to deal with other nested code tags
+     * see http://php.net/manual/en/regexp.reference.recursive.php and http://stackoverflow.com/questions/2909588/regex-bbcode-perfecting-nested-quote#answer-2909930 for more informations
      *
      * @param string $string
      * @return mixed
      */
     public function beforeParse($string) {
-        return preg_replace_callback('/\[code(.*?)\](.*?)\[\/code\]/is', array($this, '_encodeCallback'), $string);
+        return preg_replace_callback('/\[code(.*?)\](((?R)|.)*?)\[\/code\]/is', array($this, '_encodeCallback'), $string);
     }
 
     /**

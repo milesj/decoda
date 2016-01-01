@@ -20,7 +20,7 @@ class BlockFilter extends AbstractFilter {
      * @type array
      */
     protected $_config = array(
-        'spoilerToggle' => "$('#spoiler-content-{id}').toggle();"
+        'spoilerToggle' => "$('#spoiler-content-{id}').toggle();$(this).text($('#spoiler-content-{id}').is(':visible') ? $(this).attr('data-text-hide') : $(this).attr('data-text-show'));"
     );
 
     /**

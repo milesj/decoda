@@ -59,6 +59,14 @@ class UrlFilterTest extends TestCase {
     }
 
     /**
+     * Test that a target can be set.
+     */
+    public function testUrlTargetAttribute() {
+        $this->assertEquals('<a target="_blank" href="http://domain.com">http://domain.com</a>', $this->object->reset('[url target="blank"]http://domain.com[/url]')->parse());
+        $this->assertEquals('<a href="http://domain.com" target="_parent">Link</a>', $this->object->reset('[url="http://domain.com" target="parent"]Link[/url]')->parse());
+    }
+
+    /**
      * Test URLs with a trailing slash.
      */
     public function testUrlWhenStrictIsFalse() {

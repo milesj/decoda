@@ -880,4 +880,12 @@ EXP;
         $this->assertEquals('Spoiler', $decoda->message('spoiler'));
     }
 
+    public function testStripWorksAfterParse() {
+        $this->object->addFilter(new DefaultFilter());
+        $this->object->reset('[b]Something[/b]');
+
+        $this->assertEquals('<b>Something</b>', $this->object->parse());
+        $this->assertEquals('Something', $this->object->strip());
+    }
+
 }

@@ -70,13 +70,6 @@ class Decoda {
     protected $_blacklist = array();
 
     /**
-     * Extracted chunks of text and tags.
-     *
-     * @type array
-     */
-    protected $_chunks = array();
-
-    /**
      * Configuration.
      *
      * @type array
@@ -709,7 +702,6 @@ class Decoda {
      * @return \Decoda\Decoda
      */
     public function reset($string, $flush = false) {
-        $this->_chunks = array();
         $this->_errors = array();
         $this->_nodes = array();
         $this->_blacklist = array();
@@ -1294,6 +1286,7 @@ class Decoda {
         $closeBracket = $this->getConfig('close');
         $hasList = isset($this->_filters['List']);
         $starOpen = false;
+        $chunks = array();
 
         while ($strPos < $strLength) {
             $tag = array();
@@ -1347,7 +1340,7 @@ class Decoda {
 
                                 // Another star item appeared, so close the previous
                                 } else if ($starOpen && $tag['tag'] === '*') {
-                                    $this->_chunks[] = array(
+                                    $chunks[] = array(
                                         'tag' => '*',
                                         'type' => self::TAG_CLOSE,
                                         'text' => '[/*]',
@@ -1359,7 +1352,7 @@ class Decoda {
                                 if ($starOpen && in_array($tag['tag'], array('list', 'olist', 'ol', 'ul'))) {
                                     $starOpen = false;
 
-                                    $this->_chunks[] = array(
+                                    $chunks[] = array(
                                         'tag' => '*',
                                         'type' => self::TAG_CLOSE,
                                         'text' => '[/*]',
@@ -1389,15 +1382,15 @@ class Decoda {
             // Join consecutive text elements
             if ($tag['type'] === self::TAG_NONE && isset($prev) && $prev['type'] === self::TAG_NONE) {
                 $tag['text'] = $prev['text'] . $tag['text'];
-                array_pop($this->_chunks);
+                array_pop($chunks);
             }
 
-            $this->_chunks[] = $tag;
+            $chunks[] = $tag;
             $prev = $tag;
             $strPos = $newPos;
         }
 
-        $this->_nodes = $this->_extractNodes($this->_chunks);
+        $this->_nodes = $this->_extractNodes($chunks);
 
         return $this->_nodes;
     }

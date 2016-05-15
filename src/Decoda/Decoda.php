@@ -1638,15 +1638,11 @@ class Decoda {
      * @param string $content
      * @return string
      */
-    protected function _triggerHook($method, $content = null) {
+    protected function _triggerHook($method, $content = '') {
         if ($this->_hooks) {
             foreach ($this->_hooks as $hook) {
                 if (method_exists($hook, $method)) {
-                    if ($content !== null) {
-                        $content = $hook->{$method}($content);
-                    } else {
-                        $hook->{$method}();
-                    }
+                    $content = $hook->{$method}($content);
                 }
             }
         }

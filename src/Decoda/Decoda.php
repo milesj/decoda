@@ -1290,6 +1290,10 @@ class Decoda {
 
         while ($strPos < $strLength) {
             $tag = array();
+            $possibleLiteral = false;
+            $isLiteral = false;
+
+            // Find opening tag
             $openPos = mb_strpos($string, $openBracket, $strPos);
 
             if ($openPos === false) {
@@ -1304,16 +1308,30 @@ class Decoda {
                 if ($nextOpenPos === false) {
                     $nextOpenPos = $strLength;
                 }
+
+                $possibleLiteral = ($openPos + 1 === $nextOpenPos);
             }
 
+            // Find closing tag
             $closePos = mb_strpos($string, $closeBracket, $strPos);
 
             if ($closePos === false) {
                 $closePos = $strLength + 1;
             }
 
+            if ($possibleLiteral) {
+                $isLiteral = (isset($string[$closePos + 1]) && $string[$closePos + 1] === $closeBracket);
+            }
+
+            // Literal tag found, do not parse
+            if ($isLiteral) {
+                $newPos = $closePos + 2;
+
+                $tag['text'] = mb_substr($string, $openPos + 1, ($closePos - $openPos));
+                $tag['type'] = self::TAG_NONE;
+
             // Possible tag found, lets look
-            if ($openPos === $strPos) {
+            } else if ($openPos === $strPos) {
 
                 // Child open tag before closing tag
                 if ($nextOpenPos < $closePos) {

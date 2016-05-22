@@ -880,12 +880,34 @@ EXP;
         $this->assertEquals('Spoiler', $decoda->message('spoiler'));
     }
 
+    /**
+     * Test that strip returns the same content after an immediate parse.
+     */
     public function testStripWorksAfterParse() {
         $this->object->addFilter(new DefaultFilter());
         $this->object->reset('[b]Something[/b]');
 
         $this->assertEquals('<b>Something</b>', $this->object->parse());
         $this->assertEquals('Something', $this->object->strip());
+    }
+
+    /**
+     * Test that double bracket literal tags work.
+     */
+    public function testLiteralTagSupport() {
+        $this->object->defaults();
+
+        $this->assertEquals('[U]', $this->object->reset('[[U]]')->parse());
+        $this->assertEquals('<b>[u_]</b>', $this->object->reset('[b][[u_]][/b]')->parse());
+        $this->assertEquals('[b with="attributes"]', $this->object->reset('[[b with="attributes"]]')->parse());
+        $this->assertEquals('[i="attributes"]', $this->object->reset('[[i="attributes"]]')->parse());
+        $this->assertEquals('[br/]', $this->object->reset('[[br/]]')->parse());
+        $this->assertEquals('[br/][b]', $this->object->reset('[[br/]][[b]]')->parse());
+
+        $this->object->setBrackets('{', '}');
+
+        $this->assertEquals('{U}', $this->object->reset('{{U}}')->parse());
+        $this->assertEquals('<b>{u_}</b>', $this->object->reset('{b}{{u_}}{/b}')->parse());
     }
 
 }

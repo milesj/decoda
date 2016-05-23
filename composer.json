@@ -18,6 +18,10 @@
     "require-dev": {
         "phpunit/phpunit": "~4.8"
     },
+    "suggest": {
+        "ext-redis": "Cache data using Redis",
+        "ext-memcached": "Cache data using Memcache"
+    },
     "support": {
         "source": "https://github.com/milesj/decoda"
     },

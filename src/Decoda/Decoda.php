@@ -9,6 +9,7 @@ namespace Decoda;
 
 use Decoda\Exception\MissingFilterException;
 use Decoda\Exception\MissingHookException;
+use Decoda\Exception\MissingItemException;
 use Decoda\Exception\MissingLocaleException;
 use \InvalidArgumentException;
 
@@ -70,6 +71,13 @@ class Decoda {
     protected $_blacklist = array();
 
     /**
+     * Unique cache key for this block.
+     *
+     * @type string
+     */
+    protected $_cacheKey = '';
+
+    /**
      * Configuration.
      *
      * @type array
@@ -86,7 +94,8 @@ class Decoda {
         'maxNewlines' => 3,
         'lineBreaks' => true,
         'removeEmpty' => false,
-        'configPath' => '../config/'
+        'configPath' => '../config/',
+        'cacheExpires' => '+1 week',
     );
 
     /**
@@ -146,6 +155,13 @@ class Decoda {
     protected $_paths = array();
 
     /**
+     * Caching engine.
+     *
+     * @type \Decoda\Storage
+     */
+    protected $_storage;
+
+    /**
      * The raw string before parsing.
      *
      * @type string
@@ -185,10 +201,11 @@ class Decoda {
      *
      * @param string $string
      * @param array $config
+     * @param string $cacheKey
      */
-    public function __construct($string = '', array $config = array()) {
+    public function __construct($string = '', array $config = array(), $cacheKey = '') {
         $this->setConfig($config);
-        $this->reset($string, true);
+        $this->reset($string, true, $cacheKey);
 
         if ($path = $this->getConfig('configPath')) {
             $this->addPath($path);
@@ -434,6 +451,15 @@ class Decoda {
     }
 
     /**
+     * Return the defined cache key.
+     *
+     * @return string
+     */
+    public function getCacheKey() {
+        return $this->_cacheKey;
+    }
+
+    /**
      * Return a specific configuration key value.
      *
      * @param string $key
@@ -563,6 +589,15 @@ class Decoda {
     }
 
     /**
+     * Return the current storage engine.
+     *
+     * @return \Decoda\Storage
+     */
+    public function getStorage() {
+        return $this->_storage;
+    }
+
+    /**
      * Return the current whitelist.
      *
      * @return array
@@ -636,22 +671,42 @@ class Decoda {
             return $this->_parsed;
         }
 
-        $this->_triggerHook('startup');
+        // Check the cache first
+        $isCached = false;
+        $cacheKey = $this->getCacheKey();
+        $storage = $this->getStorage();
 
-        $string = $this->_triggerHook('beforeParse', $this->_string);
-
-        if ($this->_isParseable($string)) {
-            $string = $this->_parse($this->_extractChunks($string));
-
-        } else {
-            $string = $this->_triggerHook('beforeContent', $string);
-            $string = $this->convertLineBreaks($string);
-            $string = $this->_triggerHook('afterContent', $string);
+        if ($cacheKey && $storage) {
+            try {
+                $this->_parsed = $storage->get($cacheKey);
+                $isCached = true;
+            } catch (MissingItemException $e) {}
         }
 
-        $string = $this->_triggerHook('afterParse', $string);
+        // Does not exist in the cache, parse it
+        if (!$isCached) {
+            $this->_triggerHook('startup');
 
-        $this->_parsed = $this->cleanNewlines($string);
+            $string = $this->_triggerHook('beforeParse', $this->_string);
+
+            if ($this->_isParseable($string)) {
+                $string = $this->_parse($this->_extractChunks($string));
+
+            } else {
+                $string = $this->_triggerHook('beforeContent', $string);
+                $string = $this->convertLineBreaks($string);
+                $string = $this->_triggerHook('afterContent', $string);
+            }
+
+            $string = $this->_triggerHook('afterParse', $string);
+
+            $this->_parsed = $this->cleanNewlines($string);
+
+            // Cache the value
+            if ($cacheKey && $storage) {
+                $storage->set($cacheKey, $this->_parsed, strtotime($this->getConfig('cacheExpires')));
+            }
+        }
 
         if ($echo) {
             echo $this->_parsed;
@@ -699,9 +754,10 @@ class Decoda {
      *
      * @param string $string
      * @param bool $flush
+     * @param string $cacheKey
      * @return \Decoda\Decoda
      */
-    public function reset($string, $flush = false) {
+    public function reset($string, $flush = false, $cacheKey = '') {
         $this->_errors = array();
         $this->_nodes = array();
         $this->_blacklist = array();
@@ -709,6 +765,7 @@ class Decoda {
         $this->_parsed = '';
         $this->_stripped = '';
         $this->_string = $this->escapeHtml($string);
+        $this->_cacheKey = $cacheKey;
 
         if ($flush) {
             $this->resetFilters();
@@ -743,6 +800,22 @@ class Decoda {
         $this->_hooks = array();
 
         $this->addHook(new \Decoda\Hook\EmptyHook());
+
+        return $this;
+    }
+
+    /**
+     * Set the cache expiration time.
+     *
+     * @param string $expires
+     * @return $this
+     */
+    public function setCacheExpiration($expires) {
+        if (!is_string($expires)) {
+            throw new InvalidArgumentException('Cache expiration must be a string in `strtotime()` format');
+        }
+
+        $this->_config['cacheExpires'] = (string) $expires;
 
         return $this;
     }
@@ -796,6 +869,9 @@ class Decoda {
                 break;
                 case 'removeEmpty':
                     $this->setRemoveEmptyTags($value);
+                break;
+                case 'cacheExpires':
+                    $this->setCacheExpiration($value);
                 break;
 
                 // Doesn't need a setter as it's only used in the constructor

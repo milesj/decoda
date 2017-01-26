@@ -20,13 +20,9 @@ class ClickableHook extends AbstractHook {
      * @param string $content
      * @return string
      */
-    public function afterParse($content) {
+    public function beforeParse($content) {
         $parser = $this->getParser();
 
-        // Janky way of detecting if a link is wrapped in an anchor tag
-        // We have to check the values before the link and validate them
-        // If quotes or a closing carrot exist, do not wrap
-        // <br> is acceptable since \n are completely removed
         if ($parser->hasFilter('Url')) {
             $protocols = $parser->getFilter('Url')->getConfig('protocols');
             $chars = preg_quote('-_=+|\;:&?/[]%,.!@#$*(){}"\'', '/');
@@ -40,12 +36,14 @@ class ClickableHook extends AbstractHook {
                 '(#[a-z0-9' . $chars . ']+)?' // fragment
             ));
 
-            $content = preg_replace_callback('/("|\'|>|<br>|<br\/>)?(' . $pattern . ')/is', array($this, '_urlCallback'), $content);
+            // We replace only links that are "standalone", not inside BB Code tags.
+            // For example, neither [url="http://www.example.com"] nor [url]http://www.example.com[/url] will be replaced.
+            $content = preg_replace_callback('/(?<![="\]])(' . $pattern . ')/is', array($this, '_urlCallback'), $content);
         }
 
-        // Based on schema: http://en.wikipedia.org/wiki/Email_address
+        // Based on W3C HTML5 spec: https://www.w3.org/TR/html5/forms.html#valid-e-mail-address
         if ($parser->hasFilter('Email')) {
-            $pattern = '/("|\'|>|:|<br>|<br\/>)?(([-a-z0-9\.\+!]{1,64}+)@([-a-z0-9]+\.[a-z\.]+))/is';
+            $pattern = '/([a-z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*)/i';
 
             $content = preg_replace_callback($pattern, array($this, '_emailCallback'), $content);
         }
@@ -60,17 +58,10 @@ class ClickableHook extends AbstractHook {
      * @return string
      */
     protected function _emailCallback($matches) {
-        if ($matches[1] === '<br>' || $matches[1] === '<br/>') {
-            $matches[0] = $matches[2];
-
-        } else if ($matches[1] !== '') {
-            return $matches[0];
-        }
-
-        return $matches[1] . $this->getParser()->getFilter('Email')->parse(array(
+        return $this->getParser()->getFilter('Email')->parse(array(
             'tag' => 'email',
             'attributes' => array()
-        ), trim($matches[0]));
+        ), trim($matches[1]));
     }
 
     /**
@@ -80,17 +71,10 @@ class ClickableHook extends AbstractHook {
      * @return string
      */
     protected function _urlCallback($matches) {
-        if ($matches[1] === '<br>' || $matches[1] === '<br/>') {
-            $matches[0] = $matches[2];
-
-        } else if ($matches[1] !== '') {
-            return $matches[0];
-        }
-
-        return $matches[1] . $this->getParser()->getFilter('Url')->parse(array(
+        return $this->getParser()->getFilter('Url')->parse(array(
             'tag' => 'url',
             'attributes' => array()
-        ), trim($matches[0]));
+        ), trim($matches[1]));
     }
 
 }

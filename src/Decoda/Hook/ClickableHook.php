@@ -37,13 +37,13 @@ class ClickableHook extends AbstractHook {
             ));
 
             // We replace only links that are "standalone", not inside BB Code tags.
-            // For example, neither [url="http://www.example.com"] nor [url]http://www.example.com[/url] will be replaced.
+            // For example, neither [url="http://www.example.com"] nor [img]http://www.example.com[/img] will be replaced.
             $content = preg_replace_callback('/(?<![="\]])(' . $pattern . ')/is', array($this, '_urlCallback'), $content);
         }
 
         // Based on W3C HTML5 spec: https://www.w3.org/TR/html5/forms.html#valid-e-mail-address
         if ($parser->hasFilter('Email')) {
-            $pattern = '/([a-z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*)/i';
+            $pattern = '/(:\/\/[\w\.\+]+:)?([a-z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*)/i';
 
             $content = preg_replace_callback($pattern, array($this, '_emailCallback'), $content);
         }
@@ -58,10 +58,15 @@ class ClickableHook extends AbstractHook {
      * @return string
      */
     protected function _emailCallback($matches) {
+        // is like http://user:pass@domain.com ? Then we do not touch it.
+        if ($matches[1]) {
+            return $matches[0];
+        }
+
         return $this->getParser()->getFilter('Email')->parse(array(
             'tag' => 'email',
             'attributes' => array()
-        ), trim($matches[1]));
+        ), trim($matches[2]));
     }
 
     /**

@@ -47,21 +47,21 @@ class EmoticonHookTest extends TestCase {
      */
     public function getSmileyDetectionData() {
         return array(
-            array(':/ at the beginning', '<img class="emoticon" src="/images/hm.png" alt=""> at the beginning'),
-            array('Smiley at the end :O', 'Smiley at the end <img class="emoticon" src="/images/gah.png" alt="">'),
-            array('Smiley in the middle :P of a string', 'Smiley in the middle <img class="emoticon" src="/images/tongue.png" alt=""> of a string'),
-            array(':):):)', '<img class="emoticon" src="/images/happy.png" alt=""><img class="emoticon" src="/images/happy.png" alt=""><img class="emoticon" src="/images/happy.png" alt="">'),
-            array('At the :)start of the word', 'At the <img class="emoticon" src="/images/happy.png" alt="">start of the word'),
+            array(':/ at the beginning', '<img class="decoda-emoticon" src="/images/hm.png" alt=""> at the beginning'),
+            array('Smiley at the end :O', 'Smiley at the end <img class="decoda-emoticon" src="/images/gah.png" alt="">'),
+            array('Smiley in the middle :P of a string', 'Smiley in the middle <img class="decoda-emoticon" src="/images/tongue.png" alt=""> of a string'),
+            array(':):):)', '<img class="decoda-emoticon" src="/images/happy.png" alt=""><img class="decoda-emoticon" src="/images/happy.png" alt=""><img class="decoda-emoticon" src="/images/happy.png" alt="">'),
+            array('At the :)start of the word', 'At the <img class="decoda-emoticon" src="/images/happy.png" alt="">start of the word'),
             array('At the mid:)dle of the word', 'At the mid:)dle of the word'),
-            array('At the end:) of the word', 'At the end<img class="emoticon" src="/images/happy.png" alt=""> of the word'),
-            array('At the miD:dle and end of the word D: ', 'At the miD:dle and end of the word <img class="emoticon" src="/images/gah.png" alt="">'),
+            array('At the end:) of the word', 'At the end<img class="decoda-emoticon" src="/images/happy.png" alt=""> of the word'),
+            array('At the miD:dle and end of the word D: ', 'At the miD:dle and end of the word <img class="decoda-emoticon" src="/images/gah.png" alt="">'),
             array('http://', 'http://'),
-            array("With a :/\n linefeed", 'With a <img class="emoticon" src="/images/hm.png" alt=""><br> linefeed'),
-            array("With a :/\r carriage return", 'With a <img class="emoticon" src="/images/hm.png" alt=""><br> carriage return'),
-            array("With a :/\t tab", 'With a <img class="emoticon" src="/images/hm.png" alt="">' . "\t" . ' tab'),
-            array(':/ :/', '<img class="emoticon" src="/images/hm.png" alt=""> <img class="emoticon" src="/images/hm.png" alt="">'),
-            array(':/ :/', '<img class="emoticon" src="/images/hm.png" alt=""> <img class="emoticon" src="/images/hm.png" alt="">'),
-            array(':/ :/ :/', '<img class="emoticon" src="/images/hm.png" alt=""> <img class="emoticon" src="/images/hm.png" alt=""> <img class="emoticon" src="/images/hm.png" alt="">'),
+            array("With a :/\n linefeed", 'With a <img class="decoda-emoticon" src="/images/hm.png" alt=""><br> linefeed'),
+            array("With a :/\r carriage return", 'With a <img class="decoda-emoticon" src="/images/hm.png" alt=""><br> carriage return'),
+            array("With a :/\t tab", 'With a <img class="decoda-emoticon" src="/images/hm.png" alt="">' . "\t" . ' tab'),
+            array(':/ :/', '<img class="decoda-emoticon" src="/images/hm.png" alt=""> <img class="decoda-emoticon" src="/images/hm.png" alt="">'),
+            array(':/ :/', '<img class="decoda-emoticon" src="/images/hm.png" alt=""> <img class="decoda-emoticon" src="/images/hm.png" alt="">'),
+            array(':/ :/ :/', '<img class="decoda-emoticon" src="/images/hm.png" alt=""> <img class="decoda-emoticon" src="/images/hm.png" alt=""> <img class="decoda-emoticon" src="/images/hm.png" alt="">'),
         );
     }
 

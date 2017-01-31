@@ -139,9 +139,9 @@ class EmoticonHook extends AbstractHook {
             $this->getConfig('extension'));
 
         if ($isXhtml) {
-            $tpl = '<img class="emoticon" src="%s" alt="" />';
+            $tpl = '<img class="decoda-emoticon" src="%s" alt="" />';
         } else {
-            $tpl = '<img class="emoticon" src="%s" alt="">';
+            $tpl = '<img class="decoda-emoticon" src="%s" alt="">';
         }
 
         return sprintf($tpl, $path);

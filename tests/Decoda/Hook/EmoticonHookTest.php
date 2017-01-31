@@ -28,13 +28,6 @@ class EmoticonHookTest extends TestCase {
         $this->object->addFilter(new DefaultFilter());
 
         $hook = new EmoticonHook();
-        $hook->addLoader(new DataLoader(array(
-            'test/tag/open'   => array('['),
-            'test/tag/close'  => array(']'),
-            'test/tag/within' => array('[o]_[o]'),
-            'test/unicode'    => array("\342\230\272"),
-        )));
-
         $this->object->addHook($hook);
     }
 
@@ -57,10 +50,11 @@ class EmoticonHookTest extends TestCase {
             array(':/ at the beginning', '<img src="/images/hm.png" alt=""> at the beginning'),
             array('Smiley at the end :O', 'Smiley at the end <img src="/images/gah.png" alt="">'),
             array('Smiley in the middle :P of a string', 'Smiley in the middle <img src="/images/tongue.png" alt=""> of a string'),
-            array(':):):)', ':):):)'),
-            array('At the :)start of the word', 'At the :)start of the word'),
+            array(':):):)', '<img src="/images/happy.png" alt=""><img src="/images/happy.png" alt=""><img src="/images/happy.png" alt="">'),
+            array('At the :)start of the word', 'At the <img src="/images/happy.png" alt="">start of the word'),
             array('At the mid:)dle of the word', 'At the mid:)dle of the word'),
-            array('At the end:) of the word', 'At the end:) of the word'),
+            array('At the end:) of the word', 'At the end<img src="/images/happy.png" alt=""> of the word'),
+            array('At the miD:dle and end of the word D: ', 'At the miD:dle and end of the word <img src="/images/gah.png" alt="">'),
             array('http://', 'http://'),
             array("With a :/\n linefeed", 'With a <img src="/images/hm.png" alt=""><br> linefeed'),
             array("With a :/\r carriage return", 'With a <img src="/images/hm.png" alt=""><br> carriage return'),
@@ -68,14 +62,6 @@ class EmoticonHookTest extends TestCase {
             array(':/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
             array(':/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
             array(':/ :/ :/', '<img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt=""> <img src="/images/hm.png" alt="">'),
-            array('[ b ] :/[ / b ]', '<b> <img src="/images/hm.png" alt=""></b>'),
-            array('[ b ]:/ [ / b ]', '<b><img src="/images/hm.png" alt=""> </b>'),
-            array('[ b ]:/[ / b ]', '<b><img src="/images/hm.png" alt=""></b>'),
-            array('[ b ][[ / b ]', '<b><img src="/images/test/tag/open.png" alt=""></b>'),
-            array('[ b ]][ / b ]', '<b><img src="/images/test/tag/close.png" alt=""></b>'),
-            array('[ b ][o]_[o][ / b ]', '<b><img src="/images/test/tag/within.png" alt=""></b>'),
-            array(':/[ b ]:/[ / b ]:/', '<img src="/images/hm.png" alt=""><b><img src="/images/hm.png" alt=""></b><img src="/images/hm.png" alt="">'),
-            array('[ b ]:/[ b ]:/[ / b ]:/[ / b ]', '<b><img src="/images/hm.png" alt=""><b><img src="/images/hm.png" alt=""></b><img src="/images/hm.png" alt=""></b>'),
         );
     }
 

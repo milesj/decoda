@@ -1126,9 +1126,10 @@ class Decoda {
                 }
             }
 
-            // Find attributes that aren't surrounded by quotes
+            // If not strict mode, find BOTH attributes that are or aren't surrounded by quotes
+            // for example, both [size="10"] or [size=10] are considered valid
             if (!$this->getConfig('strictMode')) {
-                preg_match_all('/([a-z_\-]+)=([^\s' . $ce . ']+)/i', $string, $matches, PREG_SET_ORDER);
+                preg_match_all('/([a-z_\-]+)="?([^\s"' . $ce . ']+)/i', $string, $matches, PREG_SET_ORDER);
 
                 if ($matches) {
                     foreach ($matches as $match) {

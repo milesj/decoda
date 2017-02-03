@@ -28,6 +28,13 @@ class EmoticonHookTest extends TestCase {
         $this->object->addFilter(new DefaultFilter());
 
         $hook = new EmoticonHook();
+        $hook->addLoader(new DataLoader(array(
+            'test/tag/within' => array('[o]_[o]'),
+            'test/tag/open'   => array('['),
+            'test/tag/close'  => array(']'),
+            'test/unicode'    => array("\342\230\272"),
+        )));
+
         $this->object->addHook($hook);
     }
 
@@ -62,6 +69,18 @@ class EmoticonHookTest extends TestCase {
             array(':/ :/', '<img class="decoda-emoticon" src="/images/hm.png" alt=""> <img class="decoda-emoticon" src="/images/hm.png" alt="">'),
             array(':/ :/', '<img class="decoda-emoticon" src="/images/hm.png" alt=""> <img class="decoda-emoticon" src="/images/hm.png" alt="">'),
             array(':/ :/ :/', '<img class="decoda-emoticon" src="/images/hm.png" alt=""> <img class="decoda-emoticon" src="/images/hm.png" alt=""> <img class="decoda-emoticon" src="/images/hm.png" alt="">'),
+            array('Testing custom emoticon [', 'Testing custom emoticon <img class="decoda-emoticon" src="/images/test/tag/open.png" alt="">'),
+            array('Testing custom emoticon ]', 'Testing custom emoticon <img class="decoda-emoticon" src="/images/test/tag/close.png" alt="">'),
+            array('Testing custom emoticon [o]_[o]', 'Testing custom emoticon <img class="decoda-emoticon" src="/images/test/tag/within.png" alt="">'),
+            array('[ b ] :/[ / b ]', '<b> <img class="decoda-emoticon" src="/images/hm.png" alt=""></b>'),
+            array('[ b ]:/ [ / b ]', '<b><img class="decoda-emoticon" src="/images/hm.png" alt=""> </b>'),
+            array('[ b ]:/[ / b ]', '<b><img class="decoda-emoticon" src="/images/hm.png" alt=""></b>'),
+            array('[ b ][[ / b ]', '<b><img class="decoda-emoticon" src="/images/test/tag/open.png" alt=""></b>'),
+            array('[ b ]][ / b ]', '<b><img class="decoda-emoticon" src="/images/test/tag/close.png" alt=""></b>'),
+            array('[ b ][o]_[o][ / b ]', '<b><img class="decoda-emoticon" src="/images/test/tag/within.png" alt=""></b>'),
+            array(':/[ b ]:/[ / b ]:/', '<img class="decoda-emoticon" src="/images/hm.png" alt=""><b><img class="decoda-emoticon" src="/images/hm.png" alt=""></b><img class="decoda-emoticon" src="/images/hm.png" alt="">'),
+            array('[ b ]:/[ b ]:/[ / b ]:/[ / b ]', '<b><img class="decoda-emoticon" src="/images/hm.png" alt=""><b><img class="decoda-emoticon" src="/images/hm.png" alt=""></b><img class="decoda-emoticon" src="/images/hm.png" alt=""></b>'),
+            array('Testing custom emoticon ☺ (unicode)', 'Testing custom emoticon <img class="decoda-emoticon" src="/images/test/unicode.png" alt=""> (unicode)'),
         );
     }
 

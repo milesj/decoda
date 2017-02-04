@@ -1156,7 +1156,7 @@ class Decoda {
                 foreach ($found as $key => $value) {
                     $value = trim(trim($value), '"');
 
-                    if ($key === $tag) {
+                    if ($key === $tag || strtolower($key) === $tag) {
                         $key = 'default';
                     }
 

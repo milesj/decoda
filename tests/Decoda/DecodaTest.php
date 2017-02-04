@@ -691,8 +691,10 @@ class DecodaTest extends TestCase {
      */
     public function testCapitalTags() {
         $this->object->addFilter(new DefaultFilter());
+        $this->object->addFilter(new UrlFilter());
 
         $this->assertEquals('<b>Bold</b> <i>Italics</i>', $this->object->reset('[B]Bold[/B] [i]Italics[/i]')->parse());
+        $this->assertEquals('<a href="http://google.com">Google!</a>', $this->object->reset('[URL="http://google.com"]Google![/URL]')->parse());
     }
 
     /**

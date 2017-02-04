@@ -5,13 +5,14 @@
 ## 6.8.0 ##
 
 * Added a new caching layer via `Storage` engines.
-  * Added new `MemoryStorage`, `MemcacheStorage`, and `RedisStorage`.
+  * Includes `MemoryStorage`, `MemcacheStorage`, and `RedisStorage`.
 * Added class names to images and emoticons.
 * Removed `spoilerToggle` config from `BlockFilter`.
 * Removed jQuery as a dependency for `[spoiler]` tags.
 * Updated the `[spoiler]` template to use proper JavaScript functions.
   * Will now also toggle the show and hide text.
 * Updated attribute detection to check for no double quotes.
+* Fixed an issue with default attributes not being detected for uppercase tags.
 * Major improvements to email and URL linking, and emoticon parsing.
 
 ## 6.5.2 ##

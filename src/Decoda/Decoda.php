@@ -976,6 +976,18 @@ class Decoda {
     }
 
     /**
+     * Sets the storage engine.
+     *
+     * @param \Decoda\Storage $storage
+     * @return \Decoda\Decoda
+     */
+    public function setStorage(Storage $storage) {
+        $this->_storage = $storage;
+
+        return $this;
+    }
+
+    /**
      * Toggle strict parsing.
      *
      * @param bool $strict

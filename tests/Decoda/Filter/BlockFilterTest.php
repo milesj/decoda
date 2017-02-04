@@ -115,7 +115,7 @@ class BlockFilterTest extends TestCase {
      * Test [spoiler] renders a div element that hides content and can be made visible via a button.
      */
     public function testSpoiler() {
-        $this->assertRegExp('/^\<div class="decoda-spoiler"\>(.*?)\<\/div\>$/is', $this->object->reset('[spoiler]Spoiler[/spoiler]')->parse());
+        $this->assertRegExp('/\<div class="decoda-spoiler"\>/is', $this->object->reset('[spoiler]Spoiler[/spoiler]')->parse());
     }
 
 }

@@ -2,6 +2,19 @@
 
 *These logs may be outdated or incomplete.*
 
+## 6.8.0 ##
+
+* Added a new caching layer via `Storage` engines.
+  * Includes `MemoryStorage`, `MemcacheStorage`, and `RedisStorage`.
+* Added class names to images and emoticons.
+* Removed `spoilerToggle` config from `BlockFilter`.
+* Removed jQuery as a dependency for `[spoiler]` tags.
+* Updated the `[spoiler]` template to use proper JavaScript functions.
+  * Will now also toggle the show and hide text.
+* Updated attribute detection to check for no double quotes.
+* Fixed an issue with default attributes not being detected for uppercase tags.
+* Major improvements to email and URL linking, and emoticon parsing.
+
 ## 6.5.2 ##
 
 * Includes changes from previous versions
@@ -162,7 +175,7 @@
 * Added a new config for CensorHook: suffix
 * Added a new configs for EmoticonHook: path, extension
 * Added support for self closing tags:
-* 
+*
 * Added a global blacklist to Decoda using Decoda::blacklist()
 * Fixed incorrectly nested tags
 * Fixed child and parent hierarchies
@@ -253,7 +266,7 @@
 * Added a childQuotes setting that removes or parses all child quotes
 * Move all config options to the $config property and all methods into configure()
 * Changed __cleanLinebreaks() to __cleanup()
-* 
+*
 
 ## 2.7 ##
 

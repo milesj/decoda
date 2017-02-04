@@ -13,6 +13,7 @@ Decoda is a play on words for: Decoding Markup.
 * Provides functionality to render complex markup using a template system
 * Can censor offensive words
 * Can convert smiley faces into images
+* Parse caching for expensive and large content
 * Basic support for localized messages
 * Supports a wide range of tags
 * Fixes incorrectly nested tags by removing the broken/unclosed tags
@@ -35,6 +36,7 @@ For each string that we want to parse, we instantiate a new Decoda object and pa
 ```php
 $code = new Decoda\Decoda('Hello, my name is [b]Miles Johnson[/b], you may visit my website at [url]http://milesj.me[/url].');
 $code->defaults();
+
 // Or load filters and hooks
 echo $code->parse();
 ```
@@ -246,6 +248,39 @@ $censor = new Decoda\Hook\CensorHook();
 $censor->addLoader(new Custom\DatabaseLoader());
 ```
 
+## Caching Parses ##
+
+Continuous parsing of large posts can be quite costly. To work around this issue, Decoda provides
+a caching layer through the user of `Storage` engines. To make use of caching, pass a unique
+cache key as the 3rd argument to `constructor()` or `reset()`, and a storage engine using
+`setStorage()`.
+
+```php
+$code = new Decoda\Decoda($string, [], 'posts-' . $postID);
+$code->setStorage(new Decoda\Storage\MemoryStorage());
+
+// Will use cached version each subsequent call
+echo $code->parse();
+```
+
+Memcache is supported with `Memcached`.
+
+```php
+$memcache = new Memcached();
+$memcache->addServer('localhost', 11211);
+
+$code->setStorage(new Decoda\Storage\MemcacheStorage($memcache));
+```
+
+As well as Redis with `Redis`.
+
+```php
+$redis = new Redis();
+$redis->connect('localhost', 6379);
+
+$code->setStorage(new Decoda\Storage\RedisStorage($redis));
+```
+
 ## Creating Filters ##
 
 To add a new filter, create a new filter class and name it accordingly, for example AudioFilter. The class will need a property called `$_tags` that will contain a mapping of all tags and their rules. The following rules are available.
@@ -355,7 +390,7 @@ class TwigEngine extends AbstractEngine {
         $loader = new Twig_Loader_Filesystem($this->getPaths());
         $twig = new Twig_Environment($loader);
 
-        return $twig->render($setup['template'] . '.html', $tag['attributes']); 
+        return $twig->render($setup['template'] . '.html', $tag['attributes']);
     }
 }
 ```
@@ -368,9 +403,9 @@ To add a new loader, create a new class and name it accordingly, for example Dat
 
 ```php
 namespace Decoda\Loader;
- 
+
 use Decoda\Loader\AbstractLoader;
- 
+
 class DatabaseLoader extends AbstractLoader {
     public function load() {
         // query the database and return results
@@ -405,7 +440,7 @@ $code->getErrors(Decoda::ERROR_SCOPE); // tags nested within invalid types
 The method will return an array of tags that have failed, so that you can output some kind of error message to the user and block the data being saved to the database. The array changes per error type, so be sure to loop over each correctly. Something like the following should suffice:
 
 ```php
-$nesting = array(); 
+$nesting = array();
 $closing = array();
 $scope = array();
 

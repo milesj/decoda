@@ -1,4 +1,4 @@
-# Decoda v6.7.2 [![Build Status](https://travis-ci.org/milesj/decoda.png?branch=master)](https://travis-ci.org/milesj/decoda) #
+# Decoda v6.8.0 [![Build Status](https://travis-ci.org/milesj/decoda.png?branch=master)](https://travis-ci.org/milesj/decoda) #
 
 A lightweight lexical string parser for BBCode styled markup.
 
@@ -25,6 +25,7 @@ A lightweight lexical string parser for BBCode styled markup.
 * Can censor offensive words
 * Can convert smiley faces into images
 * Basic support for localized messages
+* Parser result caching
 * Supports a wide range of tags
 * Parent child node hierarchy
 * Fixes incorrectly nested tags by removing the broken/unclosed tags
@@ -55,3 +56,11 @@ The following hooks are available.
 * Censor - Censors all words found within config/censored
 * Clickable - Converts all non-tag wrapped URLs and emails into clickable links
 * Emoticon - Converts all smilies found within config/emoticons into emoticon images
+
+## Storage Engines ##
+
+The following caching layers are supported.
+
+* In-Memory
+* Memcache
+* Redis

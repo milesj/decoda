@@ -12,6 +12,7 @@ use Decoda\Filter\DefaultFilter;
 use Decoda\Filter\EmailFilter;
 use Decoda\Filter\UrlFilter;
 use Decoda\Hook\CensorHook;
+use Decoda\Storage\MemoryStorage;
 use Decoda\Test\TestCase;
 use Decoda\Test\TestEngine;
 use Decoda\Test\TestFilter;
@@ -690,8 +691,10 @@ class DecodaTest extends TestCase {
      */
     public function testCapitalTags() {
         $this->object->addFilter(new DefaultFilter());
+        $this->object->addFilter(new UrlFilter());
 
         $this->assertEquals('<b>Bold</b> <i>Italics</i>', $this->object->reset('[B]Bold[/B] [i]Italics[/i]')->parse());
+        $this->assertEquals('<a href="http://google.com">Google!</a>', $this->object->reset('[URL="http://google.com"]Google![/URL]')->parse());
     }
 
     /**
@@ -908,6 +911,28 @@ EXP;
 
         $this->assertEquals('{U}', $this->object->reset('{{U}}')->parse());
         $this->assertEquals('<b>{u_}</b>', $this->object->reset('{b}{{u_}}{/b}')->parse());
+    }
+
+    /**
+     * Test that the storage is hit for subsequent parses.
+     */
+    public function testStorageCaching() {
+        $storage = new MemoryStorage();
+
+        $this->object->defaults();
+        $this->object->setStorage($storage);
+
+        $this->assertFalse($storage->has('cacheKey'));
+
+        $this->object->reset('[b]Foo[/b]', false, 'cacheKey')->parse();
+
+        $this->assertTrue($storage->has('cacheKey'));
+        $this->assertEquals($storage->get('cacheKey'), '<b>Foo</b>');
+
+        $this->object->reset('[b]Bar[/b]', false, 'cacheKey2')->parse();
+
+        $this->assertTrue($storage->has('cacheKey2'));
+        $this->assertEquals($storage->get('cacheKey2'), '<b>Bar</b>');
     }
 
 }

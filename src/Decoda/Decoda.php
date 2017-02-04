@@ -976,6 +976,18 @@ class Decoda {
     }
 
     /**
+     * Sets the storage engine.
+     *
+     * @param \Decoda\Storage $storage
+     * @return \Decoda\Decoda
+     */
+    public function setStorage(Storage $storage) {
+        $this->_storage = $storage;
+
+        return $this;
+    }
+
+    /**
      * Toggle strict parsing.
      *
      * @param bool $strict
@@ -1144,7 +1156,7 @@ class Decoda {
                 foreach ($found as $key => $value) {
                     $value = trim(trim($value), '"');
 
-                    if ($key === $tag) {
+                    if ($key === $tag || strtolower($key) === $tag) {
                         $key = 'default';
                     }
 

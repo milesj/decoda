@@ -36,6 +36,7 @@ For each string that we want to parse, we instantiate a new Decoda object and pa
 ```php
 $code = new Decoda\Decoda('Hello, my name is [b]Miles Johnson[/b], you may visit my website at [url]http://milesj.me[/url].');
 $code->defaults();
+
 // Or load filters and hooks
 echo $code->parse();
 ```

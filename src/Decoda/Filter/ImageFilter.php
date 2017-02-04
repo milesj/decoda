@@ -38,6 +38,9 @@ class ImageFilter extends AbstractFilter {
                 'width' => self::DIMENSION,
                 'height' => self::DIMENSION,
                 'alt' => self::WILDCARD
+            ),
+            'htmlAttributes' => array(
+                'class' => 'decoda-image'
             )
         ),
         'image' => array(

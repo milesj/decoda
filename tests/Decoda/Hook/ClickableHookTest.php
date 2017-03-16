@@ -55,6 +55,8 @@ class ClickableHookTest extends TestCase {
         // invalid urls
         $this->assertEquals('http:domain.com', $this->object->beforeParse('http:domain.com'));
         $this->assertEquals('file://image.png', $this->object->beforeParse('file://image.png'));
+
+        $this->assertEquals('<br/><a href="http://domain.com">http://domain.com</a>', $this->object->afterParse('<br/>http://domain.com'));
     }
 
     /**

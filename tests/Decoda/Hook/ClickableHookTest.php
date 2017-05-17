@@ -16,6 +16,8 @@ use Decoda\Test\TestCase;
 
 class ClickableHookTest extends TestCase {
 
+    protected $hook;
+
     /**
      * Set up Decoda.
      */
@@ -26,8 +28,8 @@ class ClickableHookTest extends TestCase {
         $this->object->addFilter(new EmailFilter(array('encrypt' => false)));
         $this->object->addFilter(new UrlFilter());
 
-        $hook = new ClickableHook();
-        $this->object->addHook($hook);
+        $this->hook = new ClickableHook();
+        $this->object->addHook($this->hook);
     }
 
     /**
@@ -62,6 +64,9 @@ class ClickableHookTest extends TestCase {
 
         // url without http://
         $this->assertEquals('This should be a link: <a href="http://www.domain.com">www.domain.com</a>', $this->object->reset('This should be a link: www.domain.com')->parse());
+
+        // test that ClickableHook does not interfere with other html tags
+        $this->assertEquals('<br/><a href="http://domain.com">http://domain.com</a><br/>', $this->hook->beforeParse('<br/>http://domain.com<br/>'));
 
         // invalid urls
         $this->assertEquals('http:domain.com', $this->object->reset('http:domain.com')->parse());

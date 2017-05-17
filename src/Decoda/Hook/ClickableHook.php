@@ -29,7 +29,7 @@ class ClickableHook extends AbstractHook {
 
         // The tags we won't touch
         // For example, neither [url="http://www.example.com"] nor [img]http://www.example.com[/img] will be replaced.
-        $ignoredTags = ['url', 'img'];
+        $ignoredTags = array('url', 'img');
 
         $i = 0;
         foreach ($ignoredTags as $tag) {

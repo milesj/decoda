@@ -33,7 +33,7 @@ class ClickableHook extends AbstractHook {
 
         $i = 0;
         foreach ($ignoredTags as $tag) {
-            if (preg_match_all(sprintf('/\[%s[=\]].*?\[\/%s\]/is', $tag, $tag), $content, $matches, PREG_SET_ORDER)) {
+            if (preg_match_all(sprintf('/\[%s[\s=\]].*?\[\/%s\]/is', $tag, $tag), $content, $matches, PREG_SET_ORDER)) {
                 $matches = array_unique(array_map(function($x) { return $x[0]; }, $matches));
 
                 foreach ($matches as $val) {

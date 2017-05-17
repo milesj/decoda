@@ -51,7 +51,7 @@ class ClickableHook extends AbstractHook {
 
             $pattern = implode('', array(
                 '((' . implode('|', $protocols) . ')s?:\/\/([\w\.\+]+:[\w\.\+]+@)?|www\.)', // protocol & login or www. (without http(s))
-                '([\w\.]{5,255}+)', // domain, tld
+                '([\w\-\.]{5,255}+)', // domain, tld
                 '(:[0-9]{0,6}+)?', // port
                 '(\/?\?[a-z0-9' . $chars . ']+)?', // query
                 '(#[a-z0-9' . $chars . ']+)?' // fragment

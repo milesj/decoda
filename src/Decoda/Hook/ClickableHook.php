@@ -50,8 +50,7 @@ class ClickableHook extends AbstractHook {
             $chars = preg_quote('-_=+|\;:&?/[]%,.!@#$*(){}"\'', '/');
 
             $pattern = implode('', array(
-                '(' . implode('|', $protocols) . ')s?:\/\/', // protocol
-                '([\w\.\+]+:[\w\.\+]+@)?', // login
+                '((' . implode('|', $protocols) . ')s?:\/\/([\w\.\+]+:[\w\.\+]+@)?|www\.)', // protocol & login or www. (without http(s))
                 '([\w\.]{5,255}+)', // domain, tld
                 '(:[0-9]{0,6}+)?', // port
                 '(\/?\?[a-z0-9' . $chars . ']+)?', // query

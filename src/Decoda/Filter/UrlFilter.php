@@ -20,7 +20,7 @@ class UrlFilter extends AbstractFilter {
      * @type array
      */
     protected $_config = array(
-        'protocols' => array('http', 'https', 'ftp', 'irc', 'telnet'),
+        'protocols' => array('http', 'https', 'ftp', 'irc', 'telnet', 'mailto'),
         'defaultProtocol' => 'http'
     );
 

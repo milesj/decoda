@@ -60,6 +60,9 @@ class ClickableHookTest extends TestCase {
         // test email url link
         $this->assertEquals('<a href="mailto:test@email.com">test@email.com</a>', $this->object->reset('[url="mailto:test@email.com"]test@email.com[/url]')->parse());
 
+        // url without http://
+        $this->assertEquals('This should be a link: <a href="http://www.domain.com">www.domain.com</a>', $this->object->reset('This should be a link: www.domain.com')->parse());
+
         // invalid urls
         $this->assertEquals('http:domain.com', $this->object->reset('http:domain.com')->parse());
         $this->assertEquals('file://image.png', $this->object->reset('file://image.png')->parse());

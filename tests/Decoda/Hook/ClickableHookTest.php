@@ -8,6 +8,7 @@
 namespace Decoda\Hook;
 
 use Decoda\Decoda;
+use Decoda\Filter\DefaultFilter;
 use Decoda\Filter\EmailFilter;
 use Decoda\Filter\UrlFilter;
 use Decoda\Hook\ClickableHook;
@@ -21,57 +22,64 @@ class ClickableHookTest extends TestCase {
     protected function setUp() {
         parent::setUp();
 
-        $decoda = new Decoda();
-        $decoda->addFilter(new EmailFilter(array('encrypt' => false)));
-        $decoda->addFilter(new UrlFilter());
+        $this->object->addFilter(new DefaultFilter());
+        $this->object->addFilter(new EmailFilter(array('encrypt' => false)));
+        $this->object->addFilter(new UrlFilter());
 
-        $this->object = new ClickableHook();
-        $this->object->setParser($decoda);
+        $hook = new ClickableHook();
+        $this->object->addHook($hook);
     }
 
     /**
      * Test that beforeParse() wraps URLs with anchor tags.
      */
     public function testUrlParsing() {
-        $this->assertEquals('<a href="http://domain.com">http://domain.com</a>', $this->object->beforeParse('http://domain.com'));
-        $this->assertEquals('<a href="https://domain.com">https://domain.com</a>', $this->object->beforeParse('https://domain.com'));
-        $this->assertEquals('<a href="ftp://domain.com">ftp://domain.com</a>', $this->object->beforeParse('ftp://domain.com'));
-        $this->assertEquals('<a href="irc://domain.com">irc://domain.com</a>', $this->object->beforeParse('irc://domain.com'));
-        $this->assertEquals('<a href="http://domain.com:1337">http://domain.com:1337</a>', $this->object->beforeParse('http://domain.com:1337'));
-        $this->assertEquals('<a href="http://user:pass@domain.com">http://user:pass@domain.com</a>', $this->object->beforeParse('http://user:pass@domain.com'));
-        $this->assertEquals('<a href="http://domain.com?query=string&amp;key=value">http://domain.com?query=string&key=value</a>', $this->object->beforeParse('http://domain.com?query=string&key=value'));
-        $this->assertEquals('<a href="http://domain.com#fragment">http://domain.com#fragment</a>', $this->object->beforeParse('http://domain.com#fragment'));
+        $this->assertEquals('<a href="http://domain.com">http://domain.com</a>', $this->object->reset('http://domain.com')->parse());
+        $this->assertEquals('<a href="https://domain.com">https://domain.com</a>', $this->object->reset('https://domain.com')->parse());
+        $this->assertEquals('<a href="ftp://domain.com">ftp://domain.com</a>', $this->object->reset('ftp://domain.com')->parse());
+        $this->assertEquals('<a href="irc://domain.com">irc://domain.com</a>', $this->object->reset('irc://domain.com')->parse());
+        $this->assertEquals('<a href="http://domain.com:1337">http://domain.com:1337</a>', $this->object->reset('http://domain.com:1337')->parse());
+        $this->assertEquals('<a href="http://user:pass@domain.com">http://user:pass@domain.com</a>', $this->object->reset('http://user:pass@domain.com')->parse());
+        $this->assertEquals('<a href="http://domain.com?query=string&amp;key=value">http://domain.com?query=string&amp;key=value</a>', $this->object->reset('http://domain.com?query=string&key=value')->parse());
+        $this->assertEquals('<a href="http://domain.com#fragment">http://domain.com#fragment</a>', $this->object->reset('http://domain.com#fragment')->parse());
 
         // positioning
-        $this->assertEquals('<a href="http://domain.com">http://domain.com</a> at the beginning', $this->object->beforeParse('http://domain.com at the beginning'));
-        $this->assertEquals('URL at the end <a href="ftp://domain.com">ftp://domain.com</a>', $this->object->beforeParse('URL at the end ftp://domain.com'));
-        $this->assertEquals('URL in the middle <a href="https://domain.com">https://domain.com</a> of a string', $this->object->beforeParse('URL in the middle https://domain.com of a string'));
+        $this->assertEquals('<a href="http://domain.com">http://domain.com</a> at the beginning', $this->object->reset('http://domain.com at the beginning')->parse());
+        $this->assertEquals('URL at the end <a href="ftp://domain.com">ftp://domain.com</a>', $this->object->reset('URL at the end ftp://domain.com')->parse());
+        $this->assertEquals('URL in the middle <a href="https://domain.com">https://domain.com</a> of a string', $this->object->reset('URL in the middle https://domain.com of a string')->parse());
 
-        // test that it doesn't grab URLs from url tags
-        $this->assertEquals('[img]http://domain.com/x.png[/img]', $this->object->beforeParse('[img]http://domain.com/x.png[/img]'));
-        $this->assertEquals('[url="http://domain.com"]http://domain.com[/url]', $this->object->beforeParse('[url="http://domain.com"]http://domain.com[/url]'));
-        $this->assertEquals('[url="http://domain.com"]text[/url]', $this->object->beforeParse('[url="http://domain.com"]text[/url]'));
+        // test that it doesn't grab URLs from url or img tags
+        $this->assertEquals('<a href="http://domain.com">http://domain.com</a>', $this->object->reset('[url="http://domain.com"]http://domain.com[/url]')->parse());
+        $this->assertEquals('<a href="http://domain.com">text</a>', $this->object->reset('[url="http://domain.com"]text[/url]')->parse());
+        $this->assertEquals('[img]http://domain.com/x.png[/img]', $this->object->reset('[img]http://domain.com/x.png[/img]')->parse());
+
+        // test url mixed with other bb tags
+        $this->assertEquals('<b><a href="http://domain.com">http://domain.com</a></b>', $this->object->reset('[b]http://domain.com[/b]')->parse());
+        $this->assertEquals('<a href="http://domain.com"><b>http://domain.com</b></a>', $this->object->reset('[url="http://domain.com"][b]http://domain.com[/b][/url]')->parse());
+
+        // test email url link
+        $this->assertEquals('<a href="mailto:test@email.com">test@email.com</a>', $this->object->reset('[url="mailto:test@email.com"]test@email.com[/url]')->parse());
 
         // invalid urls
-        $this->assertEquals('http:domain.com', $this->object->beforeParse('http:domain.com'));
-        $this->assertEquals('file://image.png', $this->object->beforeParse('file://image.png'));
+        $this->assertEquals('http:domain.com', $this->object->reset('http:domain.com')->parse());
+        $this->assertEquals('file://image.png', $this->object->reset('file://image.png')->parse());
     }
 
     /**
      * Test that beforeParse() wraps emails with anchor tags.
      */
     public function testEmailParsing() {
-        $this->assertEquals('<a href="mailto:email@domain.com">email@domain.com</a>', $this->object->beforeParse('email@domain.com'));
-        $this->assertEquals('<a href="mailto:email+group@domain.com">email+group@domain.com</a>', $this->object->beforeParse('email+group@domain.com'));
-        $this->assertEquals('<a href="mailto:email-dashed@domain.co.uk">email-dashed@domain.co.uk</a>', $this->object->beforeParse('email-dashed@domain.co.uk'));
+        $this->assertEquals('<a href="mailto:email@domain.com">email@domain.com</a>', $this->object->reset('email@domain.com')->parse());
+        $this->assertEquals('<a href="mailto:email+group@domain.com">email+group@domain.com</a>', $this->object->reset('email+group@domain.com')->parse());
+        $this->assertEquals('<a href="mailto:email-dashed@domain.co.uk">email-dashed@domain.co.uk</a>', $this->object->reset('email-dashed@domain.co.uk')->parse());
 
         // positioning
-        $this->assertEquals('<a href="mailto:email@domain.com">email@domain.com</a> at the beginning', $this->object->beforeParse('email@domain.com at the beginning'));
-        $this->assertEquals('Email at the end <a href="mailto:email@domain.com">email@domain.com</a>', $this->object->beforeParse('Email at the end email@domain.com'));
-        $this->assertEquals('Email in the middle <a href="mailto:email@domain.com">email@domain.com</a> of a string', $this->object->beforeParse('Email in the middle email@domain.com of a string'));
+        $this->assertEquals('<a href="mailto:email@domain.com">email@domain.com</a> at the beginning', $this->object->reset('email@domain.com at the beginning')->parse());
+        $this->assertEquals('Email at the end <a href="mailto:email@domain.com">email@domain.com</a>', $this->object->reset('Email at the end email@domain.com')->parse());
+        $this->assertEquals('Email in the middle <a href="mailto:email@domain.com">email@domain.com</a> of a string', $this->object->reset('Email in the middle email@domain.com of a string')->parse());
 
         // invalid emails
-        $this->assertEquals('email@domain', $this->object->beforeParse('email@domain'));
+        $this->assertEquals('email@domain', $this->object->reset('email@domain')->parse());
     }
 
 }

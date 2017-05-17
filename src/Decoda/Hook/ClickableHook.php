@@ -29,21 +29,21 @@ class ClickableHook extends AbstractHook {
 
         // The tags we won't touch
         // For example, neither [url="http://www.example.com"] nor [img]http://www.example.com[/img] will be replaced.
-        $ignoredTags = array('url', 'img');
+        $ignoredTags = array('url', 'link', 'img', 'image');
 
         $i = 0;
         foreach ($ignoredTags as $tag) {
-	        if (preg_match_all(sprintf('/\[%s[=\]].*?\[\/%s\]/is', $tag, $tag), $content, $matches, PREG_SET_ORDER)) {
-	            $matches = array_unique(array_map(function($x) { return $x[0]; }, $matches));
+            if (preg_match_all(sprintf('/\[%s[=\]].*?\[\/%s\]/is', $tag, $tag), $content, $matches, PREG_SET_ORDER)) {
+                $matches = array_unique(array_map(function($x) { return $x[0]; }, $matches));
 
-	            foreach ($matches as $val) {
-	                $uniqid = uniqid($i++);
+                foreach ($matches as $val) {
+                    $uniqid = uniqid($i++);
 
-	                $ignoredStrings[$uniqid] = $val;
-	                $content = str_replace($val, $uniqid, $content);
-	            }
-	        }
-	    }
+                    $ignoredStrings[$uniqid] = $val;
+                    $content = str_replace($val, $uniqid, $content);
+                }
+            }
+        }
 
         if ($parser->hasFilter('Url')) {
             $protocols = $parser->getFilter('Url')->getConfig('protocols');

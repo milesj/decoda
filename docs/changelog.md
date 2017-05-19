@@ -2,6 +2,13 @@
 
 *These logs may be outdated or incomplete.*
 
+## 6.9.0
+
+* Added `mailto` support to `UrlFilter`.
+* Added non-http (www) linking support in `ClickableHook`.
+* Improved `ClickableHook` pattern matching.
+* Fixed an issue where dashes were allowed in domains.
+
 ## 6.8.0 ##
 
 * Added a new caching layer via `Storage` engines.

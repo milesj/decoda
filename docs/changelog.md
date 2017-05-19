@@ -7,7 +7,7 @@
 * Added `mailto` support to `UrlFilter`.
 * Added non-http (www) linking support in `ClickableHook`.
 * Improved `ClickableHook` pattern matching.
-* Fixed an issue where dashes were allowed in domains.
+* Fixed an issue where dashes were not allowed in domains.
 
 ## 6.8.0 ##
 

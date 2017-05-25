@@ -59,6 +59,12 @@ class ClickableHookTest extends TestCase {
         $this->assertEquals('<b><a href="http://domain.com">http://domain.com</a></b>', $this->object->reset('[b]http://domain.com[/b]')->parse());
         $this->assertEquals('<a href="http://domain.com"><b>http://domain.com</b></a>', $this->object->reset('[url="http://domain.com"][b]http://domain.com[/b][/url]')->parse());
 
+        // test some advanced urls
+        $this->assertEquals('<a href="http://www.domain.com?x=1&amp;y=2#fragment">http://www.domain.com?x=1&amp;y=2#fragment</a>', $this->object->reset('http://www.domain.com?x=1&y=2#fragment')->parse());
+        $this->assertEquals('<a href="http://www.domain.com/?x=1&amp;y=2#fragment">http://www.domain.com/?x=1&amp;y=2#fragment</a>', $this->object->reset('http://www.domain.com/?x=1&y=2#fragment')->parse());
+        $this->assertEquals('<a href="http://www.domain.com/some/deep/path/?x=1&amp;y=2#fragment">http://www.domain.com/some/deep/path/?x=1&amp;y=2#fragment</a>', $this->object->reset('http://www.domain.com/some/deep/path/?x=1&y=2#fragment')->parse());
+        $this->assertEquals('<a href="http://www.domain.com/some/deep/path/#fragment">http://www.domain.com/some/deep/path/#fragment</a>', $this->object->reset('http://www.domain.com/some/deep/path/#fragment')->parse());
+
         // test email url link
         $this->assertEquals('<a href="mailto:test@email.com">test@email.com</a>', $this->object->reset('[url="mailto:test@email.com"]test@email.com[/url]')->parse());
 

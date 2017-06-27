@@ -44,6 +44,7 @@ The following filters and supported tags are available.
 * Image - image, img
 * List - list, olist, ol, ul, li, *
 * Quote - quote
+* Script - script
 * Text - font, size, color, h1-h6
 * Url - url, link
 * Video - video, youtube, vimeo, veoh, liveleak, dailymotion, myspace, wegame, collegehumor

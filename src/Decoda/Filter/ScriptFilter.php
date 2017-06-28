@@ -33,8 +33,7 @@ class ScriptFilter extends AbstractFilter {
      * @return string
      */
     public function parse(array $tag, $content) {
-        // If more than 1 http:// is found in the string, possible XSS attack
-        if ((mb_substr_count($tag['attributes']['src'], 'http://') + mb_substr_count($tag['attributes']['src'], 'https://')) > 1) {
+        if (filter_var($tag['attributes']['src'], FILTER_VALIDATE_URL) === FALSE) {
             return null;
         }
         return parent::parse($tag, $content);

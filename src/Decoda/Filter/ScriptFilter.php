@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   2014-2017, RIGAUDIE David - http://rigaudie.fr
+ * @copyright   2017, RIGAUDIE David - http://rigaudie.fr
  * @license     https://github.com/milesj/decoda/blob/master/license.md
  */
 namespace Decoda\Filter;
@@ -18,8 +18,7 @@ class ScriptFilter extends AbstractFilter {
         'script' => array(
             'htmlTag' => 'script',
             'displayType' => Decoda::TYPE_INLINE,
-            //'allowedTypes' => Decoda::TYPE_NONE,
-            'autoClose' => true,
+            'allowedTypes' => Decoda::TYPE_NONE,
             'attributes' => array(
                 'src' => self::WILDCARD,
             )
@@ -38,7 +37,6 @@ class ScriptFilter extends AbstractFilter {
         if ((mb_substr_count($tag['attributes']['src'], 'http://') + mb_substr_count($tag['attributes']['src'], 'https://')) > 1) {
             return null;
         }
-
         return parent::parse($tag, $content);
     }
 }

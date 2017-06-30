@@ -33,8 +33,11 @@ class ScriptFilter extends AbstractFilter {
      * @return string
      */
     public function parse(array $tag, $content) {
-        if (filter_var($tag['attributes']['src'], FILTER_VALIDATE_URL) === FALSE) {
-            return null;
+        if (substr($tag['attributes']['src'], 0, 2) != '..'
+            && substr($tag['attributes']['src'], 0, 2) != '//'
+            && substr($tag['attributes']['src'], 0, 2) != './') {
+            if( filter_var($tag['attributes']['src'], FILTER_VALIDATE_URL) === FALSE) 
+                return null;
         }
         return parent::parse($tag, $content);
     }

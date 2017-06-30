@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright   2014-2017, RIGAUDIE David - http://rigaudie.fr
+ * @copyright   2017, RIGAUDIE David - http://rigaudie.fr
  * @license     https://github.com/milesj/decoda/blob/master/license.md
  * @link        http://milesj.me/code/php/decoda
  */
@@ -25,6 +25,12 @@ class ScriptFilterTest extends TestCase {
      * Test that [script] renders script tag with src attribute.
      */
     public function testScript() {
+        // Upper case
+        $this->assertEquals(
+            '<script src="http://domain.com/link.js"></script>',
+            $this->object->reset('[SCRIPT src="http://domain.com/link.js"][/SCRIPT]')->parse()
+        );
+
         // http
         $this->assertEquals(
             '<script src="http://domain.com/link.js"></script>',
@@ -60,6 +66,16 @@ class ScriptFilterTest extends TestCase {
         $this->assertEquals(
             null,
             $this->object->reset('[script src="not url path"][/script]')->parse()
+        );
+
+        //Wrong bbcode
+        $this->assertEquals(
+            null,
+            $this->object->reset('[script src="https://domain.com/link.js"]')->parse()
+        );
+        $this->assertEquals(
+            null,
+            $this->object->reset('[script src="https://domain.com/link.js"/]')->parse()
         );
     }
 

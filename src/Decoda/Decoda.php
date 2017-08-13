@@ -94,7 +94,7 @@ class Decoda {
         'maxNewlines' => 3,
         'lineBreaks' => true,
         'removeEmpty' => false,
-	'standaloneTags' => false,
+        'standaloneTags' => false,
         'configPath' => '../config/',
         'cacheExpires' => '+1 week',
     );
@@ -865,9 +865,9 @@ class Decoda {
                 case 'maxNewlines':
                     $this->setMaxNewlines($value);
                 break;
-		case 'standaloneTags':
-		    $this->setStandaloneTags($value);
-		break;
+                case 'standaloneTags':
+                    $this->setStandaloneTags($value);
+                break;
                 case 'lineBreaks':
                     $this->setLineBreaks($value);
                 break;
@@ -939,9 +939,9 @@ class Decoda {
      * @return \Decoda\Decoda
      */
     public function setStandaloneTags($status) {
-	$this->_config['standaloneTags'] = (bool) $status;
+        $this->_config['standaloneTags'] = (bool) $status;
 
-	return $this;
+        return $this;
     }
 
     /**
@@ -1140,13 +1140,13 @@ class Decoda {
 
         // Check if is a self closing tag
         if ($type === self::TAG_OPEN && $source['autoClose'] && preg_match('/\/\s*' . $ce . '$/', $string)) {
-	    $type = self::TAG_SELF_CLOSE;
+            $type = self::TAG_SELF_CLOSE;
         }
 
-	// Check if is a standalone self closing tag
-	if($type === self::TAG_OPEN && $source['autoClose'] && $this->getConfig('standaloneTags')) {
+        // Check if is a standalone self closing tag
+        if($type === self::TAG_OPEN && $source['autoClose'] && $this->getConfig('standaloneTags')) {
             $type = self::TAG_SELF_CLOSE;
-	}
+        }
 
         // Find attributes
         if (!$disabled) {

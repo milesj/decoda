@@ -158,6 +158,7 @@ class DecodaTest extends TestCase {
             'strict' => true,
             'newlines' => 5,
             'lineBreaks' => false,
+            'standaloneTags' => true,
             'removeEmpty' => true
         ));
 
@@ -171,6 +172,7 @@ class DecodaTest extends TestCase {
         $this->assertEquals(true, $this->object->getConfig('strictMode'));
         $this->assertEquals(5, $this->object->getConfig('maxNewlines'));
         $this->assertEquals(false, $this->object->getConfig('lineBreaks'));
+        $this->assertEquals(true, $this->object->getConfig('standaloneTags'));
         $this->assertEquals(true, $this->object->getConfig('removeEmpty'));
     }
 
@@ -340,6 +342,21 @@ class DecodaTest extends TestCase {
         // Now with spaces and mixed values
         $this->assertEquals('<attributes id="custom-html" wildcard="Something" alnum="abc">Content</attributes>', $this->object->reset('[attributes=Something "quotes" here alnum=abc 123]Content[/attributes]')->parse());
         $this->assertEquals('<attributes id="custom-html" wildcard="Miles" alnum="abc-123">Content</attributes>', $this->object->reset('[attributes=Miles"gearvOsh"Johnson alnum=abc-123]Content[/attributes]')->parse());
+    }
+
+    /**
+     * Test that setStandaloneTags() toggles standalone tag parsing.
+     */
+    public function testStandaloneTags() {
+        $this->object->addFilter(new DefaultFilter())->addFilter(new BlockFilter());
+
+        // Standalone tags are off by default.
+        $this->assertEquals("", $this->object->reset("[br]")->parse());
+        $this->assertEquals("<br>", $this->object->reset("[br /]")->parse());
+
+        // Turn on standalone tags
+        $this->object->setStandaloneTags(true);
+        $this->assertEquals("<br>", $this->object->reset("[br]")->parse());
     }
 
     /**

@@ -2,12 +2,18 @@
 
 *These logs may be outdated or incomplete.*
 
+## 6.10.0
+
+* Added new standalone tags feature which allows self closing tags to omit the trailing forward slash.
+* Added new `standaloneTags` config option.
+* Added new `Decoda::setStandaloneTags` method.
+
 ## 6.9.0
 
 * Added `mailto` support to `UrlFilter`.
 * Added non-http (www) linking support in `ClickableHook`.
 * Improved `ClickableHook` pattern matching.
-* Fixed an issue where dashes were not allowed in domains.
+* Fixed an issue where dashes were allowed in domains.
 
 ## 6.8.0 ##
 
@@ -128,7 +134,7 @@
 
 * Updated to use Multibyte extensively
 * Added Decoda::hasFilter() and Decoda::hasHook()
-* Added ` tags within <pre> for  and proper semantics
+* Added tags within <pre> for  and proper semantics
 * Added [var]
 
 ## 5.0.0 ##

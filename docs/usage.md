@@ -117,6 +117,14 @@ Or to toggle newline to line break (nl2br) conversion, call `setLineBreaks()`.
 $code->setLineBreaks(false);
 ```
 
+### Standalone Tags ###
+
+To allow standalone tags (no closing tag), call `setStandaloneTags()`.
+
+```php
+$code->setStandaloneTags(true);
+```
+
 ### Whitelisting Tags ###
 
 To only parse specific tags, pass an array of whitelisted tags.

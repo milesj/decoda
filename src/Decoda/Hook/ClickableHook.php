@@ -74,7 +74,7 @@ class ClickableHook extends AbstractHook {
             for ($i = 0; $i < $length; ++$i) {
                 if (filter_var($split[$i], FILTER_VALIDATE_URL)) {
                     $split[$i] = self::_urlCallback($split[$i]);
-                } else if (preg_match("/www\.{0,1}[A-z,-]+\.[A-z,-]+/", $split[$i])) {
+                } else if (preg_match("/www\.[A-z,-]+\.[A-z,-]+/", $split[$i])) {
                     $split[$i] = self::_urlCallback($split[$i]);
                 }
             }

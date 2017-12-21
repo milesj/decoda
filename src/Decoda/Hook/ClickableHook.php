@@ -20,6 +20,7 @@ class ClickableHook extends AbstractHook {
      * @param string $content
      * @return string
      */
+
     public function beforeParse($content) {
         $parser = $this->getParser();
 
@@ -48,16 +49,46 @@ class ClickableHook extends AbstractHook {
         if ($parser->hasFilter('Url')) {
             $protocols = $parser->getFilter('Url')->getConfig('protocols');
             $chars = preg_quote('-_=+|\;:&?/[]%,.!@#$*(){}"\'', '/');
+            $split_char = "<>[] ";
+            $split_chars = [];
+            $result = [];
 
-            $pattern = implode('', array(
-                '((' . implode('|', $protocols) . ')s?:\/\/([\w\.\+]+:[\w\.\+]+@)?|www\.)', // protocol & login or www. (without http(s))
-                '([\w\-\.]{5,255}+)', // domain, tld
-                '(:[0-9]{0,6}+)?', // port
-                '(\/?\?[a-z0-9' . $chars . ']+)?', // query
-                '(#[a-z0-9' . $chars . ']+)?' // fragment
-            ));
+            $length = strlen($content);
+            $split = [];
+            $current = "";
+            for ($i = 0; $i < $length; ++$i) {
+                if (strpos($split_char, $content[$i]) !== false) {
+                    array_push($split_chars, $content[$i]);
+                    array_push($split, $current);
+                    $current = "";
+                } else {
+                    $current .= $content[$i];
+                }
+            }
 
-            $content = preg_replace_callback('/(' . $pattern . ')/i', array($this, '_urlCallback'), $content);
+            if (strlen($current) != 0) {
+                array_push($split, $current);
+            }
+
+            $length = count($split);
+            for ($i = 0; $i < $length; ++$i) {
+                if (filter_var($split[$i], FILTER_VALIDATE_URL)) {
+                    $split[$i] = self::_urlCallback($split[$i]);
+                } else if (preg_match("/www\.{0,1}[A-z,-]+\.[A-z,-]+/", $split[$i])) {
+                    $split[$i] = self::_urlCallback($split[$i]);
+                }
+            }
+
+            $result = "";
+            $split_length = count($split_chars);
+            for ($i = 0; $i < $length; ++$i) {
+                $result .= $split[$i];
+                if ($i < $split_length) {
+                    $result .= $split_chars[$i];
+                }
+            }
+
+            $content = $result;
         }
 
         // Based on W3C HTML5 spec: https://www.w3.org/TR/html5/forms.html#valid-e-mail-address
@@ -99,11 +130,11 @@ class ClickableHook extends AbstractHook {
      * @param array $matches
      * @return string
      */
-    protected function _urlCallback($matches) {
+    protected function _urlCallback($match) {
         return $this->getParser()->getFilter('Url')->parse(array(
             'tag' => 'url',
             'attributes' => array()
-        ), trim($matches[1]));
+        ), trim($match));
     }
 
 }

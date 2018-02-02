@@ -2,6 +2,9 @@
 
 *These logs may be outdated or incomplete.*
 
+## 6.10.1
+* Fixed an issue with URL paths in `ClickableHook`.
+
 ## 6.10.0
 
 * Added new standalone tags feature which allows self closing tags to omit the trailing forward slash.

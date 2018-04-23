@@ -57,6 +57,6 @@ echo $code->parse(); ?>
 [url]irc://ircsite.com[/url]
 [url]telnet://telnetsite.com[/url]';
 
-$code->setShorthand();
+$code->setShorthand(true);
 $code->reset($string);
 echo $code->parse(); ?>

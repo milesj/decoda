@@ -26,8 +26,8 @@ class VideoFilterTest extends TestCase {
      */
     public function testVideo() {
         // iframe
-        $this->assertEquals('<iframe src="//youtube.com/embed/c0dE" width="640" height="360" frameborder="0"></iframe>', $this->object->reset('[video="youtube"]c0dE[/video]')->parse());
-        $this->assertEquals('<iframe src="//youtube.com/embed/c0dE" width="853" height="480" frameborder="0"></iframe>', $this->object->reset('[video="youtube" size="large"]c0dE[/video]')->parse());
+        $this->assertEquals('<iframe src="//youtube.com/embed/c0dE?rel=0" width="640" height="360" frameborder="0"></iframe>', $this->object->reset('[video="youtube"]c0dE[/video]')->parse());
+        $this->assertEquals('<iframe src="//youtube.com/embed/c0dE?rel=0" width="853" height="480" frameborder="0"></iframe>', $this->object->reset('[video="youtube" size="large"]c0dE[/video]')->parse());
 
         // embed
         $this->assertEquals('<iframe src="//liveleak.com/e/c0dE" width="640" height="360" frameborder="0"></iframe>', $this->object->reset('[video="liveleak"]c0dE[/video]')->parse());
@@ -42,7 +42,7 @@ class VideoFilterTest extends TestCase {
      * Test that vendor specific video tags work.
      */
     public function testVideoSpecificTags() {
-        $this->assertEquals('<iframe src="//youtube.com/embed/c0dE" width="640" height="360" frameborder="0"></iframe>', $this->object->reset('[youtube]c0dE[/youtube]')->parse());
+        $this->assertEquals('<iframe src="//youtube.com/embed/c0dE?rel=0" width="640" height="360" frameborder="0"></iframe>', $this->object->reset('[youtube]c0dE[/youtube]')->parse());
         $this->assertEquals('<iframe src="//player.vimeo.com/video/c0dE" width="700" height="394" frameborder="0"></iframe>', $this->object->reset('[vimeo size="large"]c0dE[/vimeo]')->parse());
         $this->assertEquals('<iframe src="//liveleak.com/e/c0dE" width="560" height="315" frameborder="0"></iframe>', $this->object->reset('[liveleak size="small"]c0dE[/liveleak]')->parse());
         $this->assertEquals('<embed src="//veoh.com/swf/webplayer/WebPlayer.swf?version=AFrontend.5.7.0.1390&amp;permalinkId=c0dE&amp;player=videodetailsembedded&amp;videoAutoPlay=0&amp;id=anonymous" width="610" height="507" type="application/x-shockwave-flash"></embed>', $this->object->reset('[veoh size="medium"]c0dE[/veoh]')->parse());

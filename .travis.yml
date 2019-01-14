@@ -15,10 +15,14 @@ matrix:
   allow_failures:
     - php: hhvm
     - php: hhvm-nightly
+    - php: 7.3
 
-before_script:
+install:
   - composer selfupdate
   - composer install
+
+script:
+  - php ./vendor/bin/phpunit
 
 notifications:
   email: false

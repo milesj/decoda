@@ -1264,7 +1264,7 @@ class Decoda {
                 case self::TAG_NONE:
                     // Disregard deeply nested text nodes if persist is disabled
                     if ($disallowed && !$parent['persistContent']) {
-                        continue;
+                        break;
                     }
 
                     if (!$parent['onlyTags']) {
@@ -1320,7 +1320,7 @@ class Decoda {
 
                         if ($last['tag'] === $tag) {
                             array_pop($disallowed);
-                            continue;
+                            break;
                         }
                     }
 

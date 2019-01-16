@@ -2,6 +2,10 @@
 
 _These logs may be outdated or incomplete._
 
+## 6.12.0
+
+- Updated to support PHP 7.3.
+
 ## 6.11.0
 
 - Updated `ImageFilter` to support SVGs.
@@ -13,7 +17,8 @@ _These logs may be outdated or incomplete._
 
 ## 6.10.0
 
-- Added new standalone tags feature which allows self closing tags to omit the trailing forward slash.
+- Added new standalone tags feature which allows self closing tags to omit the trailing forward
+  slash.
 - Added new `standaloneTags` config option.
 - Added new `Decoda::setStandaloneTags` method.
 
@@ -41,8 +46,10 @@ _These logs may be outdated or incomplete._
 
 - Includes changes from previous versions
 - Added a depth value to node extractions
-- Fixed a bug with `aliasFor` where it would not inherit from defaults [[#70](https://github.com/milesj/decoda/issues/70)]
-- Fixed a bug where whitespace within the tag would break rendering [[#69](https://github.com/milesj/decoda/issues/69)]
+- Fixed a bug with `aliasFor` where it would not inherit from defaults
+  [[#70](https://github.com/milesj/decoda/issues/70)]
+- Fixed a bug where whitespace within the tag would break rendering
+  [[#69](https://github.com/milesj/decoda/issues/69)]
 
 ## 6.5.0
 
@@ -64,24 +71,29 @@ _These logs may be outdated or incomplete._
 
 - Added Hungarian translations
 - Added `removeEmpty` option that removes empty tags
-- Updated to allow query strings and fragments in image URLs [[#57](https://github.com/milesj/decoda/issues/57)]
+- Updated to allow query strings and fragments in image URLs
+  [[#57](https://github.com/milesj/decoda/issues/57)]
 
 ## 6.2.3
 
 - Fix self closing tags within other tags bug [[#52](https://github.com/milesj/decoda/issues/52)]
-- Fix config not being inherited through constructor [[#11](https://github.com/milesj/decoda/issues/11)]
+- Fix config not being inherited through constructor
+  [[#11](https://github.com/milesj/decoda/issues/11)]
 
 ## 6.2.2
 
 - Includes changes from 6.2.1
 - Added newline cleaning before and after parsing
-- Fixed a bug where newlines will be converted multiple times [[#51](https://github.com/milesj/Decoda/pull/51)]
+- Fixed a bug where newlines will be converted multiple times
+  [[#51](https://github.com/milesj/Decoda/pull/51)]
 - Improved the `ClickableHook`
 
 ## 6.2.0
 
-- Added a newline to line break conversion setting `lineBreaks` [[#48](https://github.com/milesj/Decoda/issues/48)]
-- Added an `onlyTags` setting to filters that only allow tags and no text nodes as direct descendants
+- Added a newline to line break conversion setting `lineBreaks`
+  [[#48](https://github.com/milesj/Decoda/issues/48)]
+- Added an `onlyTags` setting to filters that only allow tags and no text nodes as direct
+  descendants
 - Added `[*]` list item tag to `ListFilter` (does not support nested lists)
 - Changed utility methods to public from protected
 - Improved newline normalization
@@ -119,7 +131,7 @@ _These logs may be outdated or incomplete._
 - Added Hook::startup() to initialize data before callbacks are called
 - Added Decoda::addMessages() to add messages using a Loader
 - Added Decoda::getBlacklist() and getWhitelist()
-- Added a 2nd argument $key for Decoda::addFilter() and addHook()
+- Added a 2nd argument \$key for Decoda::addFilter() and addHook()
 - Added a default attribute to ImageFilter (img="200x200")
 - Added a default attribute to ListFilter (list="upper-roman")
 - Added a new TableFilter
@@ -131,7 +143,8 @@ _These logs may be outdated or incomplete._
 - Renamed Engine::getPath() to getPaths()
 - Updated CensorHook to support blacklisting words using a Loader
 - Updated EmoticonHook to support adding emoticons using a Loader
-- Updated Decoda::setLocale() so that it no longer throws exceptions (can now support setting the default locale)
+- Updated Decoda::setLocale() so that it no longer throws exceptions (can now support setting the
+  default locale)
 - Updated Engines to support multiple template lookup paths
 - Updated with Travis CI and phpunit.xml integration
 
@@ -159,7 +172,8 @@ _These logs may be outdated or incomplete._
 ## 4.1.1
 
 - Fixed attribute aliasing within Filter.mapAttributes
-- Updated video URLs to be protocol agnostic [[Issue #29](https://github.com/milesj/php-decoda/issues/29)]
+- Updated video URLs to be protocol agnostic
+  [[Issue #29](https://github.com/milesj/php-decoda/issues/29)]
 - Updated message translations
 
 ## 4.1.0
@@ -243,8 +257,10 @@ _These logs may be outdated or incomplete._
 
 - Added DecodaFilter::setupHooks() to allow filters to initialize hook dependencies
 - Added DecodaHook::setupFilters() to allow hooks to initialize filter dependencies
-- Added CodeHook (CodeFilter dependency) that stops emoticons from being processed in code blocks [[Issue #9](https://github.com/milesj/php-decoda/issues/9)]
-- Check for class or interface during autoload [[Issue #10](https://github.com/milesj/php-decoda/issues/10)]
+- Added CodeHook (CodeFilter dependency) that stops emoticons from being processed in code blocks
+  [[Issue #9](https://github.com/milesj/php-decoda/issues/9)]
+- Check for class or interface during autoload
+  [[Issue #10](https://github.com/milesj/php-decoda/issues/10)]
 - Made HTML escaping a boolean setting [[Issue #11](https://github.com/milesj/php-decoda/issues/11)]
 - Switched CensorHook::afterParse() to beforeParse()
 
@@ -286,7 +302,7 @@ _These logs may be outdated or incomplete._
 - Added new constants for specific paths
 - Added an emoticon smiley system
 - Added a childQuotes setting that removes or parses all child quotes
-- Move all config options to the $config property and all methods into configure()
+- Move all config options to the \$config property and all methods into configure()
 - Changed **cleanLinebreaks() to **cleanup()
 -
 
@@ -309,7 +325,8 @@ _These logs may be outdated or incomplete._
 
 - Added functionality for the GeSHi code highlighter
 - Added an attributes() method to deal with element attributes
-- Added the callbackCode(), processCode() and processGeshi() methods to manage the GeSHi implementation
+- Added the callbackCode(), processCode() and processGeshi() methods to manage the GeSHi
+  implementation
 - Added the setupGeshi() and useGeshi() methods to apply GeSHi settings
 - Added a float markup type to float content left or right (must clear!)
 - Rewrote the div tags to use double quotes
@@ -325,10 +342,11 @@ _These logs may be outdated or incomplete._
 
 ## 2.3
 
-- Added an $allowed property to restrict what tags should be parsed
+- Added an \$allowed property to restrict what tags should be parsed
 - Added an allowed() method to deal with the restricted tags
-- Added a parseDefaults() method to deal with the $allowed
-- Replaced the $markup property with 2 standalone properties to work in sync with the new allowed system
+- Added a parseDefaults() method to deal with the \$allowed
+- Replaced the \$markup property with 2 standalone properties to work in sync with the new allowed
+  system
 - Rewrote \_\_construct(), addMarkup(), clickable() and parse()
 - Removed the title and alt attributes from emails and urls
 - Fixed an error with parse() not returning data when no was found

@@ -6,6 +6,8 @@ php:
   - 5.6
   - 7.0
   - 7.1
+  - 7.2
+  - 7.3
   - hhvm
   - hhvm-nightly
 
@@ -13,10 +15,14 @@ matrix:
   allow_failures:
     - php: hhvm
     - php: hhvm-nightly
+    - php: 7.3
 
-before_script:
+install:
   - composer selfupdate
   - composer install
+
+script:
+  - php ./vendor/bin/phpunit
 
 notifications:
   email: false

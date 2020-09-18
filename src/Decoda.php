@@ -158,7 +158,7 @@ class Decoda {
     /**
      * Caching engine.
      *
-     * @type \Decoda\Storage
+     * @type \Decoda\Storage|null
      */
     protected $_storage;
 
@@ -592,7 +592,7 @@ class Decoda {
     /**
      * Return the current storage engine.
      *
-     * @return \Decoda\Storage
+     * @return \Decoda\Storage|null
      */
     public function getStorage() {
         return $this->_storage;
@@ -932,7 +932,7 @@ class Decoda {
     }
 
     /**
-     * Toggle whether standalone tags (self-closing tags without the 
+     * Toggle whether standalone tags (self-closing tags without the
      * trailing slash) are allowed.
      *
      * @param bool $status
@@ -1133,7 +1133,7 @@ class Decoda {
         }
 
         if (!isset($this->_tags[$tag])) {
-            return false;
+            return [];
         }
 
         $source = $this->_tags[$tag];
@@ -1236,7 +1236,7 @@ class Decoda {
      *
      * @param array $chunks
      * @param array $wrapper
-     * @return string
+     * @return array
      */
     protected function _cleanChunks(array $chunks, array $wrapper = []) {
         $clean = [];
@@ -1602,27 +1602,22 @@ class Decoda {
      */
     protected function _isAllowed($parent, $tag) {
         $filter = $this->getFilterByTag($tag);
-
-        if (!$filter) {
-            return false;
-        }
-
         $child = $filter->getTag($tag);
 
         // Remove children after a certain nested depth
         if (isset($parent['currentDepth']) && $parent['maxChildDepth'] >= 0 && $parent['currentDepth'] > $parent['maxChildDepth']) {
             return false;
-
+        }
         // Children that can only be within a certain parent
-        } else if ($child['parent'] && !in_array($parent['tag'], $child['parent'])) {
+        if ($child['parent'] && !in_array($parent['tag'], $child['parent'])) {
             return false;
-
+        }
         // Parents that can not have specific direct descendant children
-        } else if ($parent['childrenBlacklist'] && in_array($child['tag'], $parent['childrenBlacklist'])) {
+        if ($parent['childrenBlacklist'] && in_array($child['tag'], $parent['childrenBlacklist'])) {
             return false;
-
+        }
         // Parents that can only have direct descendant children
-        } else if ($parent['childrenWhitelist'] && !in_array($child['tag'], $parent['childrenWhitelist'])) {
+        if ($parent['childrenWhitelist'] && !in_array($child['tag'], $parent['childrenWhitelist'])) {
             return false;
         }
 
@@ -1633,13 +1628,13 @@ class Decoda {
                 if ($child['displayType'] === self::TYPE_INLINE) {
                     return true;
                 }
-            break;
+                break;
             case self::TYPE_BLOCK:
                 // Block types only allowed if the parent is also a block
                 if ($parent['displayType'] === self::TYPE_BLOCK && $child['displayType'] === self::TYPE_BLOCK) {
                     return true;
                 }
-            break;
+                break;
             case self::TYPE_BOTH:
                 if ($parent['displayType'] === self::TYPE_INLINE) {
                     // Only allow inline if parent is inline
@@ -1649,7 +1644,7 @@ class Decoda {
                 } else {
                     return true;
                 }
-            break;
+                break;
         }
 
         // Log the error

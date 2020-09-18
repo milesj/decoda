@@ -17,56 +17,56 @@ use Decoda\Hook;
 abstract class AbstractHook extends AbstractComponent implements Hook {
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function afterContent($content) {
         return $content;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function afterParse($content) {
         return $content;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function afterStrip($content) {
         return $content;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function beforeContent($content) {
         return $content;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function beforeParse($content) {
         return $content;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function beforeStrip($content) {
         return $content;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function startup() {
         return;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setupFilters(Decoda $decoda) {
         return $this;

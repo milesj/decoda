@@ -130,7 +130,7 @@ class EmoticonHook extends AbstractHook {
      */
     public function render($smiley, $isXhtml = true) {
         if (!$this->hasSmiley($smiley)) {
-            return null;
+            return '';
         }
 
         $path = sprintf('%s%s.%s',

@@ -3,21 +3,24 @@ language: php
 php:
   - 5.6
   - 7.0
-  - 7.1
-  - 7.2
-  - 7.3
   - 7.4
   - nightly
 
 matrix:
+  include:
+    - php: 7.4
+      env: CHECKS=1 DEFAULT=0
+
   allow_failures:
     - php: nightly
 
 install:
-  - composer install
+  - composer install --prefer-source --no-interaction
 
 script:
-  - vendor/bin/phpunit
+  - if [[ $DEFAULT == 1 ]]; then vendor/bin/phpunit; fi
+
+  - if [[ $CHECKS == 1 ]]; then composer stan-setup && composer stan; fi
 
 notifications:
   email: false

@@ -8,7 +8,7 @@
 namespace Decoda\Storage;
 
 use Decoda\Exception\MissingItemException;
-use \Memcached;
+use Memcached;
 
 /**
  * Cache data using Memcache.
@@ -32,7 +32,7 @@ class MemcacheStorage extends AbstractStorage {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function get($key) {
         $value = $this->getMemcache()->get($key);
@@ -54,7 +54,7 @@ class MemcacheStorage extends AbstractStorage {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function has($key) {
         return (
@@ -64,14 +64,14 @@ class MemcacheStorage extends AbstractStorage {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function remove($key) {
         return $this->getMemcache()->delete($key);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function set($key, $value, $expires) {
         return $this->getMemcache()->set($key, $value, (int) $expires);

@@ -8,7 +8,7 @@
 namespace Decoda\Storage;
 
 use Decoda\Exception\MissingItemException;
-use \Redis;
+use Redis;
 
 /**
  * Cache data using Redis.
@@ -32,7 +32,7 @@ class RedisStorage extends AbstractStorage {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function get($key) {
         $value = $this->getRedis()->get($key);
@@ -54,21 +54,21 @@ class RedisStorage extends AbstractStorage {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function has($key) {
-        return $this->getRedis()->exists($key);
+        return (bool)$this->getRedis()->exists($key);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function remove($key) {
-        return (bool) $this->getRedis()->delete($key);
+        return (bool)$this->getRedis()->del($key);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function set($key, $value, $expires) {
         return $this->getRedis()->setex($key, (int) $expires - time(), $value); // Redis is TTL

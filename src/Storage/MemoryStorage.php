@@ -22,7 +22,7 @@ class MemoryStorage extends AbstractStorage {
     protected $_cache = [];
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function get($key) {
         if (!$this->has($key)) {
@@ -33,14 +33,14 @@ class MemoryStorage extends AbstractStorage {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function has($key) {
         return isset($this->_cache[$key]);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function remove($key) {
         unset($this->_cache[$key]);
@@ -49,7 +49,7 @@ class MemoryStorage extends AbstractStorage {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function set($key, $value, $expires) {
         $this->_cache[$key] = $value;

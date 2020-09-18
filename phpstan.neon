@@ -1,0 +1,8 @@
+parameters:
+    level: 4
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    bootstrapFiles:
+        - %rootDir%/../../../tests/bootstrap.php
+    excludes_analyse:
+    ignoreErrors:

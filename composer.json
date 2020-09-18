@@ -17,7 +17,7 @@
     },
     "require-dev": {
         "ext-json": "*",
-        "phpunit/phpunit": "^7.5|^8.5"
+        "phpunit/phpunit": "^8.5"
     },
     "suggest": {
         "ext-redis": "Cache data using Redis",

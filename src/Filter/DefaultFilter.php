@@ -18,7 +18,7 @@ class DefaultFilter extends AbstractFilter {
     /**
      * Configuration.
      *
-     * @type array
+     * @var array
      */
     protected $_config = [
         'timeFormat' => 'D, M jS Y, H:i'
@@ -27,7 +27,7 @@ class DefaultFilter extends AbstractFilter {
     /**
      * Supported tags.
      *
-     * @type array
+     * @var array
      */
     protected $_tags = [
         'b' => [
@@ -100,9 +100,9 @@ class DefaultFilter extends AbstractFilter {
     public function time(array $tag, $content) {
         $timestamp = is_numeric($content) ? $content : strtotime($content);
 
-        $content = date($this->getConfig('timeFormat'), $timestamp);
+        $content = date($this->getConfig('timeFormat'), (int)$timestamp);
 
-        $tag['attributes']['datetime'] = date(DateTime::ISO8601, $timestamp);
+        $tag['attributes']['datetime'] = date(DateTime::ATOM, (int)$timestamp);
 
         return [$tag, $content];
     }

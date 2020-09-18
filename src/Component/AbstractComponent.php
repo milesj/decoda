@@ -19,21 +19,21 @@ abstract class AbstractComponent implements Component {
     /**
      * Configuration.
      *
-     * @type array
+     * @var array
      */
     protected $_config = [];
 
     /**
      * List of Loaders.
      *
-     * @type \Decoda\Loader[]
+     * @var \Decoda\Loader[]
      */
     protected $_loaders = [];
 
     /**
      * Decoda object.
      *
-     * @type \Decoda\Decoda
+     * @var \Decoda\Decoda
      */
     protected $_parser;
 

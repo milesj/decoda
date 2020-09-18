@@ -18,7 +18,7 @@ class FileLoader extends AbstractLoader {
     /**
      * Path to file.
      *
-     * @type string
+     * @var string
      */
     protected $_path;
 
@@ -49,7 +49,11 @@ class FileLoader extends AbstractLoader {
             case 'php':
                 return include $this->_path;
             case 'json':
-                return json_decode(file_get_contents($this->_path), true) ?: [];
+                $content = file_get_contents($this->_path);
+                if ($content === false) {
+                    throw new \RuntimeException('Cannot open file: ' . $this->_path);
+                }
+                return json_decode($content, true) ?: [];
             case 'ini':
                 return parse_ini_file($this->_path, true) ?: [];
             case 'txt':

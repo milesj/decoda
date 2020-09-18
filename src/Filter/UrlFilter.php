@@ -17,7 +17,7 @@ class UrlFilter extends AbstractFilter {
     /**
      * Configuration.
      *
-     * @type array
+     * @var array
      */
     protected $_config = [
         'protocols' => ['http', 'https', 'ftp', 'irc', 'telnet', 'mailto'],
@@ -27,7 +27,7 @@ class UrlFilter extends AbstractFilter {
     /**
      * Supported tags.
      *
-     * @type array
+     * @var array
      */
     protected $_tags = [
         'url' => [
@@ -60,7 +60,7 @@ class UrlFilter extends AbstractFilter {
         $defaultProtocol = $this->getConfig('defaultProtocol');
         $hasProtocol = preg_match('/^(' . implode('|', $protocols) . ')/i', $url);
 
-        if (!in_array($defaultProtocol, $protocols)) {
+        if (!in_array($defaultProtocol, $protocols, true)) {
             $defaultProtocol = 'http';
         }
 

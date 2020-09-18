@@ -18,14 +18,14 @@ class CensorHook extends AbstractHook {
     /**
      * List of words to censor.
      *
-     * @type array
+     * @var array
      */
     protected $_blacklist = [];
 
     /**
      * Configuration.
      *
-     * @type array
+     * @var array
      */
     protected $_config = [
         'suffix' => ['ing', 'in', 'er', 'r', 'ed', 'd']
@@ -41,7 +41,8 @@ class CensorHook extends AbstractHook {
 
         // Load files from config paths
         foreach ($this->getParser()->getPaths() as $path) {
-            foreach (glob($path . 'censored.*') as $file) {
+            $files = glob($path . 'censored.*') ?: [];
+            foreach ($files as $file) {
                 $this->addLoader(new FileLoader($file));
             }
         }
@@ -106,7 +107,7 @@ class CensorHook extends AbstractHook {
      */
     protected function _censor($content) {
         $pattern = implode('|', array_map([$this, '_prepareRegex'], $this->getBlacklist()));
-        $content = preg_replace_callback('/(?:^|\b)(?:' . $pattern . ')(?:\b|$)/is', [$this, '_censorCallback'], $content);
+        $content = (string)preg_replace_callback('/(?:^|\b)(?:' . $pattern . ')(?:\b|$)/is', [$this, '_censorCallback'], $content);
 
         return $content;
     }

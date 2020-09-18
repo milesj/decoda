@@ -2,6 +2,11 @@
 
 _These logs may be outdated or incomplete._
 
+## 6.13.0
+
+- Updated to PSR-4 and to support PHP 7.4.
+- PHP 5.6+
+
 ## 6.12.0
 
 - Updated to support PHP 7.3.

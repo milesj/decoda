@@ -19,19 +19,19 @@ abstract class AbstractEngine extends AbstractComponent implements Engine {
     /**
      * Lookup paths.
      *
-     * @type array
+     * @var string[]
      */
     protected $_paths = [];
 
     /**
      * Current filter.
      *
-     * @type \Decoda\Filter
+     * @var \Decoda\Filter
      */
     protected $_filter;
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function addPath($path) {
         if (substr($path, -1) !== '/') {
@@ -54,21 +54,21 @@ abstract class AbstractEngine extends AbstractComponent implements Engine {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getFilter() {
         return $this->_filter;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getPaths() {
         return $this->_paths;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setFilter(Filter $filter) {
         $this->_filter = $filter;

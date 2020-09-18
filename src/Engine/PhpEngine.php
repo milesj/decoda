@@ -37,7 +37,9 @@ class PhpEngine extends AbstractEngine {
 
                 include $template;
 
-                return trim(ob_get_clean());
+                $result = ob_get_clean();
+
+                return $result === false ? '' : trim($result);
             }
         }
 

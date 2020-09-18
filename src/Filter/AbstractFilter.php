@@ -21,7 +21,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
     /**
      * Default tag configuration.
      *
-     * @type array
+     * @var array
      */
     protected $_defaults = [
         /**
@@ -87,7 +87,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
     /**
      * Supported tags.
      *
-     * @type array
+     * @var array
      */
     protected $_tags = [];
 
@@ -148,14 +148,14 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function getTags() {
         return $this->_tags;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function parse(array $tag, $content) {
         $setup = $this->getTag($tag['tag']);
@@ -165,7 +165,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
 
         // Test for an empty filter or empty tag
         if (!$setup || (!$content && $parser->getConfig('removeEmpty'))) {
-            return null;
+            return '';
         }
 
         // Merge arguments with method of same tag name
@@ -174,7 +174,7 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
             if ($response = call_user_func_array([$this, $tag['tag']], [$tag, $content])) {
                 list($tag, $content) = $response;
             } else {
-                return null;
+                return '';
             }
         }
 
@@ -260,14 +260,14 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function setupHooks(Decoda $decoda) {
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function strip(array $tag, $content) {
         $setup = $this->getTag($tag['tag']);

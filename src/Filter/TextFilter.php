@@ -17,7 +17,7 @@ class TextFilter extends AbstractFilter {
     /**
      * Supported tags.
      *
-     * @type array
+     * @var array
      */
     protected $_tags = [
         'font' => [

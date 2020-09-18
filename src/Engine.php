@@ -31,7 +31,7 @@ interface Engine extends Component {
     /**
      * Returns the paths to the templates.
      *
-     * @return string
+     * @return string[]
      */
     public function getPaths();
 

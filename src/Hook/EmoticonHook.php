@@ -18,7 +18,7 @@ class EmoticonHook extends AbstractHook {
     /**
      * Configuration.
      *
-     * @type array
+     * @var array
      */
     protected $_config = [
         'path' => '/images/',
@@ -28,14 +28,14 @@ class EmoticonHook extends AbstractHook {
     /**
      * Mapping of emoticons to smilies.
      *
-     * @type array
+     * @var array
      */
     protected $_emoticons = [];
 
     /**
      * Map of smilies to emoticons.
      *
-     * @type array
+     * @var array
      */
     protected $_smilies = [];
 
@@ -49,7 +49,8 @@ class EmoticonHook extends AbstractHook {
 
         // Load files from config paths
         foreach ($this->getParser()->getPaths() as $path) {
-            foreach (glob($path . 'emoticons.*') as $file) {
+            $files = glob($path . 'emoticons.*') ?: [];
+            foreach ($files as $file) {
                 $this->addLoader(new FileLoader($file));
             }
         }
@@ -85,10 +86,10 @@ class EmoticonHook extends AbstractHook {
         }, $smilies));
 
         $pattern = sprintf('/(?:(?<=[\s.;>:)])|^)(%s)/', $smiliesRegex);
-        $content = preg_replace_callback($pattern, [$this, '_emoticonCallback'], $content);
+        $content = (string)preg_replace_callback($pattern, [$this, '_emoticonCallback'], $content);
 
         $pattern = sprintf('/(%s)(?:(?=[\s.&<:(])|$)/', $smiliesRegex);
-        $content = preg_replace_callback($pattern, [$this, '_emoticonCallback'], $content);
+        $content = (string)preg_replace_callback($pattern, [$this, '_emoticonCallback'], $content);
 
         return $content;
     }
@@ -130,7 +131,7 @@ class EmoticonHook extends AbstractHook {
      */
     public function render($smiley, $isXhtml = true) {
         if (!$this->hasSmiley($smiley)) {
-            return null;
+            return '';
         }
 
         $path = sprintf('%s%s.%s',

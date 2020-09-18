@@ -15,7 +15,7 @@ class DataLoader extends AbstractLoader {
     /**
      * Raw data.
      *
-     * @type mixed
+     * @var mixed
      */
     protected $_data;
 

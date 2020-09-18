@@ -24,7 +24,7 @@ class ImageFilter extends AbstractFilter {
     /**
      * Supported tags.
      *
-     * @type array
+     * @var array
      */
     protected $_tags = [
         'img' => [
@@ -56,10 +56,9 @@ class ImageFilter extends AbstractFilter {
      * @return string
      */
     public function parse(array $tag, $content) {
-
         // If more than 1 http:// is found in the string, possible XSS attack
         if ((mb_substr_count($content, 'http://') + mb_substr_count($content, 'https://')) > 1) {
-            return null;
+            return '';
         }
 
         $tag['attributes']['src'] = $content;

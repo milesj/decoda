@@ -15,7 +15,7 @@ class CodeHook extends AbstractHook {
     /**
      * Cached code blocks during the parsing process.
      *
-     * @var array
+     * @var string[]
      */
     protected $_cache = [];
 
@@ -49,7 +49,7 @@ class CodeHook extends AbstractHook {
     /**
      * Encode content using base64.
      *
-     * @param array $matches
+     * @param string[] $matches
      * @return string
      */
     protected function _encodeCallback(array $matches) {
@@ -62,7 +62,7 @@ class CodeHook extends AbstractHook {
     /**
      * Decode content using base64.
      *
-     * @param array $matches
+     * @param string[] $matches
      * @return string
      */
     protected function _decodeCallback(array $matches) {

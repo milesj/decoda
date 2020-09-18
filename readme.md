@@ -66,3 +66,6 @@ The following caching layers are supported.
 - In-Memory
 - Memcache
 - Redis
+
+## Installation and Usage
+See [docs](/docs).

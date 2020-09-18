@@ -21,16 +21,19 @@ Decoda is a play on words for: Decoding Markup.
 
 ## Installation ##
 
-Install by manually downloading the library or defining a [Composer dependency](http://getcomposer.org/).
-
-```javascript
-{
-    "require": {
-        "mjohnson/decoda": "6.*"
-    }
-}
+Install using [Composer](http://getcomposer.org/):
+```
+composer require mjohnson/decoda
 ```
 
+Alternatively, you can manually add the library:
+```javascript
+    "require": {
+        "mjohnson/decoda": "^6.0"
+    }
+```
+
+## Usage
 For each string that we want to parse, we instantiate a new Decoda object and pass the string to the constructor.
 
 ```php
@@ -48,11 +51,11 @@ And that's it! In the following sections, you will learn about the powerful Filt
 To configure the Decoda instance, pass an array of settings as the second constructor argument, or call the individual methods below.
 
 ```php
-$code = new Decoda($string, array(
+$code = new Decoda($string, [
     'xhtmlOutput' => true,
     'strictMode' => false,
     'escapeHtml' => true
-));
+]);
 ```
 
 ### Using custom configuration paths ###
@@ -222,7 +225,7 @@ By default all templates are rendered using regular PHP code. To use a custom te
 
 ```php
 $code = new Decoda\Decoda($string);
-$code->setEngine(new Decoda\Engine\TwigEngine())
+$code->setEngine(new \Decoda\Engine\TwigEngine());
 ```
 
 To use custom templates outside of Decoda, one can set the template path within the engine.
@@ -245,7 +248,7 @@ The FileLoader will detect the current file type and parse the contents out of P
 For example, adding custom locale message strings.
 
 ```php
-$code->addMessages(new Decoda\Loader\DataLoader(array('spoiler' => 'Spoiler'));
+$code->addMessages(new Decoda\Loader\DataLoader(['spoiler' => 'Spoiler']));
 $code->addMessages(new Decoda\Loader\FileLoader('/path/to/messages.php'));
 ```
 
@@ -316,29 +319,29 @@ To add a new filter, create a new filter class and name it accordingly, for exam
 Of all the rules, only the following are required: `htmlTag`, `displayType`, and `allowedTypes`. For displayType and allowedTypes -- block elements can have nested inline and block elements, while inline can only nest other inlines. Let's now add our audio example:
 
 ```php
-namespace Decoda\Filter;
+namespace App\Filter;
 
 use Decoda\Decoda;
 use Decoda\Filter\AbstractFilter;
 
 class AudioFilter extends AbstractFilter {
-    protected $_tags = array(
-        'audio' => array(
+    protected $_tags = [
+        'audio' => [
             'htmlTag' => 'audio',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_NONE,
             'template' => 'audio',
             'contentPattern' => '/^(.*?)\.(ogg|mp3)$/is',
-            'attributes' => array(
+            'attributes' => [
                 'default' => '/^(ogg|mp3)$/i',
                 'autoplay' => '/^(true|false)$/i',
-                'controls' => '/^(true|false)$/i'
-            ),
-            'mapAttributes' => array(
-                'default' => 'type'
-            )
-        )
-    );
+                'controls' => '/^(true|false)$/i',
+            ],
+            'mapAttributes' => [
+                'default' => 'type',
+            ],
+        ],
+    ];
 }
 ```
 
@@ -424,12 +427,12 @@ class DatabaseLoader extends AbstractLoader {
 For example, we can pass database login information through the constructor (there should be more security of course, but this is just a simple example).
 
 ```php
-$loader = new DatabaseLoader(array(
+$loader = new DatabaseLoader([
     'user' => 'root',
     'pass' => 'foobar',
     'name' => 'database',
-    'host' => 'localhost'
-));
+    'host' => 'localhost',
+]);
 ```
 
 That's all it takes to create loaders. For more advanced examples, take a look at the current loaders.
@@ -448,9 +451,9 @@ $code->getErrors(Decoda::ERROR_SCOPE); // tags nested within invalid types
 The method will return an array of tags that have failed, so that you can output some kind of error message to the user and block the data being saved to the database. The array changes per error type, so be sure to loop over each correctly. Something like the following should suffice:
 
 ```php
-$nesting = array();
-$closing = array();
-$scope = array();
+$nesting = [];
+$closing = [];
+$scope = [];
 
 foreach ($code->getErrors() as $error) {
     switch ($error['type']) {

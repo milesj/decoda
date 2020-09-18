@@ -1,4 +1,4 @@
-# Decoda v6.12.0
+# Decoda
 
 [![Build Status](https://travis-ci.org/milesj/decoda.png?branch=master)](https://travis-ci.org/milesj/decoda)
 
@@ -6,7 +6,7 @@ A lightweight lexical string parser for BBCode styled markup.
 
 ## Requirements
 
-- PHP 5.3.0+
+- PHP 5.6.0+
   - Multibyte
 - Composer
 

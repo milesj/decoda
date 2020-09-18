@@ -79,7 +79,7 @@ class ClickableHook extends AbstractHook {
     /**
      * Callback for email processing.
      *
-     * @param array $matches
+     * @param string[] $matches
      * @return string
      */
     protected function _emailCallback($matches) {
@@ -97,7 +97,7 @@ class ClickableHook extends AbstractHook {
     /**
      * Callback for URL processing.
      *
-     * @param array $matches
+     * @param string[] $matches
      * @return string
      */
     protected function _urlCallback($matches) {

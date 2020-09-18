@@ -64,13 +64,6 @@ class Decoda {
     const NL_CONVERT = 2;
 
     /**
-     * Blacklist of tags not to parse.
-     *
-     * @var array
-     */
-    protected $_blacklist = [];
-
-    /**
      * Unique cache key for this block.
      *
      * @var string
@@ -109,21 +102,21 @@ class Decoda {
     /**
      * List of all instantiated filter objects.
      *
-     * @var array
+     * @var \Decoda\Filter[]
      */
     protected $_filters = [];
 
     /**
      * Mapping of tags to its filter object.
      *
-     * @var array
+     * @var string[]
      */
     protected $_filterMap = [];
 
     /**
      * List of all instantiated hook objects.
      *
-     * @var array
+     * @var \Decoda\Hook[]
      */
     protected $_hooks = [];
 
@@ -151,7 +144,7 @@ class Decoda {
     /**
      * Configuration folder paths.
      *
-     * @var array
+     * @var string[]
      */
     protected $_paths = [];
 
@@ -191,9 +184,16 @@ class Decoda {
     protected $_engine;
 
     /**
+     * Blacklist of tags not to parse.
+     *
+     * @var string[]
+     */
+    protected $_blacklist = [];
+
+    /**
      * Whitelist of tags to parse.
      *
-     * @var array
+     * @var string[]
      */
     protected $_whitelist = [];
 
@@ -447,7 +447,7 @@ class Decoda {
     /**
      * Return the current blacklist.
      *
-     * @return array
+     * @return string[]
      */
     public function getBlacklist() {
         return $this->_blacklist;
@@ -535,7 +535,7 @@ class Decoda {
     /**
      * Return all filters.
      *
-     * @return array
+     * @return \Decoda\Filter[]
      */
     public function getFilters() {
         return $this->_filters;
@@ -559,7 +559,7 @@ class Decoda {
     /**
      * Return all hooks.
      *
-     * @return array
+     * @return \Decoda\Hook[]
      */
     public function getHooks() {
         return $this->_hooks;
@@ -587,7 +587,7 @@ class Decoda {
     /**
      * Return the configuration folder paths.
      *
-     * @return array
+     * @return string[]
      */
     public function getPaths() {
         return $this->_paths;
@@ -605,7 +605,7 @@ class Decoda {
     /**
      * Return the current whitelist.
      *
-     * @return array
+     * @return string[]
      */
     public function getWhitelist() {
         return $this->_whitelist;
@@ -615,7 +615,7 @@ class Decoda {
      * Check if a filter exists.
      *
      * @param string $filter
-     * @return boolean
+     * @return bool
      */
     public function hasFilter($filter) {
         return isset($this->_filters[$filter]);
@@ -625,7 +625,7 @@ class Decoda {
      * Check if a hook exists.
      *
      * @param string $hook
-     * @return boolean
+     * @return bool
      */
     public function hasHook($hook) {
         return isset($this->_hooks[$hook]);
@@ -743,7 +743,7 @@ class Decoda {
     /**
      * Remove hook(s).
      *
-     * @param string|array $hooks
+     * @param string|string[] $hooks
      * @return \Decoda\Decoda
      */
     public function removeHook($hooks) {
@@ -1609,7 +1609,7 @@ class Decoda {
      *
      * @param array $parent
      * @param string $tag
-     * @return boolean
+     * @return bool
      */
     protected function _isAllowed($parent, $tag) {
         $filter = $this->getFilterByTag($tag);
@@ -1675,7 +1675,7 @@ class Decoda {
      * Return true if the string is parseable.
      *
      * @param string $string
-     * @return boolean
+     * @return bool
      */
     protected function _isParseable($string) {
         return (

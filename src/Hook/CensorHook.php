@@ -18,7 +18,7 @@ class CensorHook extends AbstractHook {
     /**
      * List of words to censor.
      *
-     * @var array
+     * @var string[]
      */
     protected $_blacklist = [];
 
@@ -80,7 +80,7 @@ class CensorHook extends AbstractHook {
     /**
      * Add words to the blacklist.
      *
-     * @param array $words
+     * @param string[] $words
      * @return \Decoda\Hook\CensorHook
      */
     public function blacklist(array $words) {
@@ -93,7 +93,7 @@ class CensorHook extends AbstractHook {
     /**
      * Return the current blacklist.
      *
-     * @return array
+     * @return string[]
      */
     public function getBlacklist() {
         return $this->_blacklist;
@@ -115,7 +115,7 @@ class CensorHook extends AbstractHook {
     /**
      * Censor a word if its only by itself.
      *
-     * @param array $matches
+     * @param string[] $matches
      * @return string
      */
     protected function _censorCallback($matches) {

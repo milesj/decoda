@@ -63,7 +63,7 @@ $code = new Decoda($string, [
 If you would like to use your own custom configuration for censored, emoticons and messages, you can define new lookup paths using `addPath()`.
 
 ```php
-$code->addPath(__DIR__ . '/custom/config/path/');
+$code->addPath('/custom/path/to/config/');
 ```
 
 ### Changing the Brackets ###
@@ -76,7 +76,7 @@ $code->setBrackets('{', '}');
 
 ### Changing the Translations ###
 
-Decoda comes with a built-in translation dictionary, which is used to translate words like "mail" and "quote". To see the list of supported locales, open up the `src/Decoda/config/messages.json` file, and then use `setLocale()` to change it.
+Decoda comes with a built-in translation dictionary, which is used to translate words like "mail" and "quote". To see the list of supported locales, open up the `config/messages.php` file, and then use `setLocale()` to change it.
 
 ```php
 $code->setLocale('de-de');

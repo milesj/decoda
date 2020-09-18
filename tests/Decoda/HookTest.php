@@ -16,7 +16,7 @@ class HookTest extends TestCase {
     /**
      * Set up Decoda.
      */
-    protected function setUp() {
+    protected function setUp(): void {
         parent::setUp();
 
         $this->object = new TestHook();

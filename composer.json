@@ -12,12 +12,12 @@
         }
     ],
     "require": {
-        "php": ">=5.6.0",
+        "php": ">=7.2.0",
         "ext-mbstring": "*"
     },
     "require-dev": {
         "ext-json": "*",
-        "phpunit/phpunit": "^5.7|^7.5"
+        "phpunit/phpunit": "^7.5|^8.5"
     },
     "suggest": {
         "ext-redis": "Cache data using Redis",

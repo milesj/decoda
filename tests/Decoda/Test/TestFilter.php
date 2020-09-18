@@ -17,202 +17,202 @@ class TestFilter extends AbstractFilter {
      *
      * @type array
      */
-    protected $_tags = array(
-        'example' => array(
+    protected $_tags = [
+        'example' => [
             'htmlTag' => 'example',
             'displayType' => Decoda::TYPE_BLOCK
-        ),
-        'template' => array(
+        ],
+        'template' => [
             'template' => 'test'
-        ),
-        'templateMissing' => array(
+        ],
+        'templateMissing' => [
             'template' => 'test_missing'
-        ),
+        ],
 
         // Inline and block nesting
-        'inline' => array(
+        'inline' => [
             'htmlTag' => 'inline',
             'displayType' => Decoda::TYPE_INLINE
-        ),
-        'inlineAllowInline' => array(
+        ],
+        'inlineAllowInline' => [
             'htmlTag' => 'inlineAllowInline',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'inlineAllowBlock' => array(
+        ],
+        'inlineAllowBlock' => [
             'htmlTag' => 'inlineAllowBlock',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_BLOCK
-        ),
-        'inlineAllowBoth' => array(
+        ],
+        'inlineAllowBoth' => [
             'htmlTag' => 'inlineAllowBoth',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_BOTH
-        ),
-        'block' => array(
+        ],
+        'block' => [
             'htmlTag' => 'block',
             'displayType' => Decoda::TYPE_BLOCK
-        ),
-        'blockAllowInline' => array(
+        ],
+        'blockAllowInline' => [
             'htmlTag' => 'blockAllowInline',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'blockAllowBlock' => array(
+        ],
+        'blockAllowBlock' => [
             'htmlTag' => 'blockAllowBlock',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK
-        ),
-        'blockAllowBoth' => array(
+        ],
+        'blockAllowBoth' => [
             'htmlTag' => 'blockAllowBoth',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH
-        ),
+        ],
 
         // Attribute testing
-        'attributes' => array(
+        'attributes' => [
             'htmlTag' => 'attributes',
             'displayType' => Decoda::TYPE_INLINE,
-            'attributes' => array(
+            'attributes' => [
                 'default' => self::WILDCARD,
                 'alpha' => self::ALPHA,
                 'alnum' => self::ALNUM,
                 'numeric' => self::NUMERIC,
                 'under_score' => self::WILDCARD,
                 'dash-ed' => self::WILDCARD
-            ),
-            'mapAttributes' => array(
+            ],
+            'mapAttributes' => [
                 'default' => 'wildcard',
                 'a' => 'alpha',
                 'n' => 'numeric',
                 'u_s' => 'under_score',
                 'd-e' => 'dash-ed'
-            ),
-            'htmlAttributes' => array(
+            ],
+            'htmlAttributes' => [
                 'id' => 'custom-html'
-            ),
+            ],
             'escapeAttributes' => true
-        ),
+        ],
 
         //CamelCase Tag with attributes testing
-        'fooBar' => array(
+        'fooBar' => [
             'htmlTag' => 'span',
             'displayType' => Decoda::TYPE_INLINE,
-            'attributes' => array(
+            'attributes' => [
                 'default' => self::WILDCARD,
-            ),
-            'mapAttributes' => array(
+            ],
+            'mapAttributes' => [
                 'default' => 'class'
-            )
-        ),
+            ]
+        ],
 
         // Parent child hierarchy
-        'parent' => array(
+        'parent' => [
             'htmlTag' => 'parent',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK
-        ),
-        'parentNoPersist' => array(
+        ],
+        'parentNoPersist' => [
             'htmlTag' => 'parentNoPersist',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'persistContent' => false
-        ),
-        'parentWhitelist' => array(
+        ],
+        'parentWhitelist' => [
             'htmlTag' => 'parentWhitelist',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'onlyTags' => true,
-            'childrenWhitelist' => array('whiteChild')
-        ),
-        'parentBlacklist' => array(
+            'childrenWhitelist' => ['whiteChild']
+        ],
+        'parentBlacklist' => [
             'htmlTag' => 'parentBlacklist',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'onlyTags' => true,
-            'childrenBlacklist' => array('whiteChild')
-        ),
-        'whiteChild' => array(
+            'childrenBlacklist' => ['whiteChild']
+        ],
+        'whiteChild' => [
             'htmlTag' => 'whiteChild',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
-            'parent' => array('parent', 'parentWhitelist', 'parentBlacklist')
-        ),
-        'blackChild' => array(
+            'parent' => ['parent', 'parentWhitelist', 'parentBlacklist']
+        ],
+        'blackChild' => [
             'htmlTag' => 'blackChild',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
-            'parent' => array('parent', 'parentWhitelist', 'parentBlacklist')
-        ),
-        'depth' => array(
+            'parent' => ['parent', 'parentWhitelist', 'parentBlacklist']
+        ],
+        'depth' => [
             'htmlTag' => 'depth',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'maxChildDepth' => 2,
             'persistContent' => false
-        ),
+        ],
 
         // CRLF formatting
-        'lineBreaksRemove' => array(
+        'lineBreaksRemove' => [
             'htmlTag' => 'lineBreaksRemove',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'lineBreaks' => Decoda::NL_REMOVE
-        ),
-        'lineBreaksPreserve' => array(
+        ],
+        'lineBreaksPreserve' => [
             'htmlTag' => 'lineBreaksPreserve',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'lineBreaks' => Decoda::NL_PRESERVE
-        ),
-        'lineBreaksConvert' => array(
+        ],
+        'lineBreaksConvert' => [
             'htmlTag' => 'lineBreaksConvert',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'lineBreaks' => Decoda::NL_CONVERT
-        ),
+        ],
 
         // Content pattern matching
-        'pattern' => array(
+        'pattern' => [
             'htmlTag' => 'pattern',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'contentPattern' => '/^[a-z]+@[a-z]+$/i',
-            'attributes' => array(
+            'attributes' => [
                 'default' => self::WILDCARD
-            ),
-            'mapAttributes' => array(
+            ],
+            'mapAttributes' => [
                 'default' => 'attr'
-            )
-        ),
+            ]
+        ],
 
         // Self closing HTML tag
-        'autoClose' => array(
+        'autoClose' => [
             'htmlTag' => 'autoClose',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'autoClose' => true,
-            'attributes' => array(
+            'attributes' => [
                 'foo' => self::WILDCARD,
                 'bar' => self::WILDCARD
-            )
-        ),
+            ]
+        ],
 
         // Aliasing
-        'aliasBase' => array(
+        'aliasBase' => [
             'htmlTag' => 'aliasBase',
             'displayType' => Decoda::TYPE_BLOCK,
-            'attributes' => array(
+            'attributes' => [
                 'foo' => self::WILDCARD,
                 'bar' => self::WILDCARD
-            )
-        ),
-        'aliased' => array(
+            ]
+        ],
+        'aliased' => [
             'aliasFor' => 'aliasBase',
-            'attributes' => array(
+            'attributes' => [
                 'baz' => self::NUMERIC
-            )
-        )
-    );
+            ]
+        ]
+    ];
 
 }

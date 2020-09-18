@@ -20,16 +20,16 @@ class CensorHook extends AbstractHook {
      *
      * @type array
      */
-    protected $_blacklist = array();
+    protected $_blacklist = [];
 
     /**
      * Configuration.
      *
      * @type array
      */
-    protected $_config = array(
-        'suffix' => array('ing', 'in', 'er', 'r', 'ed', 'd')
-    );
+    protected $_config = [
+        'suffix' => ['ing', 'in', 'er', 'r', 'ed', 'd']
+    ];
 
     /**
      * Read the contents of the loaders into the emoticons list.
@@ -105,8 +105,8 @@ class CensorHook extends AbstractHook {
      * @return string
      */
     protected function _censor($content) {
-        $pattern = implode('|', array_map(array($this, '_prepareRegex'), $this->getBlacklist()));
-        $content = preg_replace_callback('/(?:^|\b)(?:' . $pattern . ')(?:\b|$)/is', array($this, '_censorCallback'), $content);
+        $pattern = implode('|', array_map([$this, '_prepareRegex'], $this->getBlacklist()));
+        $content = preg_replace_callback('/(?:^|\b)(?:' . $pattern . ')(?:\b|$)/is', [$this, '_censorCallback'], $content);
 
         return $content;
     }

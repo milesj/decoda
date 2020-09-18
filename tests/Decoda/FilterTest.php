@@ -29,20 +29,20 @@ class FilterTest extends TestCase {
     public function testParse() {
         $this->object->setParser(new Decoda());
 
-        $this->assertEquals('<example>Content</example>', $this->object->parse(array(
+        $this->assertEquals('<example>Content</example>', $this->object->parse([
             'tag' => 'example',
             'text' => '[example]',
-            'attributes' => array(),
+            'attributes' => [],
             'type' => Decoda::TAG_OPEN,
-            'children' => array('Content')
-        ), 'Content'));
+            'children' => ['Content']
+        ], 'Content'));
     }
 
     /**
      * Test that getTags() returns all tags.
      */
     public function testGetTags() {
-        $this->assertEquals(array(
+        $this->assertEquals([
             'example',
             'template',
             'templateMissing',
@@ -70,24 +70,24 @@ class FilterTest extends TestCase {
             'autoClose',
             'aliasBase',
             'aliased'
-        ), array_keys($this->object->getTags()));
+        ], array_keys($this->object->getTags()));
     }
 
     /**
      * Test that getTag() returns a tag settings and the defaults.
      */
     public function testGetTag() {
-        $expected = array(
+        $expected = [
             'tag' => 'example',
             'htmlTag' => 'example',
             'template' => '',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
             'aliasFor' => '',
-            'attributes' => array(),
-            'mapAttributes' => array(),
-            'htmlAttributes' => array(),
-            'aliasAttributes' => array(),
+            'attributes' => [],
+            'mapAttributes' => [],
+            'htmlAttributes' => [],
+            'aliasAttributes' => [],
             'escapeAttributes' => true,
             'lineBreaks' => Decoda::NL_CONVERT,
             'autoClose' => false,
@@ -95,12 +95,12 @@ class FilterTest extends TestCase {
             'onlyTags' => false,
             'contentPattern' => '',
             'stripContent' => false,
-            'parent' => array(),
-            'childrenWhitelist' => array(),
-            'childrenBlacklist' => array(),
+            'parent' => [],
+            'childrenWhitelist' => [],
+            'childrenBlacklist' => [],
             'maxChildDepth' => -1,
             'persistContent' => true
-        );
+        ];
 
         $this->assertEquals($expected, $this->object->getTag('example'));
 
@@ -116,20 +116,20 @@ class FilterTest extends TestCase {
      * Test that aliasing works.
      */
     public function testGetTagAliasing() {
-        $this->assertEquals(array(
+        $this->assertEquals([
             'tag' => 'aliasBase',
             'htmlTag' => 'aliasBase',
             'template' => '',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
             'aliasFor' => '',
-            'attributes' => array(
+            'attributes' => [
                 'foo' => Filter::WILDCARD,
                 'bar' => Filter::WILDCARD
-            ),
-            'mapAttributes' => array(),
-            'htmlAttributes' => array(),
-            'aliasAttributes' => array(),
+            ],
+            'mapAttributes' => [],
+            'htmlAttributes' => [],
+            'aliasAttributes' => [],
             'escapeAttributes' => true,
             'lineBreaks' => Decoda::NL_CONVERT,
             'autoClose' => false,
@@ -137,28 +137,28 @@ class FilterTest extends TestCase {
             'onlyTags' => false,
             'contentPattern' => '',
             'stripContent' => false,
-            'parent' => array(),
-            'childrenWhitelist' => array(),
-            'childrenBlacklist' => array(),
+            'parent' => [],
+            'childrenWhitelist' => [],
+            'childrenBlacklist' => [],
             'maxChildDepth' => -1,
             'persistContent' => true
-        ), $this->object->getTag('aliasBase'));
+        ], $this->object->getTag('aliasBase'));
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'tag' => 'aliased',
             'htmlTag' => 'aliasBase',
             'template' => '',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
             'aliasFor' => 'aliasBase',
-            'attributes' => array(
+            'attributes' => [
                 'baz' => Filter::NUMERIC, // NEW
                 'foo' => Filter::WILDCARD,
                 'bar' => Filter::WILDCARD
-            ),
-            'mapAttributes' => array(),
-            'htmlAttributes' => array(),
-            'aliasAttributes' => array(),
+            ],
+            'mapAttributes' => [],
+            'htmlAttributes' => [],
+            'aliasAttributes' => [],
             'escapeAttributes' => true,
             'lineBreaks' => Decoda::NL_CONVERT,
             'autoClose' => false,
@@ -166,12 +166,12 @@ class FilterTest extends TestCase {
             'onlyTags' => false,
             'contentPattern' => '',
             'stripContent' => false,
-            'parent' => array(),
-            'childrenWhitelist' => array(),
-            'childrenBlacklist' => array(),
+            'parent' => [],
+            'childrenWhitelist' => [],
+            'childrenBlacklist' => [],
             'maxChildDepth' => -1,
             'persistContent' => true
-        ), $this->object->getTag('aliased'));
+        ], $this->object->getTag('aliased'));
     }
 
 }

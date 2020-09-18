@@ -11,7 +11,7 @@ class TestEngine extends \Decoda\Engine\AbstractEngine {
             throw new Exception(sprintf('Template file %s does not exist', $setup['template']));
         }
 
-        $vars = array();
+        $vars = [];
 
         foreach ($tag['attributes'] as $key => $value) {
             if (isset($setup['map'][$key])) {

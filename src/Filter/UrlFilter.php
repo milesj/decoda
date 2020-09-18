@@ -19,33 +19,33 @@ class UrlFilter extends AbstractFilter {
      *
      * @type array
      */
-    protected $_config = array(
-        'protocols' => array('http', 'https', 'ftp', 'irc', 'telnet', 'mailto'),
+    protected $_config = [
+        'protocols' => ['http', 'https', 'ftp', 'irc', 'telnet', 'mailto'],
         'defaultProtocol' => 'http'
-    );
+    ];
 
     /**
      * Supported tags.
      *
      * @type array
      */
-    protected $_tags = array(
-        'url' => array(
+    protected $_tags = [
+        'url' => [
             'htmlTag' => 'a',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE,
-            'attributes' => array(
+            'attributes' => [
                 'default' => true,
                 'target' => '/^(?:blank|parent|top)$/'
-            ),
-            'mapAttributes' => array(
+            ],
+            'mapAttributes' => [
                 'default' => 'href'
-            )
-        ),
-        'link' => array(
+            ]
+        ],
+        'link' => [
             'aliasFor' => 'url'
-        )
-    );
+        ]
+    ];
 
     /**
      * Using shorthand variation if enabled.

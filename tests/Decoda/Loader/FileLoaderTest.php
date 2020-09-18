@@ -41,7 +41,7 @@ class FileLoaderTest extends TestCase {
      */
     public function testPhpRead() {
         $object = new FileLoader(TEST_DIR . '/config/test.php');
-        $this->assertEquals(array('foo' => 'bar'), $object->load());
+        $this->assertEquals(['foo' => 'bar'], $object->load());
     }
 
     /**
@@ -49,7 +49,7 @@ class FileLoaderTest extends TestCase {
      */
     public function testJsonRead() {
         $object = new FileLoader(TEST_DIR . '/config/test.json');
-        $this->assertEquals(array('foo' => 'bar'), $object->load());
+        $this->assertEquals(['foo' => 'bar'], $object->load());
     }
 
     /**
@@ -57,7 +57,7 @@ class FileLoaderTest extends TestCase {
      */
     public function testIniRead() {
         $object = new FileLoader(TEST_DIR . '/config/test.ini');
-        $this->assertEquals(array('foo' => 'bar'), $object->load());
+        $this->assertEquals(['foo' => 'bar'], $object->load());
     }
 
     /**
@@ -65,7 +65,7 @@ class FileLoaderTest extends TestCase {
      */
     public function testTxtRead() {
         $object = new FileLoader(TEST_DIR . '/config/test.txt');
-        $this->assertEquals(array('foo', 'bar'), $object->load());
+        $this->assertEquals(['foo', 'bar'], $object->load());
     }
 
 }

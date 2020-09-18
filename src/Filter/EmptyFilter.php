@@ -17,8 +17,8 @@ class EmptyFilter extends AbstractFilter {
      *
      * @type array
      */
-    protected $_tags = array(
-        'root' => array()
-    );
+    protected $_tags = [
+        'root' => []
+    ];
 
 }

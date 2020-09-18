@@ -19,107 +19,107 @@ class BlockFilter extends AbstractFilter {
      *
      * @type array
      */
-    protected $_tags = array(
-        'align' => array(
+    protected $_tags = [
+        'align' => [
             'htmlTag' => 'div',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'attributes' => array(
-                'default' => array('/^(?:left|center|right|justify)$/i', 'align-{default}')
-            ),
-            'mapAttributes' => array(
+            'attributes' => [
+                'default' => ['/^(?:left|center|right|justify)$/i', 'align-{default}']
+            ],
+            'mapAttributes' => [
                 'default' => 'class'
-            )
-        ),
-        'left' => array(
+            ]
+        ],
+        'left' => [
             'htmlTag' => 'div',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'htmlAttributes' => array(
+            'htmlAttributes' => [
                 'class' => 'align-left'
-            )
-        ),
-        'right' => array(
+            ]
+        ],
+        'right' => [
             'htmlTag' => 'div',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'htmlAttributes' => array(
+            'htmlAttributes' => [
                 'class' => 'align-right'
-            )
-        ),
-        'center' => array(
+            ]
+        ],
+        'center' => [
             'htmlTag' => 'div',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'htmlAttributes' => array(
+            'htmlAttributes' => [
                 'class' => 'align-center'
-            )
-        ),
-        'justify' => array(
+            ]
+        ],
+        'justify' => [
             'htmlTag' => 'div',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'htmlAttributes' => array(
+            'htmlAttributes' => [
                 'class' => 'align-justify'
-            )
-        ),
-        'float' => array(
+            ]
+        ],
+        'float' => [
             'htmlTag' => 'div',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'attributes' => array(
-                'default' => array('/^(?:left|right|none)$/i', 'float-{default}')
-            ),
-            'mapAttributes' => array(
+            'attributes' => [
+                'default' => ['/^(?:left|right|none)$/i', 'float-{default}']
+            ],
+            'mapAttributes' => [
                 'default' => 'class'
-            )
-        ),
-        'hide' => array(
+            ]
+        ],
+        'hide' => [
             'htmlTag' => 'span',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'htmlAttributes' => array(
+            'htmlAttributes' => [
                 'style' => 'display: none'
-            ),
+            ],
             'stripContent' => true
-        ),
-        'alert' => array(
+        ],
+        'alert' => [
             'htmlTag' => 'div',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'htmlAttributes' => array(
+            'htmlAttributes' => [
                 'class' => 'decoda-alert'
-            ),
+            ],
             'stripContent' => true
-        ),
-        'note' => array(
+        ],
+        'note' => [
             'htmlTag' => 'div',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'htmlAttributes' => array(
+            'htmlAttributes' => [
                 'class' => 'decoda-note'
-            ),
+            ],
             'stripContent' => true
-        ),
-        'div' => array(
+        ],
+        'div' => [
             'htmlTag' => 'div',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'attributes' => array(
+            'attributes' => [
                 'default' => self::ALPHA,
                 'class' => self::ALNUM
-            ),
-            'mapAttributes' => array(
+            ],
+            'mapAttributes' => [
                 'default' => 'id'
-            ),
+            ],
             'stripContent' => true
-        ),
-        'spoiler' => array(
+        ],
+        'spoiler' => [
             'template' => 'spoiler',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
             'stripContent' => true
-        )
-    );
+        ]
+    ];
 
 }

@@ -136,11 +136,11 @@ class DecodaTest extends TestCase {
     public function testPaths() {
         $this->object->addPath('/some/folder')->addPath('/another/folder/');
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'config/',
             '/some/folder/',
             '/another/folder/'
-        ), $this->object->getPaths());
+        ], $this->object->getPaths());
     }
 
     /**

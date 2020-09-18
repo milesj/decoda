@@ -9,9 +9,9 @@
 
             if (!empty($author)) { ?>
                 <span class="decoda-quote-author">
-                    <?php echo $this->getFilter()->message('quoteBy', array(
+                    <?php echo $this->getFilter()->message('quoteBy', [
                         'author' => $this->escape($author)
-                    )); ?>
+                    ]); ?>
                 </span>
             <?php } ?>
 

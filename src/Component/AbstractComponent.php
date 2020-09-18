@@ -21,14 +21,14 @@ abstract class AbstractComponent implements Component {
      *
      * @type array
      */
-    protected $_config = array();
+    protected $_config = [];
 
     /**
      * List of Loaders.
      *
      * @type \Decoda\Loader[]
      */
-    protected $_loaders = array();
+    protected $_loaders = [];
 
     /**
      * Decoda object.
@@ -42,7 +42,7 @@ abstract class AbstractComponent implements Component {
      *
      * @param array $config
      */
-    public function __construct(array $config = array()) {
+    public function __construct(array $config = []) {
         $this->setConfig($config);
         $this->construct();
     }
@@ -87,7 +87,7 @@ abstract class AbstractComponent implements Component {
     /**
      * {@inheritdoc}
      */
-    public function message($key, array $vars = array()) {
+    public function message($key, array $vars = []) {
         return $this->getParser()->message($key, $vars);
     }
 

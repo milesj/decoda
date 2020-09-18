@@ -5,133 +5,133 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-return array(
-    'en-us' => array(
+return [
+    'en-us' => [
         'spoiler' => 'Spoiler',
         'hide' => 'Hide',
         'show' => 'Show',
         'link' => 'link',
         'mail' => 'mail',
         'quoteBy' => 'Quote by {author}',
-    ),
-    'es-mx' => array(
+    ],
+    'es-mx' => [
         'spoiler' => 'Spoiler',
         'hide' => 'Ocultar',
         'show' => 'Mostrar',
         'link' => 'enlace',
         'mail' => 'correo',
         'quoteBy' => '{author} escribió:',
-    ),
-    'fr-fr' => array(
+    ],
+    'fr-fr' => [
         'spoiler' => 'Spoiler',
         'hide' => 'Cacher',
         'show' => 'Afficher',
         'link' => 'lien',
         'mail' => 'email',
         'quoteBy' => 'Citation de {author}',
-    ),
-    'it-it' => array(
+    ],
+    'it-it' => [
         'spoiler' => 'Spoiler',
         'hide' => 'Nascondere',
         'show' => 'Spettacolo',
         'link' => 'collegamento',
         'mail' => 'posta',
         'quoteBy' => 'Quote da {author}',
-    ),
-    'nl-nl' => array(
+    ],
+    'nl-nl' => [
         'spoiler' => 'Spoiler',
         'hide' => 'Verberg',
         'show' => 'Toon',
         'link' => 'link',
         'mail' => 'mail',
         'quoteBy' => 'Quote door {author}',
-    ),
-    'de-de' => array(
+    ],
+    'de-de' => [
         'spoiler' => 'Spoiler',
         'hide' => 'Verstecke',
         'show' => 'Zeige',
         'link' => 'link',
         'mail' => 'mail',
         'quoteBy' => '{author} schrieb:',
-    ),
-    'sv-se' => array(
+    ],
+    'sv-se' => [
         'spoiler' => 'Spoiler',
         'hide' => 'Dölja',
         'show' => 'Visa',
         'link' => 'länk',
         'mail' => 'e-post',
         'quoteBy' => 'Citat från {author}',
-    ),
-    'el-gr' => array(
+    ],
+    'el-gr' => [
         'spoiler' => 'αεροτομή',
         'hide' => 'Απόκρυψη',
         'show' => 'Εμφάνιση',
         'link' => 'σύνδεσμος',
         'mail' => 'ταχυδρομείο',
         'quoteBy' => 'Παράθεση από {author}',
-    ),
-    'bg-bg' => array(
+    ],
+    'bg-bg' => [
         'spoiler' => 'спойлер',
         'hide' => 'крия',
         'show' => 'шоу',
         'link' => 'връзка',
         'mail' => 'поща',
         'quoteBy' => 'цитат от {author}',
-    ),
-    'ru-ru' => array(
+    ],
+    'ru-ru' => [
         'spoiler' => 'спойлер',
         'hide' => 'скрыть',
         'show' => 'показать',
         'link' => 'ссылка',
         'mail' => 'электронная почта',
         'quoteBy' => '{author} написал:',
-    ),
-    'zh-cn' => array(
+    ],
+    'zh-cn' => [
         'spoiler' => '扰流板',
         'hide' => '隐藏',
         'show' => '显示',
         'link' => '链接',
         'mail' => '电子邮件',
         'quoteBy' => '引用由 {author}',
-    ),
-    'ja-jp' => array(
+    ],
+    'ja-jp' => [
         'spoiler' => 'スポイラー',
         'hide' => '隠す',
         'show' => '表示',
         'link' => 'のリンク',
         'mail' => 'メール',
         'quoteBy' => '{author}によって引用',
-    ),
-    'ko-kr' => array(
+    ],
+    'ko-kr' => [
         'spoiler' => '스포일러',
         'hide' => '숨기기',
         'show' => '표시',
         'link' => '링크',
         'mail' => '우편',
         'quoteBy' => '{author}에 의해 견적',
-    ),
-    'id-id' => array(
+    ],
+    'id-id' => [
         'spoiler' => 'Spoiler',
         'hide' => 'Menyembunyikan',
         'show' => 'Tampilkan',
         'link' => 'link',
         'mail' => 'email',
         'quoteBy' => 'Quote by {author}',
-    ),
-    'hu-hu' => array(
+    ],
+    'hu-hu' => [
         'spoiler' => 'Spoiler',
         'hide' => 'Rejt',
         'show' => 'Mutat',
         'link' => 'link',
         'mail' => 'mail',
         'quoteBy' => 'Idézve {author}',
-    ),
-    'tr-tr' => array(
+    ],
+    'tr-tr' => [
         'spoiler' => 'Spoiler',
         'hide' => 'Gizle',
         'show' => 'Göster',
         'link' => 'link',
         'mail' => 'mail',
         'quoteBy' => '{author} tarafından yazılan',
-    ),
-);
+    ],
+];

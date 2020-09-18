@@ -33,7 +33,7 @@ class TestCase extends \PHPUnit_Framework_TestCase {
      */
     public function clean($string) {
         // tabs, carriage returns, line feeds, tabs (4 spaces)
-        return str_replace(array("\t", "\r", "\n", '    '), '', $string);
+        return str_replace(["\t", "\r", "\n", '    '], '', $string);
     }
 
     /**

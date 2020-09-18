@@ -25,7 +25,7 @@ class ClickableHookTest extends TestCase {
         parent::setUp();
 
         $this->object->addFilter(new DefaultFilter());
-        $this->object->addFilter(new EmailFilter(array('encrypt' => false)));
+        $this->object->addFilter(new EmailFilter(['encrypt' => false]));
         $this->object->addFilter(new UrlFilter());
 
         $this->hook = new ClickableHook();

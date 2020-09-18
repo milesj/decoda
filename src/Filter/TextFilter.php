@@ -19,71 +19,71 @@ class TextFilter extends AbstractFilter {
      *
      * @type array
      */
-    protected $_tags = array(
-        'font' => array(
+    protected $_tags = [
+        'font' => [
             'htmlTag' => 'span',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE,
             'escapeAttributes' => false,
-            'attributes' => array(
-                'default' => array('/^[a-z0-9\-\s,\.\']+$/i', 'font-family: {default}')
-            ),
-            'mapAttributes' => array(
+            'attributes' => [
+                'default' => ['/^[a-z0-9\-\s,\.\']+$/i', 'font-family: {default}']
+            ],
+            'mapAttributes' => [
                 'default' => 'style'
-            )
-        ),
-        'size' => array(
+            ]
+        ],
+        'size' => [
             'htmlTag' => 'span',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE,
-            'attributes' => array(
-                'default' => array('/^[1-2]{1}[0-9]{1}$/', 'font-size: {default}px'),
-            ),
-            'mapAttributes' => array(
+            'attributes' => [
+                'default' => ['/^[1-2]{1}[0-9]{1}$/', 'font-size: {default}px'],
+            ],
+            'mapAttributes' => [
                 'default' => 'style'
-            )
-        ),
-        'color' => array(
+            ]
+        ],
+        'color' => [
             'htmlTag' => 'span',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE,
-            'attributes' => array(
-                'default' => array('/^(?:#[0-9a-f]{3,6}|[a-z]+)$/i', 'color: {default}'),
-            ),
-            'mapAttributes' => array(
+            'attributes' => [
+                'default' => ['/^(?:#[0-9a-f]{3,6}|[a-z]+)$/i', 'color: {default}'],
+            ],
+            'mapAttributes' => [
                 'default' => 'style'
-            )
-        ),
-        'h1' => array(
+            ]
+        ],
+        'h1' => [
             'htmlTag' => 'h1',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'h2' => array(
+        ],
+        'h2' => [
             'htmlTag' => 'h2',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'h3' => array(
+        ],
+        'h3' => [
             'htmlTag' => 'h3',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'h4' => array(
+        ],
+        'h4' => [
             'htmlTag' => 'h4',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'h5' => array(
+        ],
+        'h5' => [
             'htmlTag' => 'h5',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'h6' => array(
+        ],
+        'h6' => [
             'htmlTag' => 'h6',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_INLINE
-        )
-    );
+        ]
+    ];
 
 }

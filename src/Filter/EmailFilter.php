@@ -19,29 +19,29 @@ class EmailFilter extends AbstractFilter {
      *
      * @type array
      */
-    protected $_config = array(
+    protected $_config = [
         'encrypt' => true
-    );
+    ];
 
     /**
      * Supported tags.
      *
      * @type array
      */
-    protected $_tags = array(
-        'email' => array(
+    protected $_tags = [
+        'email' => [
             'htmlTag' => 'a',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_NONE,
             'escapeAttributes' => false,
-            'attributes' => array(
+            'attributes' => [
                 'default' => true
-            )
-        ),
-        'mail' => array(
+            ]
+        ],
+        'mail' => [
             'aliasFor' => 'email'
-        )
-    );
+        ]
+    ];
 
     /**
      * Encrypt the email before parsing it within tags.

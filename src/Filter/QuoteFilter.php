@@ -19,31 +19,31 @@ class QuoteFilter extends AbstractFilter {
      *
      * @type array
      */
-    protected $_config = array(
+    protected $_config = [
         'dateFormat' => 'M jS Y, H:i:s'
-    );
+    ];
 
     /**
      * Supported tags.
      *
      * @type array
      */
-    protected $_tags = array(
-        'quote' => array(
+    protected $_tags = [
+        'quote' => [
             'template' => 'quote',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'attributes' => array(
+            'attributes' => [
                 'default' => self::WILDCARD,
                 'date' => self::WILDCARD
-            ),
-            'mapAttributes' => array(
+            ],
+            'mapAttributes' => [
                 'default' => 'author'
-            ),
+            ],
             'maxChildDepth' => 2,
             'persistContent' => false,
             'stripContent' => true
-        )
-    );
+        ]
+    ];
 
 }

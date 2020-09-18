@@ -21,60 +21,60 @@ class ListFilter extends AbstractFilter {
      *
      * @type array
      */
-    protected $_tags = array(
-        'olist' => array(
+    protected $_tags = [
+        'olist' => [
             'htmlTag' => 'ol',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
             'lineBreaks' => Decoda::NL_REMOVE,
-            'childrenWhitelist' => array('li', '*'),
+            'childrenWhitelist' => ['li', '*'],
             'onlyTags' => true,
-            'attributes' => array(
-                'default' => array(self::LIST_TYPE, 'type-{default}')
-            ),
-            'mapAttributes' => array(
+            'attributes' => [
+                'default' => [self::LIST_TYPE, 'type-{default}']
+            ],
+            'mapAttributes' => [
                 'default' => 'class'
-            ),
-            'htmlAttributes' => array(
+            ],
+            'htmlAttributes' => [
                 'class' => 'decoda-olist'
-            )
-        ),
-        'ol' => array(
+            ]
+        ],
+        'ol' => [
             'aliasFor' => 'olist'
-        ),
-        'list' => array(
+        ],
+        'list' => [
             'htmlTag' => 'ul',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
             'lineBreaks' => Decoda::NL_REMOVE,
-            'childrenWhitelist' => array('li', '*'),
+            'childrenWhitelist' => ['li', '*'],
             'onlyTags' => true,
-            'attributes' => array(
-                'default' => array(self::LIST_TYPE, 'type-{default}')
-            ),
-            'mapAttributes' => array(
+            'attributes' => [
+                'default' => [self::LIST_TYPE, 'type-{default}']
+            ],
+            'mapAttributes' => [
                 'default' => 'class'
-            ),
-            'htmlAttributes' => array(
+            ],
+            'htmlAttributes' => [
                 'class' => 'decoda-list'
-            )
-        ),
-        'ul' => array(
+            ]
+        ],
+        'ul' => [
             'aliasFor' => 'list'
-        ),
-        'li' => array(
+        ],
+        'li' => [
             'htmlTag' => 'li',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'parent' => array('olist', 'list', 'ol', 'ul')
-        ),
-        '*' => array(
+            'parent' => ['olist', 'list', 'ol', 'ul']
+        ],
+        '*' => [
             'htmlTag' => 'li',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'childrenBlacklist' => array('olist', 'list', 'ol', 'ul', 'li'),
-            'parent' => array('olist', 'list', 'ol', 'ul')
-        )
-    );
+            'childrenBlacklist' => ['olist', 'list', 'ol', 'ul', 'li'],
+            'parent' => ['olist', 'list', 'ol', 'ul']
+        ]
+    ];
 
 }

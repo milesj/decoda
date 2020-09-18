@@ -19,103 +19,103 @@ class TableFilter extends AbstractFilter {
      *
      * @type array
      */
-    protected $_tags = array(
-        'table' => array(
+    protected $_tags = [
+        'table' => [
             'htmlTag' => 'table',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'lineBreaks' => Decoda::NL_REMOVE,
             'onlyTags' => true,
-            'childrenWhitelist' => array('tr', 'row', 'thead', 'tbody', 'tfoot'),
-            'attributes' => array(
+            'childrenWhitelist' => ['tr', 'row', 'thead', 'tbody', 'tfoot'],
+            'attributes' => [
                 'class' => self::ALNUM
-            ),
-            'htmlAttributes' => array(
+            ],
+            'htmlAttributes' => [
                 'class' => 'decoda-table'
-            )
-        ),
-        'thead' => array(
+            ]
+        ],
+        'thead' => [
             'htmlTag' => 'thead',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'lineBreaks' => Decoda::NL_REMOVE,
             'onlyTags' => true,
-            'childrenWhitelist' => array('tr', 'row'),
-            'parent' => array('table')
-        ),
-        'tbody' => array(
+            'childrenWhitelist' => ['tr', 'row'],
+            'parent' => ['table']
+        ],
+        'tbody' => [
             'htmlTag' => 'tbody',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'lineBreaks' => Decoda::NL_REMOVE,
             'onlyTags' => true,
-            'childrenWhitelist' => array('tr', 'row'),
-            'parent' => array('table')
-        ),
-        'tfoot' => array(
+            'childrenWhitelist' => ['tr', 'row'],
+            'parent' => ['table']
+        ],
+        'tfoot' => [
             'htmlTag' => 'tfoot',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'lineBreaks' => Decoda::NL_REMOVE,
             'onlyTags' => true,
-            'childrenWhitelist' => array('tr', 'row'),
-            'parent' => array('table')
-        ),
-        'tr' => array(
+            'childrenWhitelist' => ['tr', 'row'],
+            'parent' => ['table']
+        ],
+        'tr' => [
             'htmlTag' => 'tr',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BLOCK,
             'lineBreaks' => Decoda::NL_REMOVE,
             'onlyTags' => true,
-            'childrenWhitelist' => array('td', 'th', 'col'),
-            'parent' => array('table', 'thead', 'tbody', 'tfoot')
-        ),
-        'row' => array(
+            'childrenWhitelist' => ['td', 'th', 'col'],
+            'parent' => ['table', 'thead', 'tbody', 'tfoot']
+        ],
+        'row' => [
             'aliasFor' => 'tr'
-        ),
-        'td' => array(
+        ],
+        'td' => [
             'htmlTag' => 'td',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'parent' => array('tr', 'row'),
-            'attributes' => array(
+            'parent' => ['tr', 'row'],
+            'attributes' => [
                 'default' => self::NUMERIC,
                 'cols' => self::NUMERIC,
                 'rows' => self::NUMERIC
-            ),
-            'aliasAttributes' => array(
+            ],
+            'aliasAttributes' => [
                 'colspan' => 'cols',
                 'rowspan' => 'rows'
-            ),
-            'mapAttributes' => array(
+            ],
+            'mapAttributes' => [
                 'default' => 'colspan',
                 'cols' => 'colspan',
                 'rows' => 'rowspan'
-            )
-        ),
-        'col' => array(
+            ]
+        ],
+        'col' => [
             'aliasFor' => 'td'
-        ),
-        'th' => array(
+        ],
+        'th' => [
             'htmlTag' => 'th',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
-            'parent' => array('tr', 'row'),
-            'attributes' => array(
+            'parent' => ['tr', 'row'],
+            'attributes' => [
                 'default' => self::NUMERIC,
                 'cols' => self::NUMERIC,
                 'rows' => self::NUMERIC
-            ),
-            'aliasAttributes' => array(
+            ],
+            'aliasAttributes' => [
                 'colspan' => 'cols',
                 'rowspan' => 'rows'
-            ),
-            'mapAttributes' => array(
+            ],
+            'mapAttributes' => [
                 'default' => 'colspan',
                 'cols' => 'colspan',
                 'rows' => 'rowspan'
-            )
-        )
-    );
+            ]
+        ]
+    ];
 
 }

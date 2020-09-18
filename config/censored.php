@@ -5,7 +5,7 @@
  * @link        http://milesj.me/code/php/decoda
  */
 
-return array(
+return [
     'asshole',
     'bitch',
     'btch',
@@ -45,4 +45,4 @@ return array(
     'vagina',
     'vag',
     'rape',
-);
+];

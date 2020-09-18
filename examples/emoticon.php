@@ -11,5 +11,5 @@ It also supports the word syntax:
 
 $code = new \Decoda\Decoda($string);
 $code->addFilter(new \Decoda\Filter\ImageFilter());
-$code->addHook(new \Decoda\Hook\EmoticonHook(array('path' => '../emoticons/')));
+$code->addHook(new \Decoda\Hook\EmoticonHook(['path' => '../emoticons/']));
 echo $code->parse(); ?>

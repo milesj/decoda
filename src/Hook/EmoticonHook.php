@@ -20,24 +20,24 @@ class EmoticonHook extends AbstractHook {
      *
      * @type array
      */
-    protected $_config = array(
+    protected $_config = [
         'path' => '/images/',
         'extension' => 'png'
-    );
+    ];
 
     /**
      * Mapping of emoticons to smilies.
      *
      * @type array
      */
-    protected $_emoticons = array();
+    protected $_emoticons = [];
 
     /**
      * Map of smilies to emoticons.
      *
      * @type array
      */
-    protected $_smilies = array();
+    protected $_smilies = [];
 
     /**
      * Read the contents of the loaders into the emoticons list.
@@ -85,10 +85,10 @@ class EmoticonHook extends AbstractHook {
         }, $smilies));
 
         $pattern = sprintf('/(?:(?<=[\s.;>:)])|^)(%s)/', $smiliesRegex);
-        $content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
+        $content = preg_replace_callback($pattern, [$this, '_emoticonCallback'], $content);
 
         $pattern = sprintf('/(%s)(?:(?=[\s.&<:(])|$)/', $smiliesRegex);
-        $content = preg_replace_callback($pattern, array($this, '_emoticonCallback'), $content);
+        $content = preg_replace_callback($pattern, [$this, '_emoticonCallback'], $content);
 
         return $content;
     }

@@ -19,7 +19,7 @@ class MemoryStorage extends AbstractStorage {
      *
      * @var array
      */
-    protected $_cache = array();
+    protected $_cache = [];
 
     /**
      * {@inheritdoc}

@@ -27,10 +27,10 @@ class EngineTest extends TestCase {
      * Test setPath() sets a path, and getPath() returns it.
      */
     public function testGetAddPath() {
-        $this->assertEquals(array(), $this->object->getPaths());
+        $this->assertEquals([], $this->object->getPaths());
 
         $this->object->addPath(DECODA . 'tpls');
-        $this->assertEquals(array(DECODA . 'tpls/'), $this->object->getPaths());
+        $this->assertEquals([DECODA . 'tpls/'], $this->object->getPaths());
     }
 
     /**

@@ -20,43 +20,43 @@ class CodeFilter extends AbstractFilter {
      *
      * @type array
      */
-    protected $_config = array(
+    protected $_config = [
         'classPrefix' => 'lang-',
         'highlightAttribute' => 'data-line'
-    );
+    ];
 
     /**
      * Supported tags.
      *
      * @type array
      */
-    protected $_tags = array(
-        'code' => array(
+    protected $_tags = [
+        'code' => [
             'template' => 'code',
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_BOTH,
             'lineBreaks' => Decoda::NL_PRESERVE,
             'preserveTags' => true,
-            'attributes' => array(
+            'attributes' => [
                 'default' => self::ALPHA,
                 'hl' => self::NUMERIC
-            ),
-            'mapAttributes' => array(
+            ],
+            'mapAttributes' => [
                 'default' => 'lang'
-            ),
+            ],
             'stripContent' => true
-        ),
-        'source' => array(
+        ],
+        'source' => [
             'htmlTag' => 'code',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'var' => array(
+        ],
+        'var' => [
             'htmlTag' => 'var',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE
-        )
-    );
+        ]
+    ];
 
     /**
      * Add any hook dependencies.

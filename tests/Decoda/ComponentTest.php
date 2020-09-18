@@ -20,7 +20,7 @@ class ComponentTest extends TestCase {
     protected function setUp() {
         parent::setUp();
 
-        $this->object = new TestComponent(array('key' => 'value'));
+        $this->object = new TestComponent(['key' => 'value']);
     }
 
     /**
@@ -40,7 +40,7 @@ class ComponentTest extends TestCase {
         $this->assertEquals('value', $this->object->getConfig('key'));
         $this->assertEquals(null, $this->object->getConfig('foobar'));
 
-        $this->object->setConfig(array('key' => 'foo'));
+        $this->object->setConfig(['key' => 'foo']);
         $this->assertEquals('foo', $this->object->getConfig('key'));
     }
 

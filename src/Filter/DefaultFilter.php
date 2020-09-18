@@ -20,75 +20,75 @@ class DefaultFilter extends AbstractFilter {
      *
      * @type array
      */
-    protected $_config = array(
+    protected $_config = [
         'timeFormat' => 'D, M jS Y, H:i'
-    );
+    ];
 
     /**
      * Supported tags.
      *
      * @type array
      */
-    protected $_tags = array(
-        'b' => array(
-            'htmlTag' => array('b', 'strong'),
+    protected $_tags = [
+        'b' => [
+            'htmlTag' => ['b', 'strong'],
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'i' => array(
-            'htmlTag' => array('i', 'em'),
+        ],
+        'i' => [
+            'htmlTag' => ['i', 'em'],
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'u' => array(
+        ],
+        'u' => [
             'htmlTag' => 'u',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        's' => array(
+        ],
+        's' => [
             'htmlTag' => 'del',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'sub' => array(
+        ],
+        'sub' => [
             'htmlTag' => 'sub',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'sup' => array(
+        ],
+        'sup' => [
             'htmlTag' => 'sup',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE
-        ),
-        'abbr' => array(
+        ],
+        'abbr' => [
             'htmlTag' => 'abbr',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_INLINE,
-            'attributes' => array(
+            'attributes' => [
                 'default' => AbstractFilter::ALNUM
-            ),
-            'mapAttributes' => array(
+            ],
+            'mapAttributes' => [
                 'default' => 'title'
-            )
-        ),
-        'br' => array(
+            ]
+        ],
+        'br' => [
             'htmlTag' => 'br',
             'autoClose' => true,
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_NONE
-        ),
-        'hr' => array(
+        ],
+        'hr' => [
             'htmlTag' => 'hr',
             'autoClose' => true,
             'displayType' => Decoda::TYPE_BLOCK,
             'allowedTypes' => Decoda::TYPE_NONE
-        ),
-        'time' => array(
+        ],
+        'time' => [
             'htmlTag' => 'time',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_NONE
-        )
-    );
+        ]
+    ];
 
     /**
      * Parse the timestamps for the time tag.
@@ -104,7 +104,7 @@ class DefaultFilter extends AbstractFilter {
 
         $tag['attributes']['datetime'] = date(DateTime::ISO8601, $timestamp);
 
-        return array($tag, $content);
+        return [$tag, $content];
     }
 
 }

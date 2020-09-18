@@ -56,7 +56,7 @@ interface Component {
      * @param array $vars
      * @return string
      */
-    public function message($key, array $vars = array());
+    public function message($key, array $vars = []);
 
     /**
      * Modify configuration.

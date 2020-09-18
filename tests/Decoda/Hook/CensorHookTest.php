@@ -48,7 +48,7 @@ class CensorHookTest extends TestCase {
     public function testBlacklist() {
         $this->assertEquals('word', $this->object->beforeParse('word'));
 
-        $this->object->blacklist(array('word'));
+        $this->object->blacklist(['word']);
         $this->assertRegExp(sprintf('/%s/', $this->getCensoredRegex(4)), $this->object->beforeParse('word'));
         $this->assertRegExp(sprintf('/%s/', $this->getCensoredRegex(9)), $this->object->beforeParse('wooRrrDdd'));
     }

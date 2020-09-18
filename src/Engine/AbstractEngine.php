@@ -21,7 +21,7 @@ abstract class AbstractEngine extends AbstractComponent implements Engine {
      *
      * @type array
      */
-    protected $_paths = array();
+    protected $_paths = [];
 
     /**
      * Current filter.

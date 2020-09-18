@@ -26,27 +26,27 @@ class ImageFilter extends AbstractFilter {
      *
      * @type array
      */
-    protected $_tags = array(
-        'img' => array(
+    protected $_tags = [
+        'img' => [
             'htmlTag' => 'img',
             'displayType' => Decoda::TYPE_INLINE,
             'allowedTypes' => Decoda::TYPE_NONE,
             'contentPattern' => self::IMAGE_PATTERN,
             'autoClose' => true,
-            'attributes' => array(
+            'attributes' => [
                 'default' => self::WIDTH_HEIGHT,
                 'width' => self::DIMENSION,
                 'height' => self::DIMENSION,
                 'alt' => self::WILDCARD
-            ),
-            'htmlAttributes' => array(
+            ],
+            'htmlAttributes' => [
                 'class' => 'decoda-image'
-            )
-        ),
-        'image' => array(
+            ]
+        ],
+        'image' => [
             'aliasFor' => 'img'
-        )
-    );
+        ]
+    ];
 
     /**
      * Use the content as the image source.

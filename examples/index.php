@@ -10,14 +10,14 @@ require_once '../tests/bootstrap.php';
 // Build menus
 $view = strtolower(isset($_GET['view']) ? $_GET['view'] : 'features');
 
-$about = array(
+$about = [
     'features' => 'Features',
     'security' => 'Security',
     'nesting' => 'Invalid nesting',
     'engine' => 'Template Engine'
-);
+];
 
-$filters = array(
+$filters = [
     'default' => 'Default',
     'block' => 'Blocks',
     'code' => 'Code',
@@ -28,13 +28,13 @@ $filters = array(
     'text' => 'Text and Font',
     'url' => 'URLs',
     'video' => 'Videos'
-);
+];
 
-$hooks = array(
+$hooks = [
     'censor' => 'Word Censoring',
     'clickable' => 'Auto-clickable URLs and emails',
     'emoticon' => 'Emoticons'
-);
+];
 
 function debug($var) {
     echo '<pre>'. print_r($var, true) .'</pre>';

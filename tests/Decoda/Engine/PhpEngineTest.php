@@ -30,21 +30,21 @@ class PhpEngineTest extends TestCase {
      * Test that render() renders a template and extracts attribute variables.
      */
     public function testRender() {
-        $this->assertEquals('foobar', $this->object->render(array(
+        $this->assertEquals('foobar', $this->object->render([
             'tag' => 'template',
-            'attributes' => array('var' => 'foobar')
-        ), null));
+            'attributes' => ['var' => 'foobar']
+        ], null));
 
-        $this->assertEquals('', $this->object->render(array(
+        $this->assertEquals('', $this->object->render([
             'tag' => 'template',
-            'attributes' => array('var' => '')
-        ), null));
+            'attributes' => ['var' => '']
+        ], null));
 
         try {
-            $this->object->render(array(
+            $this->object->render([
                 'tag' => 'templateMissing',
-                'attributes' => array('var' => '')
-            ), null);
+                'attributes' => ['var' => '']
+            ], null);
 
             $this->assertTrue(false);
 

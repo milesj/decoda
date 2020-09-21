@@ -15,6 +15,10 @@ A lightweight lexical string parser for BBCode styled markup.
 - "Marten-Plain" emoticons by Mårten Lundin - http://adiumxtras.com/index.php?a=xtras&xtra_id=6920
 - "HTML_BBCodeParser" by Seth Price - http://pear.php.net/package/HTML_BBCodeParser/
 
+## Framework Integrations
+- CakePHP - using [Markup plugin](https://github.com/dereuromark/cakephp-markup).
+- Symfony - using [FMBbCodeBundle](https://github.com/helios-ag/FMBbCodeBundle).
+
 ## Features
 
 - Parses custom code to valid (X)HTML markup

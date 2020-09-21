@@ -2,6 +2,9 @@
 
 _These logs may be outdated or incomplete._
 
+Note: With this 6.13.0 release the changelog has been moved to GitHub releases.
+See last ones there, these here are only for historic reasons.
+
 ## 6.13.0
 
 - Updated to PSR-4 and to support PHP 7.4.

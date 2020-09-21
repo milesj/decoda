@@ -17,7 +17,7 @@ A lightweight lexical string parser for BBCode styled markup.
 
 ## Framework Integrations
 - CakePHP - using [Markup plugin](https://github.com/dereuromark/cakephp-markup).
-- Symfony - using [FMBbCodeBundle](https://github.com/helios-ag/FMBbCodeBundle)
+- Symfony - using [FMBbCodeBundle](https://github.com/helios-ag/FMBbCodeBundle).
 
 ## Features
 

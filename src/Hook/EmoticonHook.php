@@ -37,7 +37,7 @@ class EmoticonHook extends AbstractHook {
      *
      * @var string[]
      */
-    protected $_smilies = [];
+    protected $_smileys = [];
 
     /**
      * Read the contents of the loaders into the emoticons list.
@@ -62,7 +62,7 @@ class EmoticonHook extends AbstractHook {
             if ($emoticons = $loader->load()) {
                 foreach ($emoticons as $emoticon => $smileys) {
                     foreach ($smileys as $smiley) {
-                        $this->_smilies[$smiley] = $emoticon;
+                        $this->_smileys[$smiley] = $emoticon;
                     }
                 }
 
@@ -107,19 +107,9 @@ class EmoticonHook extends AbstractHook {
      * Returns all available smileys.
      *
      * @return string[]
-     * @deprecated Use getSmileys() instead.
-     */
-    public function getSmilies() {
-        return $this->getSmileys();
-    }
-
-    /**
-     * Returns all available smileys.
-     *
-     * @return string[]
      */
     public function getSmileys() {
-        return array_keys($this->_smilies);
+        return array_keys($this->_smileys);
     }
 
     /**
@@ -129,7 +119,7 @@ class EmoticonHook extends AbstractHook {
      * @return bool
      */
     public function hasSmiley($smiley) {
-        return isset($this->_smilies[$smiley]);
+        return isset($this->_smileys[$smiley]);
     }
 
     /**
@@ -146,7 +136,7 @@ class EmoticonHook extends AbstractHook {
 
         $path = sprintf('%s%s.%s',
             $this->getConfig('path'),
-            $this->_smilies[$smiley],
+            $this->_smileys[$smiley],
             $this->getConfig('extension'));
 
         if ($isXhtml) {

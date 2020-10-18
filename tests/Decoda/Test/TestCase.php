@@ -21,7 +21,7 @@ class TestCase extends \PHPUnit_Framework_TestCase {
     /**
      * Set up Decoda.
      */
-    protected function setUp() {
+    protected function setUp(): void {
         $this->object = new Decoda();
     }
 

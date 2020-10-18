@@ -15,7 +15,7 @@ class DefaultFilterTest extends TestCase {
     /**
      * Set up Decoda.
      */
-    protected function setUp() {
+    protected function setUp(): void {
         parent::setUp();
 
         $this->object->addFilter(new DefaultFilter());

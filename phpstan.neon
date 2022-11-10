@@ -4,6 +4,4 @@ parameters:
     checkGenericClassInNonGenericObjectType: false
     bootstrapFiles:
         - %rootDir%/../../../tests/bootstrap.php
-    excludes_analyse:
     ignoreErrors:
-        - '#Parameter \#1 \$function of function call_user_func_array expects callable\(\).+AbstractFilter\), mixed\) given.#'

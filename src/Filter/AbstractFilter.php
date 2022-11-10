@@ -171,11 +171,14 @@ abstract class AbstractFilter extends AbstractComponent implements Filter {
         // Merge arguments with method of same tag name
         // If the method returns false, exit early
         if (method_exists($this, $tag['tag'])) {
-            if ($response = call_user_func_array([$this, $tag['tag']], [$tag, $content])) {
-                list($tag, $content) = $response;
-            } else {
+            /** @var callable $callable */
+            $callable = [$this, $tag['tag']];
+            $response = call_user_func_array($callable, [$tag, $content]);
+            if (!$response) {
                 return '';
             }
+
+            list($tag, $content) = $response;
         }
 
         if ($content) {

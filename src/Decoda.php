@@ -208,7 +208,8 @@ class Decoda {
         $this->setConfig($config);
         $this->reset($string, true, $cacheKey);
 
-        if ($path = $this->getConfig('configPath')) {
+        $path = $this->getConfig('configPath');
+        if ($path) {
             $this->addPath($path);
         }
     }
@@ -1692,7 +1693,7 @@ class Decoda {
      */
     protected function _loadMessages() {
         foreach ($this->getPaths() as $path) {
-            $files = glob($path . 'messages.*') ?: [];
+            $files = glob($path . 'messages.*') ?: [];var_dump($path);die();
             foreach ($files as $file) {
                 $this->addMessages(new \Decoda\Loader\FileLoader($file));
             }

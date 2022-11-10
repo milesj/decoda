@@ -2,7 +2,9 @@
 
 [![Build Status](https://travis-ci.org/milesj/decoda.png?branch=master)](https://travis-ci.org/milesj/decoda)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.3-8892BF.svg)](https://php.net/)
+[![Latest Stable Version](https://poser.pugx.org/mjohnson/decoda/v/stable.svg)](https://packagist.org/packages/mjohnson/decoda)
 [![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat)](https://phpstan.org/)
+[![License](https://poser.pugx.org/mjohnson/decoda/license)](https://packagist.org/packages/mjohnson/decoda)
 
 A lightweight lexical string parser for BBCode styled markup.
 

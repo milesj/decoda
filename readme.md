@@ -1,14 +1,10 @@
 # Decoda
 
 [![Build Status](https://travis-ci.org/milesj/decoda.png?branch=master)](https://travis-ci.org/milesj/decoda)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.3-8892BF.svg)](https://php.net/)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat)](https://phpstan.org/)
 
 A lightweight lexical string parser for BBCode styled markup.
-
-## Requirements
-
-- PHP 7.2.0+
-  - Multibyte
-- Composer
 
 ## Contributors
 

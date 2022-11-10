@@ -61,6 +61,3 @@ jobs:
 
     - name: Run phpstan
       run: vendor/bin/phpstan analyse --error-format=github
-
-    - name: Run phpcs
-      run: composer cs-check

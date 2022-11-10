@@ -100,12 +100,13 @@ class EmoticonHookTest extends TestCase {
      */
     public function getSmileyConversionData() {
         $this->setUp();
+        /** @var \Decoda\Hook\EmoticonHook $hook */
         $hook = $this->object->getHook('Emoticon');
         $hook->startup();
 
         $data = [];
 
-        foreach ($hook->getSmilies() as $smile) {
+        foreach ($hook->getSmileys() as $smile) {
             $data[] = [$smile, $hook->render($smile, $this->object->getConfig('xhtmlOutput'))];
         }
 

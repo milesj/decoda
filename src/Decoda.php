@@ -208,7 +208,8 @@ class Decoda {
         $this->setConfig($config);
         $this->reset($string, true, $cacheKey);
 
-        if ($path = $this->getConfig('configPath')) {
+        $path = $this->getConfig('configPath');
+        if ($path) {
             $this->addPath($path);
         }
     }

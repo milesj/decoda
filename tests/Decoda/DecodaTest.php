@@ -892,11 +892,12 @@ EXP;
     }
 
     /**
-     * @expectedException \Decoda\Exception\MissingLocaleException
+     * @return void
      */
     public function testCustomConfigPath() {
-        $decoda = new Decoda('', array('configPath' => '/some/fake/path'));
+        $this->expectException(\Decoda\Exception\MissingLocaleException::class);
 
+        $decoda = new Decoda('', ['configPath' => '/some/fake/path']);
         $this->assertEquals('Spoiler', $decoda->message('spoiler'));
     }
 

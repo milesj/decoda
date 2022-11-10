@@ -7,7 +7,6 @@
 
 namespace Decoda\Hook;
 
-use Decoda\Decoda;
 use Decoda\Loader\FileLoader;
 
 /**

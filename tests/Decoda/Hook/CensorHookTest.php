@@ -30,15 +30,15 @@ class CensorHookTest extends TestCase {
      * Test that beforeParse() will convert curse words to a censored equivalent. Will also take into account mulitple characters.
      */
     public function testParse() {
-        $this->assertRegExp(sprintf('/%s/', $this->getCensoredRegex(4)), $this->object->beforeParse('fuck'));
-        $this->assertRegExp(sprintf('/%s/', $this->getCensoredRegex(12)), $this->object->beforeParse('fuuuccckkkkk'));
-        $this->assertRegExp(sprintf('/%s/', $this->getCensoredRegex(14)), $this->object->beforeParse('fffUUUcccKKKkk'));
-        $this->assertRegExp(sprintf('/%s %s %s/', $this->getCensoredRegex(4), $this->getCensoredRegex(5), $this->getCensoredRegex(6)), $this->object->beforeParse('fuck fuckk fucckk'));
-        $this->assertRegExp(sprintf('/Hey, %s you buddy!/', $this->getCensoredRegex(4)), $this->object->beforeParse('Hey, fuck you buddy!'));
+        $this->assertMatchesRegularExpression(sprintf('/%s/', $this->getCensoredRegex(4)), $this->object->beforeParse('fuck'));
+        $this->assertMatchesRegularExpression(sprintf('/%s/', $this->getCensoredRegex(12)), $this->object->beforeParse('fuuuccckkkkk'));
+        $this->assertMatchesRegularExpression(sprintf('/%s/', $this->getCensoredRegex(14)), $this->object->beforeParse('fffUUUcccKKKkk'));
+        $this->assertMatchesRegularExpression(sprintf('/%s %s %s/', $this->getCensoredRegex(4), $this->getCensoredRegex(5), $this->getCensoredRegex(6)), $this->object->beforeParse('fuck fuckk fucckk'));
+        $this->assertMatchesRegularExpression(sprintf('/Hey, %s you buddy!/', $this->getCensoredRegex(4)), $this->object->beforeParse('Hey, fuck you buddy!'));
 
         // Don't censor words that share a blacklist
-        $this->assertRegExp(sprintf('/%s/', $this->getCensoredRegex(3)), $this->object->beforeParse('nig'));
-        $this->assertRegExp(sprintf('/%s/', $this->getCensoredRegex(6)), $this->object->beforeParse('nigger'));
+        $this->assertMatchesRegularExpression(sprintf('/%s/', $this->getCensoredRegex(3)), $this->object->beforeParse('nig'));
+        $this->assertMatchesRegularExpression(sprintf('/%s/', $this->getCensoredRegex(6)), $this->object->beforeParse('nigger'));
         $this->assertEquals('Night', $this->object->beforeParse('Night'));
     }
 
@@ -49,8 +49,8 @@ class CensorHookTest extends TestCase {
         $this->assertEquals('word', $this->object->beforeParse('word'));
 
         $this->object->blacklist(['word']);
-        $this->assertRegExp(sprintf('/%s/', $this->getCensoredRegex(4)), $this->object->beforeParse('word'));
-        $this->assertRegExp(sprintf('/%s/', $this->getCensoredRegex(9)), $this->object->beforeParse('wooRrrDdd'));
+        $this->assertMatchesRegularExpression(sprintf('/%s/', $this->getCensoredRegex(4)), $this->object->beforeParse('word'));
+        $this->assertMatchesRegularExpression(sprintf('/%s/', $this->getCensoredRegex(9)), $this->object->beforeParse('wooRrrDdd'));
     }
 
     /**

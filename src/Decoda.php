@@ -1693,7 +1693,7 @@ class Decoda {
      */
     protected function _loadMessages() {
         foreach ($this->getPaths() as $path) {
-            $files = glob($path . 'messages.*') ?: [];var_dump($path);die();
+            $files = glob($path . 'messages.*') ?: [];
             foreach ($files as $file) {
                 $this->addMessages(new \Decoda\Loader\FileLoader($file));
             }

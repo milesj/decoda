@@ -963,7 +963,7 @@ class Decoda {
     /**
      * Set the max amount of newlines.
      *
-     * @param bool $max
+     * @param int $max
      * @return \Decoda\Decoda
      */
     public function setMaxNewlines($max) {
